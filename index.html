@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Fisika - Pilih Kelas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        header {
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .intro {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .intro h2 {
+            color: #26d0ce;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #e0e0e0;
+        }
+        
+        .kelas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .kelas-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kelas-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff9a00, #ff5e00);
+        }
+        
+        .kelas-card:hover {
+            transform: translateY(-15px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #26d0ce;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .kelas-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #26d0ce;
+        }
+        
+        .kelas-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .kelas-description {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .kelas-button {
+            display: inline-block;
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .kelas-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .level-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .level-info h3 {
+            color: #26d0ce;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .level-info ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .level-info li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .level-info i {
+            color: #2ecc71;
+            margin-right: 10px;
+        }
+        
+        footer {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            color: #26d0ce;
+            margin-bottom: 15px;
+        }
+        
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .kelas-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .kelas-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-atom"></i> PORTAL FISIKA</h1>
+            <p class="subtitle">Media Pembelajaran Fisika SMA Lengkap dengan Pilihan Level Belajar</p>
+        </header>
+        
+        <div class="intro">
+            <h2>Selamat Datang di Portal Pembelajaran Fisika</h2>
+            <p>Portal ini menyediakan materi fisika SMA lengkap yang terbagi berdasarkan kelas dan level pembelajaran. Pilih kelas Anda untuk mengakses materi yang sesuai dengan kurikulum.</p>
+        </div>
+        
+        <div class="kelas-container">
+            <!-- Kelas 10 -->
+            <div class="kelas-card">
+                <div class="kelas-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="kelas-title">KELAS 10</div>
+                <div class="kelas-description">
+                    Materi fisika dasar untuk pemula. Mempelajari konsep-konsep fundamental dalam fisika.
+                </div>
+                
+                <div class="level-info">
+                    <h3><i class="fas fa-tachometer-alt"></i> Pilih Level Pembelajaran:</h3>
+                    <ul>
+                        <li><i class="fas fa-walking"></i> <strong>Level Steady</strong>: Pembelajaran bertahap dengan penjelasan mendetail</li>
+                        <li><i class="fas fa-running"></i> <strong>Level Fast</strong>: Pembelajaran cepat untuk yang sudah memahami dasar</li>
+                    </ul>
+                </div>
+                
+                <a href="kelas10.html" class="kelas-button">Pilih Kelas 10</a>
+            </div>
+            
+            <!-- Kelas 11 -->
+            <div class="kelas-card">
+                <div class="kelas-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="kelas-title">KELAS 11</div>
+                <div class="kelas-description">
+                    Materi fisika tingkat menengah. Mengembangkan pemahaman konsep yang lebih kompleks.
+                </div>
+                
+                <div class="level-info">
+                    <h3><i class="fas fa-tachometer-alt"></i> Pilih Level Pembelajaran:</h3>
+                    <ul>
+                        <li><i class="fas fa-walking"></i> <strong>Level Steady</strong>: Pembelajaran bertahap dengan penjelasan mendetail</li>
+                        <li><i class="fas fa-running"></i> <strong>Level Fast</strong>: Pembelajaran cepat untuk yang sudah memahami dasar</li>
+                    </ul>
+                </div>
+                
+                <a href="kelas11.html" class="kelas-button">Pilih Kelas 11</a>
+            </div>
+            
+            <!-- Kelas 12 -->
+            <div class="kelas-card">
+                <div class="kelas-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="kelas-title">KELAS 12</div>
+                <div class="kelas-description">
+                    Materi fisika tingkat lanjut. Persiapan untuk ujian akhir dan perguruan tinggi.
+                </div>
+                
+                <div class="level-info">
+                    <h3><i class="fas fa-tachometer-alt"></i> Pilih Level Pembelajaran:</h3>
+                    <ul>
+                        <li><i class="fas fa-walking"></i> <strong>Level Steady</strong>: Pembelajaran bertahap dengan penjelasan mendetail</li>
+                        <li><i class="fas fa-running"></i> <strong>Level Fast</strong>: Pembelajaran cepat untuk persiapan intensif</li>
+                    </ul>
+                </div>
+                
+                <a href="kelas12.html" class="kelas-button">Pilih Kelas 12</a>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-logo">
+                <i class="fas fa-atom"></i>
+            </div>
+            <h3>Portal Media Pembelajaran Fisika SMA</h3>
+            <p class="footer-text">© 2023 - Dibuat untuk mendukung proses belajar mengajar dengan materi lengkap dan terstruktur</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animasi saat halaman dimuat
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.kelas-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 * index);
+            });
+        });
+    </script>
+</body>
+</html>

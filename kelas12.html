@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Fisika - Kelas 12</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff9a00, #ff5e00);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .level-selection {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .level-title {
+            color: #1a2980;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .level-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .level-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .level-card.steady {
+            border-color: #3498db;
+        }
+        
+        .level-card.fast {
+            border-color: #2ecc71;
+        }
+        
+        .level-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .steady .level-icon {
+            color: #3498db;
+        }
+        
+        .fast .level-icon {
+            color: #2ecc71;
+        }
+        
+        .level-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .level-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .level-button {
+            display: inline-block;
+            background: #1a2980;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .level-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .steady .level-button {
+            background: #3498db;
+        }
+        
+        .fast .level-button {
+            background: #2ecc71;
+        }
+        
+        .materi-container {
+            margin-top: 50px;
+        }
+        
+        .materi-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        
+        .materi-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            color: #1a2980;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .materi-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .materi-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border-left: 4px solid #3498db;
+        }
+        
+        .materi-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .materi-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .materi-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .materi-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            background: #ff0000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+        }
+        
+        .materi-link {
+            display: inline-flex;
+            align-items: center;
+            background: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .materi-link:hover {
+            background: #27ae60;
+        }
+        
+        .materi-links i {
+            margin-right: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .level-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .materi-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 20px;
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Pemilihan Kelas</a>
+            <h1><i class="fas fa-rocket"></i> KELAS 12</h1>
+            <p class="subtitle">Materi Fisika Tingkat Lanjut dengan Pilihan Level Pembelajaran</p>
+        </header>
+        
+        <div class="content">
+            <div class="level-selection">
+                <h2 class="level-title">Pilih Level Pembelajaran</h2>
+                <div class="level-cards">
+                    <div class="level-card steady" onclick="showMateri('steady')">
+                        <div class="level-icon">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <h3>LEVEL STEADY</h3>
+                        <p class="level-description">
+                            Pembelajaran bertahap dengan penjelasan mendetail, contoh soal, dan latihan terstruktur.
+                        </p>
+                        <a href="#steady-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                    
+                    <div class="level-card fast" onclick="showMateri('fast')">
+                        <div class="level-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>LEVEL FAST</h3>
+                        <p class="level-description">
+                            Pembelajaran cepat dengan fokus pada konsep inti dan aplikasi langsung untuk persiapan ujian.
+                        </p>
+                        <a href="#fast-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi Level Steady -->
+            <div class="materi-container">
+                <div id="steady-materi" class="materi-section">
+                    <h3 class="section-title"><i class="fas fa-walking"></i> MATERI KELAS 12 - LEVEL STEADY</h3>
+                    
+                    <div class="materi-list">
+                        <!-- Materi 1 -->
+                        <div class="materi-item">
+                            <div class="materi-title">1. Gelombang Elektromagnetik</div>
+                            <p class="materi-description">Sifat gelombang EM, spektrum gelombang EM, dan aplikasinya dalam teknologi.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-gelombang-em" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/gelombang-em-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 2 -->
+                        <div class="materi-item">
+                            <div class="materi-title">2. Listrik Statis</div>
+                            <p class="materi-description">Hukum Coulomb, medan listrik, potensial listrik, dan kapasitor.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-listrik-statis" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/listrik-statis-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 3 -->
+                        <div class="materi-item">
+                            <div class="materi-title">3. Listrik Dinamis</div>
+                            <p class="materi-description">Arus listrik, hukum Ohm, rangkaian listrik, dan energi listrik.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-listrik-dinamis" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/listrik-dinamis-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 4 -->
+                        <div class="materi-item">
+                            <div class="materi-title">4. Kemagnetan</div>
+                            <p class="materi-description">Medan magnet, gaya Lorentz, induksi elektromagnetik, dan transformator.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-kemagnetan" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/kemagnetan-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 5 -->
+                        <div class="materi-item">
+                            <div class="materi-title">5. Fisika Kuantum</div>
+                            <p class="materi-description">Dualitas gelombang-partikel, efek fotolistrik, dan atom Bohr.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-fisika-kuantum" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/fisika-kuantum-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 6 -->
+                        <div class="materi-item">
+                            <div class="materi-title">6. Fisika Inti</div>
+                            <p class="materi-description">Struktur inti atom, radioaktivitas, reaksi inti, dan aplikasi nuklir.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-fisika-inti" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                </a>
+                                <a href="https://example.com/fisika-inti-steady" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Materi Level Fast -->
+                <div id="fast-materi" class="materi-section">
+                    <h3 class="section-title"><i class="fas fa-running"></i> MATERI KELAS 12 - LEVEL FAST</h3>
+                    
+                    <div class="materi-list">
+                        <!-- Materi 1 -->
+                        <div class="materi-item">
+                            <div class="materi-title">1. Gelombang EM & Optik Geometri</div>
+                            <p class="materi-description">Gabungan konsep gelombang elektromagnetik dan optik geometri.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-optik-fast" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Ringkas
+                                </a>
+                                <a href="https://example.com/optik-fast" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Inti
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 2 -->
+                        <div class="materi-item">
+                            <div class="materi-title">2. Listrik: Statis & Dinamis</div>
+                            <p class="materi-description">Ringkasan listrik statis dan dinamis dengan aplikasi soal ujian.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-listrik-fast" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Ringkas
+                                </a>
+                                <a href="https://example.com/listrik-fast" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Inti
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 3 -->
+                        <div class="materi-item">
+                            <div class="materi-title">3. Kemagnetan & Induksi EM</div>
+                            <p class="materi-description">Konsep kemagnetan dan induksi elektromagnetik secara terpadu.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-kemagnetan-fast" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Ringkas
+                                </a>
+                                <a href="https://example.com/kemagnetan-fast" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Inti
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 4 -->
+                        <div class="materi-item">
+                            <div class="materi-title">4. Fisika Modern: Kuantum & Inti</div>
+                            <p class="materi-description">Gabungan fisika kuantum dan fisika inti untuk persiapan ujian.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-fisika-modern-fast" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Ringkas
+                                </a>
+                                <a href="https://example.com/fisika-modern-fast" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Materi Inti
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Materi 5 -->
+                        <div class="materi-item">
+                            <div class="materi-title">5. Persiapan Ujian: Soal-Soal Tipe UTBK</div>
+                            <p class="materi-description">Kumpulan soal tipe UTBK dengan pembahasan cepat dan tepat.</p>
+                            <div class="materi-links">
+                                <a href="https://youtube.com/playlist?list=contoh-soal-utbk" class="youtube-link" target="_blank">
+                                    <i class="fab fa-youtube"></i> Video Pembahasan
+                                </a>
+                                <a href="https://example.com/soal-utbk" class="materi-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Bank Soal
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Portal Fisika Kelas 12 - © 2023</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Persiapkan diri untuk ujian akhir dan perguruan tinggi dengan materi terstruktur</p>
+        </footer>
+    </div>
+
+    <script>
+        // Default: tampilkan Level Steady
+        document.addEventListener('DOMContentLoaded', function() {
+            showMateri('steady');
+            
+            // Cek jika ada hash di URL
+            const hash = window.location.hash.substring(1);
+            if (hash === 'fast-materi') {
+                showMateri('fast');
+            }
+        });
+        
+        // Fungsi untuk menampilkan materi berdasarkan level
+        function showMateri(level) {
+            // Sembunyikan semua materi
+            document.querySelectorAll('.materi-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Tampilkan materi yang dipilih
+            const selectedSection = document.getElementById(level + '-materi');
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+                
+                // Update URL hash tanpa reload halaman
+                history.pushState(null, null, '#' + level + '-materi');
+            }
+            
+            // Update tampilan kartu level
+            document.querySelectorAll('.level-card').forEach(card => {
+                card.style.opacity = '0.7';
+                card.style.transform = 'scale(0.95)';
+            });
+            
+            const selectedCard = document.querySelector('.level-card.' + level);
+            if (selectedCard) {
+                selectedCard.style.opacity = '1';
+                selectedCard.style.transform = 'scale(1)';
+            }
+        }
+        
+        // Animasi saat halaman dimuat
+        window.addEventListener('load', function() {
+            const levelCards = document.querySelectorAll('.level-card');
+            levelCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 * index);
+            });
+        });
+    </script>
+</body>
+</html>
