@@ -1,0 +1,55 @@
+nama-repository/
+├── index.html                    # Halaman utama
+├── kelas10.html                  # Halaman kelas 10
+├── kelas11.html                  # Halaman kelas 11
+├── kelas12.html                  # Halaman kelas 12
+├── 002_GERAK_PARABOLA/          # Folder untuk materi gerak parabola
+│   └── index.html               # File gerak parabola
+├── materi/
+│   ├── kelas10/
+│   │   ├── steady/
+│   │   │   ├── besaran-satuan.html
+│   │   │   ├── vektor.html
+│   │   │   ├── gerak-lurus.html
+│   │   │   ├── gerak-melingkar.html
+│   │   │   └── hukum-newton.html
+│   │   └── fast/
+│   │       ├── besaran-vektor.html
+│   │       ├── dinamika.html
+│   │       ├── usaha-energi.html
+│   │       └── momentum.html
+│   ├── kelas11/
+│   │   ├── steady/
+│   │   │   ├── kesetimbangan.html
+│   │   │   ├── fluida-statis.html
+│   │   │   ├── fluida-dinamis.html
+│   │   │   ├── suhu-kalor.html
+│   │   │   ├── kinetik-gas.html
+│   │   │   └── termodinamika.html
+│   │   └── fast/
+│   │       ├── kesetimbangan-fast.html
+│   │       ├── fluida-fast.html
+│   │       ├── kalor-fast.html
+│   │       └── gelombang-fast.html
+│   └── kelas12/
+│       ├── steady/
+│       │   ├── gelombang-em.html
+│       │   ├── listrik-statis.html
+│       │   ├── listrik-dinamis.html
+│       │   ├── kemagnetan.html
+│       │   ├── fisika-kuantum.html
+│       │   └── fisika-inti.html
+│       └── fast/
+│           ├── optik-fast.html
+│           ├── listrik-fast.html
+│           ├── kemagnetan-fast.html
+│           ├── fisika-modern-fast.html
+│           └── soal-utbk.html
+├── assets/                      # Folder untuk CSS, JS, gambar
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│       └── logo.png
+└── README.md                    # Dokumentasi repository
