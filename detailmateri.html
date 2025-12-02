@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Fisika - Detail Materi Lengkap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff9a00, #ff5e00);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .nav-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .materi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .materi-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            border-top: 5px solid #1a2980;
+        }
+        
+        .materi-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .materi-header {
+            padding: 20px;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .materi-title {
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        
+        .materi-number {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .materi-body {
+            padding: 0;
+        }
+        
+        .youtube-section {
+            padding: 15px 20px;
+            background: #fff8e1;
+            border-bottom: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+        }
+        
+        .youtube-icon {
+            color: #ff0000;
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+        
+        .youtube-link {
+            color: #1a2980;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s;
+            flex-grow: 1;
+        }
+        
+        .youtube-link:hover {
+            color: #ff0000;
+            text-decoration: underline;
+        }
+        
+        .subbab-list {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .subbab-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .subbab-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .subbab-list::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 4px;
+        }
+        
+        .subbab-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            transition: all 0.2s;
+        }
+        
+        .subbab-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+        
+        .subbab-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subbab-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        
+        .subbab-link {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            margin-top: 8px;
+        }
+        
+        .subbab-link:hover {
+            background: #27ae60;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            color: #26d0ce;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .materi-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</a>
+            <h1><i class="fas fa-atom"></i> Detail Materi Fisika</h1>
+            <p class="subtitle">Semua materi lengkap dengan sub bab dan video pembelajaran</p>
+            
+            <div class="nav-buttons">
+                <button class="nav-button" onclick="scrollToSection('kinematika')">Kinematika</button>
+                <button class="nav-button" onclick="scrollToSection('dinamika')">Dinamika</button>
+                <button class="nav-button" onclick="scrollToSection('usaha')">Usaha & Energi</button>
+                <button class="nav-button" onclick="scrollToSection('fluida')">Fluida</button>
+                <button class="nav-button" onclick="scrollToSection('gelombang')">Gelombang</button>
+                <button class="nav-button" onclick="scrollToSection('optik')">Optik</button>
+                <button class="nav-button" onclick="scrollToSection('listrik')">Listrik</button>
+                <button class="nav-button" onclick="scrollToSection('modern')">Fisika Modern</button>
+                <button class="nav-button" onclick="scrollToSection('inti')">Fisika Inti</button>
+                <button class="nav-button" onclick="scrollToSection('matematis')">Matematis</button>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- Materi 1: KINEMATIKA GERAK -->
+            <div class="materi-item" id="kinematika">
+                <div class="materi-header">
+                    <div class="materi-title">KINEMATIKA GERAK</div>
+                    <div class="materi-number">Materi 1</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-kinematika" class="youtube-link" target="_blank">Playlist YouTube: Kinematika Gerak</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gerak Lurus</div>
+                            <p>Gerak benda dalam lintasan lurus dengan kecepatan konstan atau berubah.</p>
+                            <a href="https://example.com/gerak-lurus" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gerak Parabola</div>
+                            <p>Gerak benda yang membentuk lintasan parabola akibat pengaruh gravitasi.</p>
+                            <a href="https://thefounder-anexplorer.github.io/002_GERAK_PARABOLA/" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gerak Melingkar</div>
+                            <p>Gerak benda mengikuti lintasan berbentuk lingkaran dengan kecepatan sudut tertentu.</p>
+                            <a href="https://example.com/gerak-melingkar" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 2: DINAMIKA GERAK -->
+            <div class="materi-item" id="dinamika">
+                <div class="materi-header">
+                    <div class="materi-title">DINAMIKA GERAK</div>
+                    <div class="materi-number">Materi 2</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-dinamika" class="youtube-link" target="_blank">Playlist YouTube: Dinamika Gerak</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Hukum Newton</div>
+                            <p>Hukum dasar gerak yang menjadi fondasi mekanika klasik.</p>
+                            <a href="https://example.com/hukum-newton" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gaya Gesek</div>
+                            <p>Gaya yang menghambat gerak relatif antara dua permukaan yang bersentuhan.</p>
+                            <a href="https://example.com/gaya-gesek" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 3: USAHA DAN ENERGI -->
+            <div class="materi-item" id="usaha">
+                <div class="materi-header">
+                    <div class="materi-title">USAHA DAN ENERGI</div>
+                    <div class="materi-number">Materi 3</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-usaha-energi" class="youtube-link" target="_blank">Playlist YouTube: Usaha dan Energi</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Konsep Usaha</div>
+                            <p>Perpindahan energi melalui gaya yang menyebabkan perpindahan benda.</p>
+                            <a href="https://example.com/konsep-usaha" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Energi Kinetik</div>
+                            <p>Energi yang dimiliki benda karena geraknya.</p>
+                            <a href="https://example.com/energi-kinetik" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 4: FLUIDA -->
+            <div class="materi-item" id="fluida">
+                <div class="materi-header">
+                    <div class="materi-title">FLUIDA</div>
+                    <div class="materi-number">Materi 4</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-fluida" class="youtube-link" target="_blank">Playlist YouTube: Fluida</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Fluida Statis</div>
+                            <p>Sifat dan perilaku fluida dalam keadaan diam.</p>
+                            <a href="https://example.com/fluida-statis" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Fluida Dinamis</div>
+                            <p>Sifat dan perilaku fluida dalam keadaan bergerak.</p>
+                            <a href="https://example.com/fluida-dinamis" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 5: GELOMBANG -->
+            <div class="materi-item" id="gelombang">
+                <div class="materi-header">
+                    <div class="materi-title">GELOMBANG</div>
+                    <div class="materi-number">Materi 5</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-gelombang" class="youtube-link" target="_blank">Playlist YouTube: Gelombang</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gelombang Mekanik</div>
+                            <p>Gelombang yang memerlukan medium untuk merambat.</p>
+                            <a href="https://example.com/gelombang-mekanik" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Gelombang Elektromagnetik</div>
+                            <p>Gelombang yang dapat merambat tanpa medium.</p>
+                            <a href="https://example.com/gelombang-elektromagnetik" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 6: OPTIK -->
+            <div class="materi-item" id="optik">
+                <div class="materi-header">
+                    <div class="materi-title">OPTIK</div>
+                    <div class="materi-number">Materi 6</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-optik" class="youtube-link" target="_blank">Playlist YouTube: Optik</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Optik Geometri</div>
+                            <p>Studi tentang perambatan cahaya sebagai garis lurus.</p>
+                            <a href="https://example.com/optik-geometri" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Optik Fisis</div>
+                            <p>Studi tentang sifat gelombang cahaya seperti interferensi dan difraksi.</p>
+                            <a href="https://example.com/optik-fisis" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 7: LISTRIK DAN ELEKTROMAGNETIK -->
+            <div class="materi-item" id="listrik">
+                <div class="materi-header">
+                    <div class="materi-title">LISTRIK DAN ELEKTROMAGNETIK</div>
+                    <div class="materi-number">Materi 7</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-listrik" class="youtube-link" target="_blank">Playlist YouTube: Listrik & Elektromagnetik</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Listrik Statis</div>
+                            <p>Muatan listrik yang diam dan fenomena terkait.</p>
+                            <a href="https://example.com/listrik-statis" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Listrik Dinamis</div>
+                            <p>Aliran muatan listrik dalam rangkaian tertutup.</p>
+                            <a href="https://example.com/listrik-dinamis" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 8: FISIKA MODERN -->
+            <div class="materi-item" id="modern">
+                <div class="materi-header">
+                    <div class="materi-title">FISIKA MODERN</div>
+                    <div class="materi-number">Materi 8</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-fisika-modern" class="youtube-link" target="_blank">Playlist YouTube: Fisika Modern</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Teori Relativitas</div>
+                            <p>Teori Einstein tentang ruang, waktu, dan gravitasi.</p>
+                            <a href="https://example.com/teori-relativitas" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Fisika Kuantum</div>
+                            <p>Perilaku materi dan energi pada skala atomik dan subatomik.</p>
+                            <a href="https://example.com/fisika-kuantum" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 9: FISIKA INTI -->
+            <div class="materi-item" id="inti">
+                <div class="materi-header">
+                    <div class="materi-title">FISIKA INTI</div>
+                    <div class="materi-number">Materi 9</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-fisika-inti" class="youtube-link" target="_blank">Playlist YouTube: Fisika Inti</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Struktur Inti Atom</div>
+                            <p>Komponen dan susunan partikel dalam inti atom.</p>
+                            <a href="https://example.com/struktur-inti-atom" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Radioaktivitas</div>
+                            <p>Peluruhan inti atom yang tidak stabil menjadi inti yang lebih stabil.</p>
+                            <a href="https://example.com/radioaktivitas" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi 10: MATERI MATEMATIS -->
+            <div class="materi-item" id="matematis">
+                <div class="materi-header">
+                    <div class="materi-title">MATERI MATEMATIS</div>
+                    <div class="materi-number">Materi 10</div>
+                </div>
+                <div class="materi-body">
+                    <div class="youtube-section">
+                        <i class="fab fa-youtube youtube-icon"></i>
+                        <a href="https://youtube.com/playlist?list=contoh-matematis-fisika" class="youtube-link" target="_blank">Playlist YouTube: Matematika untuk Fisika</a>
+                    </div>
+                    <div class="subbab-list">
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Kalkulus Diferensial</div>
+                            <p>Konsep turunan dan aplikasinya dalam fisika.</p>
+                            <a href="https://example.com/kalkulus-diferensial" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                        <div class="subbab-item">
+                            <div class="subbab-title"><i class="fas fa-caret-right"></i> Kalkulus Integral</div>
+                            <p>Konsep integral dan aplikasinya dalam fisika.</p>
+                            <a href="https://example.com/kalkulus-integral" class="subbab-link" target="_blank">Akses Materi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h3>Portal Media Pembelajaran Fisika</h3>
+                <p>Dibuat untuk mendukung proses belajar mengajar dengan materi lengkap dan terstruktur</p>
+                <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">© 2023 - Halaman Detail</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Fungsi untuk scroll ke bagian tertentu
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                window.scrollTo({
+                    top: element.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        // Menangani anchor link dari halaman utama
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                setTimeout(() => {
+                    scrollToSection(hash);
+                }, 300);
+            }
+            
+            // Animasi saat halaman dimuat
+            const materiItems = document.querySelectorAll('.materi-item');
+            materiItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+        
+        // Menambahkan efek active pada tombol navigasi
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.nav-button').forEach(btn => {
+                    btn.style.background = 'rgba(255, 255, 255, 0.2)';
+                });
+                this.style.background = 'rgba(255, 255, 255, 0.4)';
+            });
+        });
+    </script>
+</body>
+</html>
