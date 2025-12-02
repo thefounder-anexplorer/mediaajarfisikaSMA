@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Besaran dan Satuan - Kelas 10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .content {
+            padding: 40px;
+            line-height: 1.8;
+        }
+        
+        h1 {
+            color: #1a2980;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #26d0ce;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .video-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        video {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .materi-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .nav-button {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .example-box {
+            background: #e8f4fc;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../../kelas10.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Kembali ke Kelas 10
+            </a>
+            <h1><i class="fas fa-ruler"></i> BESARAN DAN SATUAN</h1>
+            <p>Fisika Kelas 10 - Level Steady</p>
+        </header>
+        
+        <div class="content">
+            <h2>Pengertian Besaran Fisika</h2>
+            <p>Besaran fisika adalah sesuatu yang dapat diukur dan memiliki nilai serta satuan. Besaran fisika dibagi menjadi dua jenis utama:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Besaran</th>
+                        <th>Pengertian</th>
+                        <th>Contoh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Besaran Pokok</strong></td>
+                        <td>Besaran yang satuannya telah ditetapkan terlebih dahulu</td>
+                        <td>Panjang, massa, waktu, suhu</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Besaran Turunan</strong></td>
+                        <td>Besaran yang diturunkan dari besaran pokok</td>
+                        <td>Kecepatan, percepatan, gaya, energi</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2>7 Besaran Pokok dan Satuannya</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Besaran Pokok</th>
+                        <th>Satuan SI</th>
+                        <th>Simbol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Panjang</td>
+                        <td>meter</td>
+                        <td>m</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Massa</td>
+                        <td>kilogram</td>
+                        <td>kg</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Waktu</td>
+                        <td>sekon</td>
+                        <td>s</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Suhu</td>
+                        <td>kelvin</td>
+                        <td>K</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Kuat Arus</td>
+                        <td>ampere</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Intensitas Cahaya</td>
+                        <td>candela</td>
+                        <td>cd</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Jumlah Zat</td>
+                        <td>mol</td>
+                        <td>mol</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2>Video Pembelajaran</h2>
+            <div class="video-container">
+                <!-- Video lokal dari folder video -->
+                <video controls width="800">
+                    <source src="../../video/kelas10/besaran-satuan.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung pemutaran video.
+                </video>
+                <p style="margin-top: 10px; font-style: italic;">Video pembelajaran besaran dan satuan</p>
+            </div>
+            
+            <h2>Contoh Soal</h2>
+            <div class="example-box">
+                <p><strong>Contoh 1:</strong> Ubahlah 2 km menjadi meter!</p>
+                <p><strong>Penyelesaian:</strong> 1 km = 1000 m, jadi 2 km = 2 × 1000 = 2000 m</p>
+                
+                <p style="margin-top: 15px;"><strong>Contoh 2:</strong> Sebuah benda bergerak dengan kecepatan 72 km/jam. Berapa kecepatannya dalam m/s?</p>
+                <p><strong>Penyelesaian:</strong> 72 km/jam = 72 × (1000 m / 3600 s) = 72 × (5/18) = 20 m/s</p>
+            </div>
+            
+            <h2>Latihan Soal</h2>
+            <p>Setelah mempelajari materi ini, coba kerjakan latihan soal untuk menguji pemahaman Anda:</p>
+            <a href="besaran-satuan-latihan.html" class="nav-button">
+                <i class="fas fa-pencil-alt"></i> Kerjakan Latihan Soal
+            </a>
+            
+            <div class="materi-navigation">
+                <a href="#" class="nav-button">
+                    <i class="fas fa-arrow-left"></i> Materi Sebelumnya
+                </a>
+                <a href="../../kelas10.html" class="nav-button">
+                    <i class="fas fa-home"></i> Kembali ke Daftar Materi
+                </a>
+                <a href="../kelas10/vektor.html" class="nav-button">
+                    Materi Selanjutnya <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Portal Fisika - Materi Besaran dan Satuan © 2023</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Halaman ini adalah bagian dari sistem pembelajaran fisika dalam satu domain</p>
+        </footer>
+    </div>
+</body>
+</html>
