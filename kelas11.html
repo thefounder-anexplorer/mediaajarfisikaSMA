@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Fisika - Kelas 11</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #ff9a00, #ff5e00);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        /* Level Selection */
+        .level-selection {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .level-title {
+            color: #1a2980;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .level-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .level-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .level-card.steady {
+            border-color: #3498db;
+        }
+        
+        .level-card.fast {
+            border-color: #2ecc71;
+        }
+        
+        .level-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .steady .level-icon {
+            color: #3498db;
+        }
+        
+        .fast .level-icon {
+            color: #2ecc71;
+        }
+        
+        .level-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .level-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .level-button {
+            display: inline-block;
+            background: #1a2980;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .level-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .steady .level-button {
+            background: #3498db;
+        }
+        
+        .fast .level-button {
+            background: #2ecc71;
+        }
+        
+        /* Materi Container - HIERARKI */
+        .materi-container {
+            margin-top: 50px;
+        }
+        
+        .materi-section {
+            display: none;
+        }
+        
+        .materi-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* HIERARKI MATERI */
+        .hierarchy-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .materi-utama {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .materi-utama:last-child {
+            margin-bottom: 0;
+        }
+        
+        .materi-utama-header {
+            background: linear-gradient(to right, #9c27b0, #673ab7);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .materi-utama-header:hover {
+            background: linear-gradient(to right, #7b1fa2, #512da8);
+        }
+        
+        .materi-utama-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .materi-utama-title i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .materi-utama-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+        
+        .materi-utama-content {
+            background: white;
+            padding: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease;
+        }
+        
+        .materi-utama-content.expanded {
+            max-height: 3000px;
+        }
+        
+        /* Sub Materi Level 1 */
+        .submateri-level1 {
+            padding: 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .submateri-level1:last-child {
+            border-bottom: none;
+        }
+        
+        .submateri-header {
+            padding: 18px 20px;
+            background: #f3e5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submateri-header:hover {
+            background: #e1bee7;
+        }
+        
+        .submateri-title {
+            font-weight: bold;
+            color: #7b1fa2;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .submateri-title i {
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+        
+        .submateri-toggle {
+            color: #7b1fa2;
+            transition: transform 0.3s;
+        }
+        
+        .submateri-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .submateri-content.expanded {
+            max-height: 2000px;
+            padding: 20px;
+        }
+        
+        /* Sub Materi Level 2 */
+        .submateri-level2 {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .submateri-level2:last-child {
+            margin-bottom: 0;
+        }
+        
+        .submateri-level2-title {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+        
+        .submateri-level2-title i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+        
+        /* Sub Materi Level 3 (lebih dalam) */
+        .submateri-level3 {
+            background: #f1f8e9;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 10px 0 10px 15px;
+            border-left: 3px solid #7cb342;
+        }
+        
+        .submateri-level3-title {
+            font-weight: 600;
+            color: #558b2f;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        
+        .submateri-level3-title i {
+            margin-right: 6px;
+            font-size: 0.85rem;
+        }
+        
+        /* Sub Materi Level 4 (paling dalam) */
+        .submateri-level4 {
+            background: #fff8e1;
+            border-radius: 5px;
+            padding: 10px 12px;
+            margin: 8px 0 8px 25px;
+            border-left: 2px solid #ffb300;
+        }
+        
+        .materi-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            background: #ff0000;
+            color: white;
+            padding: 7px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+        }
+        
+        .materi-link {
+            display: inline-flex;
+            align-items: center;
+            background: #2ecc71;
+            color: white;
+            padding: 7px 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+        
+        .materi-link:hover {
+            background: #27ae60;
+        }
+        
+        .materi-links i {
+            margin-right: 6px;
+        }
+        
+        .path-info {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 6px;
+            font-family: monospace;
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        .materi-description {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .level-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 20px;
+                display: inline-flex;
+            }
+            
+            .submateri-content.expanded {
+                padding: 15px;
+            }
+            
+            .submateri-level3 {
+                margin-left: 10px;
+            }
+            
+            .submateri-level4 {
+                margin-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Pemilihan Kelas</a>
+            <h1><i class="fas fa-book-open"></i> KELAS 11</h1>
+            <p class="subtitle">Materi Fisika Tingkat Menengah dengan Hierarki Lengkap</p>
+        </header>
+        
+        <div class="content">
+            <div class="level-selection">
+                <h2 class="level-title">Pilih Level Pembelajaran</h2>
+                <div class="level-cards">
+                    <div class="level-card steady" onclick="showMateri('steady')">
+                        <div class="level-icon">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <h3>LEVEL STEADY</h3>
+                        <p class="level-description">
+                            Pembelajaran bertahap dengan penjelasan mendetail dan contoh lengkap.
+                        </p>
+                        <a href="#steady-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                    
+                    <div class="level-card fast" onclick="showMateri('fast')">
+                        <div class="level-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>LEVEL FAST</h3>
+                        <p class="level-description">
+                            Pembelajaran cepat dengan fokus pada konsep inti dan aplikasi.
+                        </p>
+                        <a href="#fast-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi Level Steady dengan HIERARKI -->
+            <div class="materi-container">
+                <div id="steady-materi" class="materi-section">
+                    <h3 class="level-title" style="text-align: left; margin-bottom: 20px;">
+                        <i class="fas fa-walking"></i> MATERI KELAS 11 - LEVEL STEADY
+                    </h3>
+                    
+                    <div class="hierarchy-container">
+                        <!-- MATERI UTAMA 1: KESETIMBANGAN DAN ELASTISITAS -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('kesetimbangan')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-balance-scale"></i> KESETIMBANGAN & ELASTISITAS
+                                </div>
+                                <div class="materi-utama-toggle" id="kesetimbangan-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="kesetimbangan-content">
+                                <!-- SUB MATERI: Kesetimbangan Benda Tegar -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('benda-tegar')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-cube"></i> Kesetimbangan Benda Tegar
+                                        </div>
+                                        <div class="submateri-toggle" id="benda-tegar-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="benda-tegar-content">
+                                        <!-- Level 2: Syarat Kesetimbangan -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Syarat-syarat Kesetimbangan
+                                            </div>
+                                            <p class="materi-description">
+                                                Kondisi yang harus dipenuhi agar benda berada dalam kesetimbangan statis.
+                                            </p>
+                                            <!-- Level 3: Jenis Kesetimbangan -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Kesetimbangan Translasi
+                                                </div>
+                                                <p class="materi-description">
+                                                    ΣF = 0 (Jumlah gaya yang bekerja sama dengan nol)
+                                                </p>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kesetimbangan/benda-tegar/translasi.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Translasi
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Kesetimbangan Rotasi
+                                                </div>
+                                                <p class="materi-description">
+                                                    Στ = 0 (Jumlah momen gaya/torsi sama dengan nol)
+                                                </p>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kesetimbangan/benda-tegar/rotasi.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Rotasi
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Titik Berat -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Titik Berat (Center of Gravity)
+                                            </div>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas11/steady/kesetimbangan/benda-tegar/titik-berat.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Titik Berat
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- SUB MATERI: Elastisitas Bahan -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('elastisitas')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-expand-arrows-alt"></i> Elastisitas Bahan
+                                        </div>
+                                        <div class="submateri-toggle" id="elastisitas-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="elastisitas-content">
+                                        <!-- Level 2: Hukum Hooke -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum Hooke
+                                            </div>
+                                            <p class="materi-description">
+                                                Hubungan antara gaya yang diberikan pada pegas dengan pertambahan panjangnya.
+                                            </p>
+                                            <!-- Level 3: Persamaan Hukum Hooke -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Persamaan Hukum Hooke
+                                                </div>
+                                                <p class="materi-description">
+                                                    F = kΔx (Gaya = konstanta pegas × pertambahan panjang)
+                                                </p>
+                                                <!-- Level 4: Aplikasi -->
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Aplikasi Pegas Seri
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/kesetimbangan/elastisitas/pegas-seri.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Pegas Seri
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Aplikasi Pegas Paralel
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/kesetimbangan/elastisitas/pegas-paralel.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Pegas Paralel
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Modulus Elastisitas -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Modulus Elastisitas
+                                            </div>
+                                            <!-- Level 3: Jenis Modulus -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Modulus Young (Elastisitas)
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kesetimbangan/elastisitas/modulus-young.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Modulus Young
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Modulus Bulk (Volume)
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kesetimbangan/elastisitas/modulus-bulk.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Modulus Bulk
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA 2: FLUIDA -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('fluida')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-tint"></i> FLUIDA
+                                </div>
+                                <div class="materi-utama-toggle" id="fluida-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="fluida-content">
+                                <!-- SUB MATERI: Fluida Statis -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('fluida-statis')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-water"></i> Fluida Statis
+                                        </div>
+                                        <div class="submateri-toggle" id="fluida-statis-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="fluida-statis-content">
+                                        <!-- Level 2: Tekanan Hidrostatis -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Tekanan Hidrostatis
+                                            </div>
+                                            <p class="materi-description">
+                                                Tekanan yang diakibatkan oleh gaya berat zat cair.
+                                            </p>
+                                            <!-- Level 3: Persamaan -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Persamaan Tekanan Hidrostatis
+                                                </div>
+                                                <p class="materi-description">
+                                                    P = ρgh (Tekanan = massa jenis × gravitasi × kedalaman)
+                                                </p>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/fluida/statis/tekanan-hidrostatis.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Hukum Pascal -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum Pascal
+                                            </div>
+                                            <!-- Level 3: Prinsip Pascal -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Prinsip Kerja Hukum Pascal
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/fluida/statis/hukum-pascal.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Hukum Pascal
+                                                    </a>
+                                                </div>
+                                                <!-- Level 4: Aplikasi -->
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Dongkrak Hidrolik
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/fluida/statis/pascal/dongkrak.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Contoh Dongkrak
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Hukum Archimedes -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum Archimedes
+                                            </div>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas11/steady/fluida/statis/hukum-archimedes.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Hukum Archimedes
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- SUB MATERI: Fluida Dinamis -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('fluida-dinamis')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-wind"></i> Fluida Dinamis
+                                        </div>
+                                        <div class="submateri-toggle" id="fluida-dinamis-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="fluida-dinamis-content">
+                                        <!-- Level 2: Persamaan Kontinuitas -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Persamaan Kontinuitas
+                                            </div>
+                                            <p class="materi-description">
+                                                A₁v₁ = A₂v₂ (Debit aliran fluida tetap)
+                                            </p>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas11/steady/fluida/dinamis/persamaan-kontinuitas.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Kontinuitas
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Hukum Bernoulli -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum Bernoulli
+                                            </div>
+                                            <!-- Level 3: Persamaan Bernoulli -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Persamaan Bernoulli
+                                                </div>
+                                                <p class="materi-description">
+                                                    P + ½ρv² + ρgh = konstan
+                                                </p>
+                                                <!-- Level 4: Aplikasi -->
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Efek Venturi
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/fluida/dinamis/bernoulli/efek-venturi.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Materi Venturi
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Tabung Pitot
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/fluida/dinamis/bernoulli/tabung-pitot.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Materi Tabung Pitot
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA 3: KALOR DAN TERMODINAMIKA -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('kalor-termo')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-thermometer-half"></i> KALOR & TERMODINAMIKA
+                                </div>
+                                <div class="materi-utama-toggle" id="kalor-termo-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="kalor-termo-content">
+                                <!-- SUB MATERI: Suhu dan Kalor -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('suhu-kalor')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-temperature-high"></i> Suhu dan Kalor
+                                        </div>
+                                        <div class="submateri-toggle" id="suhu-kalor-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="suhu-kalor-content">
+                                        <!-- Level 2: Pemuaian -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Pemuaian Zat
+                                            </div>
+                                            <!-- Level 3: Jenis Pemuaian -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Pemuaian Panjang
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/pemuaian-panjang.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Pemuaian Panjang
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Pemuaian Luas
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/pemuaian-luas.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Pemuaian Luas
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Pemuaian Volume
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/pemuaian-volume.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Pemuaian Volume
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Kalor -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Kalor
+                                            </div>
+                                            <!-- Level 3: Jenis Kalor -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Kalor Jenis
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/kalor-jenis.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Kalor Jenis
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Kapasitas Kalor
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/kapasitas-kalor.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Kapasitas Kalor
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Perubahan Wujud
+                                                </div>
+                                                <!-- Level 4: Jenis Perubahan Wujud -->
+                                                <div class="submateri-level4">
+                                                    <div class="submateri-level3-title">
+                                                        <i class="fas fa-caret-right"></i> Kalor Laten
+                                                    </div>
+                                                    <div class="materi-links">
+                                                        <a href="materi/kelas11/steady/kalor-termo/suhu-kalor/kalor-laten.html" class="materi-link">
+                                                            <i class="fas fa-external-link-alt"></i> Materi Kalor Laten
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- SUB MATERI: Termodinamika -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('termodinamika')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-fire"></i> Termodinamika
+                                        </div>
+                                        <div class="submateri-toggle" id="termodinamika-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="termodinamika-content">
+                                        <!-- Level 2: Hukum Termodinamika -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum-hukum Termodinamika
+                                            </div>
+                                            <!-- Level 3: Hukum 0 -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Hukum 0 Termodinamika
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/hukum-0.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Hukum 0
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Level 3: Hukum 1 -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Hukum 1 Termodinamika
+                                                </div>
+                                                <p class="materi-description">
+                                                    ΔU = Q - W (Perubahan energi dalam = kalor - usaha)
+                                                </p>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/hukum-1.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Hukum 1
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Level 3: Hukum 2 -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Hukum 2 Termodinamika
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/hukum-2.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Hukum 2
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Siklus Termodinamika -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Siklus Termodinamika
+                                            </div>
+                                            <!-- Level 3: Jenis Siklus -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Siklus Carnot
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/siklus-carnot.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Siklus Carnot
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Siklus Otto (Mesin Bensin)
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/siklus-otto.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Siklus Otto
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Siklus Diesel
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/kalor-termo/termodinamika/siklus-diesel.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Siklus Diesel
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA 4: GELOMBANG -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('gelombang')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-wave-square"></i> GELOMBANG
+                                </div>
+                                <div class="materi-utama-toggle" id="gelombang-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="gelombang-content">
+                                <!-- SUB MATERI: Gelombang Mekanik -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('gelombang-mekanik')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-water"></i> Gelombang Mekanik
+                                        </div>
+                                        <div class="submateri-toggle" id="gelombang-mekanik-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="gelombang-mekanik-content">
+                                        <!-- Level 2: Jenis Gelombang -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Jenis-jenis Gelombang Mekanik
+                                            </div>
+                                            <!-- Level 3: Gelombang Transversal -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Gelombang Transversal
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/gelombang/mekanik/transversal.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Gelombang Transversal
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Level 3: Gelombang Longitudinal -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Gelombang Longitudinal
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/gelombang/mekanik/longitudinal.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Gelombang Longitudinal
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Persamaan Gelombang -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Persamaan Gelombang Berjalan
+                                            </div>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas11/steady/gelombang/mekanik/persamaan-gelombang.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Persamaan Gelombang
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Level 2: Gelombang Stasioner -->
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Gelombang Stasioner
+                                            </div>
+                                            <!-- Level 3: Ujung Bebas -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Ujung Bebas
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/gelombang/mekanik/stasioner/ujung-bebas.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Ujung Bebas
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Level 3: Ujung Terikat -->
+                                            <div class="submateri-level3">
+                                                <div class="submateri-level3-title">
+                                                    <i class="fas fa-caret-right"></i> Ujung Terikat
+                                                </div>
+                                                <div class="materi-links">
+                                                    <a href="materi/kelas11/steady/gelombang/mekanik/stasioner/ujung-terikat.html" class="materi-link">
+                                                        <i class="fas fa-external-link-alt"></i> Materi Ujung Terikat
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Materi Level Fast (Ringkas) -->
+                <div id="fast-materi" class="materi-section">
+                    <h3 class="level-title" style="text-align: left; margin-bottom: 20px;">
+                        <i class="fas fa-running"></i> MATERI KELAS 11 - LEVEL FAST
+                    </h3>
+                    
+                    <div class="hierarchy-container">
+                        <!-- MATERI UTAMA: Ringkasan Kesetimbangan -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('kesetimbangan-fast')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-balance-scale"></i> RINGKASAN KESETIMBANGAN
+                                </div>
+                                <div class="materi-utama-toggle" id="kesetimbangan-fast-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="kesetimbangan-fast-content">
+                                <div class="submateri-level1" style="padding: 15px;">
+                                    <p class="materi-description">
+                                        Ringkasan semua konsep kesetimbangan benda tegar dan elastisitas.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="materi/kelas11/fast/kesetimbangan-ringkas.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Ringkas Kesetimbangan
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA: Ringkasan Fluida -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('fluida-fast')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-tint"></i> RINGKASAN FLUIDA
+                                </div>
+                                <div class="materi-utama-toggle" id="fluida-fast-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="fluida-fast-content">
+                                <div class="submateri-level1" style="padding: 15px;">
+                                    <div class="materi-links">
+                                        <a href="materi/kelas11/fast/fluida-ringkas.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Ringkas Fluida
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA: Ringkasan Termodinamika -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('termo-fast')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-thermometer-half"></i> RINGKASAN TERMODINAMIKA
+                                </div>
+                                <div class="materi-utama-toggle" id="termo-fast-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="termo-fast-content">
+                                <div class="submateri-level1" style="padding: 15px;">
+                                    <div class="materi-links">
+                                        <a href="materi/kelas11/fast/termodinamika-ringkas.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Ringkas Termodinamika
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA: Ringkasan Gelombang -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('gelombang-fast')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-wave-square"></i> RINGKASAN GELOMBANG
+                                </div>
+                                <div class="materi-utama-toggle" id="gelombang-fast-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="gelombang-fast-content">
+                                <div class="submateri-level1" style="padding: 15px;">
+                                    <div class="materi-links">
+                                        <a href="materi/kelas11/fast/gelombang-ringkas.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Ringkas Gelombang
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Portal Fisika Kelas 11 dengan Hierarki Materi Lengkap - © 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // Default: tampilkan Level Steady dan expand pertama
+        document.addEventListener('DOMContentLoaded', function() {
+            showMateri('steady');
+            
+            // Auto expand materi pertama di level steady
+            setTimeout(() => {
+                toggleMateri('kesetimbangan');
+            }, 500);
+            
+            // Cek jika ada hash di URL
+            const hash = window.location.hash.substring(1);
+            if (hash === 'fast-materi') {
+                showMateri('fast');
+            }
+        });
+        
+        // Fungsi untuk menampilkan materi berdasarkan level
+        function showMateri(level) {
+            // Sembunyikan semua materi
+            document.querySelectorAll('.materi-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Tampilkan materi yang dipilih
+            const selectedSection = document.getElementById(level + '-materi');
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+                
+                // Update URL hash tanpa reload halaman
+                history.pushState(null, null, '#' + level + '-materi');
+            }
+            
+            // Update tampilan kartu level
+            document.querySelectorAll('.level-card').forEach(card => {
+                card.style.opacity = '0.7';
+                card.style.transform = 'scale(0.95)';
+            });
+            
+            const selectedCard = document.querySelector('.level-card.' + level);
+            if (selectedCard) {
+                selectedCard.style.opacity = '1';
+                selectedCard.style.transform = 'scale(1)';
+            }
+        }
+        
+        // Fungsi untuk toggle materi utama
+        function toggleMateri(materiId) {
+            const content = document.getElementById(materiId + '-content');
+            const toggle = document.getElementById(materiId + '-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                toggle.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                toggle.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Fungsi untuk toggle sub materi
+        function toggleSubMateri(subMateriId) {
+            const content = document.getElementById(subMateriId + '-content');
+            const toggle = document.getElementById(subMateriId + '-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                toggle.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                toggle.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Animasi saat halaman dimuat
+        window.addEventListener('load', function() {
+            const levelCards = document.querySelectorAll('.level-card');
+            levelCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 * index);
+            });
+            
+            // Animate materi utama
+            const materiUtama = document.querySelectorAll('.materi-utama');
+            materiUtama.forEach((materi, index) => {
+                materi.style.opacity = '0';
+                materi.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    materi.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    materi.style.opacity = '1';
+                    materi.style.transform = 'translateX(0)';
+                }, 100 * index);
+            });
+        });
+        
+        // Tambahkan keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Collapse semua yang expanded
+                document.querySelectorAll('.expanded').forEach(el => {
+                    el.classList.remove('expanded');
+                });
+                document.querySelectorAll('.materi-utama-toggle, .submateri-toggle').forEach(toggle => {
+                    toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    toggle.style.transform = 'rotate(0deg)';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
