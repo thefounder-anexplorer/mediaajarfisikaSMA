@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Fisika - Kelas 12</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a5276;      /* Dark Blue */
+            --secondary: #3498db;     /* Blue */
+            --accent: #2ecc71;        /* Green */
+            --light: #f8f9fa;         /* Light Gray */
+            --dark: #2c3e50;          /* Dark Gray */
+            --success: #27ae60;       /* Success Green */
+            --warning: #f39c12;       /* Warning Orange */
+            --danger: #e74c3c;        /* Danger Red */
+            --card-bg: #ffffff;       /* Card Background */
+            --shadow: rgba(0, 0, 0, 0.1);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a5276 0%, #3498db 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        /* Level Selection */
+        .level-selection {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .level-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .level-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            border-radius: 2px;
+        }
+        
+        .level-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .level-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 320px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+        
+        .level-card.steady::before {
+            background: linear-gradient(to right, #3498db, #2980b9);
+        }
+        
+        .level-card.fast::before {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .level-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(52, 152, 219, 0.15);
+            border-color: var(--accent);
+        }
+        
+        .level-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .steady .level-icon {
+            color: #3498db;
+        }
+        
+        .fast .level-icon {
+            color: #2ecc71;
+        }
+        
+        .level-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .level-description {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        .level-button {
+            display: inline-block;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .steady .level-button {
+            background: linear-gradient(to right, #3498db, #2980b9);
+        }
+        
+        .fast .level-button {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .level-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* Materi Container */
+        .materi-container {
+            margin-top: 60px;
+        }
+        
+        .materi-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .materi-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hierarchy Container */
+        .hierarchy-container {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .section-header i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-right: 15px;
+        }
+        
+        .section-header h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        /* Materi Utama Cards */
+        .materi-utama {
+            margin-bottom: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .materi-utama:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .materi-utama-header {
+            background: linear-gradient(135deg, #1a5276, #2c3e50);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .materi-utama-header:hover {
+            background: linear-gradient(135deg, #21618c, #34495e);
+        }
+        
+        .materi-utama-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .materi-utama-title i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+            color: #2ecc71;
+        }
+        
+        .materi-utama-toggle {
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .materi-utama-content {
+            background: white;
+            padding: 0;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .materi-utama-content.expanded {
+            max-height: 5000px;
+        }
+        
+        /* Sub Materi Styling */
+        .submateri-level1 {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .submateri-level1:last-child {
+            border-bottom: none;
+        }
+        
+        .submateri-header {
+            padding: 20px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .submateri-header:hover {
+            background: #e9ecef;
+            border-left-color: #3498db;
+        }
+        
+        .submateri-title {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+        
+        .submateri-title i {
+            margin-right: 12px;
+            font-size: 1rem;
+            color: #3498db;
+        }
+        
+        .submateri-toggle {
+            color: #3498db;
+            transition: transform 0.3s;
+        }
+        
+        .submateri-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .submateri-content.expanded {
+            max-height: 3000px;
+            padding: 25px;
+            background: #fdfdfd;
+        }
+        
+        /* Level 2, 3, 4 styling */
+        .submateri-level2 {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .submateri-level2-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .submateri-level2-title i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        .submateri-level3 {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 12px 0 12px 20px;
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .submateri-level3-title {
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+        
+        .submateri-level3-title i {
+            margin-right: 6px;
+            color: #2ecc71;
+        }
+        
+        .submateri-level4 {
+            background: #f1f8e9;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0 10px 30px;
+            border-left: 2px solid #7cb342;
+        }
+        
+        .submateri-level4-title {
+            font-weight: 600;
+            color: #558b2f;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        
+        .materi-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            background: #ff0000;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(255, 0, 0, 0.2);
+        }
+        
+        .youtube-link:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .materi-link {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(46, 204, 113, 0.2);
+        }
+        
+        .materi-link:hover {
+            background: linear-gradient(to right, #27ae60, #219653);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .materi-links i {
+            margin-right: 8px;
+        }
+        
+        .path-info {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+            background: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .materi-description {
+            font-size: 0.95rem;
+            color: #5d6d7e;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+            box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2);
+        }
+        
+        .utbk-highlight {
+            background: linear-gradient(to right, #fff3cd, #ffeaa7);
+            border-left: 4px solid #f39c12;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            color: #856404;
+            box-shadow: 0 3px 10px rgba(243, 156, 18, 0.1);
+        }
+        
+        .utbk-highlight i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a5276, #2c3e50);
+            color: white;
+            margin-top: 50px;
+            border-top: 5px solid #2ecc71;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            color: #2ecc71;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .level-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 20px;
+                display: inline-flex;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .submateri-content.expanded {
+                padding: 15px;
+            }
+            
+            .submateri-level3 {
+                margin-left: 10px;
+            }
+            
+            .submateri-level4 {
+                margin-left: 20px;
+            }
+            
+            .materi-utama-header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Pemilihan Kelas</a>
+            <h1><i class="fas fa-rocket"></i> KELAS 12</h1>
+            <p class="subtitle">Materi Fisika Tingkat Lanjut Persiapan Ujian dengan Hierarki Lengkap</p>
+        </header>
+        
+        <div class="content">
+            <div class="level-selection">
+                <h2 class="level-title">Pilih Level Pembelajaran</h2>
+                <div class="level-cards">
+                    <div class="level-card steady" onclick="showMateri('steady')">
+                        <div class="level-icon">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <h3>LEVEL STEADY</h3>
+                        <p class="level-description">
+                            Pembelajaran mendalam dengan penjelasan lengkap, contoh soal, dan latihan terstruktur untuk pemahaman konsep yang solid.
+                        </p>
+                        <a href="#steady-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                    
+                    <div class="level-card fast" onclick="showMateri('fast')">
+                        <div class="level-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3>LEVEL FAST</h3>
+                        <p class="level-description">
+                            Pembelajaran intensif fokus UTBK dengan bank soal, trik cepat, dan pembahasan mendalam untuk persiapan ujian.
+                        </p>
+                        <a href="#fast-materi" class="level-button">Pilih Level Ini</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Materi Level Steady -->
+            <div class="materi-container">
+                <div id="steady-materi" class="materi-section">
+                    <div class="section-header">
+                        <i class="fas fa-walking"></i>
+                        <h3>MATERI KELAS 12 - LEVEL STEADY</h3>
+                    </div>
+                    
+                    <div class="hierarchy-container">
+                        <!-- MATERI UTAMA 1: LISTRIK DAN MAGNET -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('listrik-magnet')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-bolt"></i> LISTRIK DAN MAGNET
+                                </div>
+                                <div class="materi-utama-toggle" id="listrik-magnet-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="listrik-magnet-content">
+                                <!-- Contoh satu sub materi untuk preview -->
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('listrik-statis')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-bolt"></i> Listrik Statis
+                                            <span class="exam-badge">UTBK</span>
+                                        </div>
+                                        <div class="submateri-toggle" id="listrik-statis-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="listrik-statis-content">
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Hukum Coulomb
+                                            </div>
+                                            <p class="materi-description">
+                                                Gaya interaksi antara dua muatan listrik titik. Dasar dari elektrostatika.
+                                            </p>
+                                            <div class="materi-links">
+                                                <a href="https://youtube.com/playlist?list=contoh-coulomb" class="youtube-link" target="_blank">
+                                                    <i class="fab fa-youtube"></i> Video Pembelajaran
+                                                </a>
+                                                <a href="materi/kelas12/steady/listrik-magnet/statis/hukum-coulomb.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                                </a>
+                                            </div>
+                                            <div class="path-info">/materi/kelas12/steady/listrik-magnet/statis/hukum-coulomb.html</div>
+                                        </div>
+                                        
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Medan Listrik
+                                            </div>
+                                            <p class="materi-description">
+                                                Konsep medan listrik dan perhitungan kuat medan untuk berbagai konfigurasi muatan.
+                                            </p>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas12/steady/listrik-magnet/statis/medan-listrik.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- UTBK Highlight -->
+                                <div class="utbk-highlight">
+                                    <i class="fas fa-exclamation-circle"></i> <strong>FOKUS UTBK:</strong> Listrik dan Magnet merupakan salah satu topik dengan bobot tinggi dalam UTBK. Kuasai konsep dasar dan aplikasinya.
+                                </div>
+                                
+                                <!-- Tambahkan sub materi lainnya sesuai kebutuhan -->
+                            </div>
+                        </div>
+                        
+                        <!-- MATERI UTAMA 2: GELOMBANG ELEKTROMAGNETIK -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('gelombang-em')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-satellite"></i> GELOMBANG ELEKTROMAGNETIK
+                                </div>
+                                <div class="materi-utama-toggle" id="gelombang-em-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="gelombang-em-content">
+                                <div class="submateri-level1">
+                                    <div class="submateri-header" onclick="toggleSubMateri('spektrum-em')">
+                                        <div class="submateri-title">
+                                            <i class="fas fa-rainbow"></i> Spektrum Gelombang EM
+                                            <span class="exam-badge">UTBK</span>
+                                        </div>
+                                        <div class="submateri-toggle" id="spektrum-em-toggle">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="submateri-content" id="spektrum-em-content">
+                                        <div class="submateri-level2">
+                                            <div class="submateri-level2-title">
+                                                <i class="fas fa-caret-right"></i> Jenis-jenis Gelombang EM
+                                            </div>
+                                            <p class="materi-description">
+                                                Memahami berbagai jenis gelombang elektromagnetik berdasarkan frekuensi dan panjang gelombang.
+                                            </p>
+                                            <div class="materi-links">
+                                                <a href="materi/kelas12/steady/gelombang-em/spektrum/jenis-gelombang.html" class="materi-link">
+                                                    <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tambahkan materi lainnya sesuai struktur sebelumnya -->
+                        
+                    </div>
+                </div>
+                
+                <!-- Materi Level Fast -->
+                <div id="fast-materi" class="materi-section">
+                    <div class="section-header">
+                        <i class="fas fa-running"></i>
+                        <h3>MATERI KELAS 12 - LEVEL FAST (INTENSIF UTBK)</h3>
+                    </div>
+                    
+                    <div class="hierarchy-container">
+                        <div class="utbk-highlight">
+                            <i class="fas fa-bolt"></i> <strong>LEVEL FAST:</strong> Pembelajaran intensif khusus persiapan UTBK dengan fokus pada konsep inti, trik cepat, dan bank soal.
+                        </div>
+                        
+                        <!-- Ringkasan Intensif -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('super-intensif')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-bolt"></i> RINGKASAN SUPER INTENSIF
+                                </div>
+                                <div class="materi-utama-toggle" id="super-intensif-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="super-intensif-content">
+                                <div class="submateri-level1" style="padding: 20px;">
+                                    <p class="materi-description">
+                                        Ringkasan semua materi kelas 12 dalam format intensif untuk persiapan UTBK. Fokus pada konsep penting dan aplikasi soal.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="materi/kelas12/fast/ringkasan-super.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Ringkasan Super
+                                        </a>
+                                        <a href="materi/kelas12/fast/rumus-cepat.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Kumpulan Rumus Cepat
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Soal -->
+                        <div class="materi-utama">
+                            <div class="materi-utama-header" onclick="toggleMateri('bank-soal-fast')">
+                                <div class="materi-utama-title">
+                                    <i class="fas fa-book-open"></i> BANK SOAL UTBK LENGKAP
+                                </div>
+                                <div class="materi-utama-toggle" id="bank-soal-fast-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="materi-utama-content" id="bank-soal-fast-content">
+                                <div class="submateri-level1" style="padding: 20px;">
+                                    <p class="materi-description">
+                                        Kumpulan soal UTBK lengkap dengan pembahasan detail untuk latihan intensif.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="materi/kelas12/fast/bank-soal/soal-utbk.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Bank Soal UTBK
+                                        </a>
+                                        <a href="materi/kelas12/fast/bank-soal/pembahasan.html" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Pembahasan Soal
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Portal Fisika Kelas 12</h3>
+                <p style="margin-top: 10px; opacity: 0.9;">Persiapan optimal untuk UTBK dan Ujian Nasional dengan materi terstruktur</p>
+                <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">
+                    © 2023 - Media Pembelajaran Fisika SMA
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Default: tampilkan Level Steady dan expand pertama
+        document.addEventListener('DOMContentLoaded', function() {
+            showMateri('steady');
+            
+            // Auto expand materi pertama di level steady
+            setTimeout(() => {
+                toggleMateri('listrik-magnet');
+            }, 500);
+            
+            // Cek jika ada hash di URL
+            const hash = window.location.hash.substring(1);
+            if (hash === 'fast-materi') {
+                showMateri('fast');
+            }
+        });
+        
+        // Fungsi untuk menampilkan materi berdasarkan level
+        function showMateri(level) {
+            // Sembunyikan semua materi
+            document.querySelectorAll('.materi-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Tampilkan materi yang dipilih
+            const selectedSection = document.getElementById(level + '-materi');
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+                
+                // Update URL hash tanpa reload halaman
+                history.pushState(null, null, '#' + level + '-materi');
+            }
+            
+            // Update tampilan kartu level
+            document.querySelectorAll('.level-card').forEach(card => {
+                card.style.opacity = '0.7';
+                card.style.transform = 'scale(0.95)';
+                card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.08)';
+            });
+            
+            const selectedCard = document.querySelector('.level-card.' + level);
+            if (selectedCard) {
+                selectedCard.style.opacity = '1';
+                selectedCard.style.transform = 'scale(1)';
+                selectedCard.style.boxShadow = '0 25px 50px rgba(52, 152, 219, 0.15)';
+            }
+        }
+        
+        // Fungsi untuk toggle materi utama
+        function toggleMateri(materiId) {
+            const content = document.getElementById(materiId + '-content');
+            const toggle = document.getElementById(materiId + '-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                toggle.style.transform = 'rotate(0deg)';
+            } else {
+                // Close other expanded contents
+                document.querySelectorAll('.materi-utama-content.expanded').forEach(expandedContent => {
+                    if (expandedContent !== content) {
+                        expandedContent.classList.remove('expanded');
+                        const otherToggle = expandedContent.previousElementSibling.querySelector('.materi-utama-toggle');
+                        if (otherToggle) {
+                            otherToggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                            otherToggle.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+                
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                toggle.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Fungsi untuk toggle sub materi
+        function toggleSubMateri(subMateriId) {
+            const content = document.getElementById(subMateriId + '-content');
+            const toggle = document.getElementById(subMateriId + '-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                toggle.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                toggle.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Animasi saat halaman dimuat
+        window.addEventListener('load', function() {
+            const levelCards = document.querySelectorAll('.level-card');
+            levelCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease, box-shadow 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 * index);
+            });
+            
+            // Animate materi utama
+            const materiUtama = document.querySelectorAll('.materi-utama');
+            materiUtama.forEach((materi, index) => {
+                materi.style.opacity = '0';
+                materi.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    materi.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    materi.style.opacity = '1';
+                    materi.style.transform = 'translateX(0)';
+                }, 100 * index + 500);
+            });
+        });
+        
+        // Tambahkan keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Collapse semua yang expanded
+                document.querySelectorAll('.expanded').forEach(el => {
+                    el.classList.remove('expanded');
+                });
+                document.querySelectorAll('.materi-utama-toggle, .submateri-toggle').forEach(toggle => {
+                    toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    toggle.style.transform = 'rotate(0deg)';
+                });
+            }
+        });
+        
+        // Highlight UTBK badge interaction
+        document.querySelectorAll('.exam-badge').forEach(badge => {
+            badge.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Materi ini termasuk prioritas UTBK! Fokuskan pembelajaran pada materi dengan badge ini.');
+            });
+        });
+    </script>
+</body>
+</html>
