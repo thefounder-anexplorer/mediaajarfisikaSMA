@@ -118,7 +118,6 @@
             border-left: 5px solid #3498db;
         }
         
-        /* Hierarki Soal */
         .hierarchy-container {
             background: #f8f9fa;
             border-radius: 15px;
@@ -244,14 +243,61 @@
             color: #3498db;
         }
         
+        /* === LEVEL 3 (sub-sub bab) dengan toggle === */
         .submateri-level3 {
             background: #e8f0fe;
             border-radius: 6px;
-            padding: 12px 15px;
             margin: 10px 0 10px 20px;
             border-left: 3px solid #2ecc71;
+            overflow: hidden;
         }
         
+        .submateri-level3-header {
+            padding: 12px 15px;
+            background: #dce6f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .submateri-level3-header:hover {
+            background: #cdd9eb;
+        }
+        
+        .submateri-level3-title {
+            font-weight: 600;
+            color: #1a3a5c;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        
+        .submateri-level3-title i {
+            margin-right: 8px;
+            color: #27ae60;
+        }
+        
+        .submateri-level3-toggle {
+            transition: transform 0.3s;
+        }
+        
+        .submateri-level3-body {
+            padding: 12px 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: #f0f5ff;
+        }
+        
+        .submateri-level3-body.expanded {
+            max-height: 2000px;
+            padding: 12px 15px;
+        }
+        
+        /* === LEVEL 4 (tetap statis) === */
         .submateri-level4 {
             background: #f0f8f0;
             border-radius: 6px;
@@ -536,33 +582,40 @@
                                         </a>
                                     </div>
                                     
-                                    <!-- GJB (Sub-Sub) -->
+                                    <!-- GJB (Sub-Sub) dengan TOGGLE -->
                                     <div class="submateri-level3">
-                                        <div class="submateri-level2-title" style="color: #27ae60; font-size: 0.95rem;">
-                                            <i class="fas fa-caret-right"></i> Gerak Jatuh Bebas (GJB)
+                                        <div class="submateri-level3-header" onclick="toggleLevel3('gjb')">
+                                            <div class="submateri-level3-title">
+                                                <i class="fas fa-arrow-down"></i> Gerak Jatuh Bebas (GJB)
+                                            </div>
+                                            <div class="submateri-level3-toggle" id="gjb-toggle">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
                                         </div>
-                                        <p class="materi-description">
-                                            Kasus khusus GLBB dengan percepatan gravitasi (g = 9,8 m/s²)
-                                        </p>
-                                        <div class="soal-grid">
-                                            <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-1.html" class="soal-item">
-                                                <i class="fas fa-file-alt"></i> Soal GJB #1
-                                                <span class="badge easy">Mudah</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-2.html" class="soal-item">
-                                                <i class="fas fa-file-alt"></i> Soal GJB #2
-                                                <span class="badge medium">Sedang</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-3.html" class="soal-item">
-                                                <i class="fas fa-file-alt"></i> Soal GJB #3
-                                                <span class="badge medium">Sedang</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-4.html" class="soal-item">
-                                                <i class="fas fa-file-alt"></i> Soal GJB #4
-                                                <span class="badge hard">Sulit</span>
-                                            </a>
+                                        <div class="submateri-level3-body" id="gjb-body">
+                                            <p class="materi-description">
+                                                Kasus khusus GLBB dengan percepatan gravitasi (g = 9,8 m/s²)
+                                            </p>
+                                            <div class="soal-grid">
+                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-1.html" class="soal-item">
+                                                    <i class="fas fa-file-alt"></i> Soal GJB #1
+                                                    <span class="badge easy">Mudah</span>
+                                                </a>
+                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-2.html" class="soal-item">
+                                                    <i class="fas fa-file-alt"></i> Soal GJB #2
+                                                    <span class="badge medium">Sedang</span>
+                                                </a>
+                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-3.html" class="soal-item">
+                                                    <i class="fas fa-file-alt"></i> Soal GJB #3
+                                                    <span class="badge medium">Sedang</span>
+                                                </a>
+                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-4.html" class="soal-item">
+                                                    <i class="fas fa-file-alt"></i> Soal GJB #4
+                                                    <span class="badge hard">Sulit</span>
+                                                </a>
+                                            </div>
+                                            <div class="path-info">/soal/kelas10/steady/kinematika/glbb/gjb/</div>
                                         </div>
-                                        <div class="path-info">/soal/kelas10/steady/kinematika/glbb/gjb/</div>
                                     </div>
                                     
                                     <div class="soal-stats">
@@ -605,23 +658,24 @@
                                         Kumpulan soal tentang gerak parabola dengan analisis sumbu x dan y.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="latihan/mekanika/kinematika/soal-gerak-parabola.html" class="soal-item">
+                                        <!-- ✅ Perbaikan path: gunakan absolute path atau relative yang benar -->
+                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/parabola/soal-2.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/parabola/soal-3.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/parabola/soal-4.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #4
                                             <span class="badge hard">Sulit</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/parabola/soal-5.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #5
                                             <span class="badge utbk">UTBK</span>
                                         </a>
@@ -630,7 +684,7 @@
                                         <span><i class="fas fa-file-alt"></i> 5 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±25 menit</span>
                                     </div>
-                                    <div class="path-info">/soal/kelas10/steady/kinematika/parabola/</div>
+                                    <div class="path-info">/latihan/mekanika/kinematika/</div>
                                 </div>
                             </div>
                         </div>
@@ -666,62 +720,69 @@
                                         Kumpulan soal tentang gerak melingkar beraturan dan berubah beraturan.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="soal/kelas10/steady/kinematika/melingkar/soal-1.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-1.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/melingkar/soal-2.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/melingkar/soal-3.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/melingkar/soal-4.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #4
                                             <span class="badge hard">Sulit</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/melingkar/soal-5.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #5
                                             <span class="badge medium">Sedang</span>
                                         </a>
                                     </div>
                                     
-                                    <!-- Soal Grafik (Sub-Sub) -->
+                                    <!-- Soal Grafik (Sub-Sub) dengan TOGGLE -->
                                     <div class="submateri-level3">
-                                        <div class="submateri-level2-title" style="color: #27ae60; font-size: 0.95rem;">
-                                            <i class="fas fa-chart-bar"></i> Soal Analisis Grafik
+                                        <div class="submateri-level3-header" onclick="toggleLevel3('grafik-melingkar')">
+                                            <div class="submateri-level3-title">
+                                                <i class="fas fa-chart-bar"></i> Soal Analisis Grafik
+                                            </div>
+                                            <div class="submateri-level3-toggle" id="grafik-melingkar-toggle">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </div>
                                         </div>
-                                        <p class="materi-description">
-                                            Kumpulan soal tentang analisis grafik gerak melingkar (ω-t, θ-t).
-                                        </p>
-                                        <div class="soal-grid">
-                                            <a href="soal/kelas10/steady/kinematika/melingkar/grafik/soal-1.html" class="soal-item">
-                                                <i class="fas fa-chart-line"></i> Grafik Melingkar #1
-                                                <span class="badge easy">Mudah</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/melingkar/grafik/soal-2.html" class="soal-item">
-                                                <i class="fas fa-chart-line"></i> Grafik Melingkar #2
-                                                <span class="badge medium">Sedang</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/melingkar/grafik/soal-3.html" class="soal-item">
-                                                <i class="fas fa-chart-line"></i> Grafik Melingkar #3
-                                                <span class="badge hard">Sulit</span>
-                                            </a>
-                                            <a href="soal/kelas10/steady/kinematika/melingkar/grafik/soal-4.html" class="soal-item">
-                                                <i class="fas fa-chart-line"></i> Grafik Melingkar #4
-                                                <span class="badge utbk">UTBK</span>
-                                            </a>
+                                        <div class="submateri-level3-body" id="grafik-melingkar-body">
+                                            <p class="materi-description">
+                                                Kumpulan soal tentang analisis grafik gerak melingkar (ω-t, θ-t).
+                                            </p>
+                                            <div class="soal-grid">
+                                                <a href="/latihan/mekanika/kinematika/grafik/soal-1.html" class="soal-item">
+                                                    <i class="fas fa-chart-line"></i> Grafik Melingkar #1
+                                                    <span class="badge easy">Mudah</span>
+                                                </a>
+                                                <a href="/latihan/mekanika/kinematika/grafik/soal-2.html" class="soal-item">
+                                                    <i class="fas fa-chart-line"></i> Grafik Melingkar #2
+                                                    <span class="badge medium">Sedang</span>
+                                                </a>
+                                                <a href="/latihan/mekanika/kinematika/grafik/soal-3.html" class="soal-item">
+                                                    <i class="fas fa-chart-line"></i> Grafik Melingkar #3
+                                                    <span class="badge hard">Sulit</span>
+                                                </a>
+                                                <a href="/latihan/mekanika/kinematika/grafik/soal-4.html" class="soal-item">
+                                                    <i class="fas fa-chart-line"></i> Grafik Melingkar #4
+                                                    <span class="badge utbk">UTBK</span>
+                                                </a>
+                                            </div>
+                                            <div class="path-info">/latihan/mekanika/kinematika/grafik/</div>
                                         </div>
-                                        <div class="path-info">/soal/kelas10/steady/kinematika/melingkar/grafik/</div>
                                     </div>
                                     
                                     <div class="soal-stats">
                                         <span><i class="fas fa-file-alt"></i> 9 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±35 menit</span>
                                     </div>
-                                    <div class="path-info">/soal/kelas10/steady/kinematika/melingkar/</div>
+                                    <div class="path-info">/latihan/mekanika/kinematika/</div>
                                 </div>
                             </div>
                         </div>
@@ -757,23 +818,23 @@
                                         Kumpulan soal UTBK tentang kinematika dari berbagai tahun. Dilengkapi dengan pembahasan lengkap.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="soal/kelas10/utbk/kinematika/paket-1.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/utbk/paket-1.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #1
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="soal/kelas10/utbk/kinematika/paket-2.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/utbk/paket-2.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #2
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="soal/kelas10/utbk/kinematika/paket-3.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/utbk/paket-3.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #3
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="soal/kelas10/utbk/kinematika/paket-4.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/utbk/paket-4.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #4
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="soal/kelas10/utbk/kinematika/pembahasan.html" class="soal-item">
+                                        <a href="/latihan/mekanika/kinematika/utbk/pembahasan.html" class="soal-item">
                                             <i class="fas fa-video"></i> Pembahasan UTBK
                                             <span class="badge paket">Free</span>
                                         </a>
@@ -782,7 +843,7 @@
                                         <span><i class="fas fa-file-alt"></i> 4 Paket</span>
                                         <span><i class="fas fa-clock"></i> ±60 menit</span>
                                     </div>
-                                    <div class="path-info">/soal/kelas10/utbk/kinematika/</div>
+                                    <div class="path-info">/latihan/mekanika/kinematika/utbk/</div>
                                 </div>
                             </div>
                         </div>
@@ -798,7 +859,7 @@
     </div>
 
     <script>
-        // Fungsi toggle materi utama
+        // ===== TOGGLE MATERI UTAMA =====
         function toggleMateri(materiId) {
             const content = document.getElementById(materiId + '-content');
             const toggle = document.getElementById(materiId + '-toggle');
@@ -812,7 +873,7 @@
             }
         }
         
-        // Fungsi toggle sub materi
+        // ===== TOGGLE SUB MATERI (LEVEL 1) =====
         function toggleSubMateri(subMateriId) {
             const content = document.getElementById(subMateriId + '-content');
             const toggle = document.getElementById(subMateriId + '-toggle');
@@ -826,7 +887,21 @@
             }
         }
         
-        // Auto expand materi pertama
+        // ===== TOGGLE LEVEL 3 (sub-sub bab) =====
+        function toggleLevel3(level3Id) {
+            const body = document.getElementById(level3Id + '-body');
+            const toggle = document.getElementById(level3Id + '-toggle');
+            
+            if (body.classList.contains('expanded')) {
+                body.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                body.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            }
+        }
+        
+        // ===== AUTO EXPAND MATERI PERTAMA =====
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 toggleMateri('gerak-lurus');
