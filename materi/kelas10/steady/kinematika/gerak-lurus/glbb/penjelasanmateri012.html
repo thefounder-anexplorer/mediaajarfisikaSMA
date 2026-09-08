@@ -224,7 +224,28 @@
 
     .velocity-vector.is-zero {
       opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) scaleY(0) !important;
       pointer-events: none;
+    }
+
+    .up-ball.is-zero-velocity::after {
+      content: "v = 0 m/s";
+      position: absolute;
+      left: 50%;
+      top: -2.7rem;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: var(--yellow);
+      color: var(--ink);
+      padding: .32rem .62rem;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      box-shadow: 3px 3px 0 rgba(16,36,59,.18);
+      z-index: 4;
     }
 
     .velocity-vector::after {
@@ -297,13 +318,11 @@
     <div class="mx-auto max-w-6xl">
      <div class="flex flex-col gap-4 border-b-2 border-slate-800 pb-4 lg:flex-row lg:items-center lg:justify-between">
       <div class="flex items-center gap-3">
-       <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white">
-        <i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
+       <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white"><i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
        </div>
        <p data-template-id="brand-label" class="canva-text m-0 text-sm font-bold uppercase tracking-[.16em]"></p>
       </div>
-      <nav aria-label="Navigasi modul" class="flex flex-wrap items-center gap-1">
-       <button id="nav-home" type="button" class="nav-button is-active"><span data-template-id="nav-home-text" class="canva-text"></span></button> <button id="nav-up" type="button" class="nav-button"><span data-template-id="nav-up-text" class="canva-text"></span></button> <button id="nav-down" type="button" class="nav-button"><span data-template-id="nav-down-text" class="canva-text"></span></button>
+      <nav aria-label="Navigasi modul" class="flex flex-wrap items-center gap-1"><button id="nav-home" type="button" class="nav-button is-active"><span data-template-id="nav-home-text" class="canva-text"></span></button> <button id="nav-up" type="button" class="nav-button"><span data-template-id="nav-up-text" class="canva-text"></span></button> <button id="nav-down" type="button" class="nav-button"><span data-template-id="nav-down-text" class="canva-text"></span></button>
       </nav>
      </div>
     </div>
@@ -313,14 +332,12 @@
      <section id="home-view" class="app-view is-active" aria-labelledby="home-title">
       <div class="grid grid-cols-1 items-center gap-10 pb-14 md:grid-cols-2">
        <div>
-        <div data-template-id="topic-tag" class="canva-tag inline-flex items-center gap-2 rounded-full px-4 py-2">
-         <i data-lucide="arrow-up-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="topic-tag-text" class="canva-text"></span>
+        <div data-template-id="topic-tag" class="canva-tag inline-flex items-center gap-2 rounded-full px-4 py-2"><i data-lucide="arrow-up-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="topic-tag-text" class="canva-text"></span>
         </div>
         <h1 id="home-title" data-template-id="page-title" class="canva-text display-font mt-5 max-w-xl leading-[1.04]"></h1>
         <p data-template-id="hero-description" class="canva-text mt-5 max-w-xl leading-7"></p><button id="hero-down-button" data-template-id="hero-down-button" type="button" class="canva-button control-button mt-7 inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold"> <i data-lucide="move-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="hero-down-button-text" class="canva-text"></span> </button>
        </div>
-       <div class="hero-photo-wrap">
-        <img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 h-full w-full object-cover">
+       <div class="hero-photo-wrap"><img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 h-full w-full object-cover">
         <div class="absolute bottom-5 left-5 z-10 max-w-[245px] rounded-2xl bg-[#10243b] p-4 text-white shadow-lg">
          <p data-template-id="hero-image-caption" class="canva-text m-0 text-sm leading-5"></p>
         </div>
@@ -335,15 +352,13 @@
        </div>
        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <article data-template-id="home-card-up" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff3f6]">
-          <i data-lucide="arrow-up" aria-hidden="true" class="h-5 w-5"></i>
+         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff3f6]"><i data-lucide="arrow-up" aria-hidden="true" class="h-5 w-5"></i>
          </div>
          <h3 data-template-id="home-card-up-title" class="canva-text mb-2 font-bold"></h3>
          <p data-template-id="home-card-up-text" class="canva-text m-0 leading-6"></p>
         </article>
         <article data-template-id="home-card-down" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f8d9c9]">
-          <i data-lucide="move-down" aria-hidden="true" class="h-5 w-5"></i>
+         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f8d9c9]"><i data-lucide="move-down" aria-hidden="true" class="h-5 w-5"></i>
          </div>
          <h3 data-template-id="home-card-down-title" class="canva-text mb-2 font-bold"></h3>
          <p data-template-id="home-card-down-text" class="canva-text m-0 leading-6"></p>
@@ -398,25 +413,21 @@
         <div class="motion-stage upward" aria-label="Visualisasi bola dilempar vertikal ke atas">
          <div class="height-line"></div><span class="height-label">TINGGI MAKS.</span>
          <div class="launch-platform" aria-hidden="true"></div>
-         <div id="up-ball" class="ball up-ball" aria-hidden="true"><span class="velocity-vector" aria-hidden="true"></span>
+         <div id="up-ball" class="ball up-ball" aria-hidden="true">
+          <span class="velocity-vector" aria-hidden="true"></span>
          </div>
          <div class="ground-line"></div><span class="ground-label">Posisi awal</span>
         </div>
         <aside aria-label="Kontrol simulasi gerak vertikal ke atas" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
-         <div class="mb-6">
-          <label data-template-id="up-speed-label" class="canva-text mb-2 block font-bold" for="up-speed"></label>
-          <div class="flex items-center justify-between gap-3">
-           <input id="up-speed" class="range-input" type="range" min="5" max="50" step="1" value="24"> <output id="up-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">24 m/s</output>
+         <div class="mb-6"><label data-template-id="up-speed-label" class="canva-text mb-2 block font-bold" for="up-speed"></label>
+          <div class="flex items-center justify-between gap-3"><input id="up-speed" class="range-input" type="range" min="5" max="50" step="1" value="24"> <output id="up-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">24 m/s</output>
           </div>
          </div>
-         <div class="mb-6">
-          <label data-template-id="up-gravity-label" class="canva-text mb-2 block font-bold" for="up-gravity"></label>
-          <div class="flex items-center justify-between gap-3">
-           <input id="up-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="up-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+         <div class="mb-6"><label data-template-id="up-gravity-label" class="canva-text mb-2 block font-bold" for="up-gravity"></label>
+          <div class="flex items-center justify-between gap-3"><input id="up-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="up-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
           </div>
          </div>
-         <div class="grid grid-cols-3 gap-2">
-          <button id="up-start" data-template-id="up-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-start-text" class="canva-text"></span></button> <button id="up-pause" data-template-id="up-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-pause-text" class="canva-text"></span></button> <button id="up-reset" data-template-id="up-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-reset-text" class="canva-text"></span></button>
+         <div class="grid grid-cols-3 gap-2"><button id="up-start" data-template-id="up-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-start-text" class="canva-text"></span></button> <button id="up-pause" data-template-id="up-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-pause-text" class="canva-text"></span></button> <button id="up-reset" data-template-id="up-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-reset-text" class="canva-text"></span></button>
          </div>
         </aside>
        </div>
@@ -455,8 +466,7 @@
        </article>
       </div>
       <section data-template-id="freefall-note" class="canva-banner mb-7 rounded-2xl border-2 border-slate-800 p-5 md:p-6">
-       <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
-        <i data-lucide="lightbulb" aria-hidden="true" class="mt-1 h-6 w-6 shrink-0"></i>
+       <div class="flex flex-col gap-3 sm:flex-row sm:items-start"><i data-lucide="lightbulb" aria-hidden="true" class="mt-1 h-6 w-6 shrink-0"></i>
         <div>
          <h2 data-template-id="freefall-note-title" class="canva-text display-font m-0"></h2>
          <p data-template-id="freefall-note-text" class="canva-text mb-0 mt-2 leading-7"></p>
@@ -475,31 +485,25 @@
         <div class="motion-stage" aria-label="Visualisasi bola bergerak vertikal ke bawah">
          <div class="height-line"></div><span class="height-label">KETINGGIAN</span>
          <div class="tower" aria-hidden="true"></div>
-         <div id="down-ball" class="ball down-ball" aria-hidden="true"><span class="velocity-vector is-downward" aria-hidden="true"></span>
+         <div id="down-ball" class="ball down-ball" aria-hidden="true">
+          <span class="velocity-vector is-downward" aria-hidden="true"></span>
          </div>
          <div class="ground-line"></div><span class="ground-label">Tanah</span>
         </div>
         <aside aria-label="Kontrol simulasi gerak vertikal ke bawah" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
-         <div class="mb-5">
-          <label data-template-id="down-height-label" class="canva-text mb-2 block font-bold" for="down-height"></label>
-          <div class="flex items-center justify-between gap-3">
-           <input id="down-height" class="range-input" type="range" min="5" max="100" step="1" value="45"> <output id="down-height-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">45 m</output>
+         <div class="mb-5"><label data-template-id="down-height-label" class="canva-text mb-2 block font-bold" for="down-height"></label>
+          <div class="flex items-center justify-between gap-3"><input id="down-height" class="range-input" type="range" min="5" max="100" step="1" value="45"> <output id="down-height-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">45 m</output>
           </div>
          </div>
-         <div class="mb-5">
-          <label data-template-id="down-speed-label" class="canva-text mb-2 block font-bold" for="down-speed"></label>
-          <div class="flex items-center justify-between gap-3">
-           <input id="down-speed" class="range-input" type="range" min="0" max="35" step="1" value="10"> <output id="down-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">10 m/s</output>
+         <div class="mb-5"><label data-template-id="down-speed-label" class="canva-text mb-2 block font-bold" for="down-speed"></label>
+          <div class="flex items-center justify-between gap-3"><input id="down-speed" class="range-input" type="range" min="0" max="35" step="1" value="10"> <output id="down-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">10 m/s</output>
           </div>
          </div>
-         <div class="mb-6">
-          <label data-template-id="down-gravity-label" class="canva-text mb-2 block font-bold" for="down-gravity"></label>
-          <div class="flex items-center justify-between gap-3">
-           <input id="down-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="down-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+         <div class="mb-6"><label data-template-id="down-gravity-label" class="canva-text mb-2 block font-bold" for="down-gravity"></label>
+          <div class="flex items-center justify-between gap-3"><input id="down-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="down-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
           </div>
          </div>
-         <div class="grid grid-cols-3 gap-2">
-          <button id="down-start" data-template-id="down-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-start-text" class="canva-text"></span></button> <button id="down-pause" data-template-id="down-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-pause-text" class="canva-text"></span></button> <button id="down-reset" data-template-id="down-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-reset-text" class="canva-text"></span></button>
+         <div class="grid grid-cols-3 gap-2"><button id="down-start" data-template-id="down-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-start-text" class="canva-text"></span></button> <button id="down-pause" data-template-id="down-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-pause-text" class="canva-text"></span></button> <button id="down-reset" data-template-id="down-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-reset-text" class="canva-text"></span></button>
          </div>
         </aside>
        </div>
@@ -591,9 +595,11 @@
           ball.style.transform = options.transform(state);
           const speedMagnitude = Math.abs(state.speed);
           vector.classList.toggle("is-downward", options.downward || state.speed < 0);
-          // Gunakan ambang kecil agar vektor benar-benar hilang saat mendekati titik puncak.
-          vector.classList.toggle("is-zero", speedMagnitude <= 0.05);
-          vector.style.transform = "translateX(-50%) scaleY(" + Math.min(.95, Math.max(.18, speedMagnitude / 20)) + ")";
+          // Sembunyikan vektor sebelum frame melewati titik saat kecepatan nol.
+          const isZeroVelocity = speedMagnitude <= 0.35;
+          vector.classList.toggle("is-zero", isZeroVelocity);
+          ball.classList.toggle("is-zero-velocity", !options.downward && isZeroVelocity);
+          vector.style.transform = "translateX(-50%) scaleY(" + (isZeroVelocity ? 0 : Math.min(.95, Math.max(.18, speedMagnitude / 20))) + ")";
         }
 
         function reset() {
