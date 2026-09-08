@@ -54,11 +54,11 @@
     <div class="hero-content max-w-7xl mx-auto px-5 pt-6 md:px-10 md:pt-8">
       <div class="flex flex-wrap items-center justify-between gap-5 pb-5">
         <div class="flex items-center gap-3">
-          <!-- Tombol Home di paling atas -->
-          <button id="nav-home-top" class="inline-flex items-center gap-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/40 px-4 py-2 text-white font-bold transition" type="button" data-page="home">
+          <!-- Tombol Home sebagai link ke portal fisika -->
+          <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/40 px-4 py-2 text-white font-bold transition no-underline">
             <i data-lucide="home" width="20" height="20"></i>
             <span>Home</span>
-          </button>
+          </a>
           <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-300 text-slate-900"><i data-lucide="orbit" width="22" height="22"></i></span>
           <div>
             <p class="text-xs uppercase tracking-[.17em] font-bold text-amber-200/80">Fisika Seru</p>
@@ -111,16 +111,16 @@
             <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="move-right" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Horizontal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu. Perhatikan menit pertama video di bawah ini yang menunjukkan bahwa kecepatan arah horizontal konstan</p>
-              <button onclick="window.open('https://drive.google.com/file/d/1GMR7BzFnKBd65mb5Wdb-KdHuKMtXHXQt/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
+              <button onclick="window.open('https://drive.google.com/file/d/1lZ1sL4gACFjYe6RnITCksZOteGm90UYm/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
             <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-rose-100 text-rose-700"><i data-lucide="move-up" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Vertikal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0. Perhatikan video di bawah ini yang menunjukkan bahwa kecepatan arah vertikal itu termasuk ke dalam GLBB meskipun benda mempunyai lintasan parabola, untuk komponen arah vertikal gerakannya termasuk ke dalam kategori GLBB.</p>
-              <button onclick="window.open('https://drive.google.com/file/d/1lZ1sL4gACFjYe6RnITCksZOteGm90UYm/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
+              <button onclick="window.open('https://drive.google.com/file/u/1/d/1GMR7BzFnKBd65mb5Wdb-KdHuKMtXHXQt/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
@@ -279,12 +279,14 @@
       if (pageName === "simulation") draw(pausedElapsed);
     }
 
-    // Semua tombol navigasi termasuk tombol Home di atas
-    document.querySelectorAll("[data-page]").forEach(btn => {
+    // Navigasi untuk menu Beranda, Simulasi, Kuis
+    document.querySelectorAll(".nav-tab").forEach(btn => {
       btn.addEventListener("click", function(e) {
         const page = this.dataset.page;
-        e.preventDefault();
-        showPage(page);
+        if (page) {
+          e.preventDefault();
+          showPage(page);
+        }
       });
     });
 
