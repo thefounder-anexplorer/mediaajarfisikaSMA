@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portal Fisika - Pilih Kelas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        /* ===== RESET & ROOT ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         :root {
             --primary: #2c3e50;
             --secondary: #3498db;
@@ -17,13 +25,6 @@
             --gradient-1: linear-gradient(135deg, #3498db, #2c3e50);
             --gradient-2: linear-gradient(135deg, #1abc9c, #16a085);
             --gradient-3: linear-gradient(135deg, #9b59b6, #8e44ad);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -43,7 +44,7 @@
             padding: 50px 30px;
             margin-bottom: 40px;
             background: var(--gradient-1);
-            color: white;
+            color: #fff;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
             text-align: center;
@@ -84,7 +85,7 @@
             max-width: 900px;
             margin: 0 auto 40px;
             padding: 25px 30px;
-            background: white;
+            background: #fff;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             border-left: 5px solid var(--accent);
@@ -112,7 +113,7 @@
         }
 
         .kelas-card {
-            background: white;
+            background: #fff;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
@@ -131,9 +132,15 @@
             height: 5px;
         }
 
-        .kelas-card:nth-child(1)::before { background: linear-gradient(to right, #3498db, #2980b9); }
-        .kelas-card:nth-child(2)::before { background: linear-gradient(to right, #9b59b6, #8e44ad); }
-        .kelas-card:nth-child(3)::before { background: linear-gradient(to right, #1abc9c, #16a085); }
+        .kelas-card:nth-child(1)::before {
+            background: linear-gradient(to right, #3498db, #2980b9);
+        }
+        .kelas-card:nth-child(2)::before {
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+        }
+        .kelas-card:nth-child(3)::before {
+            background: linear-gradient(to right, #1abc9c, #16a085);
+        }
 
         .kelas-card:hover {
             transform: translateY(-5px);
@@ -151,10 +158,15 @@
             font-size: 3rem;
             margin-right: 15px;
         }
-
-        .kelas-card:nth-child(1) .kelas-icon { color: #3498db; }
-        .kelas-card:nth-child(2) .kelas-icon { color: #9b59b6; }
-        .kelas-card:nth-child(3) .kelas-icon { color: #1abc9c; }
+        .kelas-card:nth-child(1) .kelas-icon {
+            color: #3498db;
+        }
+        .kelas-card:nth-child(2) .kelas-icon {
+            color: #9b59b6;
+        }
+        .kelas-card:nth-child(3) .kelas-icon {
+            color: #1abc9c;
+        }
 
         .kelas-title {
             font-size: 2rem;
@@ -186,6 +198,7 @@
             font-size: 0.95rem;
             border: none;
             cursor: pointer;
+            color: #fff;
         }
 
         .level-btn:hover {
@@ -195,12 +208,10 @@
 
         .level-btn.steady {
             background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
         }
 
         .level-btn.fast {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
         }
 
         .level-btn i {
@@ -216,7 +227,7 @@
             margin-top: 2px;
         }
 
-        /* ===== TOGGLE MENU LATIHAN & QUIZ ===== */
+        /* ===== TOGGLE ===== */
         .toggle-section {
             margin-top: 5px;
             border-top: 1px solid #eee;
@@ -265,7 +276,7 @@
             padding: 15px 0 5px 0;
         }
 
-        /* ===== MENU LATIHAN & QUIZ ===== */
+        /* ===== MENU ITEMS ===== */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -283,7 +294,7 @@
             font-size: 0.9rem;
             transition: all 0.3s;
             border: 1px solid #e9ecef;
-            background: white;
+            background: #fff;
             color: #2c3e50;
         }
 
@@ -307,26 +318,61 @@
             margin-left: auto;
         }
 
-        .badge.latihan { background: #3498db; color: white; }
-        .badge.quiz { background: #f39c12; color: white; }
-        .badge.utbk { background: #e74c3c; color: white; }
-        .badge.free { background: #2ecc71; color: white; }
+        .badge.latihan {
+            background: #3498db;
+            color: #fff;
+        }
+        .badge.quiz {
+            background: #f39c12;
+            color: #fff;
+        }
+        .badge.utbk {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .badge.free {
+            background: #2ecc71;
+            color: #fff;
+        }
 
-        /* Warna icon per item */
-        .menu-item .fa-car { color: #3498db; }
-        .menu-item .fa-weight-hanging { color: #9b59b6; }
-        .menu-item .fa-bolt { color: #f39c12; }
-        .menu-item .fa-tint { color: #1abc9c; }
-        .menu-item .fa-fire { color: #e67e22; }
-        .menu-item .fa-wave-square { color: #2ecc71; }
-        .menu-item .fa-magnet { color: #e74c3c; }
-        .menu-item .fa-atom { color: #8e44ad; }
-        .menu-item .fa-satellite { color: #2980b9; }
-        .menu-item .fa-graduation-cap { color: #e74c3c; }
-        .menu-item .fa-pencil-alt { color: #f39c12; }
-        .menu-item .fa-question-circle { color: #3498db; }
+        /* Warna icon */
+        .menu-item .fa-car {
+            color: #3498db;
+        }
+        .menu-item .fa-weight-hanging {
+            color: #9b59b6;
+        }
+        .menu-item .fa-bolt {
+            color: #f39c12;
+        }
+        .menu-item .fa-tint {
+            color: #1abc9c;
+        }
+        .menu-item .fa-fire {
+            color: #e67e22;
+        }
+        .menu-item .fa-wave-square {
+            color: #2ecc71;
+        }
+        .menu-item .fa-magnet {
+            color: #e74c3c;
+        }
+        .menu-item .fa-atom {
+            color: #8e44ad;
+        }
+        .menu-item .fa-satellite {
+            color: #2980b9;
+        }
+        .menu-item .fa-graduation-cap {
+            color: #e74c3c;
+        }
+        .menu-item .fa-pencil-alt {
+            color: #f39c12;
+        }
+        .menu-item .fa-question-circle {
+            color: #3498db;
+        }
 
-        /* ===== QUIZ KHUSUS SECTION ===== */
         .quiz-divider {
             display: flex;
             align-items: center;
@@ -354,7 +400,7 @@
             margin-top: 50px;
             padding: 30px;
             background: var(--primary);
-            color: white;
+            color: #fff;
             border-radius: 15px;
             text-align: center;
         }
@@ -375,35 +421,27 @@
             h1 {
                 font-size: 2.5rem;
             }
-
             .subtitle {
                 font-size: 1.1rem;
             }
-
             .kelas-container {
                 grid-template-columns: 1fr;
             }
-
             .kelas-card {
                 padding: 25px 20px;
             }
-
             .level-buttons {
                 grid-template-columns: 1fr 1fr;
             }
-
             .menu-grid {
                 grid-template-columns: 1fr 1fr;
             }
-
             header {
                 padding: 30px 20px;
             }
-
             .intro {
                 padding: 20px;
             }
-
             .intro h2 {
                 font-size: 1.4rem;
             }
@@ -413,7 +451,6 @@
             .menu-grid {
                 grid-template-columns: 1fr;
             }
-
             .level-buttons {
                 grid-template-columns: 1fr;
             }
@@ -422,7 +459,6 @@
 </head>
 <body>
     <div class="container">
-
         <!-- ===== HEADER ===== -->
         <header>
             <h1><i class="fas fa-atom"></i> PORTAL FISIKA</h1>
@@ -438,10 +474,8 @@
             </p>
         </div>
 
-        <!-- ===== KELAS CONTAINER ===== -->
+        <!-- ===== KELAS 10 ===== -->
         <div class="kelas-container">
-
-            <!-- ======== KELAS 10 ======== -->
             <div class="kelas-card">
                 <div class="kelas-header">
                     <div class="kelas-icon"><i class="fas fa-graduation-cap"></i></div>
@@ -464,7 +498,6 @@
                     </a>
                 </div>
 
-                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 10 ===== -->
                 <div class="toggle-section">
                     <button class="toggle-btn" onclick="toggleMenu('kelas10-menu')">
                         <i class="fas fa-chevron-down"></i>
@@ -510,7 +543,7 @@
                 </div>
             </div>
 
-            <!-- ======== KELAS 11 ======== -->
+            <!-- ===== KELAS 11 ===== -->
             <div class="kelas-card">
                 <div class="kelas-header">
                     <div class="kelas-icon"><i class="fas fa-book-open"></i></div>
@@ -533,7 +566,6 @@
                     </a>
                 </div>
 
-                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 11 ===== -->
                 <div class="toggle-section">
                     <button class="toggle-btn" onclick="toggleMenu('kelas11-menu')">
                         <i class="fas fa-chevron-down"></i>
@@ -579,7 +611,7 @@
                 </div>
             </div>
 
-            <!-- ======== KELAS 12 ======== -->
+            <!-- ===== KELAS 12 ===== -->
             <div class="kelas-card">
                 <div class="kelas-header">
                     <div class="kelas-icon"><i class="fas fa-rocket"></i></div>
@@ -602,7 +634,6 @@
                     </a>
                 </div>
 
-                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 12 ===== -->
                 <div class="toggle-section">
                     <button class="toggle-btn" onclick="toggleMenu('kelas12-menu')">
                         <i class="fas fa-chevron-down"></i>
@@ -645,8 +676,7 @@
                             </a>
                         </div>
 
-                        <!-- UTBK Try Out -->
-                        <div class="quiz-divider" style="margin-top: 15px;"><span>🎓 TRY OUT UTBK</span></div>
+                        <div class="quiz-divider" style="margin-top:15px;"><span>🎓 TRY OUT UTBK</span></div>
 
                         <div class="menu-grid">
                             <a href="utbk/tryout-1.html" class="menu-item">
@@ -669,22 +699,18 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- ===== FOOTER ===== -->
         <footer>
-            <div class="footer-logo">
-                <i class="fas fa-atom"></i>
-            </div>
+            <div class="footer-logo"><i class="fas fa-atom"></i></div>
             <h3>Portal Media Pembelajaran Fisika SMA</h3>
             <p class="footer-text">© 2023 - Belajar fisika dengan materi lengkap, latihan soal, dan quiz interaktif</p>
         </footer>
-
     </div>
 
     <script>
-        // ===== FUNGSI TOGGLE MENU =====
+        // ===== TOGGLE MENU =====
         function toggleMenu(menuId) {
             const content = document.getElementById(menuId);
             const btn = content.previousElementSibling;
@@ -694,7 +720,7 @@
                 btn.classList.remove('active');
                 btn.querySelector('i').style.transform = 'rotate(0deg)';
             } else {
-                // Tutup menu lain yang terbuka
+                // Tutup yang lain
                 document.querySelectorAll('.toggle-content.open').forEach(openContent => {
                     if (openContent.id !== menuId) {
                         openContent.classList.remove('open');
@@ -710,9 +736,8 @@
             }
         }
 
-        // ===== ANIMASI SAAT LOAD =====
+        // ===== ANIMASI LOAD =====
         window.addEventListener('load', function() {
-            // Animasi header
             const header = document.querySelector('header');
             header.style.opacity = '0';
             header.style.transform = 'translateY(-20px)';
@@ -722,7 +747,6 @@
                 header.style.transform = 'translateY(0)';
             }, 200);
 
-            // Animasi kelas cards
             const cards = document.querySelectorAll('.kelas-card');
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
@@ -731,10 +755,9 @@
                     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 300 + (150 * index));
+                }, 300 + 150 * index);
             });
 
-            // Animasi intro
             const intro = document.querySelector('.intro');
             intro.style.opacity = '0';
             setTimeout(() => {
@@ -743,19 +766,19 @@
             }, 100);
         });
 
-        // ===== KEYBOARD SHORTCUT: ESC untuk tutup semua =====
+        // ===== ESC TUTUP SEMUA =====
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.toggle-content.open').forEach(content => {
                     content.classList.remove('open');
                     const btn = content.previousElementSibling;
                     btn.classList.remove('active');
-                    btn.querySelector('i').style.transform = 'rotate(0deg)');
+                    btn.querySelector('i').style.transform = 'rotate(0deg)';
                 });
             }
         });
 
-        // ===== CLICK OUTSIDE untuk tutup menu =====
+        // ===== KLIK DI LUAR TUTUP =====
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.toggle-section')) {
                 document.querySelectorAll('.toggle-content.open').forEach(content => {
