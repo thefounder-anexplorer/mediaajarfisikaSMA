@@ -88,25 +88,34 @@
           </div>
         </div>
 
-        <!-- 3 konsep -->
+        <!-- 3 konsep dengan tombol video -->
         <section class="mt-10" aria-labelledby="learn-title">
           <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Konsep inti</p>
           <h2 id="learn-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Apa yang akan kamu pelajari?</h2>
           <div class="grid md:grid-cols-3 gap-5 mt-5">
-            <article class="rounded-2xl p-6 shadow-sm bg-white">
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-amber-100 text-amber-700"><i data-lucide="rocket" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Lintasan Parabola</h3>
-              <p class="mt-3 leading-relaxed text-slate-600">Gerak bola atau peluru membentuk kurva parabola karena kombinasi kecepatan horizontal dan vertikal.</p>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Gerak bola atau peluru membentuk kurva parabola karena kombinasi kecepatan horizontal dan vertikal.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=QwB5n-8D7Vg','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:text-amber-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
             </article>
-            <article class="rounded-2xl p-6 shadow-sm bg-white">
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="move-right" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Horizontal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=8T5uYcP1U2E','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
             </article>
-            <article class="rounded-2xl p-6 shadow-sm bg-white">
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-rose-100 text-rose-700"><i data-lucide="move-up" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Vertikal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=3H5g4H5P4xM','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
             </article>
           </div>
         </section>
@@ -209,74 +218,29 @@
       </div>
     </section>
 
-    <!-- QUIZ -->
+    <!-- QUIZ (10 soal, 5 pilihan) -->
     <section id="quiz-page" class="page-view" aria-labelledby="quiz-title">
-      <div class="max-w-3xl mx-auto px-5 py-8 md:px-10 md:py-12">
+      <div class="max-w-4xl mx-auto px-5 py-8 md:px-10 md:py-12">
         <div class="text-center">
           <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Uji pemahaman</p>
           <h2 id="quiz-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Kuis Gerak Parabola</h2>
-          <p class="mt-3 leading-relaxed text-slate-600">Jawab 3 pertanyaan berikut. Pilih satu jawaban yang paling benar.</p>
+          <p class="mt-3 leading-relaxed text-slate-600">Jawab 10 pertanyaan berikut. Pilih satu jawaban yang paling benar.</p>
         </div>
 
         <div class="mt-8 h-3 rounded-full overflow-hidden bg-slate-200">
-          <div id="quiz-progress-bar" class="h-full rounded-full bg-amber-400 transition-all duration-300" style="width:33%"></div>
+          <div id="quiz-progress-bar" class="h-full rounded-full bg-amber-400 transition-all duration-300" style="width:10%"></div>
         </div>
-        <p id="quiz-progress-text" class="mt-3 text-center text-sm font-semibold text-slate-600">Pertanyaan 1 dari 3</p>
+        <p id="quiz-progress-text" class="mt-3 text-center text-sm font-semibold text-slate-600">Pertanyaan 1 dari 10</p>
 
-        <!-- Q1 -->
-        <article id="question-1" class="quiz-question active mt-6" data-question="1">
-          <div class="rounded-2xl p-6 md:p-8 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
-            <p class="text-xs font-bold uppercase tracking-[.14em] text-amber-600">Pertanyaan 1</p>
-            <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?</h3>
-            <div class="mt-6 space-y-3">
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Bertambah karena gravitasi</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="true"><span>Tetap konstan</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Berkurang hingga nol</span></button>
-            </div>
-            <p class="quiz-feedback correct hidden-state mt-5 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar! Vx tetap karena tidak ada percepatan horizontal.</p>
-            <p class="quiz-feedback wrong hidden-state mt-5 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Kurang tepat. Vx konstan, gravitasi hanya memengaruhi gerak vertikal.</p>
-            <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button"><span>Lanjut →</span></button>
-          </div>
-        </article>
-
-        <!-- Q2 -->
-        <article id="question-2" class="quiz-question mt-6" data-question="2">
-          <div class="rounded-2xl p-6 md:p-8 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
-            <p class="text-xs font-bold uppercase tracking-[.14em] text-amber-600">Pertanyaan 2</p>
-            <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …</h3>
-            <div class="mt-6 space-y-3">
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Maksimum</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Sama dengan Vx</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="true"><span>Nol</span></button>
-            </div>
-            <p class="quiz-feedback correct hidden-state mt-5 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar! Di puncak, Vy = 0, benda berhenti sesaat secara vertikal.</p>
-            <p class="quiz-feedback wrong hidden-state mt-5 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Coba lagi. Pada titik tertinggi, kecepatan vertikal adalah nol.</p>
-            <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button"><span>Lanjut →</span></button>
-          </div>
-        </article>
-
-        <!-- Q3 -->
-        <article id="question-3" class="quiz-question mt-6" data-question="3">
-          <div class="rounded-2xl p-6 md:p-8 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
-            <p class="text-xs font-bold uppercase tracking-[.14em] text-amber-600">Pertanyaan 3</p>
-            <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …</h3>
-            <div class="mt-6 space-y-3">
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="true"><span>Mungkin sama (karena sin 60° = sin 120° ?)</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Pasti lebih besar</span></button>
-              <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="false"><span>Pasti lebih kecil</span></button>
-            </div>
-            <p class="quiz-feedback correct hidden-state mt-5 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Tepat! Jangkauan R = V₀² sin 2θ / g. sin 60° = sin 120°, jadi R sama untuk 30° dan 60°.</p>
-            <p class="quiz-feedback wrong hidden-state mt-5 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Perhatikan rumus: R ∝ sin 2θ. sin 60° = sin 120°, jadi jangkauan sama.</p>
-            <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button"><span>Lihat hasil</span></button>
-          </div>
-        </article>
+        <!-- soal akan di-generate oleh JS -->
+        <div id="quiz-container"></div>
 
         <!-- Summary -->
         <section id="quiz-summary" class="hidden-state mt-6">
           <div class="rounded-2xl p-8 text-center shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
             <i data-lucide="award" class="mx-auto text-amber-500" width="46" height="46"></i>
             <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Kuis selesai!</h3>
-            <p id="score-result" class="metric-value mt-3 text-5xl font-bold text-slate-900">0 / 3</p>
+            <p id="score-result" class="metric-value mt-3 text-5xl font-bold text-slate-900">0 / 10</p>
             <p class="mt-3 text-slate-600">Bagus, terus belajar dan eksplorasi simulasi!</p>
             <button id="restart-quiz" class="mt-6 rounded-xl px-5 py-3 font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition" type="button"><span>↻ Ulangi Kuis</span></button>
           </div>
@@ -312,7 +276,7 @@
     document.getElementById("go-simulation").addEventListener("click", () => showPage("simulation"));
     document.getElementById("go-quiz").addEventListener("click", () => showPage("quiz"));
 
-    // ----- SIMULATION -----
+    // ----- SIMULATION (sama seperti sebelumnya) -----
     const canvas = document.getElementById("simulation-canvas");
     const ctx = canvas.getContext("2d");
     const speedInput = document.getElementById("speed-input");
@@ -357,7 +321,6 @@
       const p = params(), t = Math.min(Math.max(elapsed, 0), p.flightTime);
       const origin = chartPoint(0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // grid
       ctx.strokeStyle="rgba(16,35,62,.13)"; ctx.lineWidth=1;
       for(let x=origin.pad.left; x<=canvas.width-origin.pad.right; x+=65){ ctx.beginPath(); ctx.moveTo(x,origin.pad.top); ctx.lineTo(x,canvas.height-origin.pad.bottom); ctx.stroke(); }
       for(let y=origin.pad.top; y<=canvas.height-origin.pad.bottom; y+=50){ ctx.beginPath(); ctx.moveTo(origin.pad.left,y); ctx.lineTo(canvas.width-origin.pad.right,y); ctx.stroke(); }
@@ -380,7 +343,6 @@
       const pos = chartPoint(t);
       ctx.beginPath(); ctx.arc(pos.x, pos.y, 11, 0, Math.PI*2); ctx.fillStyle="#e45d45"; ctx.fill(); ctx.strokeStyle="#fffdf6"; ctx.lineWidth=4; ctx.stroke();
 
-      // vektor
       const scale = 2.4;
       const verticalVelocity = p.vy - p.gravity * t;
       drawArrow(pos.x, pos.y, pos.x + p.vx * scale, pos.y, "#1677b7", "Vx");
@@ -427,53 +389,98 @@
     lucide.createIcons();
     updateReadout();
 
-    // ----- QUIZ -----
-    let currentQuestion = 1, score = 0;
+    // ----- QUIZ (10 soal, 5 pilihan) -----
+    const quizData = [
+      { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1 },
+      { q: "Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …", options: ["Maksimum", "Sama dengan Vx", "Nol", "Negatif", "Tidak tentu"], correct: 2 },
+      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0 },
+      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²θ / (2g)", "h = V₀² sin 2θ / g", "h = V₀² cos²θ / (2g)", "h = V₀ sin θ / g", "h = V₀² / (2g)"], correct: 0 },
+      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2θ / g", "R = V₀² sin²θ / (2g)", "R = V₀ cos θ · t", "R = V₀² / g", "R = V₀ sin θ · t"], correct: 0 },
+      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin θ / g", "t = V₀ sin θ / g", "t = 2 V₀ cos θ / g", "t = V₀ cos θ / g", "t = V₀ / g"], correct: 0 },
+      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1 },
+      { q: "Gerak parabola merupakan perpaduan dari …", options: ["GLB dan GLBB", "GLBB dan GLBB", "GLB dan GLB", "GLBB dan gerak melingkar", "Gerak harmonik dan GLB"], correct: 0 },
+      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1 },
+      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1 }
+    ];
 
-    function updateQuizProgress() {
-      document.getElementById("quiz-progress-bar").style.width = (currentQuestion / 3 * 100) + "%";
-      document.getElementById("quiz-progress-text").textContent = "Pertanyaan " + currentQuestion + " dari 3";
-    }
+    const totalQuestions = quizData.length;
+    let currentQuestion = 0, score = 0;
+    const container = document.getElementById("quiz-container");
+    const progressBar = document.getElementById("quiz-progress-bar");
+    const progressText = document.getElementById("quiz-progress-text");
+    const summaryDiv = document.getElementById("quiz-summary");
+    const scoreResult = document.getElementById("score-result");
+    const restartBtn = document.getElementById("restart-quiz");
 
-    document.querySelectorAll(".quiz-option").forEach(option => {
-      option.addEventListener("click", function() {
-        const card = this.closest(".quiz-question");
-        if(card.dataset.answered === "true") return;
-        card.dataset.answered = "true";
-        const correct = this.dataset.correct === "true";
-        this.classList.add(correct ? "selected-correct" : "selected-wrong");
-        if(correct) score++;
-        card.querySelector(correct ? ".quiz-feedback.correct" : ".quiz-feedback.wrong").classList.remove("hidden-state");
-        card.querySelector(".next-question").classList.remove("hidden-state");
-        card.querySelectorAll(".quiz-option").forEach(item => item.disabled = true);
+    function renderQuestion(index) {
+      const data = quizData[index];
+      const html = `
+        <article class="quiz-question active mt-6" data-question="${index}" data-answered="false">
+          <div class="rounded-2xl p-6 md:p-8 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
+            <p class="text-xs font-bold uppercase tracking-[.14em] text-amber-600">Pertanyaan ${index+1} dari ${totalQuestions}</p>
+            <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">${data.q}</h3>
+            <div class="mt-6 space-y-3">
+              ${data.options.map((opt, i) => `
+                <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="${i === data.correct}" data-optindex="${i}">
+                  <span>${String.fromCharCode(65 + i)}. ${opt}</span>
+                </button>
+              `).join('')}
+            </div>
+            <p class="quiz-feedback correct hidden-state mt-5 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar!</p>
+            <p class="quiz-feedback wrong hidden-state mt-5 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Jawaban yang benar adalah ${String.fromCharCode(65 + data.correct)}.</p>
+            <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button">
+              <span>${index === totalQuestions-1 ? 'Lihat hasil' : 'Lanjut →'}</span>
+            </button>
+          </div>
+        </article>
+      `;
+      container.innerHTML = html;
+
+      // event listeners untuk opsi
+      document.querySelectorAll(".quiz-option").forEach(btn => {
+        btn.addEventListener("click", function() {
+          const card = this.closest(".quiz-question");
+          if(card.dataset.answered === "true") return;
+          card.dataset.answered = "true";
+          const correct = this.dataset.correct === "true";
+          this.classList.add(correct ? "selected-correct" : "selected-wrong");
+          if(correct) score++;
+          card.querySelector(correct ? ".quiz-feedback.correct" : ".quiz-feedback.wrong").classList.remove("hidden-state");
+          card.querySelector(".next-question").classList.remove("hidden-state");
+          card.querySelectorAll(".quiz-option").forEach(item => item.disabled = true);
+        });
       });
-    });
 
-    document.querySelectorAll(".next-question").forEach(button => {
-      button.addEventListener("click", function() {
-        const active = this.closest(".quiz-question");
-        if(currentQuestion === 3) {
-          active.classList.remove("active");
-          document.getElementById("quiz-summary").classList.remove("hidden-state");
-          document.getElementById("score-result").textContent = score + " / 3";
-          document.getElementById("quiz-progress-text").textContent = "Kuis selesai";
+      // next button
+      document.querySelector(".next-question")?.addEventListener("click", function() {
+        if(currentQuestion === totalQuestions-1) {
+          // selesai
+          document.querySelector(".quiz-question").classList.remove("active");
+          summaryDiv.classList.remove("hidden-state");
+          scoreResult.textContent = score + " / " + totalQuestions;
+          progressText.textContent = "Kuis selesai";
+          progressBar.style.width = "100%";
         } else {
-          active.classList.remove("active"); currentQuestion++; document.getElementById("question-"+currentQuestion).classList.add("active"); updateQuizProgress();
+          currentQuestion++;
+          renderQuestion(currentQuestion);
+          progressBar.style.width = ((currentQuestion+1) / totalQuestions * 100) + "%";
+          progressText.textContent = "Pertanyaan " + (currentQuestion+1) + " dari " + totalQuestions;
         }
       });
-    });
+    }
 
-    document.getElementById("restart-quiz").addEventListener("click", function() {
-      score = 0; currentQuestion = 1;
-      document.getElementById("quiz-summary").classList.add("hidden-state");
-      document.querySelectorAll(".quiz-question").forEach((question, index) => {
-        question.classList.toggle("active", index === 0);
-        question.dataset.answered = "false";
-        question.querySelectorAll(".quiz-option").forEach(item => { item.disabled = false; item.classList.remove("selected-correct","selected-wrong"); });
-        question.querySelectorAll(".quiz-feedback, .next-question").forEach(item => item.classList.add("hidden-state"));
-      });
-      updateQuizProgress();
-    });
+    function resetQuiz() {
+      currentQuestion = 0; score = 0;
+      summaryDiv.classList.add("hidden-state");
+      renderQuestion(0);
+      progressBar.style.width = ((0+1) / totalQuestions * 100) + "%";
+      progressText.textContent = "Pertanyaan 1 dari " + totalQuestions;
+    }
+
+    restartBtn.addEventListener("click", resetQuiz);
+    // inisialisasi
+    resetQuiz();
+
   })();
 </script>
 </body>
