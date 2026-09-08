@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan Gerak Parabola</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --ink: #172033;
+            --paper: #fffdf8;
+            --orange: #ef6c35;
+            --orange-dark: #c84d20;
+            --line: #eadfce;
+            --teal: #20796e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            width: 100%;
+            min-height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            color: var(--ink);
+            background-color: #f3eadb;
+        }
+
+        .app-shell {
+            width: 100%;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(239, 108, 53, .16) 0 110px, transparent 111px),
+                radial-gradient(circle at 95% 88%, rgba(32, 121, 110, .14) 0 160px, transparent 161px),
+                #f3eadb;
+        }
+
+        .quiz-paper {
+            box-shadow: 0 24px 70px rgba(66, 42, 17, .16);
+        }
+
+        .progress-fill {
+            width: 10%;
+            transition: width .45s ease;
+        }
+
+        .slide {
+            display: none;
+            animation: enter .35s ease both;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes enter {
+            from {
+                opacity: 0;
+                transform: translateX(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .answer-option {
+            transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+
+        .answer-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--orange);
+        }
+
+        .answer-option.selected {
+            background: #fff0e8 !important;
+            border-color: var(--orange) !important;
+            box-shadow: 0 6px 0 rgba(239, 108, 53, .15);
+        }
+
+        .answer-option.selected .letter-tag {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+        }
+
+        .choice-letter {
+            transition: all .18s ease;
+        }
+
+        .nav-button:disabled {
+            opacity: .38;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .result-screen {
+            display: none;
+        }
+        .result-screen.active {
+            display: block;
+            animation: enter .4s ease both;
+        }
+
+        .slide:focus {
+            outline: none;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #20796e;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .quiz-paper {
+                border-radius: 24px;
+            }
+            .answer-option {
+                padding: 14px !important;
+            }
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .letter-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #d7c8b5;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: all .18s ease;
+        }
+
+        .question-number {
+            color: var(--orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .essay-textarea {
+            width: 100%;
+            min-height: 140px;
+            border-radius: 16px;
+            border: 2px solid var(--line);
+            padding: 16px 18px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            background: #fcf9f4;
+            resize: vertical;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .essay-textarea:focus {
+            outline: none;
+            border-color: var(--teal);
+            box-shadow: 0 0 0 4px rgba(32, 121, 110, .12);
+        }
+
+        .essay-textarea::placeholder {
+            color: #a89f8e;
+            font-style: italic;
+        }
+
+        .essay-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--ink);
+            font-size: 1.05rem;
+        }
+
+        .essay-container {
+            background: #fcf9f4;
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 2px solid var(--line);
+        }
+
+        .essay-container .letter-tag {
+            background: var(--teal);
+            color: #fff;
+            border-color: var(--teal);
+        }
+
+        .essay-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--teal);
+            background: rgba(32, 121, 110, .10);
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .essay-status .lucide {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-shell">
+
+        <!-- HEADER -->
+        <header class="w-full px-4 pt-7 sm:px-8 sm:pt-10">
+            <div class="mx-auto flex max-w-4xl items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#20796e] text-white shadow-lg shadow-[#20796e]/20" aria-hidden="true">
+                        <i data-lucide="rocket" class="h-5 w-5"></i>
+                    </div>
+                    <div>
+                        <p class="m-0 text-xs font-bold uppercase tracking-[0.18em] text-[#20796e]">Latihan Fisika</p>
+                        <h1 class="m-0 text-xl font-bold leading-tight text-[#172033]">Gerak Parabola</h1>
+                    </div>
+                </div>
+                <div class="rounded-full bg-[#20796e]/10 px-4 py-2 text-sm font-bold text-[#20796e]">
+                    <span id="progress-badge">1 / 5</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+            <section class="quiz-paper mx-auto max-w-4xl overflow-hidden rounded-[32px] border border-[#eadfce]">
+
+                <!-- Progress Bar -->
+                <div class="border-b border-[#eadfce] bg-[#fff9ef] px-6 py-5 sm:px-10">
+                    <div class="mb-3 flex items-center justify-between gap-4">
+                        <p id="progress-label" class="m-0 text-sm font-semibold text-[#5f604f]" aria-live="polite">Soal 1 dari 5</p>
+                        <p id="progress-caption" class="m-0 text-sm font-medium text-[#5f604f]">Pilih satu jawaban</p>
+                    </div>
+                    <div class="h-3 overflow-hidden rounded-full bg-[#eadfce]" aria-hidden="true">
+                        <div id="progress-fill" class="progress-fill h-full rounded-full bg-[#ef6c35]"></div>
+                    </div>
+                </div>
+
+                <!-- Questions -->
+                <div class="bg-[#fffdf8] px-6 py-8 sm:px-10 sm:py-11">
+
+                    <!-- SLIDE 1 -->
+                    <section class="slide active" data-index="0" data-correct="0" tabindex="-1">
+                        <p class="question-number">Soal 1 — Hitungan</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sebuah bola dilempar dengan kecepatan awal 20 m/s dan sudut elevasi 30°. Jika percepatan gravitasi 10 m/s², berapakah tinggi maksimum yang dicapai bola?</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>5 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>10 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>15 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>20 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>25 m</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 2 -->
+                    <section class="slide" data-index="1" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 2 — Hitungan</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sebuah proyektil ditembakkan dengan kecepatan awal 40 m/s pada sudut 45°. Berapakah jarak jangkauan maksimumnya? (g = 10 m/s²)</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>80 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>120 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>160 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>200 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>240 m</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 3 -->
+                    <section class="slide" data-index="2" data-correct="1" tabindex="-1">
+                        <p class="question-number">Soal 3 — Hitungan</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sebuah benda dilempar ke atas dengan kecepatan awal 25 m/s dan sudut elevasi 37° (sin 37° = 0,6). Waktu yang diperlukan untuk mencapai titik tertinggi adalah … (g = 10 m/s²)</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>1,0 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>1,5 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>2,0 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>2,5 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>3,0 s</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 4 -->
+                    <section class="slide" data-index="3" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 4 — Hitungan</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sebuah proyektil ditembakkan dengan kecepatan 50 m/s pada sudut 53° (sin 53° = 0,8). Berapa tinggi maksimum yang dicapai? (g = 10 m/s²)</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>40 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>60 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>80 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>100 m</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>120 m</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 5 — ESSAY -->
+                    <section class="slide" data-index="4" data-correct="-1" tabindex="-1">
+                        <p class="question-number">Soal 5 — Essay</p>
+                        <h2 class="mb-4 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Jelaskan konsep gerak parabola dan turunkan rumus untuk tinggi maksimum yang dicapai oleh sebuah benda yang bergerak parabola!</h2>
+                        <div class="essay-container">
+                            <label for="essay-input" class="essay-label flex items-center gap-3">
+                                <span class="letter-tag">✏️</span>
+                                Tulis jawaban essay Anda di bawah ini
+                            </label>
+                            <textarea id="essay-input" class="essay-textarea" placeholder="Tulis jawaban Anda di sini…"></textarea>
+                            <div id="essay-status" class="essay-status">
+                                <i data-lucide="pencil" class="h-3.5 w-3.5"></i>
+                                <span>Kosong</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- RESULT SCREEN -->
+                    <section id="result-screen" class="result-screen text-center" aria-live="polite">
+                        <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#e5f3ee] text-[#20796e]">
+                            <i data-lucide="award" class="h-8 w-8"></i>
+                        </div>
+                        <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-[#ef6c35]">Latihan Selesai</p>
+                        <h2 class="mb-3 text-2xl font-bold text-[#172033] sm:text-3xl">Hasil Latihan Gerak Parabola</h2>
+                        <p id="score-output" class="mb-3 font-['Fraunces'] text-6xl font-extrabold text-[#20796e]"></p>
+                        <p id="score-message" class="mx-auto max-w-md text-lg leading-relaxed text-[#5f604f]"></p>
+                        <p id="essay-note" class="mt-2 text-sm text-[#a89f8e] italic">* Essay dinilai secara mandiri</p>
+                        <button id="restart-button" type="button" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#ef6c35] px-6 py-3 font-bold text-white shadow-lg shadow-[#ef6c35]/20 transition hover:-translate-y-0.5 hover:bg-[#d85d2a]">
+                            <i data-lucide="rotate-ccw" class="h-4 w-4"></i> Ulangi Latihan
+                        </button>
+                    </section>
+                </div>
+
+                <!-- NAVIGATION -->
+                <div id="navigation" class="flex items-center justify-between border-t border-[#eadfce] bg-[#fff9ef] px-6 py-5 sm:px-10">
+                    <button id="back-button" type="button" class="nav-button inline-flex items-center gap-2 rounded-xl border border-[#d7c8b5] bg-white px-5 py-3 font-bold text-[#172033] transition hover:bg-[#f7eee1] disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i> Kembali
+                    </button>
+                    <button id="next-button" type="button" class="nav-button inline-flex items-center gap-2 rounded-xl bg-[#ef6c35] px-5 py-3 font-bold text-white shadow-lg shadow-[#ef6c35]/20 transition hover:-translate-y-0.5 hover:bg-[#d85d2a] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                        <span id="next-label">Lanjut</span>
+                        <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </button>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="w-full px-4 pb-8 text-center sm:px-8">
+            <p class="m-0 text-sm text-[#5f604f]">Latihan Interaktif — Gerak Parabola</p>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            const slides = [...document.querySelectorAll('.slide')];
+            const answers = Array(slides.length).fill(null);
+            let currentIndex = 0;
+            let quizEnded = false;
+            let essayAnswered = false;
+
+            const progressLabel = document.getElementById('progress-label');
+            const progressBadge = document.getElementById('progress-badge');
+            const progressFill = document.getElementById('progress-fill');
+            const backButton = document.getElementById('back-button');
+            const nextButton = document.getElementById('next-button');
+            const nextLabel = document.getElementById('next-label');
+            const navigation = document.getElementById('navigation');
+            const resultScreen = document.getElementById('result-screen');
+            const progressCaption = document.getElementById('progress-caption');
+            const essayInput = document.getElementById('essay-input');
+            const essayStatus = document.getElementById('essay-status');
+
+            function renderSlide() {
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+
+                const activeSlide = slides[currentIndex];
+                const isEssay = currentIndex === slides.length - 1;
+
+                if (!isEssay) {
+                    const selectedAnswer = answers[currentIndex];
+                    activeSlide.querySelectorAll('.answer-option').forEach((button) => {
+                        const isSelected = Number(button.dataset.answer) === selectedAnswer;
+                        button.classList.toggle('selected', isSelected);
+                        button.setAttribute('aria-pressed', String(isSelected));
+                    });
+                }
+
+                const total = slides.length;
+                const num = currentIndex + 1;
+                progressLabel.textContent = `Soal ${num} dari ${total}`;
+                progressBadge.textContent = `${num} / ${total}`;
+                progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
+                backButton.disabled = currentIndex === 0;
+
+                if (currentIndex === slides.length - 1) {
+                    nextLabel.textContent = 'Selesai';
+                    const hasEssay = essayInput.value.trim().length > 0;
+                    progressCaption.textContent = hasEssay ? 'Essay terisi' : 'Tulis jawaban essay';
+                } else {
+                    const hasAnswer = answers[currentIndex] !== null;
+                    nextLabel.textContent = 'Lanjut';
+                    progressCaption.textContent = hasAnswer ? 'Jawaban tersimpan' : 'Pilih satu jawaban';
+                }
+
+                activeSlide.focus({ preventScroll: true });
+
+                // Update essay status
+                if (isEssay) {
+                    const len = essayInput.value.trim().length;
+                    const statusSpan = essayStatus.querySelector('span');
+                    if (len === 0) {
+                        statusSpan.textContent = 'Kosong';
+                        essayStatus.style.color = '#a89f8e';
+                    } else {
+                        statusSpan.textContent = `Terisi (${len} karakter)`;
+                        essayStatus.style.color = 'var(--teal)';
+                    }
+                }
+            }
+
+            function showResult() {
+                let score = 0;
+                // Only grade MCQs (first 4 slides)
+                for (let i = 0; i < 4; i++) {
+                    if (answers[i] === Number(slides[i].dataset.correct)) {
+                        score += 1;
+                    }
+                }
+
+                // Essay is not auto-graded — just note if filled
+                const essayFilled = essayInput.value.trim().length > 0;
+
+                slides.forEach(slide => slide.classList.remove('active'));
+                navigation.style.display = 'none';
+                progressLabel.textContent = 'Latihan selesai';
+                progressBadge.textContent = '✓';
+                progressFill.style.width = '100%';
+                progressCaption.textContent = 'Lihat skor kamu!';
+                resultScreen.classList.add('active');
+                quizEnded = true;
+
+                document.getElementById('score-output').textContent = `${score} / 4`;
+
+                let msg = '';
+                if (score === 4) msg = '🌟 Sempurna! Kamu menguasai perhitungan gerak parabola dengan sangat baik.';
+                else if (score === 3) msg = '👍 Bagus! Hampir sempurna, periksa kembali langkah hitunganmu.';
+                else if (score === 2) msg = '📖 Cukup baik. Pelajari kembali rumus-rumus dasar gerak parabola.';
+                else if (score === 1) msg = '💪 Jangan menyerah! Ulangi latihan dan pahami konsep hitungannya.';
+                else msg = '📚 Ayo coba lagi! Bacalah materi gerak parabola dengan saksama.';
+
+                if (essayFilled) {
+                    msg += ' ✏️ Essay sudah terisi — jangan lupa evaluasi jawabanmu sendiri.';
+                } else {
+                    msg += ' 📝 Essay belum diisi — coba tulis jawabanmu untuk latihan.';
+                }
+
+                document.getElementById('score-message').textContent = msg;
+                document.getElementById('essay-note').textContent = essayFilled ?
+                    '* Essay telah terisi — nilai mandiri' :
+                    '* Essay kosong — tulis jawaban untuk latihan menulis';
+            }
+
+            // MCQ click listeners
+            for (let i = 0; i < 4; i++) {
+                const slide = slides[i];
+                slide.querySelectorAll('.answer-option').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        if (quizEnded) return;
+                        const val = Number(button.dataset.answer);
+                        answers[i] = val;
+                        renderSlide();
+                    });
+                });
+            }
+
+            // Essay input listener
+            essayInput.addEventListener('input', () => {
+                if (quizEnded) return;
+                const len = essayInput.value.trim().length;
+                const statusSpan = essayStatus.querySelector('span');
+                if (len === 0) {
+                    statusSpan.textContent = 'Kosong';
+                    essayStatus.style.color = '#a89f8e';
+                } else {
+                    statusSpan.textContent = `Terisi (${len} karakter)`;
+                    essayStatus.style.color = 'var(--teal)';
+                }
+                // Mark essay as "answered" for progress caption
+                if (currentIndex === slides.length - 1) {
+                    progressCaption.textContent = len > 0 ? 'Essay terisi' : 'Tulis jawaban essay';
+                }
+            });
+
+            // Navigation
+            backButton.addEventListener('click', () => {
+                if (quizEnded) return;
+                if (currentIndex > 0) {
+                    currentIndex -= 1;
+                    renderSlide();
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (quizEnded) return;
+
+                // If on essay slide, just finish
+                if (currentIndex === slides.length - 1) {
+                    showResult();
+                    return;
+                }
+
+                // Check if MCQ is answered
+                if (answers[currentIndex] === null) {
+                    // Optionally show a gentle nudge
+                    progressCaption.textContent = '⚠️ Pilih satu jawaban terlebih dahulu';
+                    return;
+                }
+
+                if (currentIndex < slides.length - 1) {
+                    currentIndex += 1;
+                    renderSlide();
+                }
+            });
+
+            // Restart
+            document.getElementById('restart-button').addEventListener('click', () => {
+                answers.fill(null);
+                essayInput.value = '';
+                currentIndex = 0;
+                quizEnded = false;
+                resultScreen.classList.remove('active');
+                navigation.style.display = 'flex';
+                renderSlide();
+                // Reset essay status
+                const statusSpan = essayStatus.querySelector('span');
+                statusSpan.textContent = 'Kosong';
+                essayStatus.style.color = '#a89f8e';
+                document.querySelector('.quiz-paper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            // Keyboard
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && !backButton.disabled) {
+                    backButton.click();
+                } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    if (!nextButton.disabled) nextButton.click();
+                }
+            });
+
+            lucide.createIcons();
+            renderSlide();
+        })();
+    </script>
+
+</body>
+</html>
