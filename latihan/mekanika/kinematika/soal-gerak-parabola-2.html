@@ -163,68 +163,78 @@
             margin-bottom: 0.5rem;
         }
 
-        .essay-textarea {
-            width: 100%;
-            min-height: 140px;
-            border-radius: 16px;
-            border: 2px solid var(--line);
-            padding: 16px 18px;
-            font-family: "DM Sans", sans-serif;
-            font-size: 1rem;
-            line-height: 1.6;
-            background: #fcf9f4;
-            resize: vertical;
-            transition: border-color .2s, box-shadow .2s;
-        }
-
-        .essay-textarea:focus {
-            outline: none;
-            border-color: var(--teal);
-            box-shadow: 0 0 0 4px rgba(32, 121, 110, .12);
-        }
-
-        .essay-textarea::placeholder {
-            color: #a89f8e;
-            font-style: italic;
-        }
-
-        .essay-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--ink);
-            font-size: 1.05rem;
-        }
-
-        .essay-container {
-            background: #fcf9f4;
+        .diagram-container {
+            background: #f8f4ec;
             border-radius: 20px;
-            padding: 20px 24px;
+            padding: 16px 20px 12px;
+            margin-bottom: 20px;
             border: 2px solid var(--line);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
         }
 
-        .essay-container .letter-tag {
-            background: var(--teal);
-            color: #fff;
-            border-color: var(--teal);
+        .diagram-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
-        .essay-status {
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--ink);
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .question-text strong {
+            color: var(--teal);
+            font-weight: 700;
+        }
+
+        .home-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            gap: 8px;
+            background: rgba(32, 121, 110, .12);
             color: var(--teal);
-            background: rgba(32, 121, 110, .10);
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin-top: 10px;
+            padding: 8px 18px 8px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: background .2s, transform .2s;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
         }
 
-        .essay-status .lucide {
-            width: 14px;
-            height: 14px;
+        .home-btn:hover {
+            background: rgba(32, 121, 110, .22);
+            transform: translateY(-1px);
+        }
+
+        .home-btn .lucide {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 640px) {
+            .diagram-container {
+                padding: 10px 12px 8px;
+                min-height: 140px;
+            }
+            .diagram-container img {
+                max-height: 200px;
+            }
+            .question-text {
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -234,7 +244,7 @@
 
         <!-- HEADER -->
         <header class="w-full px-4 pt-7 sm:px-8 sm:pt-10">
-            <div class="mx-auto flex max-w-4xl items-center justify-between">
+            <div class="mx-auto flex max-w-4xl items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-3">
                     <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#20796e] text-white shadow-lg shadow-[#20796e]/20" aria-hidden="true">
                         <i data-lucide="rocket" class="h-5 w-5"></i>
@@ -244,8 +254,15 @@
                         <h1 class="m-0 text-xl font-bold leading-tight text-[#172033]">Gerak Parabola</h1>
                     </div>
                 </div>
-                <div class="rounded-full bg-[#20796e]/10 px-4 py-2 text-sm font-bold text-[#20796e]">
-                    <span id="progress-badge">1 / 5</span>
+                <div class="flex items-center gap-3">
+                    <a href="#" class="home-btn" onclick="event.preventDefault(); alert('🏠 Kembali ke Portal Fisika');">
+                        <i data-lucide="home" class="h-4 w-4"></i>
+                        <span class="hidden sm:inline">Portal Fisika</span>
+                        <span class="sm:hidden">Home</span>
+                    </a>
+                    <div class="rounded-full bg-[#20796e]/10 px-4 py-2 text-sm font-bold text-[#20796e]">
+                        <span id="progress-badge">1 / 5</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -320,20 +337,32 @@
                         </div>
                     </section>
 
-                    <!-- SLIDE 5 — ESSAY -->
-                    <section class="slide" data-index="4" data-correct="-1" tabindex="-1">
-                        <p class="question-number">Soal 5 — Essay</p>
-                        <h2 class="mb-4 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Jelaskan konsep gerak parabola dan turunkan rumus untuk tinggi maksimum yang dicapai oleh sebuah benda yang bergerak parabola!</h2>
-                        <div class="essay-container">
-                            <label for="essay-input" class="essay-label flex items-center gap-3">
-                                <span class="letter-tag">✏️</span>
-                                Tulis jawaban essay Anda di bawah ini
-                            </label>
-                            <textarea id="essay-input" class="essay-textarea" placeholder="Tulis jawaban Anda di sini…"></textarea>
-                            <div id="essay-status" class="essay-status">
-                                <i data-lucide="pencil" class="h-3.5 w-3.5"></i>
-                                <span>Kosong</span>
-                            </div>
+                    <!-- SLIDE 5 — BASKETBALL JUMP SHOT -->
+                    <section class="slide" data-index="4" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 5 — Analisis Gerak Parabola</p>
+
+                        <!-- Diagram Gambar -->
+                        <div class="diagram-container" aria-label="Diagram gerak parabola tembakan jump shot Adrian dan Bisma">
+                            <img 
+                                src="latihan/mekanika/kinematika/jump-shot-diagram.png" 
+                                alt="Diagram tembakan jump shot Adrian dan Bisma: menunjukkan lintasan parabola dari ketinggian 2 m dengan sudut 50° menuju ring setinggi 3,05 m"
+                                loading="lazy"
+                            />
+                        </div>
+
+                        <div class="question-text">
+                            <p class="mb-3"><strong>Adrian</strong> dan <strong>Bisma</strong> merupakan tim olahraga basket di sekolahnya. Saat latihan basket, Adrian dan Bisma melakukan lemparan melompat (jump shot) dari titik yang sama 3 m dari ring basket. Keduanya melepaskan bola pada sudut 50° dari horizontal dan dari ketinggian 2 m. Tinggi ring basket adalah 3,05 m.</p>
+                            <p class="mb-2">Pada percobaan pertama keduanya menembakkan bola dengan kecepatan awal 7,5 m/s.</p>
+                            <p class="mb-2">Pada percobaan kedua, <strong>Adrian tetap menembakkan bola dengan kecepatan 7,5 m/s</strong>, sedangkan <strong>Bisma menurunkan kecepatan menjadi 6,5 m/s</strong> dengan sudut tetap sehingga bola masuk ke ring.</p>
+                            <p class="font-semibold text-[#172033]">Berdasarkan perubahan tersebut, kondisi apa yang akan terjadi pada hasil tembakan bola Bisma jika dibandingkan dengan bola Adrian? <span class="text-sm font-normal text-[#5f604f]">(Diketahui sin 50° = 0,766 dan cos 50° = 0,643)</span></p>
+                        </div>
+
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>Kedua bola tetap masuk ke ring karena sudut dan tinggi awalnya tidak berubah.</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>Bola Bisma dipastikan masih dapat masuk ke dalam ring karena sudutnya besar.</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>Bola Bisma jatuh lebih cepat dan gagal masuk karena kecepatannya lebih kecil.</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>Bola Bisma akan melengkung lebih tinggi sehingga justru lebih mudah masuk.</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>Bola Adrian diperkirakan akan melewati ring karena kecepatannya terlalu besar.</button>
                         </div>
                     </section>
 
@@ -346,7 +375,6 @@
                         <h2 class="mb-3 text-2xl font-bold text-[#172033] sm:text-3xl">Hasil Latihan Gerak Parabola</h2>
                         <p id="score-output" class="mb-3 font-['Fraunces'] text-6xl font-extrabold text-[#20796e]"></p>
                         <p id="score-message" class="mx-auto max-w-md text-lg leading-relaxed text-[#5f604f]"></p>
-                        <p id="essay-note" class="mt-2 text-sm text-[#a89f8e] italic">* Essay dinilai secara mandiri</p>
                         <button id="restart-button" type="button" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#ef6c35] px-6 py-3 font-bold text-white shadow-lg shadow-[#ef6c35]/20 transition hover:-translate-y-0.5 hover:bg-[#d85d2a]">
                             <i data-lucide="rotate-ccw" class="h-4 w-4"></i> Ulangi Latihan
                         </button>
@@ -380,7 +408,6 @@
             const answers = Array(slides.length).fill(null);
             let currentIndex = 0;
             let quizEnded = false;
-            let essayAnswered = false;
 
             const progressLabel = document.getElementById('progress-label');
             const progressBadge = document.getElementById('progress-badge');
@@ -391,8 +418,6 @@
             const navigation = document.getElementById('navigation');
             const resultScreen = document.getElementById('result-screen');
             const progressCaption = document.getElementById('progress-caption');
-            const essayInput = document.getElementById('essay-input');
-            const essayStatus = document.getElementById('essay-status');
 
             function renderSlide() {
                 slides.forEach((slide, index) => {
@@ -400,16 +425,13 @@
                 });
 
                 const activeSlide = slides[currentIndex];
-                const isEssay = currentIndex === slides.length - 1;
+                const selectedAnswer = answers[currentIndex];
 
-                if (!isEssay) {
-                    const selectedAnswer = answers[currentIndex];
-                    activeSlide.querySelectorAll('.answer-option').forEach((button) => {
-                        const isSelected = Number(button.dataset.answer) === selectedAnswer;
-                        button.classList.toggle('selected', isSelected);
-                        button.setAttribute('aria-pressed', String(isSelected));
-                    });
-                }
+                activeSlide.querySelectorAll('.answer-option').forEach((button) => {
+                    const isSelected = Number(button.dataset.answer) === selectedAnswer;
+                    button.classList.toggle('selected', isSelected);
+                    button.setAttribute('aria-pressed', String(isSelected));
+                });
 
                 const total = slides.length;
                 const num = currentIndex + 1;
@@ -417,44 +439,18 @@
                 progressBadge.textContent = `${num} / ${total}`;
                 progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
                 backButton.disabled = currentIndex === 0;
+                nextLabel.textContent = currentIndex === slides.length - 1 ? 'Selesai' : 'Lanjut';
 
-                if (currentIndex === slides.length - 1) {
-                    nextLabel.textContent = 'Selesai';
-                    const hasEssay = essayInput.value.trim().length > 0;
-                    progressCaption.textContent = hasEssay ? 'Essay terisi' : 'Tulis jawaban essay';
-                } else {
-                    const hasAnswer = answers[currentIndex] !== null;
-                    nextLabel.textContent = 'Lanjut';
-                    progressCaption.textContent = hasAnswer ? 'Jawaban tersimpan' : 'Pilih satu jawaban';
-                }
-
+                const hasAnswer = answers[currentIndex] !== null;
+                progressCaption.textContent = hasAnswer ? 'Jawaban tersimpan' : 'Pilih satu jawaban';
                 activeSlide.focus({ preventScroll: true });
-
-                // Update essay status
-                if (isEssay) {
-                    const len = essayInput.value.trim().length;
-                    const statusSpan = essayStatus.querySelector('span');
-                    if (len === 0) {
-                        statusSpan.textContent = 'Kosong';
-                        essayStatus.style.color = '#a89f8e';
-                    } else {
-                        statusSpan.textContent = `Terisi (${len} karakter)`;
-                        essayStatus.style.color = 'var(--teal)';
-                    }
-                }
             }
 
             function showResult() {
                 let score = 0;
-                // Only grade MCQs (first 4 slides)
-                for (let i = 0; i < 4; i++) {
-                    if (answers[i] === Number(slides[i].dataset.correct)) {
-                        score += 1;
-                    }
-                }
-
-                // Essay is not auto-graded — just note if filled
-                const essayFilled = essayInput.value.trim().length > 0;
+                slides.forEach((slide, index) => {
+                    if (answers[index] === Number(slide.dataset.correct)) score += 1;
+                });
 
                 slides.forEach(slide => slide.classList.remove('active'));
                 navigation.style.display = 'none';
@@ -465,59 +461,29 @@
                 resultScreen.classList.add('active');
                 quizEnded = true;
 
-                document.getElementById('score-output').textContent = `${score} / 4`;
+                document.getElementById('score-output').textContent = `${score} / ${slides.length}`;
 
                 let msg = '';
-                if (score === 4) msg = '🌟 Sempurna! Kamu menguasai perhitungan gerak parabola dengan sangat baik.';
-                else if (score === 3) msg = '👍 Bagus! Hampir sempurna, periksa kembali langkah hitunganmu.';
-                else if (score === 2) msg = '📖 Cukup baik. Pelajari kembali rumus-rumus dasar gerak parabola.';
-                else if (score === 1) msg = '💪 Jangan menyerah! Ulangi latihan dan pahami konsep hitungannya.';
+                if (score === 5) msg = '🌟 Sempurna! Kamu menguasai gerak parabola dengan sangat baik.';
+                else if (score >= 4) msg = '👍 Bagus! Hampir sempurna, periksa kembali hitunganmu.';
+                else if (score >= 3) msg = '📖 Cukup baik. Pelajari kembali konsep-konsep dasarnya.';
+                else if (score >= 2) msg = '💪 Jangan menyerah! Ulangi latihan dan pelajari lagi materinya.';
                 else msg = '📚 Ayo coba lagi! Bacalah materi gerak parabola dengan saksama.';
-
-                if (essayFilled) {
-                    msg += ' ✏️ Essay sudah terisi — jangan lupa evaluasi jawabanmu sendiri.';
-                } else {
-                    msg += ' 📝 Essay belum diisi — coba tulis jawabanmu untuk latihan.';
-                }
-
                 document.getElementById('score-message').textContent = msg;
-                document.getElementById('essay-note').textContent = essayFilled ?
-                    '* Essay telah terisi — nilai mandiri' :
-                    '* Essay kosong — tulis jawaban untuk latihan menulis';
             }
 
-            // MCQ click listeners
-            for (let i = 0; i < 4; i++) {
-                const slide = slides[i];
+            // Attach click listeners to all answer buttons
+            slides.forEach((slide, index) => {
                 slide.querySelectorAll('.answer-option').forEach((button) => {
                     button.addEventListener('click', () => {
                         if (quizEnded) return;
                         const val = Number(button.dataset.answer);
-                        answers[i] = val;
+                        answers[index] = val;
                         renderSlide();
                     });
                 });
-            }
-
-            // Essay input listener
-            essayInput.addEventListener('input', () => {
-                if (quizEnded) return;
-                const len = essayInput.value.trim().length;
-                const statusSpan = essayStatus.querySelector('span');
-                if (len === 0) {
-                    statusSpan.textContent = 'Kosong';
-                    essayStatus.style.color = '#a89f8e';
-                } else {
-                    statusSpan.textContent = `Terisi (${len} karakter)`;
-                    essayStatus.style.color = 'var(--teal)';
-                }
-                // Mark essay as "answered" for progress caption
-                if (currentIndex === slides.length - 1) {
-                    progressCaption.textContent = len > 0 ? 'Essay terisi' : 'Tulis jawaban essay';
-                }
             });
 
-            // Navigation
             backButton.addEventListener('click', () => {
                 if (quizEnded) return;
                 if (currentIndex > 0) {
@@ -528,43 +494,29 @@
 
             nextButton.addEventListener('click', () => {
                 if (quizEnded) return;
-
-                // If on essay slide, just finish
-                if (currentIndex === slides.length - 1) {
-                    showResult();
-                    return;
-                }
-
-                // Check if MCQ is answered
                 if (answers[currentIndex] === null) {
-                    // Optionally show a gentle nudge
                     progressCaption.textContent = '⚠️ Pilih satu jawaban terlebih dahulu';
                     return;
                 }
-
-                if (currentIndex < slides.length - 1) {
+                if (currentIndex === slides.length - 1) {
+                    showResult();
+                } else {
                     currentIndex += 1;
                     renderSlide();
                 }
             });
 
-            // Restart
             document.getElementById('restart-button').addEventListener('click', () => {
                 answers.fill(null);
-                essayInput.value = '';
                 currentIndex = 0;
                 quizEnded = false;
                 resultScreen.classList.remove('active');
                 navigation.style.display = 'flex';
                 renderSlide();
-                // Reset essay status
-                const statusSpan = essayStatus.querySelector('span');
-                statusSpan.textContent = 'Kosong';
-                essayStatus.style.color = '#a89f8e';
                 document.querySelector('.quiz-paper').scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
 
-            // Keyboard
+            // Keyboard navigation
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft' && !backButton.disabled) {
                     backButton.click();
