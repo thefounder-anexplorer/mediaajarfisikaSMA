@@ -1,876 +1,756 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modul Interaktif: Gerak Jatuh Bebas (GJB)</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <!-- Chart.js for real-time graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260908-05-b9d8a99","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/9e99ecf74af2a081.telemetry_sdk.js" integrity="sha512-tZ7fmfTx2KpCLjXQnEuL9azQ4A5+7+xumsx6r/WYVD0zCP/8LP8hDeCypMQesmP+WyAew4g7l5Ah23Bjd6yoVg=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Kinematika Gerak Vertikal</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #10243b;
+      --paper: #f7f2e8;
+      --sky: #dff3f6;
+      --orange: #f26b38;
+      --yellow: #f5c85b;
+      --muted: #42657a;
+      --grass: #a9d3a5;
+    }
 
-    <!-- KaTeX for crisp formula rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "Work Sans", sans-serif; color: var(--ink); }
+    button, input { font: inherit; }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
+    .physics-page {
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      overflow-x: hidden;
+      background-image:
+        linear-gradient(rgba(16, 36, 59, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 36, 59, .035) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .display-font { font-family: "Fraunces", serif; }
+    .app-view { display: none; }
+    .app-view.is-active { display: block; animation: rise-in .42s ease-out both; }
+
+    .nav-button {
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: .55rem .82rem;
+      font-weight: 700;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .nav-button:hover,
+    .nav-button:focus-visible {
+      background: var(--sky);
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .nav-button.is-active { background: var(--ink); color: #fff; }
+
+    .hero-photo-wrap {
+      position: relative;
+      min-height: 320px;
+      overflow: hidden;
+      border-radius: 28px;
+      box-shadow: 12px 12px 0 var(--yellow);
+    }
+
+    .hero-photo-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(16,36,59,.08), rgba(16,36,59,.62));
+      pointer-events: none;
+    }
+
+    .formula-paper {
+      background-image: linear-gradient(rgba(16,36,59,.06) 1px, transparent 1px);
+      background-size: 100% 28px;
+    }
+
+    .control-button {
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    .control-button:hover { transform: translateY(-2px); filter: brightness(1.04); }
+
+    .control-button:focus-visible,
+    .range-input:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    .control-button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
+      transform: none;
+    }
+
+    .range-input {
+      width: 100%;
+      cursor: pointer;
+      accent-color: var(--orange);
+    }
+
+    .motion-stage {
+      position: relative;
+      height: 410px;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, transparent 49.7%, rgba(16,36,59,.11) 50%, transparent 50.3%),
+        linear-gradient(#dff3f6 0%, #ebf7f4 73%, #a9d3a5 73%, #a9d3a5 100%);
+    }
+
+    .motion-stage.upward {
+      background:
+        linear-gradient(90deg, transparent 49.7%, rgba(16,36,59,.11) 50%, transparent 50.3%),
+        linear-gradient(#cdeaf2 0%, #e8f7f7 73%, #a9d3a5 73%, #a9d3a5 100%);
+    }
+
+    .ground-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 14%;
+      border-top: 3px solid var(--ink);
+    }
+
+    .ground-label {
+      position: absolute;
+      right: 6%;
+      bottom: 5%;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .height-line {
+      position: absolute;
+      top: 10%;
+      bottom: 14%;
+      left: 18%;
+      border-left: 2px dashed rgba(16,36,59,.5);
+    }
+
+    .height-label {
+      position: absolute;
+      top: 15%;
+      left: 7%;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 700;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      letter-spacing: .1em;
+    }
+
+    .tower {
+      position: absolute;
+      right: 19%;
+      bottom: 14%;
+      width: 86px;
+      height: 73%;
+      background: repeating-linear-gradient(90deg, #f4cc65 0, #f4cc65 18px, #d79c46 18px, #d79c46 23px);
+      clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%);
+    }
+
+    .launch-platform {
+      position: absolute;
+      right: 15%;
+      bottom: 14%;
+      width: 160px;
+      height: 15px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: #f5c85b;
+      box-shadow: 5px 5px 0 rgba(16,36,59,.2);
+    }
+
+    .launch-arrow {
+      position: absolute;
+      left: calc(50% - 16px);
+      bottom: 22%;
+      color: var(--orange);
+      opacity: .75;
+    }
+
+    .down-arrow {
+      position: absolute;
+      left: calc(50% - 16px);
+      top: 7%;
+      color: var(--orange);
+      opacity: .75;
+    }
+
+    .ball {
+      position: absolute;
+      left: calc(50% - 22px);
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: radial-gradient(circle at 31% 27%, #fff 0 8%, #f26b38 10% 50%, #bd3d28 52% 100%);
+      box-shadow: 4px 5px 0 rgba(16,36,59,.22);
+      will-change: transform;
+    }
+
+    .velocity-vector {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      width: 4px;
+      height: 56px;
+      border-radius: 999px;
+      background: var(--orange);
+      transform: translateX(-50%) scaleY(.35);
+      transform-origin: 50% 100%;
+      opacity: 1;
+      transition: transform .12s ease, opacity .12s ease;
+      z-index: 3;
+    }
+
+    .velocity-vector.is-zero {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .velocity-vector::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      width: 13px;
+      height: 13px;
+      border-left: 4px solid var(--orange);
+      border-top: 4px solid var(--orange);
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    .velocity-vector.is-downward {
+      top: 100%;
+      bottom: auto;
+      transform-origin: 50% 0;
+    }
+
+    .velocity-vector.is-downward::after {
+      top: auto;
+      bottom: -2px;
+      transform: translateX(-50%) rotate(225deg);
+    }
+
+    .up-ball { bottom: 19%; }
+    .down-ball { top: 17%; }
+
+    .formula-chip {
+      border: 1px solid rgba(16,36,59,.18);
+      background: rgba(255,255,255,.76);
+    }
+
+    .case-badge {
+      border: 1px solid rgba(16,36,59,.2);
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .case-badge.is-free-fall {
+      background: #f5c85b;
+      color: #10243b;
+    }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 760px) {
+      .motion-stage { height: 350px; }
+      .hero-photo-wrap { min-height: 250px; }
+      .nav-button { padding: .45rem .6rem; font-size: .82rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+  <script src="/_sdk/fbe2ebfd64647c54.data_sdk.js" type="text/javascript" integrity="sha512-vkTX6CfvpHc3WbjK+tFJCaDuw4ERA4aEV/e5/7+MMJPMTF4RJYCI6CAwJBT/gtDW+dba4uLSsPUgDjVDHWtgUQ=="></script>
+  <script src="/_sdk/fcb6dc01f91829ac.resizing_sdk.js" type="text/javascript" integrity="sha512-YK8JfnN705qaEaVhiL7pcVB2Rs/BbdX5yxV55Az8zT/1JanyEWTw9HqCF915m9iV1YEaoil8qsjJz03l1Kb0Ug=="></script>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="physics-page">
+   <header class="w-full px-5 pt-6 md:px-10 md:pt-10">
+    <div class="mx-auto max-w-6xl">
+     <div class="flex flex-col gap-4 border-b-2 border-slate-800 pb-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-3">
+       <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white">
+        <i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
+       </div>
+       <p data-template-id="brand-label" class="canva-text m-0 text-sm font-bold uppercase tracking-[.16em]"></p>
+      </div>
+      <nav aria-label="Navigasi modul" class="flex flex-wrap items-center gap-1">
+       <button id="nav-home" type="button" class="nav-button is-active"><span data-template-id="nav-home-text" class="canva-text"></span></button> <button id="nav-up" type="button" class="nav-button"><span data-template-id="nav-up-text" class="canva-text"></span></button> <button id="nav-down" type="button" class="nav-button"><span data-template-id="nav-down-text" class="canva-text"></span></button>
+      </nav>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-5 py-8 md:px-10 md:py-10">
+    <div class="mx-auto max-w-6xl">
+     <section id="home-view" class="app-view is-active" aria-labelledby="home-title">
+      <div class="grid grid-cols-1 items-center gap-10 pb-14 md:grid-cols-2">
+       <div>
+        <div data-template-id="topic-tag" class="canva-tag inline-flex items-center gap-2 rounded-full px-4 py-2">
+         <i data-lucide="arrow-up-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="topic-tag-text" class="canva-text"></span>
+        </div>
+        <h1 id="home-title" data-template-id="page-title" class="canva-text display-font mt-5 max-w-xl leading-[1.04]"></h1>
+        <p data-template-id="hero-description" class="canva-text mt-5 max-w-xl leading-7"></p><button id="hero-down-button" data-template-id="hero-down-button" type="button" class="canva-button control-button mt-7 inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold"> <i data-lucide="move-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="hero-down-button-text" class="canva-text"></span> </button>
+       </div>
+       <div class="hero-photo-wrap">
+        <img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 h-full w-full object-cover">
+        <div class="absolute bottom-5 left-5 z-10 max-w-[245px] rounded-2xl bg-[#10243b] p-4 text-white shadow-lg">
+         <p data-template-id="hero-image-caption" class="canva-text m-0 text-sm leading-5"></p>
+        </div>
+       </div>
+      </div>
+      <section aria-labelledby="map-title" class="mb-14">
+       <div class="mb-5 flex items-end justify-between gap-4">
+        <div>
+         <p data-template-id="map-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
+         <h2 id="map-title" data-template-id="map-title-text" class="canva-text display-font m-0"></h2>
+        </div><i data-lucide="route" aria-hidden="true" class="hidden h-9 w-9 text-[#f26b38] sm:block"></i>
+       </div>
+       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <article data-template-id="home-card-up" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
+         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff3f6]">
+          <i data-lucide="arrow-up" aria-hidden="true" class="h-5 w-5"></i>
+         </div>
+         <h3 data-template-id="home-card-up-title" class="canva-text mb-2 font-bold"></h3>
+         <p data-template-id="home-card-up-text" class="canva-text m-0 leading-6"></p>
+        </article>
+        <article data-template-id="home-card-down" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
+         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f8d9c9]">
+          <i data-lucide="move-down" aria-hidden="true" class="h-5 w-5"></i>
+         </div>
+         <h3 data-template-id="home-card-down-title" class="canva-text mb-2 font-bold"></h3>
+         <p data-template-id="home-card-down-text" class="canva-text m-0 leading-6"></p>
+        </article>
+       </div>
+      </section>
+      <section aria-labelledby="overview-formula-title" class="grid grid-cols-1 gap-6 lg:grid-cols-[.9fr_1.1fr]">
+       <div data-template-id="overview-intro" class="canva-panel rounded-3xl p-7 text-white md:p-9">
+        <p data-template-id="overview-eyebrow" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.14em]"></p>
+        <h2 id="overview-formula-title" data-template-id="overview-title-text" class="canva-text display-font m-0"></h2>
+        <p data-template-id="overview-description" class="canva-text mt-5 max-w-md leading-7"></p>
+       </div>
+       <div data-template-id="overview-board" class="canva-panel formula-paper rounded-3xl border-2 border-slate-800 p-7 md:p-9">
+        <div class="grid gap-4">
+         <div class="formula-chip rounded-2xl p-5">
+          <p data-template-id="overview-formula-1-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.12em]"></p>
+          <p data-template-id="overview-formula-1" class="canva-text display-font m-0"></p>
+         </div>
+         <div class="formula-chip rounded-2xl p-5">
+          <p data-template-id="overview-formula-2-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.12em]"></p>
+          <p data-template-id="overview-formula-2" class="canva-text display-font m-0"></p>
+         </div>
+         <p data-template-id="overview-symbol-note" class="canva-text m-0 rounded-xl p-4 text-sm font-semibold leading-6"></p>
+        </div>
+       </div>
+      </section>
+     </section>
+     <section id="up-view" class="app-view" aria-labelledby="up-title">
+      <div class="mb-7">
+       <p data-template-id="up-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
+       <h1 id="up-title" data-template-id="up-title-text" class="canva-text display-font m-0"></h1>
+       <p data-template-id="up-description" class="canva-text mt-3 max-w-3xl leading-7"></p>
+      </div>
+      <div class="mb-7 grid grid-cols-1 gap-4 lg:grid-cols-2">
+       <article data-template-id="up-concept-card" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
+        <h2 data-template-id="up-concept-title" class="canva-text display-font m-0"></h2>
+        <p data-template-id="up-concept-text" class="canva-text mt-3 mb-0 leading-7"></p>
+       </article>
+       <article data-template-id="up-formula-card" class="canva-card formula-paper rounded-2xl border-2 border-slate-800 p-6">
+        <p data-template-id="up-formula-label" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.12em]"></p>
+        <p data-template-id="up-formula-one" class="canva-text display-font m-0"></p>
+        <p data-template-id="up-formula-two" class="canva-text display-font mt-3 mb-0"></p>
+        <p data-template-id="up-formula-note" class="canva-text mt-3 mb-0 leading-6"></p>
+       </article>
+      </div>
+      <section data-template-id="up-shell" class="canva-panel rounded-[30px] border-2 border-slate-800 p-5 shadow-[9px_9px_0_#10243b] md:p-8">
+       <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <p id="up-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dilempar</p>
+        <p data-template-id="up-tip" class="canva-text m-0 text-sm font-medium"></p>
+       </div>
+       <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
+        <div class="motion-stage upward" aria-label="Visualisasi bola dilempar vertikal ke atas">
+         <div class="height-line"></div><span class="height-label">TINGGI MAKS.</span>
+         <div class="launch-platform" aria-hidden="true"></div>
+         <div id="up-ball" class="ball up-ball" aria-hidden="true"><span class="velocity-vector" aria-hidden="true"></span>
+         </div>
+         <div class="ground-line"></div><span class="ground-label">Posisi awal</span>
+        </div>
+        <aside aria-label="Kontrol simulasi gerak vertikal ke atas" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
+         <div class="mb-6">
+          <label data-template-id="up-speed-label" class="canva-text mb-2 block font-bold" for="up-speed"></label>
+          <div class="flex items-center justify-between gap-3">
+           <input id="up-speed" class="range-input" type="range" min="5" max="50" step="1" value="24"> <output id="up-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">24 m/s</output>
+          </div>
+         </div>
+         <div class="mb-6">
+          <label data-template-id="up-gravity-label" class="canva-text mb-2 block font-bold" for="up-gravity"></label>
+          <div class="flex items-center justify-between gap-3">
+           <input id="up-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="up-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+          </div>
+         </div>
+         <div class="grid grid-cols-3 gap-2">
+          <button id="up-start" data-template-id="up-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-start-text" class="canva-text"></span></button> <button id="up-pause" data-template-id="up-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-pause-text" class="canva-text"></span></button> <button id="up-reset" data-template-id="up-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-reset-text" class="canva-text"></span></button>
+         </div>
+        </aside>
+       </div>
+       <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="up-time-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="up-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="up-height-result-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="up-height-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="up-velocity-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="up-velocity-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
+        </div>
+       </div>
+      </section>
+     </section>
+     <section id="down-view" class="app-view" aria-labelledby="down-title">
+      <div class="mb-7">
+       <p data-template-id="down-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
+       <h1 id="down-title" data-template-id="down-title-text" class="canva-text display-font m-0"></h1>
+       <p data-template-id="down-description" class="canva-text mt-3 max-w-3xl leading-7"></p>
+      </div>
+      <div class="mb-7 grid grid-cols-1 gap-4 md:grid-cols-2">
+       <article data-template-id="down-concept-card" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
+        <h2 data-template-id="down-concept-title" class="canva-text display-font m-0"></h2>
+        <p data-template-id="down-concept-text" class="canva-text mt-3 mb-0 leading-7"></p>
+       </article>
+       <article data-template-id="down-formula-card" class="canva-card formula-paper rounded-2xl border-2 border-slate-800 p-6">
+        <p data-template-id="down-formula-label" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.12em]"></p>
+        <p data-template-id="down-formula-one" class="canva-text display-font m-0"></p>
+        <p data-template-id="down-formula-two" class="canva-text display-font mt-3 mb-0"></p>
+        <p data-template-id="down-formula-note" class="canva-text mt-3 mb-0 leading-6"></p>
+       </article>
+      </div>
+      <section data-template-id="freefall-note" class="canva-banner mb-7 rounded-2xl border-2 border-slate-800 p-5 md:p-6">
+       <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+        <i data-lucide="lightbulb" aria-hidden="true" class="mt-1 h-6 w-6 shrink-0"></i>
+        <div>
+         <h2 data-template-id="freefall-note-title" class="canva-text display-font m-0"></h2>
+         <p data-template-id="freefall-note-text" class="canva-text mb-0 mt-2 leading-7"></p>
+        </div>
+       </div>
+      </section>
+      <section data-template-id="down-shell" class="canva-panel rounded-[30px] border-2 border-slate-800 p-5 shadow-[9px_9px_0_#10243b] md:p-8">
+       <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <div class="flex flex-wrap items-center gap-2">
+         <p id="down-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dijalankan</p>
+         <p id="freefall-badge" class="case-badge m-0 rounded-full bg-white px-4 py-2 text-sm font-bold" aria-live="polite">Mode lempar ke bawah</p>
+        </div>
+        <p data-template-id="down-tip" class="canva-text m-0 text-sm font-medium"></p>
+       </div>
+       <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
+        <div class="motion-stage" aria-label="Visualisasi bola bergerak vertikal ke bawah">
+         <div class="height-line"></div><span class="height-label">KETINGGIAN</span>
+         <div class="tower" aria-hidden="true"></div>
+         <div id="down-ball" class="ball down-ball" aria-hidden="true"><span class="velocity-vector is-downward" aria-hidden="true"></span>
+         </div>
+         <div class="ground-line"></div><span class="ground-label">Tanah</span>
+        </div>
+        <aside aria-label="Kontrol simulasi gerak vertikal ke bawah" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
+         <div class="mb-5">
+          <label data-template-id="down-height-label" class="canva-text mb-2 block font-bold" for="down-height"></label>
+          <div class="flex items-center justify-between gap-3">
+           <input id="down-height" class="range-input" type="range" min="5" max="100" step="1" value="45"> <output id="down-height-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">45 m</output>
+          </div>
+         </div>
+         <div class="mb-5">
+          <label data-template-id="down-speed-label" class="canva-text mb-2 block font-bold" for="down-speed"></label>
+          <div class="flex items-center justify-between gap-3">
+           <input id="down-speed" class="range-input" type="range" min="0" max="35" step="1" value="10"> <output id="down-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">10 m/s</output>
+          </div>
+         </div>
+         <div class="mb-6">
+          <label data-template-id="down-gravity-label" class="canva-text mb-2 block font-bold" for="down-gravity"></label>
+          <div class="flex items-center justify-between gap-3">
+           <input id="down-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="down-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+          </div>
+         </div>
+         <div class="grid grid-cols-3 gap-2">
+          <button id="down-start" data-template-id="down-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-start-text" class="canva-text"></span></button> <button id="down-pause" data-template-id="down-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-pause-text" class="canva-text"></span></button> <button id="down-reset" data-template-id="down-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-reset-text" class="canva-text"></span></button>
+         </div>
+        </aside>
+       </div>
+       <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="down-time-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="down-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="down-distance-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="down-distance-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+         <p data-template-id="down-speed-result-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
+         <p id="down-speed-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
+        </div>
+       </div>
+      </section>
+     </section>
+    </div>
+   </main>
+   <footer class="w-full px-5 pb-7 md:px-10">
+    <div class="mx-auto max-w-6xl border-t border-slate-800 pt-5">
+     <p data-template-id="footer-text" class="canva-text m-0 text-sm"></p>
+    </div>
+   </footer>
+  </div>
+  <script src="/_sdk/20ec72cea0cb85e1.editing_sdk.js" integrity="sha512-y1Lf0yXrnk1vqzLs9a/3x3pp+jSvei2Pbl+x/omYgN5b7HqLzMgs5Vx9HdgcQfw7jcDinPHCzHGQ6BsPf/68zQ=="></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+
+      const decimal = (value, digits = 2) => Number(value).toLocaleString("id-ID", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      });
+
+      const views = {
+        home: document.getElementById("home-view"),
+        up: document.getElementById("up-view"),
+        down: document.getElementById("down-view")
+      };
+
+      const navs = {
+        home: document.getElementById("nav-home"),
+        up: document.getElementById("nav-up"),
+        down: document.getElementById("nav-down")
+      };
+
+      function showView(name) {
+        Object.entries(views).forEach(([key, view]) => view.classList.toggle("is-active", key === name));
+        Object.entries(navs).forEach(([key, button]) => {
+          button.classList.toggle("is-active", key === name);
+          button.setAttribute("aria-current", key === name ? "page" : "false");
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      Object.entries(navs).forEach(([name, button]) => button.addEventListener("click", () => showView(name)));
+      document.getElementById("hero-down-button").addEventListener("click", () => showView("down"));
+
+      function createMotionSimulation(options) {
+        const startButton = document.getElementById(options.startId);
+        const pauseButton = document.getElementById(options.pauseId);
+        const resetButton = document.getElementById(options.resetId);
+        const status = document.getElementById(options.statusId);
+        const ball = document.getElementById(options.ballId);
+        const vector = ball.querySelector(".velocity-vector");
+        const timeResult = document.getElementById(options.timeResultId);
+        const positionResult = document.getElementById(options.positionResultId);
+        const speedResult = document.getElementById(options.speedResultId);
+        const controls = options.controlIds.map(id => document.getElementById(id));
+        const outputs = options.outputIds.map(id => document.getElementById(id));
+
+        let running = false;
+        let animationFrame = null;
+        let elapsedBeforePause = 0;
+        let startedAt = 0;
+
+        function setControlsDisabled(disabled) {
+          controls.forEach(control => { control.disabled = disabled; });
         }
-        .chalkboard-bg {
-            background-color: #1e293b;
-            background-image: radial-gradient(#334155 1px, transparent 0);
-            background-size: 16px 16px;
+
+        function updateDisplay(time) {
+          const state = options.calculate(time);
+          timeResult.textContent = decimal(time) + " s";
+          positionResult.textContent = decimal(state.position) + " m";
+          speedResult.textContent = decimal(Math.abs(state.speed)) + " m/s";
+          ball.style.transform = options.transform(state);
+          const speedMagnitude = Math.abs(state.speed);
+          vector.classList.toggle("is-downward", options.downward || state.speed < 0);
+          // Gunakan ambang kecil agar vektor benar-benar hilang saat mendekati titik puncak.
+          vector.classList.toggle("is-zero", speedMagnitude <= 0.05);
+          vector.style.transform = "translateX(-50%) scaleY(" + Math.min(.95, Math.max(.18, speedMagnitude / 20)) + ")";
         }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <!-- Navigation Bar -->
-    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-amber-400 text-indigo-950 p-2 rounded-lg font-black text-xl">
-                    <i class="ph-bold ph-atom"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg sm:text-xl leading-tight">Kelas Fisika Pak guru</h1>
-                    <p class="text-xs text-indigo-200">Modul Interaktif: Gerak Jatuh Bebas (GJB)</p>
-                </div>
-            </div>
-            <nav class="hidden md:flex space-x-6 text-sm font-medium">
-                <a href="#materi" class="hover:text-amber-300 transition">Materi</a>
-                <a href="#simulasi" class="hover:text-amber-300 transition">Simulasi Lab</a>
-                <a href="#kalkulator" class="hover:text-amber-300 transition">Kalkulator</a>
-                <a href="#kuis" class="hover:text-amber-300 transition">Latihan Soal</a>
-            </nav>
-        </div>
-    </header>
+        function reset() {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+          running = false;
+          elapsedBeforePause = 0;
+          setControlsDisabled(false);
+          startButton.disabled = false;
+          options.updateOutputs(outputs);
+          updateDisplay(0);
+          options.onReset();
+          status.textContent = options.readyText;
+        }
 
-    <!-- Teacher Hero Banner -->
-    <section class="bg-gradient-to-r from-indigo-800 to-indigo-900 text-white py-10 px-4">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-6">
-            <div class="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
-                <div class="w-full h-full rounded-full bg-amber-400 border-4 border-white overflow-hidden shadow-xl flex items-center justify-center text-indigo-900 font-bold text-5xl">
-                    <i class="ph-fill ph-chalkboard-teacher"></i>
-                </div>
-                <span class="absolute bottom-1 right-1 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold border-2 border-white">Online</span>
-            </div>
-            <div class="text-center md:text-left space-y-2">
-                <div class="inline-block bg-amber-400 text-indigo-950 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    Pesan Dari Guru
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold">Halo, Selamat Datang di Laboratorium Fisika!</h2>
-                <p class="text-indigo-100 text-sm sm:text-base leading-relaxed max-w-3xl">
-                    "Pernahkah kalian berpikir, mana yang jatuh lebih cepat: buah apel atau selembar kertas jika disjatuhkan bersamaan? Hari ini kita akan membongkar rahasia <strong>Gerak Jatuh Bebas (GJB)</strong>. Mari kita pelajari konsepnya, lakukan simulasi, dan buktikan sendiri hukum fisika di bawah ini!"
-                </p>
-            </div>
-        </div>
-    </section>
+        function finish() {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+          running = false;
+          elapsedBeforePause = options.totalTime();
+          updateDisplay(elapsedBeforePause);
+          startButton.disabled = true;
+          setControlsDisabled(false);
+          status.textContent = options.finishedText;
+        }
 
-    <!-- Content Section: Materi & Konsep Utama -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12 flex-grow">
-        <section id="materi" class="space-y-6">
-            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i class="ph-bold ph-book-open text-indigo-600"></i> Concept & Formula
-                </h3>
-                <span class="text-xs bg-indigo-100 text-indigo-800 font-semibold px-2.5 py-1 rounded">Materi Inti</span>
-            </div>
+        function animate(now) {
+          if (!running) return;
+          const elapsed = elapsedBeforePause + (now - startedAt) / 1000;
+          if (elapsed >= options.totalTime()) {
+            finish();
+            return;
+          }
+          updateDisplay(elapsed);
+          animationFrame = requestAnimationFrame(animate);
+        }
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mb-4 text-2xl font-bold">
-                        1
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-800 mb-2">Tanpa Kecepatan Awal</h4>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Ciri utama Gerak Jatuh Bebas adalah benda **dilepaskan**, bukan dilempar. Artinya, kecepatan awal benda adalah nol (<span class="katex-inline">v_0 = 0</span>).
-                    </p>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 mb-4 text-2xl font-bold">
-                        2
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-800 mb-2">Dipengaruhi Gravitasi</h4>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Benda bergerak dipercepat secara teratur oleh percepatan gravitasi bumi (<span class="katex-inline">a = g \approx 9.8 \text{ m/s}^2</span>) tanpa gesekan udara.
-                    </p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-4 text-2xl font-bold">
-                        3
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-800 mb-2">Massa Benda Tidak Berpengaruh</h4>
-                    <p class="text-slate-600 text-sm leading-relaxed">
-                        Baik benda berat maupun ringan akan jatuh dengan kecepatan dan waktu yang **sama** pada ketinggian yang sama (di dalam ruang hampa udara).
-                    </p>
-                </div>
-            </div>
-
-            <!-- Formulas Board -->
-            <div class="chalkboard-bg text-white p-6 sm:p-8 rounded-2xl shadow-xl space-y-6">
-                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-                    <h4 class="font-bold text-xl text-amber-400 flex items-center gap-2">
-                        <i class="ph-bold ph-function"></i> Tiga Rumus Utama GJB
-                    </h4>
-                    <span class="text-xs text-slate-400 font-mono">Diturunkan dari GLBB (<span class="katex-inline">v_0 = 0, a = g</span>)</span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                    <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700">
-                        <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Kecepatan saat waktu (t)</p>
-                        <p class="text-2xl font-bold text-amber-300 py-2"><span class="katex-display">v_t = g \cdot t</span></p>
-                        <p class="text-xs text-slate-400 mt-2"><span class="katex-inline">v_t</span> = Kecepatan (m/s)<br><span class="katex-inline">t</span> = Waktu (sekon)</p>
-                    </div>
-                    <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700">
-                        <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Jarak/Ketinggian Tempuh</p>
-                        <p class="text-2xl font-bold text-amber-300 py-2"><span class="katex-display">h = \frac{1}{2} g \cdot t^2</span></p>
-                        <p class="text-xs text-slate-400 mt-2"><span class="katex-inline">h</span> = Ketinggian (meter)<br><span class="katex-inline">g</span> = Gravitasi (m/s²)</p>
-                    </div>
-                    <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700">
-                        <p class="text-xs text-slate-400 uppercase font-semibold mb-2">Kecepatan Saat Menumbuk Tanah</p>
-                        <p class="text-2xl font-bold text-amber-300 py-2"><span class="katex-display">v_t = \sqrt{2 \cdot g \cdot h}</span></p>
-                        <p class="text-xs text-slate-400 mt-2">Dapat dihitung jika ketinggian awal (<span class="katex-inline">h</span>) diketahui.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Simulation Section -->
-        <section id="simulasi" class="space-y-6">
-            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i class="ph-bold ph-flask text-indigo-600"></i> Simulasi Laboratorium Virtual
-                </h3>
-                <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded">Praktikum Digital</span>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Canvas Simulator Column -->
-                <div class="lg:col-span-5 bg-slate-900 rounded-2xl p-4 flex flex-col justify-between shadow-lg relative overflow-hidden">
-                    <div class="flex justify-between items-center mb-2 z-10">
-                        <span class="text-xs font-semibold text-slate-300 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Visualisasi Lintasan</span>
-                        <span id="sim-status" class="text-xs font-bold text-amber-400">Siap Ditjatuhkan</span>
-                    </div>
-
-                    <!-- Canvas -->
-                    <div class="relative w-full h-80 bg-gradient-to-b from-slate-950 to-slate-900 rounded-xl overflow-hidden border border-slate-800">
-                        <canvas id="simCanvas" class="w-full h-full"></canvas>
-                        <!-- Ruler markers overlay -->
-                        <div class="absolute left-2 top-2 bottom-6 w-8 flex flex-col justify-between text-[10px] text-slate-500 font-mono pointer-events-none select-none">
-                            <span id="top-h-label">50m</span>
-                            <span>25m</span>
-                            <span>0m</span>
-                        </div>
-                    </div>
-
-                    <!-- Realtime Telemetry Grid -->
-                    <div class="grid grid-cols-3 gap-2 mt-4 text-center">
-                        <div class="bg-slate-800/90 p-2 rounded-lg border border-slate-700">
-                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Waktu (t)</span>
-                            <span id="tel-time" class="text-lg font-bold text-amber-400 font-mono">0.00 s</span>
-                        </div>
-                        <div class="bg-slate-800/90 p-2 rounded-lg border border-slate-700">
-                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Kecepatan (v)</span>
-                            <span id="tel-vel" class="text-lg font-bold text-cyan-400 font-mono">0.0 m/s</span>
-                        </div>
-                        <div class="bg-slate-800/90 p-2 rounded-lg border border-slate-700">
-                            <span class="text-[10px] text-slate-400 block uppercase font-medium">Jarak Tempuh (h)</span>
-                            <span id="tel-dist" class="text-lg font-bold text-emerald-400 font-mono">0.0 m</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simulation Controls & Charts Column -->
-                <div class="lg:col-span-7 space-y-6 flex flex-col justify-between">
-                    <!-- Control Panel -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
-                        <h4 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                            <i class="ph-bold ph-sliders text-indigo-600"></i> Pengaturan Parameter
-                        </h4>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <!-- Gravity selection -->
-                            <div class="space-y-2">
-                                <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block">
-                                    Lokasi / Gravitasi (<span class="katex-inline">g</span>)
-                                </label>
-                                <select id="gravity-select" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none">
-                                    <option value="9.8">Bumi (g = 9.8 m/s²)</option>
-                                    <option value="1.6">Bulan (g = 1.6 m/s²)</option>
-                                    <option value="3.7">Mars (g = 3.7 m/s²)</option>
-                                    <option value="24.8">Yupiter (g = 24.8 m/s²)</option>
-                                </select>
-                            </div>
-
-                            <!-- Initial Height Slider -->
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center">
-                                    <label class="text-xs font-bold text-slate-600 uppercase tracking-wider">
-                                        Ketinggian Awal (<span class="katex-inline">h</span>)
-                                    </label>
-                                    <span id="height-val" class="text-sm font-bold text-indigo-600 font-mono">50 m</span>
-                                </div>
-                                <input type="range" id="height-slider" min="10" max="100" value="50" step="5" class="w-full accent-indigo-600 cursor-pointer">
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex gap-3 pt-2">
-                            <button id="btn-start" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition shadow-md shadow-indigo-200">
-                                <i class="ph-bold ph-play"></i> Jatuhkan Benda
-                            </button>
-                            <button id="btn-reset" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 px-5 rounded-xl flex items-center justify-center gap-2 transition">
-                                <i class="ph-bold ph-arrows-counter-clockwise"></i> Reset
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Real-Time Graphs Container -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                                <i class="ph-bold ph-chart-line text-indigo-600"></i> Grafik Hubungan Kecepatan vs Waktu <span class="katex-inline">(v - t)</span>
-                            </h4>
-                            <span class="text-[11px] text-slate-400 font-mono">Garis Lurus = GLBB dipercepat</span>
-                        </div>
-                        <div class="h-44 w-full">
-                            <canvas id="vtChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Calculator Section -->
-        <section id="kalkulator" class="space-y-6">
-            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i class="ph-bold ph-calculator text-indigo-600"></i> Kalkulator Solusi Fisika
-                </h3>
-                <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-1 rounded">Pembahasan Otomatis</span>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-                <!-- Calculator Form Inputs -->
-                <div class="lg:col-span-5 p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-slate-200 space-y-6">
-                    <div>
-                        <h4 class="font-bold text-lg text-slate-800">Hitung Variabel GJB</h4>
-                        <p class="text-slate-500 text-xs mt-1">Masukkan data yang diketahui untuk mendapatkan penyelesaian lengkap.</p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">Pilih Mode Perhitungan</label>
-                            <select id="calc-mode" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none">
-                                <option value="h-to-all">Diketahui Ketinggian (h)</option>
-                                <option value="t-to-all">Diketahui Waktu Jatuh (t)</option>
-                            </select>
-                        </div>
-
-                        <div id="input-h-group" class="space-y-1">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block">Ketinggian Jatuh (<span class="katex-inline">h</span>) dalam Meter</label>
-                            <input type="number" id="calc-h-input" value="20" min="0.1" step="any" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-indigo-600 outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <div id="input-t-group" class="space-y-1 hidden">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block">Waktu Tempuh (<span class="katex-inline">t</span>) dalam Sekon</label>
-                            <input type="number" id="calc-t-input" value="2" min="0.1" step="any" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-indigo-600 outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-600 uppercase tracking-wider block">Percepatan Gravitasi (<span class="katex-inline">g</span>) in m/s²</label>
-                            <input type="number" id="calc-g-input" value="9.8" min="0.1" step="any" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <button id="btn-calculate" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2">
-                            <i class="ph-bold ph-cpu"></i> Hitung & Tampilkan Langkah
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Step-by-step Solution Display -->
-                <div class="lg:col-span-7 bg-slate-50 p-6 sm:p-8 flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                            <h5 class="font-bold text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
-                                <i class="ph-bold ph-chalkboard text-amber-600"></i> Catatan Penjelasan Pak Guru
-                            </h5>
-                            <span class="text-[11px] text-slate-500 font-mono">Format Solusi UN/UTBK</span>
-                        </div>
-
-                        <div id="calc-results-output" class="space-y-4 text-sm text-slate-700">
-                            <!-- Output rendered via JS -->
-                        </div>
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-slate-200 flex items-center gap-3 text-xs text-slate-500">
-                        <i class="ph-fill ph-info text-indigo-500 text-lg"></i>
-                        <span>Tips: Gunakan percepatan gravitasi <span class="katex-inline">g = 10 \text{ m/s}^2</span> jika soal meminta pembulatan cepat.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Quiz Section -->
-        <section id="kuis" class="space-y-6">
-            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
-                <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i class="ph-bold ph-exam text-indigo-600"></i> Kuis Pemahaman Konsep
-                </h3>
-                <span class="text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-1 rounded">Evaluasi Mandiri</span>
-            </div>
-
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 max-w-3xl mx-auto space-y-6">
-                <!-- Quiz Header / Progress -->
-                <div class="flex justify-between items-center text-xs font-semibold text-slate-500 border-b border-slate-100 pb-3">
-                    <span id="quiz-progress-text">Soal 1 dari 3</span>
-                    <span id="quiz-score-text" class="text-indigo-600 font-bold">Skor: 0</span>
-                </div>
-
-                <!-- Question Text -->
-                <div class="space-y-2">
-                    <h4 id="quiz-question" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">
-                        Loading soal...
-                    </h4>
-                </div>
-
-                <!-- Answer Options -->
-                <div id="quiz-options" class="space-y-3">
-                    <!-- Option Buttons dynamically inserted -->
-                </div>
-
-                <!-- Explanation Box -->
-                <div id="quiz-explanation" class="hidden p-4 rounded-xl border space-y-2">
-                    <!-- Feedback text -->
-                </div>
-
-                <!-- Next Button -->
-                <div class="flex justify-end pt-2">
-                    <button id="btn-next-question" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-xl transition text-sm flex items-center gap-2">
-                        Soal Berikutnya <i class="ph-bold ph-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
-            <div class="flex justify-center items-center space-x-2 text-white font-bold text-base">
-                <i class="ph-bold ph-atom text-amber-400"></i>
-                <span>Laboratorium Fisika Digital</span>
-            </div>
-            <p>Didesain untuk pembelajaran fisika interaktif materi Gerak Jatuh Bebas (GJB).</p>
-            <p class="text-slate-600">© 2026 Modul Fisika Interaktif - Bebas digunakan untuk kegiatan belajar mengajar.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Render math LaTeX formulas
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
-                ],
-                throwOnError : false
-            });
-            
-            initChart();
-            initSimulation();
-            initCalculator();
-            initQuiz();
+        startButton.addEventListener("click", () => {
+          if (running) return;
+          if (elapsedBeforePause >= options.totalTime()) reset();
+          running = true;
+          startedAt = performance.now();
+          startButton.disabled = true;
+          setControlsDisabled(true);
+          status.textContent = elapsedBeforePause > 0 ? options.resumeText : options.runningText;
+          animationFrame = requestAnimationFrame(animate);
         });
 
-        // Global Simulation State
-        let simState = {
-            g: 9.8,
-            h0: 50, // total height in meters
-            currentH: 50, // remaining height
-            time: 0,
-            velocity: 0,
-            isRunning: false,
-            animId: null,
-            startTime: null,
-            dataPoints: []
-        };
+        pauseButton.addEventListener("click", () => {
+          if (!running) return;
+          elapsedBeforePause += (performance.now() - startedAt) / 1000;
+          running = false;
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+          updateDisplay(elapsedBeforePause);
+          setControlsDisabled(false);
+          startButton.disabled = false;
+          status.textContent = options.pauseText;
+        });
 
-        let vtChart = null;
+        resetButton.addEventListener("click", reset);
 
-        function initChart() {
-            const ctx = document.getElementById('vtChart').getContext('2d');
-            vtChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Kecepatan v (m/s)',
-                        data: [],
-                        borderColor: '#4f46e5',
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.1,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: false,
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Waktu t (sekon)', font: { size: 10 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        y: {
-                            title: { display: true, text: 'Kecepatan v (m/s)', font: { size: 10 } },
-                            beginAtZero: true,
-                            grid: { color: '#f1f5f9' }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    }
-                }
-            });
-        }
+        controls.forEach(control => {
+          control.addEventListener("input", () => {
+            if (!running) reset();
+          });
+        });
 
-        function initSimulation() {
-            const canvas = document.getElementById('simCanvas');
-            const ctx = canvas.getContext('2d');
+        reset();
+      }
 
-            // Responsive Canvas Sizing
-            function resizeCanvas() {
-                canvas.width = canvas.parentElement.clientWidth;
-                canvas.height = canvas.parentElement.clientHeight;
-                drawScene();
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+      const upSpeed = document.getElementById("up-speed");
+      const upGravity = document.getElementById("up-gravity");
 
-            // DOM Controls
-            const gravitySelect = document.getElementById('gravity-select');
-            const heightSlider = document.getElementById('height-slider');
-            const heightVal = document.getElementById('height-val');
-            const btnStart = document.getElementById('btn-start');
-            const btnReset = document.getElementById('btn-reset');
-            const topHLabel = document.getElementById('top-h-label');
+      createMotionSimulation({
+        startId: "up-start",
+        pauseId: "up-pause",
+        resetId: "up-reset",
+        statusId: "up-status",
+        ballId: "up-ball",
+        timeResultId: "up-time-result",
+        positionResultId: "up-height-result",
+        speedResultId: "up-velocity-result",
+        controlIds: ["up-speed", "up-gravity"],
+        outputIds: ["up-speed-value", "up-gravity-value"],
+        readyText: "Siap dilempar",
+        runningText: "Bola bergerak ke atas",
+        resumeText: "Simulasi dilanjutkan",
+        pauseText: "Simulasi dijeda",
+        finishedText: "Bola kembali ke posisi awal",
+        downward: false,
+        updateOutputs: outputs => {
+          outputs[0].textContent = upSpeed.value + " m/s";
+          outputs[1].textContent = decimal(upGravity.value, 1) + " m/s²";
+        },
+        totalTime: () => (2 * Number(upSpeed.value)) / Number(upGravity.value),
+        calculate: time => {
+          const speed = Number(upSpeed.value);
+          const gravity = Number(upGravity.value);
+          const maxHeight = (speed * speed) / (2 * gravity);
+          const position = Math.max(0, speed * time - .5 * gravity * time * time);
+          return { position, speed: speed - gravity * time, ratio: maxHeight === 0 ? 0 : position / maxHeight };
+        },
+        transform: state => "translateY(" + (-state.ratio * 240) + "px)",
+        onReset: () => {}
+      });
 
-            gravitySelect.addEventListener('change', (e) => {
-                simState.g = parseFloat(e.target.value);
-                resetSim();
-            });
+      const downHeight = document.getElementById("down-height");
+      const downSpeed = document.getElementById("down-speed");
+      const downGravity = document.getElementById("down-gravity");
+      const freefallBadge = document.getElementById("freefall-badge");
 
-            heightSlider.addEventListener('input', (e) => {
-                simState.h0 = parseFloat(e.target.value);
-                heightVal.textContent = simState.h0 + " m";
-                topHLabel.textContent = simState.h0 + "m";
-                resetSim();
-            });
+      function updateCaseBadge() {
+        const isFreeFall = Number(downSpeed.value) === 0;
+        freefallBadge.classList.toggle("is-free-fall", isFreeFall);
+        freefallBadge.textContent = isFreeFall ? "Kasus khusus: jatuh bebas" : "Mode lempar ke bawah";
+      }
 
-            btnStart.addEventListener('click', () => {
-                if (simState.isRunning) return;
-                simState.isRunning = true;
-                simState.startTime = performance.now();
-                document.getElementById('sim-status').textContent = 'Sedang Jatuh...';
-                document.getElementById('sim-status').className = 'text-xs font-bold text-emerald-400 animate-pulse';
-                simState.animId = requestAnimationFrame(animateSim);
-            });
-
-            btnReset.addEventListener('click', resetSim);
-
-            function resetSim() {
-                if (simState.animId) cancelAnimationFrame(simState.animId);
-                simState.isRunning = false;
-                simState.time = 0;
-                simState.velocity = 0;
-                simState.currentH = simState.h0;
-                simState.dataPoints = [];
-
-                // Telemetry
-                document.getElementById('tel-time').textContent = "0.00 s";
-                document.getElementById('tel-vel').textContent = "0.0 m/s";
-                document.getElementById('tel-dist').textContent = "0.0 m";
-                document.getElementById('sim-status').textContent = 'Siap Dijatuhkan';
-                document.getElementById('sim-status').className = 'text-xs font-bold text-amber-400';
-
-                // Chart reset
-                vtChart.data.labels = [];
-                vtChart.data.datasets[0].data = [];
-                vtChart.update();
-
-                drawScene();
-            }
-
-            function animateSim(now) {
-                if (!simState.isRunning) return;
-
-                const currentTime = now || performance.now();
-                // Time delta in seconds (scaled for realistic visual playback)
-                const elapsedRealSeconds = (currentTime - simState.startTime) / 1000;
-                simState.time = elapsedRealSeconds;
-
-                // Physics formulas
-                // h_fall = 0.5 * g * t^2
-                const distFallen = 0.5 * simState.g * Math.pow(simState.time, 2);
-                simState.velocity = simState.g * simState.time;
-                simState.currentH = Math.max(0, simState.h0 - distFallen);
-
-                // Telemetry updates
-                document.getElementById('tel-time').textContent = simState.time.toFixed(2) + " s";
-                document.getElementById('tel-vel').textContent = simState.velocity.toFixed(1) + " m/s";
-                document.getElementById('tel-dist').textContent = distFallen.toFixed(1) + " m";
-
-                // Update Chart
-                if (Math.floor(simState.time * 10) % 2 === 0) {
-                    vtChart.data.labels.push(simState.time.toFixed(1));
-                    vtChart.data.datasets[0].data.push(simState.velocity.toFixed(1));
-                    vtChart.update();
-                }
-
-                drawScene();
-
-                if (simState.currentH <= 0) {
-                    // Impact
-                    simState.isRunning = false;
-                    const totalTime = Math.sqrt((2 * simState.h0) / simState.g);
-                    const finalVel = simState.g * totalTime;
-
-                    document.getElementById('tel-time').textContent = totalTime.toFixed(2) + " s";
-                    document.getElementById('tel-vel').textContent = finalVel.toFixed(1) + " m/s";
-                    document.getElementById('tel-dist').textContent = simState.h0.toFixed(1) + " m";
-                    document.getElementById('sim-status').textContent = 'Menumbuk Tanah!';
-                    document.getElementById('sim-status').className = 'text-xs font-bold text-red-400';
-                    return;
-                }
-
-                simState.animId = requestAnimationFrame(animateSim);
-            }
-
-            function drawScene() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (!canvas.width || !canvas.height) return;
-
-                const padding = 30;
-                const groundY = canvas.height - 25;
-                const topY = padding;
-                const usableHeight = Math.max(10, groundY - topY);
-
-                // Ground rendering
-                ctx.fillStyle = '#334155';
-                ctx.fillRect(0, groundY, canvas.width, 25);
-                ctx.strokeStyle = '#1e293b';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(0, groundY);
-                ctx.lineTo(canvas.width, groundY);
-                ctx.stroke();
-
-                // Object Position Y Calculation
-                const safeH0 = simState.h0 > 0 ? simState.h0 : 1;
-                const safeCurrentH = isNaN(simState.currentH) ? safeH0 : Math.max(0, simState.currentH);
-                const fallenRatio = Math.min(1, Math.max(0, (safeH0 - safeCurrentH) / safeH0));
-
-                const ballY = topY + fallenRatio * usableHeight;
-                const ballX = canvas.width / 2;
-                const radius = 14;
-
-                // Safety guard against NaN/non-finite positions
-                if (!isFinite(ballX) || !isFinite(ballY) || isNaN(ballX) || isNaN(ballY)) {
-                    return;
-                }
-
-                // Motion Blur / Motion Trail
-                if (simState.isRunning && simState.velocity > 5) {
-                    ctx.beginPath();
-                    ctx.fillStyle = 'rgba(251, 191, 36, 0.2)';
-                    ctx.arc(ballX, ballY - Math.min(30, simState.velocity), radius, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                // Falling Object (Red/Amber Ball)
-                const gradient = ctx.createRadialGradient(
-                    ballX - 4, 
-                    ballY - 4, 
-                    2, 
-                    ballX, 
-                    ballY, 
-                    radius
-                );
-                gradient.addColorStop(0, '#fef08a');
-                gradient.addColorStop(0.4, '#f59e0b');
-                gradient.addColorStop(1, '#b45309');
-
-                ctx.beginPath();
-                ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
-                ctx.fillStyle = gradient;
-                ctx.shadowColor = 'rgba(245, 158, 11, 0.5)';
-                ctx.shadowBlur = 10;
-                ctx.fill();
-                ctx.shadowBlur = 0; // reset
-
-                // Velocity vector arrow (if moving)
-                if (simState.velocity > 0) {
-                    const arrowLen = Math.min(60, simState.velocity * 1.5);
-                    ctx.strokeStyle = '#38bdf8';
-                    ctx.lineWidth = 3;
-                    ctx.beginPath();
-                    ctx.moveTo(ballX, ballY + radius);
-                    ctx.lineTo(ballX, ballY + radius + arrowLen);
-                    ctx.stroke();
-
-                    // Arrowhead
-                    ctx.fillStyle = '#38bdf8';
-                    ctx.beginPath();
-                    ctx.moveTo(ballX - 5, ballY + radius + arrowLen);
-                    ctx.lineTo(ballX + 5, ballY + radius + arrowLen);
-                    ctx.lineTo(ballX, ballY + radius + arrowLen + 6);
-                    ctx.fill();
-                }
-            }
-        }
-
-        function initCalculator() {
-            const modeSelect = document.getElementById('calc-mode');
-            const inputHGroup = document.getElementById('input-h-group');
-            const inputTGroup = document.getElementById('input-t-group');
-            const btnCalc = document.getElementById('btn-calculate');
-            const outputDiv = document.getElementById('calc-results-output');
-
-            modeSelect.addEventListener('change', (e) => {
-                if (e.target.value === 'h-to-all') {
-                    inputHGroup.classList.remove('hidden');
-                    inputTGroup.classList.add('hidden');
-                } else {
-                    inputHGroup.classList.add('hidden');
-                    inputTGroup.classList.remove('hidden');
-                }
-            });
-
-            btnCalc.addEventListener('click', calculate);
-
-            function calculate() {
-                const mode = modeSelect.value;
-                const g = parseFloat(document.getElementById('calc-g-input').value) || 9.8;
-                let h, t, vt;
-
-                if (mode === 'h-to-all') {
-                    h = parseFloat(document.getElementById('calc-h-input').value) || 0;
-                    if (h <= 0) {
-                        outputDiv.innerHTML = `<p class="text-red-500 font-bold">Ketinggian harus lebih dari 0!</p>`;
-                        return;
-                    }
-                    // t = sqrt(2h/g)
-                    t = Math.sqrt((2 * h) / g);
-                    vt = g * t;
-
-                    outputDiv.innerHTML = `
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                            <p class="font-bold text-indigo-900 text-base">Langkah 1: Menghitung Waktu Jatuh ($t$)</p>
-                            <p>Gunakan rumus ketinggian GJB: $h = \\frac{1}{2} g t^2 \\implies t = \\sqrt{\\frac{2h}{g}}$</p>
-                            <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1">
-                                <p>t = \\sqrt{\\frac{2 \\times ${h}}{${g}}}</p>
-                                <p>t = \\sqrt{\\frac{${(2*h).toFixed(2)}}{${g}}}</p>
-                                <p class="text-indigo-600 font-bold text-sm">t \\approx ${t.toFixed(2)} \\text{ sekon}</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                            <p class="font-bold text-indigo-900 text-base">Langkah 2: Menghitung Kecepatan Akhir ($v_t$)</p>
-                            <p>Gunakan rumus kecepatan: $v_t = \\sqrt{2 g h}$ atau $v_t = g \\cdot t$</p>
-                            <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1">
-                                <p>v_t = ${g} \\times ${t.toFixed(2)}</p>
-                                <p class="text-emerald-600 font-bold text-sm">v_t \\approx ${vt.toFixed(2)} \\text{ m/s}</p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    t = parseFloat(document.getElementById('calc-t-input').value) || 0;
-                    if (t <= 0) {
-                        outputDiv.innerHTML = `<p class="text-red-500 font-bold">Waktu harus lebih dari 0!</p>`;
-                        return;
-                    }
-                    // h = 1/2 g t^2
-                    h = 0.5 * g * Math.pow(t, 2);
-                    vt = g * t;
-
-                    outputDiv.innerHTML = `
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                            <p class="font-bold text-indigo-900 text-base">Langkah 1: Menghitung Ketinggian ($h$)</p>
-                            <p>Gunakan rumus: $h = \\frac{1}{2} g t^2$</p>
-                            <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1">
-                                <p>h = 0.5 \\times ${g} \\times (${t})^2</p>
-                                <p>h = 0.5 \\times ${g} \\times ${Math.pow(t, 2).toFixed(2)}</p>
-                                <p class="text-indigo-600 font-bold text-sm">h = ${h.toFixed(2)} \\text{ meter}</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                            <p class="font-bold text-indigo-900 text-base">Langkah 2: Menghitung Kecepatan Akhir ($v_t$)</p>
-                            <p>Gunakan rumus: $v_t = g \\cdot t$</p>
-                            <div class="bg-slate-50 p-3 rounded-lg font-mono text-xs space-y-1">
-                                <p>v_t = ${g} \\times ${t}</p>
-                                <p class="text-emerald-600 font-bold text-sm">v_t = ${vt.toFixed(2)} \\text{ m/s}</p>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                // Re-render LaTeX inside calculation output
-                renderMathInElement(outputDiv, {
-                    delimiters: [
-                        {left: '$', right: '$', display: false},
-                        {left: '$$', right: '$$', display: true}
-                    ]
-                });
-            }
-
-            // Initial trigger
-            calculate();
-        }
-
-        function initQuiz() {
-            const questions = [
-                {
-                    q: "Manakah syarat utama suatu gerakan benda dikatakan Gerak Jatuh Bebas (GJB)?",
-                    options: [
-                        "Dilemparkan ke bawah dengan kecepatan tinggi",
-                        "Kecepatan awal benda sama dengan nol ($v_0 = 0$)",
-                        "Massa benda harus sangat berat",
-                        "Dipengaruhi oleh gaya dorong angin"
-                    ],
-                    correct: 1,
-                    explanation: "Benar sekali! Pada Gerak Jatuh Bebas, benda hanya **dilepaskan** tanpa dorongan, sehingga kecepatan awalnya selalu nol ($v_0 = 0$)."
-                },
-                {
-                    q: "Dua buah bola (bola besi 5 kg dan bola kasti 0.5 kg) dijatuhkan bersamaan dari ketinggian 20 meter di dalam ruang hampa. Mana yang sampai di tanah lebih dulu?",
-                    options: [
-                        "Bola besi karena lebih berat",
-                        "Bola kasti karena lebih ringan",
-                        "Kedua bola sampai bersamaan",
-                        "Tergantung bentuk bola"
-                    ],
-                    correct: 2,
-                    explanation: "Hebat! Di ruang hampa (tanpa gesekan udara), percepatan jatuh hanya bergantung pada gravitasi ($g$). Massa benda tidak mempengaruhi waktu jatuh."
-                },
-                {
-                    q: "Sebuah kelapa jatuh bebas dari pohon setinggi 5 meter. Jika gravitasi $g = 10 \\text{ m/s}^2$, berapa kecepatan kelapa saat menyentuh tanah?",
-                    options: [
-                        "$5 \\text{ m/s}$",
-                        "$10 \\text{ m/s}$",
-                        "$20 \\text{ m/s}$",
-                        "$50 \\text{ m/s}$"
-                    ],
-                    correct: 1,
-                    explanation: "Tepat! Gunakan rumus $v_t = \\sqrt{2gh} = \\sqrt{2 \\times 10 \\times 5} = \\sqrt{100} = 10 \\text{ m/s}$."
-                }
-            ];
-
-            let currentIndex = 0;
-            let score = 0;
-
-            const qText = document.getElementById('quiz-question');
-            const optsDiv = document.getElementById('quiz-options');
-            const expDiv = document.getElementById('quiz-explanation');
-            const btnNext = document.getElementById('btn-next-question');
-            const progressText = document.getElementById('quiz-progress-text');
-            const scoreText = document.getElementById('quiz-score-text');
-
-            function loadQuestion() {
-                expDiv.classList.add('hidden');
-                btnNext.classList.add('hidden');
-                optsDiv.innerHTML = '';
-
-                const q = questions[currentIndex];
-                progressText.textContent = `Soal ${currentIndex + 1} dari ${questions.length}`;
-                qText.innerHTML = q.q;
-
-                q.options.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/50 font-medium text-slate-700 transition flex items-center justify-between group";
-                    btn.innerHTML = `
-                        <span class="flex items-center gap-3">
-                            <span class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center font-bold text-xs text-slate-500 transition">${String.fromCharCode(65 + idx)}</span>
-                            <span>${opt}</span>
-                        </span>
-                        <i class="ph-bold ph-circle text-slate-300 group-hover:text-indigo-500"></i>
-                    `;
-                    btn.onclick = () => selectAnswer(idx);
-                    optsDiv.appendChild(btn);
-                });
-
-                renderMathInElement(qText, { delimiters: [{left: '$', right: '$', display: false}] });
-                renderMathInElement(optsDiv, { delimiters: [{left: '$', right: '$', display: false}] });
-            }
-
-            function selectAnswer(selectedIdx) {
-                const q = questions[currentIndex];
-                const buttons = optsDiv.querySelectorAll('button');
-
-                // Disable all buttons
-                buttons.forEach(b => b.disabled = true);
-
-                if (selectedIdx === q.correct) {
-                    score += 10;
-                    scoreText.textContent = `Skor: ${score}`;
-                    buttons[selectedIdx].className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold flex items-center justify-between";
-                    expDiv.className = "p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-900 space-y-1";
-                    expDiv.innerHTML = `<p class="font-bold flex items-center gap-2"><i class="ph-bold ph-check-circle text-emerald-600"></i> Jawaban Benar!</p><p class="text-xs leading-relaxed">${q.explanation}</p>`;
-                } else {
-                    buttons[selectedIdx].className = "w-full text-left p-4 rounded-xl border-2 border-red-500 bg-red-50 text-red-900 font-bold flex items-center justify-between";
-                    buttons[q.correct].className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold flex items-center justify-between";
-                    expDiv.className = "p-4 rounded-xl border border-red-200 bg-red-50 text-red-900 space-y-1";
-                    expDiv.innerHTML = `<p class="font-bold flex items-center gap-2"><i class="ph-bold ph-x-circle text-red-600"></i> Kurang Tepat!</p><p class="text-xs leading-relaxed">${q.explanation}</p>`;
-                }
-
-                expDiv.classList.remove('hidden');
-                renderMathInElement(expDiv, { delimiters: [{left: '$', right: '$', display: false}] });
-
-                if (currentIndex < questions.length - 1) {
-                    btnNext.classList.remove('hidden');
-                } else {
-                    btnNext.textContent = "Selesai Kuis";
-                    btnNext.classList.remove('hidden');
-                    btnNext.onclick = () => {
-                        optsDiv.innerHTML = `
-                            <div class="text-center py-6 space-y-3">
-                                <i class="ph-bold ph-trophy text-5xl text-amber-500"></i>
-                                <h5 class="text-xl font-bold text-slate-800">Kuis Selesai!</h5>
-                                <p class="text-sm text-slate-600">Skor Akhir Kamu: <span class="font-extrabold text-indigo-600 text-lg">${score} / ${questions.length * 10}</span></p>
-                                <button onclick="location.reload()" class="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-indigo-700 transition">Ulangi Modul</button>
-                            </div>
-                        `;
-                        expDiv.classList.add('hidden');
-                        btnNext.classList.add('hidden');
-                    };
-                }
-            }
-
-            btnNext.onclick = () => {
-                currentIndex++;
-                loadQuestion();
-            };
-
-            loadQuestion();
-        }
-    </script>
-</body>
+      createMotionSimulation({
+        startId: "down-start",
+        pauseId: "down-pause",
+        resetId: "down-reset",
+        statusId: "down-status",
+        ballId: "down-ball",
+        timeResultId: "down-time-result",
+        positionResultId: "down-distance-result",
+        speedResultId: "down-speed-result",
+        controlIds: ["down-height", "down-speed", "down-gravity"],
+        outputIds: ["down-height-value", "down-speed-value", "down-gravity-value"],
+        readyText: "Siap dijalankan",
+        runningText: "Bola bergerak ke bawah",
+        resumeText: "Simulasi dilanjutkan",
+        pauseText: "Simulasi dijeda",
+        finishedText: "Bola telah mencapai tanah",
+        downward: true,
+        updateOutputs: outputs => {
+          outputs[0].textContent = downHeight.value + " m";
+          outputs[1].textContent = downSpeed.value + " m/s";
+          outputs[2].textContent = decimal(downGravity.value, 1) + " m/s²";
+        },
+        totalTime: () => {
+          const height = Number(downHeight.value);
+          const speed = Number(downSpeed.value);
+          const gravity = Number(downGravity.value);
+          return (-speed + Math.sqrt(speed * speed + 2 * gravity * height)) / gravity;
+        },
+        calculate: time => {
+          const height = Number(downHeight.value);
+          const speed = Number(downSpeed.value);
+          const gravity = Number(downGravity.value);
+          const position = Math.min(height, speed * time + .5 * gravity * time * time);
+          return { position, speed: speed + gravity * time, ratio: position / height };
+        },
+        transform: state => "translateY(" + (state.ratio * 225) + "px)",
+        onReset: updateCaseBadge
+      });
+    });
+  </script>
+ </body>
 </html>
