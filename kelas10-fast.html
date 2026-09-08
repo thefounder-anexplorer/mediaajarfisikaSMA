@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 10 - Level Fast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #1a5276, #3498db);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #2ecc71, #f1c40f);
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 24px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .level-badge i {
+            margin-right: 8px;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 40px;
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .section-header i {
+            font-size: 2rem;
+            color: #3498db;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: #1a5276;
+        }
+
+        .section-header span {
+            background: #3498db;
+            color: white;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        /* GRID CARD */
+        .materi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .materi-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eef2f7;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .materi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .materi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(52, 152, 219, 0.12);
+            border-color: #3498db;
+        }
+
+        .materi-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            color: #3498db;
+            margin-bottom: 12px;
+            display: inline-block;
+            background: #ebf5fb;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .materi-card h3 {
+            font-size: 1.2rem;
+            color: #1a5276;
+            margin-bottom: 8px;
+        }
+
+        .materi-card p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: #eaf2f8;
+            color: #2c3e50;
+        }
+
+        .tag.utbk {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .tag.simulasi {
+            background: #f39c12;
+            color: white;
+        }
+
+        .card-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-youtube {
+            background: #ff0000;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-youtube:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .btn-materi {
+            background: #2ecc71;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-materi:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .btn-simulasi {
+            background: #8e44ad;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-simulasi:hover {
+            background: #7d3c98;
+            transform: translateY(-2px);
+        }
+
+        /* UTBK HIGHLIGHT BOX */
+        .utbk-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 4px solid #f39c12;
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 30px 0 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .utbk-box i {
+            font-size: 1.8rem;
+            color: #f39c12;
+            margin-top: 3px;
+        }
+
+        .utbk-box strong {
+            color: #856404;
+        }
+
+        .utbk-box p {
+            color: #856404;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* RINGKASAN CARD KHUSUS */
+        .card-ringkasan {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #3498db;
+        }
+
+        .card-ringkasan .card-icon {
+            background: #d4edda;
+            color: #27ae60;
+        }
+
+        .card-ringkasan h3 {
+            color: #1a5276;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        footer i {
+            color: #2ecc71;
+            margin: 0 4px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 15px;
+                display: inline-flex;
+            }
+
+            .materi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-wrap: wrap;
+            }
+
+            .section-header span {
+                margin-left: 0;
+            }
+
+            .utbk-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Home
+            </a>
+            <h1><i class="fas fa-graduation-cap"></i> KELAS 10</h1>
+            <p class="subtitle">Level Fast — Ringkasan Cepat & Intensif</p>
+            <div class="level-badge">
+                <i class="fas fa-running"></i> FAST TRACK
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <!-- SECTION HEADER -->
+            <div class="section-header">
+                <i class="fas fa-bolt"></i>
+                <h2>Materi Inti Kelas 10</h2>
+                <span>6 Topik</span>
+            </div>
+
+            <!-- UTBK HIGHLIGHT -->
+            <div class="utbk-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>⚡ Fokus UTBK:</strong>
+                    <p>Kinematika dan Dinamika adalah topik dengan frekuensi tertinggi di UTBK. Kuasai rumus dasar dan trik cepat!</p>
+                </div>
+            </div>
+
+            <!-- GRID MATERI -->
+            <div class="materi-grid">
+
+                <!-- CARD 1: Ringkasan Besaran & Vektor -->
+                <div class="materi-card">
+                    <div class="card-icon"><i class="fas fa-ruler"></i></div>
+                    <h3>Besaran, Satuan & Vektor</h3>
+                    <p>Ringkasan besaran pokok/turunan, notasi ilmiah, dan operasi vektor dasar.</p>
+                    <div class="card-tags">
+                        <span class="tag">Dasar</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/besaran-vektor.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                    </div>
+                </div>
+
+                <!-- CARD 2: Kinematika Ringkas -->
+                <div class="materi-card">
+                    <div class="card-icon"><i class="fas fa-car"></i></div>
+                    <h3>Kinematika Ringkas</h3>
+                    <p>GLB, GLBB, Gerak Jatuh Bebas, dan Gerak Parabola — rumus & trik cepat.</p>
+                    <div class="card-tags">
+                        <span class="tag utbk">UTBK</span>
+                        <span class="tag simulasi">Simulasi</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/kinematika-ringkas.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                        <a href="002_GERAK_PARABOLA/index.html" class="btn-simulasi"><i class="fas fa-play"></i> Simulasi</a>
+                    </div>
+                </div>
+
+                <!-- CARD 3: Gerak Melingkar -->
+                <div class="materi-card">
+                    <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h3>Gerak Melingkar</h3>
+                    <p>Kecepatan sudut, percepatan sentripetal, dan hubungan dengan gerak lurus.</p>
+                    <div class="card-tags">
+                        <span class="tag">Konsep</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/gerak-melingkar.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                    </div>
+                </div>
+
+                <!-- CARD 4: Dinamika Ringkas -->
+                <div class="materi-card">
+                    <div class="card-icon"><i class="fas fa-weight-hanging"></i></div>
+                    <h3>Dinamika Ringkas</h3>
+                    <p>Hukum Newton, gaya gesek, dan aplikasi dalam kehidupan sehari-hari.</p>
+                    <div class="card-tags">
+                        <span class="tag utbk">UTBK</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/dinamika-ringkas.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                    </div>
+                </div>
+
+                <!-- CARD 5: Usaha & Energi -->
+                <div class="materi-card">
+                    <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Usaha & Energi</h3>
+                    <p>Konsep usaha, energi kinetik, potensial, dan hukum kekekalan energi.</p>
+                    <div class="card-tags">
+                        <span class="tag">Konsep</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/usaha-energi.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                    </div>
+                </div>
+
+                <!-- CARD 6: Momentum & Impuls -->
+                <div class="materi-card card-ringkasan">
+                    <div class="card-icon"><i class="fas fa-bowling-ball"></i></div>
+                    <h3>Momentum & Impuls</h3>
+                    <p>Tumbukan, kekekalan momentum, dan hubungan impuls-momentum.</p>
+                    <div class="card-tags">
+                        <span class="tag">Bonus</span>
+                    </div>
+                    <div class="card-links">
+                        <a href="#" class="btn-youtube"><i class="fab fa-youtube"></i> Video</a>
+                        <a href="materi/kelas10/fast/momentum.html" class="btn-materi"><i class="fas fa-file-alt"></i> Materi</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RINGKASAN SUPER -->
+            <div style="margin-top: 30px; text-align: center;">
+                <a href="materi/kelas10/fast/ringkasan-super.html" style="display: inline-block; background: linear-gradient(135deg, #1a5276, #3498db); color: white; padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: all 0.3s; box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);">
+                    <i class="fas fa-star"></i> Download Ringkasan Super
+                </a>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <i class="fas fa-bolt"></i> Kelas 10 · Level Fast · Siap UTBK <i class="fas fa-bolt"></i>
+        </footer>
+    </div>
+</body>
+</html>
