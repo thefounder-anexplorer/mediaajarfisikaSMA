@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelas 10 - Mekanika | Level Steady</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* ===== RESET & GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, #1a2a3a, #2c7fb8);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #f1c40f, #2ecc71);
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        h1 i {
+            margin-right: 12px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            padding: 40px;
+        }
+
+        .hierarchy-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .section-title {
+            color: #1a2a3a;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 15px;
+            color: #2c7fb8;
+        }
+
+        /* ===== MATERI UTAMA ===== */
+        .materi-utama {
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .materi-utama-header {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .materi-utama-header:hover {
+            background: linear-gradient(135deg, #2c3e50, #1a2a3a);
+        }
+
+        .materi-utama-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .materi-utama-title i {
+            margin-right: 15px;
+            color: #f1c40f;
+        }
+
+        .materi-utama-toggle {
+            transition: transform 0.3s;
+        }
+
+        .materi-utama-content {
+            background: white;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease;
+        }
+
+        .materi-utama-content.expanded {
+            max-height: 4000px;
+        }
+
+        /* ===== SUB MATERI LEVEL 1 ===== */
+        .submateri-level1 {
+            border-bottom: 1px solid #eee;
+        }
+        .submateri-level1:last-child {
+            border-bottom: none;
+        }
+
+        .submateri-header {
+            padding: 18px 25px;
+            background: #f1f3f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submateri-header:hover {
+            background: #e9ecef;
+        }
+
+        .submateri-title {
+            font-weight: 600;
+            color: #1a2a3a;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .submateri-title i {
+            margin-right: 12px;
+            color: #2c7fb8;
+        }
+
+        .submateri-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .submateri-content.expanded {
+            max-height: 3000px;
+            padding: 20px;
+            background: #fdfdfd;
+        }
+
+        /* ===== SUB MATERI LEVEL 2 ===== */
+        .submateri-level2 {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-left: 4px solid #2c7fb8;
+        }
+
+        .submateri-level2-title {
+            font-weight: 600;
+            color: #1a2a3a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .submateri-level2-title i {
+            margin-right: 8px;
+            color: #2c7fb8;
+        }
+
+        /* ===== SUB MATERI LEVEL 3 (sub-sub) ===== */
+        .submateri-level3 {
+            background: #e8f0fe;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 10px 0 10px 20px;
+            border-left: 3px solid #2ecc71;
+        }
+
+        .submateri-level3 .submateri-level2-title {
+            color: #27ae60;
+            font-size: 0.95rem;
+        }
+
+        /* ===== DESKRIPSI & LINK ===== */
+        .materi-description {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .materi-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            background: #ff0000;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .youtube-link:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .materi-link {
+            display: inline-flex;
+            align-items: center;
+            background: #2c7fb8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .materi-link:hover {
+            background: #1f5f8a;
+            transform: translateY(-2px);
+        }
+
+        .materi-links i {
+            margin-right: 8px;
+        }
+
+        .path-info {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 6px;
+            font-family: monospace;
+            background: #f1f1f1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .exam-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #1a2a3a;
+            color: white;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .back-button {
+                position: relative;
+                left: 0;
+                top: 0;
+                margin-bottom: 15px;
+                display: inline-flex;
+            }
+
+            .submateri-content.expanded {
+                padding: 15px;
+            }
+
+            .submateri-level3 {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Kembali ke Home
+            </a>
+            <h1><i class="fas fa-cogs"></i> MEKANIKA</h1>
+            <p class="subtitle">Level Steady — Gerak, Gaya, Energi, Momentum &amp; Keseimbangan</p>
+            <div class="level-badge">
+                <i class="fas fa-walking"></i> Level Steady
+            </div>
+        </header>
+
+        <!-- ===== CONTENT ===== -->
+        <div class="content">
+            <div class="hierarchy-container">
+
+                <div class="section-title">
+                    <i class="fas fa-list"></i> Daftar Materi — Mekanika
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- 1. KINEMATIKA                                               -->
+                <!-- ============================================================ -->
+                <div class="materi-utama">
+                    <div class="materi-utama-header" onclick="toggleMateri('kinematika')">
+                        <div class="materi-utama-title">
+                            <i class="fas fa-car"></i> KINEMATIKA
+                        </div>
+                        <div class="materi-utama-toggle" id="kinematika-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="materi-utama-content" id="kinematika-content">
+
+                        <!-- ---- Gerak Lurus ---- -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('gerak-lurus')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-arrow-right"></i> Gerak Lurus
+                                </div>
+                                <div class="submateri-toggle" id="gerak-lurus-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="gerak-lurus-content">
+
+                                <!-- GLB -->
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gerak Lurus Beraturan (GLB)
+                                    </div>
+                                    <p class="materi-description">
+                                        Gerak dengan kecepatan konstan dalam lintasan lurus. <br />
+                                        <strong>v = konstan</strong> &nbsp;·&nbsp; <strong>s = v · t</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/kinematika/gerak-lurus/glb.html</div>
+                                </div>
+
+                                <!-- GLBB -->
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gerak Lurus Berubah Beraturan (GLBB)
+                                    </div>
+                                    <p class="materi-description">
+                                        Gerak dengan percepatan konstan dalam lintasan lurus. <br />
+                                        <strong>a = konstan</strong> &nbsp;·&nbsp; <strong>v = v₀ + a·t</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/kinematika/gerak-lurus/glbb.html</div>
+
+                                    <!-- Gerak Jatuh Bebas (sub-sub) -->
+                                    <div class="submateri-level3">
+                                        <div class="submateri-level2-title">
+                                            <i class="fas fa-caret-right"></i> Gerak Jatuh Bebas (GJB)
+                                        </div>
+                                        <p class="materi-description">
+                                            Kasus khusus GLBB dengan percepatan gravitasi <br />
+                                            <strong>g = 9,8 m/s²</strong> (atau 10 m/s²)
+                                        </p>
+                                        <div class="materi-links">
+                                            <a href="#" class="youtube-link" target="_blank">
+                                                <i class="fab fa-youtube"></i> Video Pembelajaran
+                                            </a>
+                                            <a href="#" class="materi-link">
+                                                <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                            </a>
+                                        </div>
+                                        <div class="path-info">/materi/kelas10/steady/kinematika/gerak-lurus/glbb/gjb.html</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- ---- Gerak Parabola ---- -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('gerak-parabola')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-chart-line"></i> Gerak Parabola
+                                </div>
+                                <div class="submateri-toggle" id="gerak-parabola-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="gerak-parabola-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Analisis Gerak Parabola
+                                    </div>
+                                    <p class="materi-description">
+                                        Gerak benda yang membentuk lintasan parabola akibat pengaruh gravitasi. <br />
+                                        Komponen horizontal: GLB &nbsp;·&nbsp; Komponen vertikal: GLBB
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi &amp; Simulasi
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/kinematika/gerak-parabola.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ---- Gerak Melingkar ---- -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('gerak-melingkar')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-circle"></i> Gerak Melingkar
+                                </div>
+                                <div class="submateri-toggle" id="gerak-melingkar-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="gerak-melingkar-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gerak Melingkar Beraturan (GMB)
+                                    </div>
+                                    <p class="materi-description">
+                                        Gerak melingkar dengan kecepatan sudut konstan. <br />
+                                        <strong>ω = konstan</strong> &nbsp;·&nbsp; <strong>v = ω · R</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/kinematika/gerak-melingkar/gmb.html</div>
+                                </div>
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gerak Melingkar Berubah Beraturan (GMBB)
+                                    </div>
+                                    <p class="materi-description">
+                                        Gerak melingkar dengan percepatan sudut konstan. <br />
+                                        <strong>α = konstan</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/kinematika/gerak-melingkar/gmbb.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- 2. DINAMIKA                                               -->
+                <!-- ============================================================ -->
+                <div class="materi-utama">
+                    <div class="materi-utama-header" onclick="toggleMateri('dinamika')">
+                        <div class="materi-utama-title">
+                            <i class="fas fa-weight-hanging"></i> DINAMIKA
+                        </div>
+                        <div class="materi-utama-toggle" id="dinamika-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="materi-utama-content" id="dinamika-content">
+
+                        <!-- Hukum Newton -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('hukum-newton')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-balance-scale"></i> Hukum Newton
+                                </div>
+                                <div class="submateri-toggle" id="hukum-newton-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="hukum-newton-content">
+
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Hukum I Newton (Inersia)
+                                    </div>
+                                    <p class="materi-description">
+                                        Benda yang diam akan tetap diam, benda yang bergerak akan tetap bergerak
+                                        dengan kecepatan konstan jika <strong>ΣF = 0</strong>.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/hukum-newton/hukum-1.html</div>
+                                </div>
+
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Hukum II Newton (F = ma)
+                                    </div>
+                                    <p class="materi-description">
+                                        Percepatan berbanding lurus dengan gaya total dan berbanding terbalik
+                                        dengan massa benda. <br />
+                                        <strong>ΣF = m · a</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/hukum-newton/hukum-2.html</div>
+                                </div>
+
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Hukum III Newton (Aksi–Reaksi)
+                                    </div>
+                                    <p class="materi-description">
+                                        Untuk setiap aksi, selalu ada reaksi yang sama besar dan berlawanan arah. <br />
+                                        <strong>F aksi = –F reaksi</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/hukum-newton/hukum-3.html</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Gaya Gesek -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('gaya-gesek')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-hand-rock"></i> Gaya Gesek
+                                </div>
+                                <div class="submateri-toggle" id="gaya-gesek-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="gaya-gesek-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gaya Gesek Statis &amp; Kinetis
+                                    </div>
+                                    <p class="materi-description">
+                                        Gesekan statis: <strong>fₛ = μₛ · N</strong> (maksimum) <br />
+                                        Gesekan kinetis: <strong>fₖ = μₖ · N</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/gaya-gesek.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gaya Normal & Tegangan Tali -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('gaya-normal')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-arrows-alt-v"></i> Gaya Normal &amp; Tegangan Tali
+                                </div>
+                                <div class="submateri-toggle" id="gaya-normal-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="gaya-normal-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gaya Normal
+                                    </div>
+                                    <p class="materi-description">
+                                        Gaya reaksi dari bidang sentuh yang tegak lurus permukaan. <br />
+                                        Pada bidang datar: <strong>N = m · g</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/gaya-normal.html</div>
+                                </div>
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Tegangan Tali
+                                    </div>
+                                    <p class="materi-description">
+                                        Gaya yang bekerja pada tali akibat tarikan atau beban.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/dinamika/tegangan-tali.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- 3. STATIKA                                               -->
+                <!-- ============================================================ -->
+                <div class="materi-utama">
+                    <div class="materi-utama-header" onclick="toggleMateri('statika')">
+                        <div class="materi-utama-title">
+                            <i class="fas fa-archway"></i> STATIKA
+                        </div>
+                        <div class="materi-utama-toggle" id="statika-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="materi-utama-content" id="statika-content">
+
+                        <!-- Keseimbangan Benda Tegar -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('keseimbangan')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-chess-queen"></i> Keseimbangan Benda Tegar
+                                </div>
+                                <div class="submateri-toggle" id="keseimbangan-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="keseimbangan-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Syarat Keseimbangan
+                                    </div>
+                                    <p class="materi-description">
+                                        Benda tegar dikatakan setimbang jika: <br />
+                                        <strong>ΣF = 0</strong> &nbsp;dan&nbsp; <strong>Στ = 0</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/statika/keseimbangan.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Momen Gaya (Torsi) -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('torsi')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-sync-alt"></i> Momen Gaya (Torsi)
+                                </div>
+                                <div class="submateri-toggle" id="torsi-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="torsi-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Pengertian &amp; Perhitungan Torsi
+                                    </div>
+                                    <p class="materi-description">
+                                        Kecenderungan gaya untuk memutar benda. <br />
+                                        <strong>τ = r · F · sin θ</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/statika/torsi.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Titik Berat -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('titik-berat')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-dot-circle"></i> Titik Berat
+                                </div>
+                                <div class="submateri-toggle" id="titik-berat-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="titik-berat-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Titik Berat Benda
+                                    </div>
+                                    <p class="materi-description">
+                                        Titik tangkap resultan gaya berat dari semua partikel penyusun benda.
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/statika/titik-berat.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- 4. MEKANIKA FLUIDA                                        -->
+                <!-- ============================================================ -->
+                <div class="materi-utama">
+                    <div class="materi-utama-header" onclick="toggleMateri('fluida')">
+                        <div class="materi-utama-title">
+                            <i class="fas fa-water"></i> MEKANIKA FLUIDA
+                        </div>
+                        <div class="materi-utama-toggle" id="fluida-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="materi-utama-content" id="fluida-content">
+
+                        <!-- Tekanan Hidrostatis -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('tekanan-hidrostatis')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-arrow-down"></i> Tekanan Hidrostatis
+                                </div>
+                                <div class="submateri-toggle" id="tekanan-hidrostatis-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="tekanan-hidrostatis-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Tekanan pada Fluida Statis
+                                    </div>
+                                    <p class="materi-description">
+                                        Tekanan yang dialami oleh suatu titik di dalam fluida akibat berat fluida di atasnya. <br />
+                                        <strong>P = ρ · g · h</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/fluida/tekanan-hidrostatis.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hukum Pascal -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('pascal')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-arrows-alt-h"></i> Hukum Pascal
+                                </div>
+                                <div class="submateri-toggle" id="pascal-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="pascal-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Penerapan Hukum Pascal
+                                    </div>
+                                    <p class="materi-description">
+                                        Tekanan yang diberikan pada fluida dalam ruang tertutup akan diteruskan ke segala arah dengan sama besar. <br />
+                                        <strong>P₁ = P₂</strong> &nbsp;→&nbsp; <strong>F₁/A₁ = F₂/A₂</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/fluida/hukum-pascal.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hukum Archimedes -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('archimedes')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-ship"></i> Hukum Archimedes
+                                </div>
+                                <div class="submateri-toggle" id="archimedes-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="archimedes-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Gaya Apung (Gaya Ke Atas)
+                                    </div>
+                                    <p class="materi-description">
+                                        Benda yang dicelupkan ke dalam fluida mendapat gaya ke atas sebesar berat fluida yang dipindahkan. <br />
+                                        <strong>Fₐ = ρ · g · V</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/fluida/hukum-archimedes.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fluida Dinamis (Azas Bernoulli) -->
+                        <div class="submateri-level1">
+                            <div class="submateri-header" onclick="toggleSubMateri('bernoulli')">
+                                <div class="submateri-title">
+                                    <i class="fas fa-wind"></i> Fluida Dinamis (Azas Bernoulli)
+                                </div>
+                                <div class="submateri-toggle" id="bernoulli-toggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="submateri-content" id="bernoulli-content">
+                                <div class="submateri-level2">
+                                    <div class="submateri-level2-title">
+                                        <i class="fas fa-caret-right"></i> Persamaan Bernoulli
+                                    </div>
+                                    <p class="materi-description">
+                                        Hubungan antara tekanan, kecepatan, dan ketinggian pada fluida yang mengalir. <br />
+                                        <strong>P + ½ρv² + ρgh = konstan</strong>
+                                    </p>
+                                    <div class="materi-links">
+                                        <a href="#" class="youtube-link" target="_blank">
+                                            <i class="fab fa-youtube"></i> Video Pembelajaran
+                                        </a>
+                                        <a href="#" class="materi-link">
+                                            <i class="fas fa-external-link-alt"></i> Materi Lengkap
+                                        </a>
+                                    </div>
+                                    <div class="path-info">/materi/kelas10/steady/fluida/bernoulli.html</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- end hierarchy-container -->
+        </div>
+        <!-- end content -->
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <p>Kelas 10 — Level Steady | Mekanika · Portal Fisika</p>
+        </footer>
+
+    </div>
+    <!-- end container -->
+
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // Toggle materi utama
+        function toggleMateri(materiId) {
+            const content = document.getElementById(materiId + '-content');
+            const toggle = document.getElementById(materiId + '-toggle');
+            if (!content || !toggle) return;
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            }
+        }
+
+        // Toggle sub materi
+        function toggleSubMateri(subId) {
+            const content = document.getElementById(subId + '-content');
+            const toggle = document.getElementById(subId + '-toggle');
+            if (!content || !toggle) return;
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                content.classList.add('expanded');
+                toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            }
+        }
+
+        // Auto-expand materi pertama (Kinematika) setelah halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const kinematikaContent = document.getElementById('kinematika-content');
+                const kinematikaToggle = document.getElementById('kinematika-toggle');
+                if (kinematikaContent && kinematikaToggle) {
+                    kinematikaContent.classList.add('expanded');
+                    kinematikaToggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                }
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
