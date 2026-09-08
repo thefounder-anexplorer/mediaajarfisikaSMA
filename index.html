@@ -27,6 +27,7 @@
             --gradient-3: linear-gradient(135deg, #9b59b6, #8e44ad);
             --gradient-classic: linear-gradient(135deg, #2c3e50, #34495e);
             --gradient-modern: linear-gradient(135deg, #6c3483, #4a235a);
+            --gradient-intro: linear-gradient(135deg, #f39c12, #e67e22);
         }
 
         body {
@@ -147,6 +148,13 @@
             margin-right: 12px;
         }
 
+        .section-divider.intro-divider h2 {
+            color: #e67e22;
+        }
+        .section-divider.intro-divider i {
+            color: #f39c12;
+        }
+
         .section-divider.classic h2 {
             color: #2c3e50;
         }
@@ -245,6 +253,9 @@
             height: 5px;
         }
 
+        .kelas-card.intro-card::before {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+        }
         .kelas-card.classic-card::before {
             background: linear-gradient(to right, #3498db, #2c3e50);
         }
@@ -271,6 +282,9 @@
             text-align: center;
         }
 
+        .kelas-card.intro-card .kelas-icon {
+            color: #f39c12;
+        }
         .kelas-card.classic-card .kelas-icon {
             color: #3498db;
         }
@@ -325,6 +339,14 @@
             background: linear-gradient(135deg, #2ecc71, #27ae60);
         }
 
+        .level-btn.intro-steady {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .level-btn.intro-fast {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
         .level-btn i {
             display: block;
             font-size: 1.5rem;
@@ -365,6 +387,16 @@
         .toggle-btn:hover {
             background: #eaf2f8;
             border-color: #2980b9;
+        }
+
+        .toggle-btn.intro-toggle {
+            border-color: #f39c12;
+            color: #e67e22;
+        }
+
+        .toggle-btn.intro-toggle:hover {
+            background: #fef9e7;
+            border-color: #e67e22;
         }
 
         .toggle-btn i {
@@ -450,6 +482,10 @@
             background: #8e44ad;
             color: #fff;
         }
+        .badge.intro-badge {
+            background: #e67e22;
+            color: #fff;
+        }
 
         /* Warna icon */
         .menu-item .fa-car {
@@ -499,6 +535,18 @@
         }
         .menu-item .fa-asterisk {
             color: #9b59b6;
+        }
+        .menu-item .fa-ruler {
+            color: #e67e22;
+        }
+        .menu-item .fa-clock {
+            color: #f39c12;
+        }
+        .menu-item .fa-weight {
+            color: #e67e22;
+        }
+        .menu-item .fa-thermometer-half {
+            color: #e74c3c;
         }
 
         .quiz-divider {
@@ -631,6 +679,90 @@
                 <strong>Level Steady</strong> (bertahap &amp; detail) dan <strong>Level Fast</strong> (cepat &amp; intensif),
                 serta latihan soal dan quiz per subtopik.
             </p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== SECTION: PENDAHULUAN FISIKA (Besaran & Pengukuran) ===== -->
+        <!-- ============================================================ -->
+        <div class="section-divider intro-divider">
+            <h2><i class="fas fa-ruler"></i> Pendahuluan Fisika</h2>
+        </div>
+
+        <div class="kelas-container">
+            <div class="kelas-card intro-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="kelas-title">Besaran &amp; Pengukuran</div>
+                </div>
+                <div class="kelas-description">
+                    Besaran Pokok, Besaran Turunan, Satuan SI, Konversi Satuan, Angka Penting, dan Pengukuran.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="besaran-steady.html" class="level-btn intro-steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="besaran-fast.html" class="level-btn intro-fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn intro-toggle" onclick="toggleMenu('besaran-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="besaran-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/besaran/besaran-pokok.html" class="menu-item">
+                                <i class="fas fa-ruler"></i> Besaran Pokok
+                                <span class="badge intro-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/besaran/besaran-turunan.html" class="menu-item">
+                                <i class="fas fa-cubes"></i> Besaran Turunan
+                                <span class="badge intro-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/besaran/satuan-si.html" class="menu-item">
+                                <i class="fas fa-weight"></i> Satuan SI
+                                <span class="badge intro-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/besaran/konversi.html" class="menu-item">
+                                <i class="fas fa-exchange-alt"></i> Konversi Satuan
+                                <span class="badge intro-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/besaran/angka-penting.html" class="menu-item">
+                                <i class="fas fa-calculator"></i> Angka Penting
+                                <span class="badge intro-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/besaran/pengukuran.html" class="menu-item">
+                                <i class="fas fa-clock"></i> Pengukuran &amp; Ketidakpastian
+                                <span class="badge intro-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/besaran/besaran-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Besaran &amp; Satuan
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/besaran/konversi-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Konversi Satuan
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/besaran/angka-penting-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Angka Penting
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ============================================================ -->
