@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuis Gerak Parabola</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --ink: #172033;
+            --paper: #fffdf8;
+            --orange: #ef6c35;
+            --orange-dark: #c84d20;
+            --line: #eadfce;
+            --teal: #20796e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            width: 100%;
+            min-height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            color: var(--ink);
+            background-color: #f3eadb;
+        }
+
+        .app-shell {
+            width: 100%;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(239, 108, 53, .16) 0 110px, transparent 111px),
+                radial-gradient(circle at 95% 88%, rgba(32, 121, 110, .14) 0 160px, transparent 161px),
+                #f3eadb;
+        }
+
+        .quiz-paper {
+            box-shadow: 0 24px 70px rgba(66, 42, 17, .16);
+        }
+
+        .progress-fill {
+            width: 10%;
+            transition: width .35s ease;
+        }
+
+        .slide {
+            display: none;
+            animation: enter .35s ease both;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes enter {
+            from {
+                opacity: 0;
+                transform: translateX(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .answer-option {
+            transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+
+        .answer-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--orange);
+        }
+
+        .answer-option.selected {
+            background: #fff0e8 !important;
+            border-color: var(--orange) !important;
+            box-shadow: 0 6px 0 rgba(239, 108, 53, .15);
+        }
+
+        .answer-option.selected .choice-letter {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        .answer-option.correct-reveal {
+            background: #e6f5ed !important;
+            border-color: var(--teal) !important;
+        }
+
+        .answer-option.correct-reveal .choice-letter {
+            background: var(--teal);
+            color: white;
+            border-color: var(--teal);
+        }
+
+        .answer-option.wrong-reveal {
+            background: #fde8e8 !important;
+            border-color: #c0392b !important;
+        }
+
+        .answer-option.wrong-reveal .choice-letter {
+            background: #c0392b;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .choice-letter {
+            transition: all .18s ease;
+        }
+
+        .nav-button:disabled {
+            opacity: .38;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .result-screen {
+            display: none;
+        }
+        .result-screen.active {
+            display: block;
+            animation: enter .4s ease both;
+        }
+
+        .slide:focus {
+            outline: none;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #20796e;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .quiz-paper {
+                border-radius: 24px;
+            }
+            .answer-option {
+                padding: 14px !important;
+            }
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .letter-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #d7c8b5;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: all .18s ease;
+        }
+
+        .answer-option.selected .letter-tag {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+        }
+
+        .answer-option.correct-reveal .letter-tag {
+            background: var(--teal);
+            color: #fff;
+            border-color: var(--teal);
+        }
+
+        .answer-option.wrong-reveal .letter-tag {
+            background: #c0392b;
+            color: #fff;
+            border-color: #c0392b;
+        }
+
+        .question-number {
+            color: var(--orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-shell">
+
+        <!-- HEADER -->
+        <header class="w-full px-4 pt-7 sm:px-8 sm:pt-10">
+            <div class="mx-auto flex max-w-4xl items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#20796e] text-white shadow-lg shadow-[#20796e]/20" aria-hidden="true">
+                        <i data-lucide="rocket" class="h-5 w-5"></i>
+                    </div>
+                    <div>
+                        <p class="m-0 text-xs font-bold uppercase tracking-[0.18em] text-[#20796e]">Kuis Fisika</p>
+                        <h1 class="m-0 text-xl font-bold leading-tight text-[#172033]">Gerak Parabola</h1>
+                    </div>
+                </div>
+                <div class="rounded-full bg-[#20796e]/10 px-4 py-2 text-sm font-bold text-[#20796e]">
+                    <span id="progress-badge">1 / 10</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN -->
+        <main class="w-full px-4 py-7 sm:px-8 sm:py-10">
+            <section class="quiz-paper mx-auto max-w-4xl overflow-hidden rounded-[32px] border border-[#eadfce]">
+
+                <!-- Progress Bar -->
+                <div class="border-b border-[#eadfce] bg-[#fff9ef] px-6 py-5 sm:px-10">
+                    <div class="mb-3 flex items-center justify-between gap-4">
+                        <p id="progress-label" class="m-0 text-sm font-semibold text-[#5f604f]" aria-live="polite">Soal 1 dari 10</p>
+                        <p id="progress-caption" class="m-0 text-sm font-medium text-[#5f604f]">Pilih satu jawaban</p>
+                    </div>
+                    <div class="h-3 overflow-hidden rounded-full bg-[#eadfce]" aria-hidden="true">
+                        <div id="progress-fill" class="progress-fill h-full rounded-full bg-[#ef6c35]"></div>
+                    </div>
+                </div>
+
+                <!-- Questions -->
+                <div class="bg-[#fffdf8] px-6 py-8 sm:px-10 sm:py-11">
+
+                    <!-- SLIDE 1 -->
+                    <section class="slide active" data-index="0" data-correct="1" tabindex="-1">
+                        <p class="question-number">Soal 1</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Gerak parabola merupakan perpaduan antara dua gerak, yaitu …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>GLB pada sumbu X dan GLB pada sumbu Y</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>GLB pada sumbu X dan GLBB pada sumbu Y</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>GLBB pada sumbu X dan GLB pada sumbu Y</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>GLBB pada sumbu X dan GLBB pada sumbu Y</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>GLB pada sumbu X dan gerak melingkar</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 2 -->
+                    <section class="slide" data-index="1" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 2</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Pada titik tertinggi (puncak) lintasan gerak parabola, kecepatan benda pada sumbu Y adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>Maksimum</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>Minimum</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>Nol</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>Sama dengan kecepatan awal</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>Dua kali kecepatan awal</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 3 -->
+                    <section class="slide" data-index="2" data-correct="1" tabindex="-1">
+                        <p class="question-number">Soal 3</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sudut elevasi yang menghasilkan jarak tembak (jangkauan) terjauh pada gerak parabola adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>30°</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>45°</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>60°</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>75°</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>90°</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 4 -->
+                    <section class="slide" data-index="3" data-correct="0" tabindex="-1">
+                        <p class="question-number">Soal 4</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Waktu yang diperlukan benda untuk mencapai titik tertinggi pada gerak parabola dirumuskan sebagai …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>t = v₀ sin θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>t = v₀ cos θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>t = v₀ sin 2θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>t = 2 v₀ sin θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>t = v₀² sin θ / g</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 5 -->
+                    <section class="slide" data-index="4" data-correct="1" tabindex="-1">
+                        <p class="question-number">Soal 5</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Jarak horizontal maksimum (jangkauan) pada gerak parabola dirumuskan sebagai …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>x_max = v₀² sin θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>x_max = v₀² sin 2θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>x_max = v₀² cos θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>x_max = 2 v₀² sin θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>x_max = v₀² sin² θ / 2g</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 6 -->
+                    <section class="slide" data-index="5" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 6</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Ketinggian maksimum yang dicapai benda pada gerak parabola dirumuskan sebagai …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>h_max = v₀² sin θ / 2g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>h_max = v₀² sin² θ / g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>h_max = v₀² sin² θ / 2g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>h_max = v₀² cos² θ / 2g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>h_max = v₀² sin 2θ / g</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 7 -->
+                    <section class="slide" data-index="6" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 7</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Pada gerak parabola, percepatan pada sumbu X (horizontal) adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>g (percepatan gravitasi)</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>–g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>0</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>v₀ cos θ</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>v₀ sin θ</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 8 -->
+                    <section class="slide" data-index="7" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 8</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Pada gerak parabola, percepatan pada sumbu Y (vertikal) adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>0</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>v₀ sin θ</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>–g (percepatan gravitasi ke bawah)</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>g</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>v₀ cos θ</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 9 -->
+                    <section class="slide" data-index="8" data-correct="2" tabindex="-1">
+                        <p class="question-number">Soal 9</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Bentuk lintasan yang ditempuh oleh benda yang bergerak parabola adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>Garis lurus</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>Lingkaran</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>Parabola</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>Elips</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>Hiperbola</button>
+                        </div>
+                    </section>
+
+                    <!-- SLIDE 10 -->
+                    <section class="slide" data-index="9" data-correct="1" tabindex="-1">
+                        <p class="question-number">Soal 10</p>
+                        <h2 class="mb-7 text-xl font-bold leading-snug text-[#172033] sm:text-2xl">Sebuah bola ditembakkan dengan kecepatan awal 20 m/s dan sudut elevasi 30°. Jika percepatan gravitasi 10 m/s², waktu yang diperlukan bola untuk mencapai titik tertinggi adalah …</h2>
+                        <div class="choice-grid">
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="0"><span class="letter-tag">A</span>0,5 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="1"><span class="letter-tag">B</span>1,0 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="2"><span class="letter-tag">C</span>1,5 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="3"><span class="letter-tag">D</span>2,0 s</button>
+                            <button class="answer-option flex w-full items-center gap-4 rounded-2xl border-2 border-[#eadfce] bg-white p-4 text-left font-semibold text-[#172033]" type="button" data-answer="4"><span class="letter-tag">E</span>2,5 s</button>
+                        </div>
+                    </section>
+
+                    <!-- RESULT SCREEN -->
+                    <section id="result-screen" class="result-screen text-center" aria-live="polite">
+                        <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#e5f3ee] text-[#20796e]">
+                            <i data-lucide="award" class="h-8 w-8"></i>
+                        </div>
+                        <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-[#ef6c35]">Kuis Selesai</p>
+                        <h2 class="mb-3 text-2xl font-bold text-[#172033] sm:text-3xl">Hasil Kuis Gerak Parabola</h2>
+                        <p id="score-output" class="mb-3 font-['Fraunces'] text-6xl font-extrabold text-[#20796e]"></p>
+                        <p id="score-message" class="mx-auto max-w-md text-lg leading-relaxed text-[#5f604f]"></p>
+                        <button id="restart-button" type="button" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#ef6c35] px-6 py-3 font-bold text-white shadow-lg shadow-[#ef6c35]/20 transition hover:-translate-y-0.5 hover:bg-[#d85d2a]">
+                            <i data-lucide="rotate-ccw" class="h-4 w-4"></i> Ulangi Kuis
+                        </button>
+                    </section>
+                </div>
+
+                <!-- NAVIGATION -->
+                <div id="navigation" class="flex items-center justify-between border-t border-[#eadfce] bg-[#fff9ef] px-6 py-5 sm:px-10">
+                    <button id="back-button" type="button" class="nav-button inline-flex items-center gap-2 rounded-xl border border-[#d7c8b5] bg-white px-5 py-3 font-bold text-[#172033] transition hover:bg-[#f7eee1] disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i> Kembali
+                    </button>
+                    <button id="next-button" type="button" class="nav-button inline-flex items-center gap-2 rounded-xl bg-[#ef6c35] px-5 py-3 font-bold text-white shadow-lg shadow-[#ef6c35]/20 transition hover:-translate-y-0.5 hover:bg-[#d85d2a] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                        <span id="next-label">Lanjut</span>
+                        <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </button>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="w-full px-4 pb-8 text-center sm:px-8">
+            <p class="m-0 text-sm text-[#5f604f]">Kuis Interaktif — Gerak Parabola</p>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            const slides = [...document.querySelectorAll('.slide')];
+            const answers = Array(slides.length).fill(null);
+            let currentIndex = 0;
+            let quizEnded = false;
+
+            const progressLabel = document.getElementById('progress-label');
+            const progressBadge = document.getElementById('progress-badge');
+            const progressFill = document.getElementById('progress-fill');
+            const backButton = document.getElementById('back-button');
+            const nextButton = document.getElementById('next-button');
+            const nextLabel = document.getElementById('next-label');
+            const navigation = document.getElementById('navigation');
+            const resultScreen = document.getElementById('result-screen');
+            const progressCaption = document.getElementById('progress-caption');
+
+            function renderSlide() {
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+
+                const activeSlide = slides[currentIndex];
+                const selectedAnswer = answers[currentIndex];
+
+                activeSlide.querySelectorAll('.answer-option').forEach((button) => {
+                    const isSelected = Number(button.dataset.answer) === selectedAnswer;
+                    button.classList.toggle('selected', isSelected);
+                    button.setAttribute('aria-pressed', String(isSelected));
+                });
+
+                const total = slides.length;
+                const num = currentIndex + 1;
+                progressLabel.textContent = `Soal ${num} dari ${total}`;
+                progressBadge.textContent = `${num} / ${total}`;
+                progressFill.style.width = `${((currentIndex + 1) / total) * 100}%`;
+                backButton.disabled = currentIndex === 0;
+                nextLabel.textContent = currentIndex === slides.length - 1 ? 'Lihat Hasil' : 'Lanjut';
+                activeSlide.focus({ preventScroll: true });
+
+                // update caption
+                const hasAnswer = answers[currentIndex] !== null;
+                progressCaption.textContent = hasAnswer ? 'Jawaban tersimpan' : 'Pilih satu jawaban';
+            }
+
+            function showResult() {
+                let score = 0;
+                slides.forEach((slide, index) => {
+                    if (answers[index] === Number(slide.dataset.correct)) score += 1;
+                });
+
+                slides.forEach(slide => slide.classList.remove('active'));
+                navigation.style.display = 'none';
+                progressLabel.textContent = 'Kuis selesai';
+                progressBadge.textContent = '✓';
+                progressFill.style.width = '100%';
+                progressCaption.textContent = 'Lihat skor kamu!';
+                resultScreen.classList.add('active');
+                quizEnded = true;
+
+                document.getElementById('score-output').textContent = `${score} / ${slides.length}`;
+
+                let msg = '';
+                if (score >= 9) msg = '🌟 Luar biasa! Kamu menguasai gerak parabola dengan sangat baik.';
+                else if (score >= 7) msg = '👍 Bagus! Pemahamanmu sudah kuat, pertahankan!';
+                else if (score >= 5) msg = '📖 Cukup baik. Pelajari kembali konsep-konsep dasarnya.';
+                else msg = '💪 Jangan menyerah! Ulangi kuis dan pelajari lagi materi gerak parabola.';
+                document.getElementById('score-message').textContent = msg;
+            }
+
+            // Attach click listeners to all answer buttons
+            slides.forEach((slide, index) => {
+                slide.querySelectorAll('.answer-option').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        if (quizEnded) return;
+                        const val = Number(button.dataset.answer);
+                        answers[index] = val;
+                        renderSlide();
+                    });
+                });
+            });
+
+            backButton.addEventListener('click', () => {
+                if (quizEnded) return;
+                if (currentIndex > 0) {
+                    currentIndex -= 1;
+                    renderSlide();
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (quizEnded) return;
+                if (currentIndex === slides.length - 1) {
+                    showResult();
+                } else {
+                    currentIndex += 1;
+                    renderSlide();
+                }
+            });
+
+            document.getElementById('restart-button').addEventListener('click', () => {
+                answers.fill(null);
+                currentIndex = 0;
+                quizEnded = false;
+                resultScreen.classList.remove('active');
+                navigation.style.display = 'flex';
+                renderSlide();
+                // scroll to top of quiz
+                document.querySelector('.quiz-paper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && !backButton.disabled) {
+                    backButton.click();
+                } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    if (!nextButton.disabled) nextButton.click();
+                }
+            });
+
+            lucide.createIcons();
+            renderSlide();
+        })();
+    </script>
+
+</body>
+</html>
