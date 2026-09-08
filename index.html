@@ -13,39 +13,44 @@
             --light: #ecf0f1;
             --success: #2ecc71;
             --warning: #f39c12;
+            --danger: #e74c3c;
+            --gradient-1: linear-gradient(135deg, #3498db, #2c3e50);
+            --gradient-2: linear-gradient(135deg, #1abc9c, #16a085);
+            --gradient-3: linear-gradient(135deg, #9b59b6, #8e44ad);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
             color: #333;
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
         }
-        
+
+        /* ===== HEADER ===== */
         header {
-            padding: 50px 20px;
+            padding: 50px 30px;
             margin-bottom: 40px;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: var(--gradient-1);
             color: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.3);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
-        
+
         header::before {
             content: '';
             position: absolute;
@@ -56,242 +61,396 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
         }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
-        }
-        
+
         h1 {
             font-size: 3.5rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-            letter-spacing: 1px;
             position: relative;
             z-index: 1;
         }
-        
+
         .subtitle {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             opacity: 0.9;
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.5;
             position: relative;
             z-index: 1;
         }
-        
+
+        /* ===== INTRO ===== */
         .intro {
             max-width: 900px;
-            margin: 0 auto 50px;
-            padding: 30px;
+            margin: 0 auto 40px;
+            padding: 25px 30px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             border-left: 5px solid var(--accent);
+            text-align: center;
         }
-        
+
         .intro h2 {
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 1.8rem;
         }
-        
+
         .intro p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.7;
             color: #555;
         }
-        
+
+        /* ===== KELAS CONTAINER ===== */
         .kelas-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
-            margin-top: 30px;
+            margin-bottom: 40px;
         }
-        
+
         .kelas-card {
             background: white;
             border-radius: 20px;
-            padding: 35px 30px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .kelas-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .kelas-card:nth-child(1)::before { background: linear-gradient(to right, #3498db, #2980b9); }
+        .kelas-card:nth-child(2)::before { background: linear-gradient(to right, #9b59b6, #8e44ad); }
+        .kelas-card:nth-child(3)::before { background: linear-gradient(to right, #1abc9c, #16a085); }
+
         .kelas-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
             border-color: var(--accent);
         }
-        
+
         .kelas-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        
+
         .kelas-icon {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-right: 15px;
         }
-        
-        .kelas-10 .kelas-icon { color: #3498db; }
-        .kelas-11 .kelas-icon { color: #9b59b6; }
-        .kelas-12 .kelas-icon { color: #1abc9c; }
-        
+
+        .kelas-card:nth-child(1) .kelas-icon { color: #3498db; }
+        .kelas-card:nth-child(2) .kelas-icon { color: #9b59b6; }
+        .kelas-card:nth-child(3) .kelas-icon { color: #1abc9c; }
+
         .kelas-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: bold;
             color: var(--primary);
         }
-        
+
         .kelas-description {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #666;
-            margin-bottom: 25px;
+            margin-bottom: 18px;
             line-height: 1.6;
         }
-        
-        /* Level Buttons dalam satu card */
+
         .level-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
-        
+
         .level-btn {
-            padding: 20px 15px;
-            border-radius: 15px;
+            padding: 14px 10px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
-            transition: all 0.3s;
             text-align: center;
-            border: 2px solid transparent;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
         }
-        
+
         .level-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .level-btn.steady {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            border-color: #2980b9;
         }
-        
-        .level-btn.steady:hover {
-            background: linear-gradient(135deg, #2980b9, #1a5276);
-            border-color: #1a5276;
-        }
-        
+
         .level-btn.fast {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
-            border-color: #27ae60;
         }
-        
-        .level-btn.fast:hover {
-            background: linear-gradient(135deg, #27ae60, #1e8449);
-            border-color: #1e8449;
-        }
-        
+
         .level-btn i {
             display: block;
-            font-size: 2rem;
-            margin-bottom: 8px;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
         }
-        
+
         .level-btn .level-label {
-            font-size: 0.85rem;
-            opacity: 0.9;
+            font-size: 0.75rem;
+            opacity: 0.85;
             display: block;
-            margin-top: 4px;
+            margin-top: 2px;
         }
-        
-        .kelas-10 .level-btn.steady { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .kelas-10 .level-btn.fast { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        
-        .kelas-11 .level-btn.steady { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .kelas-11 .level-btn.fast { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        
-        .kelas-12 .level-btn.steady { background: linear-gradient(135deg, #1abc9c, #16a085); }
-        .kelas-12 .level-btn.fast { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        
+
+        /* ===== TOGGLE MENU LATIHAN & QUIZ ===== */
+        .toggle-section {
+            margin-top: 5px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #3498db;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #eaf2f8;
+            border-color: #2980b9;
+        }
+
+        .toggle-btn i {
+            transition: transform 0.3s;
+        }
+
+        .toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+
+        .toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
+        }
+
+        .toggle-content.open {
+            max-height: 2000px;
+            padding: 15px 0 5px 0;
+        }
+
+        /* ===== MENU LATIHAN & QUIZ ===== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 1px solid #e9ecef;
+            background: white;
+            color: #2c3e50;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-color: var(--secondary);
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-item .badge {
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .badge.latihan { background: #3498db; color: white; }
+        .badge.quiz { background: #f39c12; color: white; }
+        .badge.utbk { background: #e74c3c; color: white; }
+        .badge.free { background: #2ecc71; color: white; }
+
+        /* Warna icon per item */
+        .menu-item .fa-car { color: #3498db; }
+        .menu-item .fa-weight-hanging { color: #9b59b6; }
+        .menu-item .fa-bolt { color: #f39c12; }
+        .menu-item .fa-tint { color: #1abc9c; }
+        .menu-item .fa-fire { color: #e67e22; }
+        .menu-item .fa-wave-square { color: #2ecc71; }
+        .menu-item .fa-magnet { color: #e74c3c; }
+        .menu-item .fa-atom { color: #8e44ad; }
+        .menu-item .fa-satellite { color: #2980b9; }
+        .menu-item .fa-graduation-cap { color: #e74c3c; }
+        .menu-item .fa-pencil-alt { color: #f39c12; }
+        .menu-item .fa-question-circle { color: #3498db; }
+
+        /* ===== QUIZ KHUSUS SECTION ===== */
+        .quiz-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 12px 0 8px 0;
+        }
+
+        .quiz-divider::before,
+        .quiz-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #dee2e6;
+        }
+
+        .quiz-divider span {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* ===== FOOTER ===== */
         footer {
-            margin-top: 60px;
+            margin-top: 50px;
             padding: 30px;
             background: var(--primary);
             color: white;
             border-radius: 15px;
+            text-align: center;
         }
-        
+
         .footer-logo {
             font-size: 2.5rem;
             color: var(--accent);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
-        
+
         .footer-text {
             font-size: 0.9rem;
             opacity: 0.8;
         }
-        
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
-            
+
             .subtitle {
                 font-size: 1.1rem;
             }
-            
+
             .kelas-container {
                 grid-template-columns: 1fr;
             }
-            
-            .level-buttons {
-                grid-template-columns: 1fr;
+
+            .kelas-card {
+                padding: 25px 20px;
             }
-            
+
+            .level-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
             header {
                 padding: 30px 20px;
+            }
+
+            .intro {
+                padding: 20px;
+            }
+
+            .intro h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .level-buttons {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+
+        <!-- ===== HEADER ===== -->
         <header>
             <h1><i class="fas fa-atom"></i> PORTAL FISIKA</h1>
-            <p class="subtitle">Media Pembelajaran Fisika SMA Lengkap - Pilih Kelas dan Level Belajar</p>
+            <p class="subtitle">Media Pembelajaran Fisika SMA Lengkap dengan Latihan Soal & Quiz</p>
         </header>
-        
+
+        <!-- ===== INTRO ===== -->
         <div class="intro">
-            <h2>Selamat Datang di Portal Pembelajaran Fisika</h2>
-            <p>Pilih kelas dan level pembelajaran yang sesuai dengan kebutuhan Anda. <strong>Level Steady</strong> untuk pembelajaran bertahap dengan penjelasan mendetail, atau <strong>Level Fast</strong> untuk pembelajaran cepat dan intensif.</p>
+            <h2>Selamat Datang!</h2>
+            <p>
+                Pilih kelas dan level pembelajaran yang sesuai. Klik <strong>"Latihan Soal & Quiz"</strong>
+                di setiap kelas untuk mengakses soal dan quiz per topik.
+            </p>
         </div>
-        
+
+        <!-- ===== KELAS CONTAINER ===== -->
         <div class="kelas-container">
-            <!-- KELAS 10 -->
-            <div class="kelas-card kelas-10">
+
+            <!-- ======== KELAS 10 ======== -->
+            <div class="kelas-card">
                 <div class="kelas-header">
-                    <div class="kelas-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
+                    <div class="kelas-icon"><i class="fas fa-graduation-cap"></i></div>
                     <div class="kelas-title">KELAS 10</div>
                 </div>
                 <div class="kelas-description">
-                    Materi fisika dasar: Kinematika, Dinamika, Usaha dan Energi. Cocok untuk pemula.
+                    Kinematika, Dinamika, Usaha & Energi, Momentum.
                 </div>
+
                 <div class="level-buttons">
                     <a href="kelas10-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
@@ -304,19 +463,63 @@
                         <span class="level-label">Cepat & Intensif</span>
                     </a>
                 </div>
-            </div>
-            
-            <!-- KELAS 11 -->
-            <div class="kelas-card kelas-11">
-                <div class="kelas-header">
-                    <div class="kelas-icon">
-                        <i class="fas fa-book-open"></i>
+
+                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 10 ===== -->
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('kelas10-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal & Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="kelas10-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/kelas10/kinematika.html" class="menu-item">
+                                <i class="fas fa-car"></i> Kinematika
+                                <span class="badge latihan">15 Soal</span>
+                            </a>
+                            <a href="latihan/kelas10/dinamika.html" class="menu-item">
+                                <i class="fas fa-weight-hanging"></i> Dinamika
+                                <span class="badge latihan">12 Soal</span>
+                            </a>
+                            <a href="latihan/kelas10/usaha-energi.html" class="menu-item">
+                                <i class="fas fa-bolt"></i> Usaha & Energi
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/kelas10/momentum.html" class="menu-item">
+                                <i class="fas fa-bowling-ball"></i> Momentum
+                                <span class="badge latihan">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/kelas10/kinematika-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Kinematika
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/kelas10/dinamika-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Dinamika
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/kelas10/usaha-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Usaha & Energi
+                                <span class="badge quiz">6 Q</span>
+                            </a>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- ======== KELAS 11 ======== -->
+            <div class="kelas-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-book-open"></i></div>
                     <div class="kelas-title">KELAS 11</div>
                 </div>
                 <div class="kelas-description">
-                    Materi fisika menengah: Fluida, Termodinamika, Gelombang. Pengembangan konsep.
+                    Fluida, Termodinamika, Gelombang, Elastisitas.
                 </div>
+
                 <div class="level-buttons">
                     <a href="kelas11-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
@@ -329,19 +532,63 @@
                         <span class="level-label">Cepat & Intensif</span>
                     </a>
                 </div>
-            </div>
-            
-            <!-- KELAS 12 -->
-            <div class="kelas-card kelas-12">
-                <div class="kelas-header">
-                    <div class="kelas-icon">
-                        <i class="fas fa-rocket"></i>
+
+                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 11 ===== -->
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('kelas11-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal & Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="kelas11-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/kelas11/fluida.html" class="menu-item">
+                                <i class="fas fa-tint"></i> Fluida
+                                <span class="badge latihan">14 Soal</span>
+                            </a>
+                            <a href="latihan/kelas11/termodinamika.html" class="menu-item">
+                                <i class="fas fa-fire"></i> Termodinamika
+                                <span class="badge latihan">12 Soal</span>
+                            </a>
+                            <a href="latihan/kelas11/gelombang.html" class="menu-item">
+                                <i class="fas fa-wave-square"></i> Gelombang
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/kelas11/elastisitas.html" class="menu-item">
+                                <i class="fas fa-expand-arrows-alt"></i> Elastisitas
+                                <span class="badge latihan">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/kelas11/fluida-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Fluida
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/kelas11/termodinamika-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Termodinamika
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/kelas11/gelombang-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Gelombang
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- ======== KELAS 12 ======== -->
+            <div class="kelas-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-rocket"></i></div>
                     <div class="kelas-title">KELAS 12</div>
                 </div>
                 <div class="kelas-description">
-                    Materi fisika lanjut: Listrik-Magnet, Gelombang EM, Fisika Modern. Persiapan UTBK.
+                    Listrik-Magnet, Gelombang EM, Optik, Fisika Modern.
                 </div>
+
                 <div class="level-buttons">
                     <a href="kelas12-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
@@ -354,43 +601,170 @@
                         <span class="level-label">Cepat & Intensif</span>
                     </a>
                 </div>
+
+                <!-- ===== TOGGLE LATIHAN & QUIZ KELAS 12 ===== -->
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('kelas12-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal & Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="kelas12-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/kelas12/listrik-magnet.html" class="menu-item">
+                                <i class="fas fa-magnet"></i> Listrik & Magnet
+                                <span class="badge utbk">20 Soal</span>
+                            </a>
+                            <a href="latihan/kelas12/gelombang-em.html" class="menu-item">
+                                <i class="fas fa-satellite"></i> Gelombang EM
+                                <span class="badge latihan">12 Soal</span>
+                            </a>
+                            <a href="latihan/kelas12/optik.html" class="menu-item">
+                                <i class="fas fa-lightbulb"></i> Optik Fisis
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/kelas12/fisika-modern.html" class="menu-item">
+                                <i class="fas fa-atom"></i> Fisika Modern
+                                <span class="badge utbk">15 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/kelas12/listrik-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Listrik-Magnet
+                                <span class="badge quiz">12 Q</span>
+                            </a>
+                            <a href="quiz/kelas12/optik-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Optik
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/kelas12/modern-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Fisika Modern
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                        </div>
+
+                        <!-- UTBK Try Out -->
+                        <div class="quiz-divider" style="margin-top: 15px;"><span>🎓 TRY OUT UTBK</span></div>
+
+                        <div class="menu-grid">
+                            <a href="utbk/tryout-1.html" class="menu-item">
+                                <i class="fas fa-graduation-cap"></i> Try Out 1
+                                <span class="badge utbk">UTBK</span>
+                            </a>
+                            <a href="utbk/tryout-2.html" class="menu-item">
+                                <i class="fas fa-graduation-cap"></i> Try Out 2
+                                <span class="badge utbk">UTBK</span>
+                            </a>
+                            <a href="utbk/tryout-3.html" class="menu-item">
+                                <i class="fas fa-graduation-cap"></i> Try Out 3
+                                <span class="badge utbk">UTBK</span>
+                            </a>
+                            <a href="utbk/pembahasan.html" class="menu-item">
+                                <i class="fas fa-video"></i> Pembahasan Video
+                                <span class="badge free">Free</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-        
+
+        <!-- ===== FOOTER ===== -->
         <footer>
             <div class="footer-logo">
                 <i class="fas fa-atom"></i>
             </div>
             <h3>Portal Media Pembelajaran Fisika SMA</h3>
-            <p class="footer-text">© 2023 - Pilih level pembelajaran yang sesuai dengan kebutuhan Anda</p>
+            <p class="footer-text">© 2023 - Belajar fisika dengan materi lengkap, latihan soal, dan quiz interaktif</p>
         </footer>
+
     </div>
 
     <script>
-        // Animasi saat halaman dimuat
+        // ===== FUNGSI TOGGLE MENU =====
+        function toggleMenu(menuId) {
+            const content = document.getElementById(menuId);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                btn.classList.remove('active');
+                btn.querySelector('i').style.transform = 'rotate(0deg)';
+            } else {
+                // Tutup menu lain yang terbuka
+                document.querySelectorAll('.toggle-content.open').forEach(openContent => {
+                    if (openContent.id !== menuId) {
+                        openContent.classList.remove('open');
+                        const otherBtn = openContent.previousElementSibling;
+                        otherBtn.classList.remove('active');
+                        otherBtn.querySelector('i').style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                content.classList.add('open');
+                btn.classList.add('active');
+                btn.querySelector('i').style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // ===== ANIMASI SAAT LOAD =====
         window.addEventListener('load', function() {
+            // Animasi header
+            const header = document.querySelector('header');
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                header.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }, 200);
+
+            // Animasi kelas cards
             const cards = document.querySelectorAll('.kelas-card');
             cards.forEach((card, index) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(30px)';
-                
                 setTimeout(() => {
-                    card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 300 * index);
+                }, 300 + (150 * index));
             });
-            
-            // Animasi tombol level
-            const buttons = document.querySelectorAll('.level-btn');
-            buttons.forEach((btn, index) => {
-                btn.style.opacity = '0';
-                
-                setTimeout(() => {
-                    btn.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    btn.style.opacity = '1';
-                }, 500 + (100 * index));
-            });
+
+            // Animasi intro
+            const intro = document.querySelector('.intro');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.transition = 'opacity 0.8s ease';
+                intro.style.opacity = '1';
+            }, 100);
+        });
+
+        // ===== KEYBOARD SHORTCUT: ESC untuk tutup semua =====
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.toggle-content.open').forEach(content => {
+                    content.classList.remove('open');
+                    const btn = content.previousElementSibling;
+                    btn.classList.remove('active');
+                    btn.querySelector('i').style.transform = 'rotate(0deg)');
+                });
+            }
+        });
+
+        // ===== CLICK OUTSIDE untuk tutup menu =====
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.toggle-section')) {
+                document.querySelectorAll('.toggle-content.open').forEach(content => {
+                    content.classList.remove('open');
+                    const btn = content.previousElementSibling;
+                    btn.classList.remove('active');
+                    btn.querySelector('i').style.transform = 'rotate(0deg)';
+                });
+            }
         });
     </script>
 </body>
