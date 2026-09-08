@@ -23,7 +23,7 @@
     .formula-script { font-family:"Source Serif Pro",serif; letter-spacing:.01em; }
     .page-view { display:none; animation:rise .45s ease both; }
     .page-view.active { display:block; }
-    .nav-tab { border-bottom:3px solid transparent; transition:.2s ease; }
+    .nav-tab { border-bottom:3px solid transparent; transition:.2s ease; cursor:pointer; }
     .nav-tab.active { border-color:#f4b942; color:#f9d980; }
     .nav-tab:focus-visible, button:focus-visible, input:focus-visible { outline:3px solid rgba(244,185,66,.8); outline-offset:3px; }
     .control-card { box-shadow:0 16px 35px rgba(16,35,62,.10); }
@@ -34,13 +34,15 @@
     input[type="range"] { appearance:none; width:100%; height:7px; border-radius:999px; background:#d8e1ec; outline:none; cursor:pointer; }
     input[type="range"]::-webkit-slider-thumb { appearance:none; width:20px; height:20px; border:3px solid #fffdf6; border-radius:50%; background:#f4b942; box-shadow:0 2px 8px rgba(16,35,62,.28); }
     input[type="range"]::-moz-range-thumb { width:16px; height:16px; border:3px solid #fffdf6; border-radius:50%; background:#f4b942; }
-    .quiz-option { transition:transform .18s ease,border-color .18s ease,background .18s ease; }
-    .quiz-option:hover { transform:translateX(4px); border-color:#f4b942; background:#fff8e7; }
+    .quiz-option { transition:transform .18s ease,border-color .18s ease,background .18s ease; cursor:pointer; }
+    .quiz-option:hover:not(:disabled) { transform:translateX(4px); border-color:#f4b942; background:#fff8e7; }
+    .quiz-option:disabled { opacity:0.7; cursor:default; }
     .quiz-option.selected-correct { border-color:#26845b; background:#e8f7ed; }
     .quiz-option.selected-wrong { border-color:#cf4f45; background:#fff0ed; }
     .quiz-question { display:none; }
     .quiz-question.active { display:block; animation:rise .4s ease both; }
     .hidden-state { display:none!important; }
+    .explanation-box { border-left:4px solid #f4b942; }
     @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
   </style>
 </head>
@@ -52,6 +54,11 @@
     <div class="hero-content max-w-7xl mx-auto px-5 pt-6 md:px-10 md:pt-8">
       <div class="flex flex-wrap items-center justify-between gap-5 pb-5">
         <div class="flex items-center gap-3">
+          <!-- Tombol Home di paling atas -->
+          <button id="nav-home-top" class="inline-flex items-center gap-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/40 px-4 py-2 text-white font-bold transition" type="button" data-page="home">
+            <i data-lucide="home" width="20" height="20"></i>
+            <span>Home</span>
+          </button>
           <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-300 text-slate-900"><i data-lucide="orbit" width="22" height="22"></i></span>
           <div>
             <p class="text-xs uppercase tracking-[.17em] font-bold text-amber-200/80">Fisika Seru</p>
@@ -104,16 +111,16 @@
             <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="move-right" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Horizontal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
-              <button onclick="window.open('https://drive.google.com/file/d/1lZ1sL4gACFjYe6RnITCksZOteGm90UYm/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu. Perhatikan menit pertama video di bawah ini yang menunjukkan bahwa kecepatan arah horizontal konstan</p>
+              <button onclick="window.open('https://drive.google.com/file/d/1GMR7BzFnKBd65mb5Wdb-KdHuKMtXHXQt/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
             <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-rose-100 text-rose-700"><i data-lucide="move-up" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Vertikal</h3>
-              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
-              <button onclick="window.open('https://drive.google.com/file/u/1/d/1GMR7BzFnKBd65mb5Wdb-KdHuKMtXHXQt/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0. Perhatikan video di bawah ini yang menunjukkan bahwa kecepatan arah vertikal itu termasuk ke dalam GLBB meskipun benda mempunyai lintasan parabola, untuk komponen arah vertikal gerakannya termasuk ke dalam kategori GLBB.</p>
+              <button onclick="window.open('https://drive.google.com/file/d/1lZ1sL4gACFjYe6RnITCksZOteGm90UYm/view','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
@@ -232,7 +239,7 @@
         </div>
         <p id="quiz-progress-text" class="mt-3 text-center text-sm font-semibold text-slate-600">Pertanyaan 1 dari 10</p>
 
-        <!-- soal akan di-generate oleh JS -->
+        <!-- container untuk soal -->
         <div id="quiz-container"></div>
 
         <!-- Summary -->
@@ -272,7 +279,15 @@
       if (pageName === "simulation") draw(pausedElapsed);
     }
 
-    navButtons.forEach(button => button.addEventListener("click", () => showPage(button.dataset.page)));
+    // Semua tombol navigasi termasuk tombol Home di atas
+    document.querySelectorAll("[data-page]").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        const page = this.dataset.page;
+        e.preventDefault();
+        showPage(page);
+      });
+    });
+
     document.getElementById("go-simulation").addEventListener("click", () => showPage("simulation"));
     document.getElementById("go-quiz").addEventListener("click", () => showPage("quiz"));
 
@@ -389,18 +404,18 @@
     lucide.createIcons();
     updateReadout();
 
-    // ----- QUIZ (10 soal, 5 pilihan) -----
+    // ----- QUIZ (10 soal, 5 pilihan + penjelasan) -----
     const quizData = [
-      { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1 },
-      { q: "Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …", options: ["Maksimum", "Sama dengan Vx", "Nol", "Negatif", "Tidak tentu"], correct: 2 },
-      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0 },
-      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²θ / (2g)", "h = V₀² sin 2θ / g", "h = V₀² cos²θ / (2g)", "h = V₀ sin θ / g", "h = V₀² / (2g)"], correct: 0 },
-      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2θ / g", "R = V₀² sin²θ / (2g)", "R = V₀ cos θ · t", "R = V₀² / g", "R = V₀ sin θ · t"], correct: 0 },
-      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin θ / g", "t = V₀ sin θ / g", "t = 2 V₀ cos θ / g", "t = V₀ cos θ / g", "t = V₀ / g"], correct: 0 },
-      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1 },
-      { q: "Gerak parabola merupakan perpaduan dari …", options: ["GLB dan GLBB", "GLBB dan GLBB", "GLB dan GLB", "GLBB dan gerak melingkar", "Gerak harmonik dan GLB"], correct: 0 },
-      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1 },
-      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1 }
+      { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1, explanation: "Tidak ada gaya horizontal, sehingga Vx konstan (GLB)." },
+      { q: "Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …", options: ["Maksimum", "Sama dengan Vx", "Nol", "Negatif", "Tidak tentu"], correct: 2, explanation: "Di puncak, benda berhenti sesaat secara vertikal, Vy = 0." },
+      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0, explanation: "R = V₀² sin 2θ / g. sin 60° = sin 120°, jadi R sama." },
+      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²θ / (2g)", "h = V₀² sin 2θ / g", "h = V₀² cos²θ / (2g)", "h = V₀ sin θ / g", "h = V₀² / (2g)"], correct: 0, explanation: "Tinggi maksimum dicapai saat Vy = 0, sehingga h = V₀² sin²θ / (2g)." },
+      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2θ / g", "R = V₀² sin²θ / (2g)", "R = V₀ cos θ · t", "R = V₀² / g", "R = V₀ sin θ · t"], correct: 0, explanation: "Jangkauan R = Vx × t = V₀ cos θ × (2V₀ sin θ / g) = V₀² sin 2θ / g." },
+      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin θ / g", "t = V₀ sin θ / g", "t = 2 V₀ cos θ / g", "t = V₀ cos θ / g", "t = V₀ / g"], correct: 0, explanation: "Waktu total dari lemparan hingga kembali ke ketinggian awal: t = 2V₀ sin θ / g." },
+      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1, explanation: "R maksimum saat sin 2θ = 1 → 2θ = 90° → θ = 45°." },
+      { q: "Gerak parabola merupakan perpaduan dari …", options: ["GLB dan GLBB", "GLBB dan GLBB", "GLB dan GLB", "GLBB dan gerak melingkar", "Gerak harmonik dan GLB"], correct: 0, explanation: "Horizontal: GLB (Vx tetap). Vertikal: GLBB (percepatan g)." },
+      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1, explanation: "h_max = V₀² sin²θ / (2g). g di penyebut, jadi jika g besar, h kecil." },
+      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1, explanation: "Vx = V₀ cos θ = 20 × 0,866 = 17,32 m/s." }
     ];
 
     const totalQuestions = quizData.length;
@@ -421,13 +436,17 @@
             <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">${data.q}</h3>
             <div class="mt-6 space-y-3">
               ${data.options.map((opt, i) => `
-                <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="${i === data.correct}" data-optindex="${i}">
+                <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="${i === data.correct}" data-optindex="${i}" ${index !== currentQuestion ? 'disabled' : ''}>
                   <span>${String.fromCharCode(65 + i)}. ${opt}</span>
                 </button>
               `).join('')}
             </div>
-            <p class="quiz-feedback correct hidden-state mt-5 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar!</p>
-            <p class="quiz-feedback wrong hidden-state mt-5 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Jawaban yang benar adalah ${String.fromCharCode(65 + data.correct)}.</p>
+            <div class="explanation-box mt-5 rounded-xl p-4 bg-slate-50 border border-slate-200 hidden-state" id="explanation-${index}">
+              <p class="text-sm font-semibold text-slate-700">💡 Penjelasan:</p>
+              <p class="text-sm text-slate-600 mt-1">${data.explanation}</p>
+            </div>
+            <p class="quiz-feedback correct hidden-state mt-3 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar!</p>
+            <p class="quiz-feedback wrong hidden-state mt-3 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Jawaban yang benar adalah ${String.fromCharCode(65 + data.correct)}.</p>
             <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button">
               <span>${index === totalQuestions-1 ? 'Lihat hasil' : 'Lanjut →'}</span>
             </button>
@@ -443,11 +462,26 @@
           if(card.dataset.answered === "true") return;
           card.dataset.answered = "true";
           const correct = this.dataset.correct === "true";
+          const optIndex = parseInt(this.dataset.optindex);
+          const dataIndex = parseInt(card.dataset.question);
+          const data = quizData[dataIndex];
+          
           this.classList.add(correct ? "selected-correct" : "selected-wrong");
           if(correct) score++;
+          
+          // Tampilkan feedback dan penjelasan
           card.querySelector(correct ? ".quiz-feedback.correct" : ".quiz-feedback.wrong").classList.remove("hidden-state");
+          card.querySelector(`#explanation-${dataIndex}`).classList.remove("hidden-state");
+          
+          // Tandai jawaban benar
+          card.querySelectorAll(".quiz-option").forEach(item => {
+            item.disabled = true;
+            if(item.dataset.correct === "true") {
+              item.classList.add("selected-correct");
+            }
+          });
+          
           card.querySelector(".next-question").classList.remove("hidden-state");
-          card.querySelectorAll(".quiz-option").forEach(item => item.disabled = true);
         });
       });
 
