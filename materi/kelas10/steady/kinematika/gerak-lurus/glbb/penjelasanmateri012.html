@@ -1,12 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
- <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260908-05-b9d8a99","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/9e99ecf74af2a081.telemetry_sdk.js" integrity="sha512-tZ7fmfTx2KpCLjXQnEuL9azQ4A5+7+xumsx6r/WYVD0zCP/8LP8hDeCypMQesmP+WyAew4g7l5Ah23Bjd6yoVg=="></script>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modul Kinematika Gerak Vertikal</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #10243b;
@@ -20,12 +20,17 @@
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { margin: 0; font-family: "Work Sans", sans-serif; color: var(--ink); }
+    body { 
+      margin: 0; 
+      font-family: "Work Sans", sans-serif; 
+      color: var(--ink);
+      background: var(--paper);
+    }
     button, input { font: inherit; }
 
     .physics-page {
       width: 100%;
-      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      min-height: 100vh;
       overflow-x: hidden;
       background-image:
         linear-gradient(rgba(16, 36, 59, .035) 1px, transparent 1px),
@@ -45,6 +50,7 @@
       padding: .55rem .82rem;
       font-weight: 700;
       transition: background .18s ease, color .18s ease, transform .18s ease;
+      cursor: pointer;
     }
 
     .nav-button:hover,
@@ -54,7 +60,10 @@
       outline-offset: 2px;
     }
 
-    .nav-button.is-active { background: var(--ink); color: #fff; }
+    .nav-button.is-active { 
+      background: var(--ink); 
+      color: #fff; 
+    }
 
     .hero-photo-wrap {
       position: relative;
@@ -62,6 +71,7 @@
       overflow: hidden;
       border-radius: 28px;
       box-shadow: 12px 12px 0 var(--yellow);
+      background: linear-gradient(135deg, #1a2a3a, #2c4c6a);
     }
 
     .hero-photo-wrap::after {
@@ -79,6 +89,7 @@
 
     .control-button {
       transition: transform .18s ease, filter .18s ease;
+      cursor: pointer;
     }
 
     .control-button:hover { transform: translateY(-2px); filter: brightness(1.04); }
@@ -179,22 +190,6 @@
       box-shadow: 5px 5px 0 rgba(16,36,59,.2);
     }
 
-    .launch-arrow {
-      position: absolute;
-      left: calc(50% - 16px);
-      bottom: 22%;
-      color: var(--orange);
-      opacity: .75;
-    }
-
-    .down-arrow {
-      position: absolute;
-      left: calc(50% - 16px);
-      top: 7%;
-      color: var(--orange);
-      opacity: .75;
-    }
-
     .ball {
       position: absolute;
       left: calc(50% - 22px);
@@ -205,6 +200,7 @@
       background: radial-gradient(circle at 31% 27%, #fff 0 8%, #f26b38 10% 50%, #bd3d28 52% 100%);
       box-shadow: 4px 5px 0 rgba(16,36,59,.22);
       will-change: transform;
+      transition: transform 0.05s linear;
     }
 
     .velocity-vector {
@@ -309,229 +305,349 @@
       }
     }
   </style>
-  <script src="/_sdk/fbe2ebfd64647c54.data_sdk.js" type="text/javascript" integrity="sha512-vkTX6CfvpHc3WbjK+tFJCaDuw4ERA4aEV/e5/7+MMJPMTF4RJYCI6CAwJBT/gtDW+dba4uLSsPUgDjVDHWtgUQ=="></script>
-  <script src="/_sdk/fcb6dc01f91829ac.resizing_sdk.js" type="text/javascript" integrity="sha512-YK8JfnN705qaEaVhiL7pcVB2Rs/BbdX5yxV55Az8zT/1JanyEWTw9HqCF915m9iV1YEaoil8qsjJz03l1Kb0Ug=="></script>
- </head>
- <body data-template-id="__page-root">
+</head>
+<body>
   <div class="physics-page">
-   <header class="w-full px-5 pt-6 md:px-10 md:pt-10">
-    <div class="mx-auto max-w-6xl">
-     <div class="flex flex-col gap-4 border-b-2 border-slate-800 pb-4 lg:flex-row lg:items-center lg:justify-between">
-      <div class="flex items-center gap-3">
-       <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white"><i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
-       </div>
-       <p data-template-id="brand-label" class="canva-text m-0 text-sm font-bold uppercase tracking-[.16em]"></p>
-      </div>
-      <nav aria-label="Navigasi modul" class="flex flex-wrap items-center gap-1"><button id="nav-home" type="button" class="nav-button is-active"><span data-template-id="nav-home-text" class="canva-text"></span></button> <button id="nav-up" type="button" class="nav-button"><span data-template-id="nav-up-text" class="canva-text"></span></button> <button id="nav-down" type="button" class="nav-button"><span data-template-id="nav-down-text" class="canva-text"></span></button>
-      </nav>
-     </div>
-    </div>
-   </header>
-   <main class="w-full px-5 py-8 md:px-10 md:py-10">
-    <div class="mx-auto max-w-6xl">
-     <section id="home-view" class="app-view is-active" aria-labelledby="home-title">
-      <div class="grid grid-cols-1 items-center gap-10 pb-14 md:grid-cols-2">
-       <div>
-        <div data-template-id="topic-tag" class="canva-tag inline-flex items-center gap-2 rounded-full px-4 py-2"><i data-lucide="arrow-up-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="topic-tag-text" class="canva-text"></span>
-        </div>
-        <h1 id="home-title" data-template-id="page-title" class="canva-text display-font mt-5 max-w-xl leading-[1.04]"></h1>
-        <p data-template-id="hero-description" class="canva-text mt-5 max-w-xl leading-7"></p><button id="hero-down-button" data-template-id="hero-down-button" type="button" class="canva-button control-button mt-7 inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold"> <i data-lucide="move-down" aria-hidden="true" class="h-4 w-4"></i> <span data-template-id="hero-down-button-text" class="canva-text"></span> </button>
-       </div>
-       <div class="hero-photo-wrap"><img data-template-id="hero-image" loading="lazy" class="canva-image absolute inset-0 h-full w-full object-cover">
-        <div class="absolute bottom-5 left-5 z-10 max-w-[245px] rounded-2xl bg-[#10243b] p-4 text-white shadow-lg">
-         <p data-template-id="hero-image-caption" class="canva-text m-0 text-sm leading-5"></p>
-        </div>
-       </div>
-      </div>
-      <section aria-labelledby="map-title" class="mb-14">
-       <div class="mb-5 flex items-end justify-between gap-4">
-        <div>
-         <p data-template-id="map-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
-         <h2 id="map-title" data-template-id="map-title-text" class="canva-text display-font m-0"></h2>
-        </div><i data-lucide="route" aria-hidden="true" class="hidden h-9 w-9 text-[#f26b38] sm:block"></i>
-       </div>
-       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <article data-template-id="home-card-up" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff3f6]"><i data-lucide="arrow-up" aria-hidden="true" class="h-5 w-5"></i>
-         </div>
-         <h3 data-template-id="home-card-up-title" class="canva-text mb-2 font-bold"></h3>
-         <p data-template-id="home-card-up-text" class="canva-text m-0 leading-6"></p>
-        </article>
-        <article data-template-id="home-card-down" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-         <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f8d9c9]"><i data-lucide="move-down" aria-hidden="true" class="h-5 w-5"></i>
-         </div>
-         <h3 data-template-id="home-card-down-title" class="canva-text mb-2 font-bold"></h3>
-         <p data-template-id="home-card-down-text" class="canva-text m-0 leading-6"></p>
-        </article>
-       </div>
-      </section>
-      <section aria-labelledby="overview-formula-title" class="grid grid-cols-1 gap-6 lg:grid-cols-[.9fr_1.1fr]">
-       <div data-template-id="overview-intro" class="canva-panel rounded-3xl p-7 text-white md:p-9">
-        <p data-template-id="overview-eyebrow" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.14em]"></p>
-        <h2 id="overview-formula-title" data-template-id="overview-title-text" class="canva-text display-font m-0"></h2>
-        <p data-template-id="overview-description" class="canva-text mt-5 max-w-md leading-7"></p>
-       </div>
-       <div data-template-id="overview-board" class="canva-panel formula-paper rounded-3xl border-2 border-slate-800 p-7 md:p-9">
-        <div class="grid gap-4">
-         <div class="formula-chip rounded-2xl p-5">
-          <p data-template-id="overview-formula-1-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.12em]"></p>
-          <p data-template-id="overview-formula-1" class="canva-text display-font m-0"></p>
-         </div>
-         <div class="formula-chip rounded-2xl p-5">
-          <p data-template-id="overview-formula-2-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.12em]"></p>
-          <p data-template-id="overview-formula-2" class="canva-text display-font m-0"></p>
-         </div>
-         <p data-template-id="overview-symbol-note" class="canva-text m-0 rounded-xl p-4 text-sm font-semibold leading-6"></p>
-        </div>
-       </div>
-      </section>
-     </section>
-     <section id="up-view" class="app-view" aria-labelledby="up-title">
-      <div class="mb-7">
-       <p data-template-id="up-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
-       <h1 id="up-title" data-template-id="up-title-text" class="canva-text display-font m-0"></h1>
-       <p data-template-id="up-description" class="canva-text mt-3 max-w-3xl leading-7"></p>
-      </div>
-      <div class="mb-7 grid grid-cols-1 gap-4 lg:grid-cols-2">
-       <article data-template-id="up-concept-card" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-        <h2 data-template-id="up-concept-title" class="canva-text display-font m-0"></h2>
-        <p data-template-id="up-concept-text" class="canva-text mt-3 mb-0 leading-7"></p>
-       </article>
-       <article data-template-id="up-formula-card" class="canva-card formula-paper rounded-2xl border-2 border-slate-800 p-6">
-        <p data-template-id="up-formula-label" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.12em]"></p>
-        <p data-template-id="up-formula-one" class="canva-text display-font m-0"></p>
-        <p data-template-id="up-formula-two" class="canva-text display-font mt-3 mb-0"></p>
-        <p data-template-id="up-formula-note" class="canva-text mt-3 mb-0 leading-6"></p>
-       </article>
-      </div>
-      <section data-template-id="up-shell" class="canva-panel rounded-[30px] border-2 border-slate-800 p-5 shadow-[9px_9px_0_#10243b] md:p-8">
-       <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-        <p id="up-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dilempar</p>
-        <p data-template-id="up-tip" class="canva-text m-0 text-sm font-medium"></p>
-       </div>
-       <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
-        <div class="motion-stage upward" aria-label="Visualisasi bola dilempar vertikal ke atas">
-         <div class="height-line"></div><span class="height-label">TINGGI MAKS.</span>
-         <div class="launch-platform" aria-hidden="true"></div>
-         <div id="up-ball" class="ball up-ball" aria-hidden="true">
-          <span class="velocity-vector" aria-hidden="true"></span>
-         </div>
-         <div class="ground-line"></div><span class="ground-label">Posisi awal</span>
-        </div>
-        <aside aria-label="Kontrol simulasi gerak vertikal ke atas" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
-         <div class="mb-6"><label data-template-id="up-speed-label" class="canva-text mb-2 block font-bold" for="up-speed"></label>
-          <div class="flex items-center justify-between gap-3"><input id="up-speed" class="range-input" type="range" min="5" max="50" step="1" value="24"> <output id="up-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">24 m/s</output>
+    <!-- HEADER -->
+    <header class="w-full px-5 pt-6 md:px-10 md:pt-10">
+      <div class="mx-auto max-w-6xl">
+        <div class="flex flex-col gap-4 border-b-2 border-slate-800 pb-4 lg:flex-row lg:items-center lg:justify-between">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white">
+              <i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
+            </div>
+            <p class="m-0 text-sm font-bold uppercase tracking-[.16em]">Fisika Interaktif</p>
           </div>
-         </div>
-         <div class="mb-6"><label data-template-id="up-gravity-label" class="canva-text mb-2 block font-bold" for="up-gravity"></label>
-          <div class="flex items-center justify-between gap-3"><input id="up-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="up-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
-          </div>
-         </div>
-         <div class="grid grid-cols-3 gap-2"><button id="up-start" data-template-id="up-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-start-text" class="canva-text"></span></button> <button id="up-pause" data-template-id="up-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-pause-text" class="canva-text"></span></button> <button id="up-reset" data-template-id="up-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="up-reset-text" class="canva-text"></span></button>
-         </div>
-        </aside>
-       </div>
-       <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="up-time-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="up-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
+          <nav aria-label="Navigasi modul" class="flex flex-wrap items-center gap-1">
+            <button id="nav-home" type="button" class="nav-button is-active">Beranda</button>
+            <button id="nav-up" type="button" class="nav-button">Ke Atas</button>
+            <button id="nav-down" type="button" class="nav-button">Ke Bawah</button>
+          </nav>
         </div>
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="up-height-result-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="up-height-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
-        </div>
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="up-velocity-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="up-velocity-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
-        </div>
-       </div>
-      </section>
-     </section>
-     <section id="down-view" class="app-view" aria-labelledby="down-title">
-      <div class="mb-7">
-       <p data-template-id="down-eyebrow" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.14em]"></p>
-       <h1 id="down-title" data-template-id="down-title-text" class="canva-text display-font m-0"></h1>
-       <p data-template-id="down-description" class="canva-text mt-3 max-w-3xl leading-7"></p>
       </div>
-      <div class="mb-7 grid grid-cols-1 gap-4 md:grid-cols-2">
-       <article data-template-id="down-concept-card" class="canva-card rounded-2xl border-2 border-slate-800 p-6">
-        <h2 data-template-id="down-concept-title" class="canva-text display-font m-0"></h2>
-        <p data-template-id="down-concept-text" class="canva-text mt-3 mb-0 leading-7"></p>
-       </article>
-       <article data-template-id="down-formula-card" class="canva-card formula-paper rounded-2xl border-2 border-slate-800 p-6">
-        <p data-template-id="down-formula-label" class="canva-text mb-3 text-sm font-bold uppercase tracking-[.12em]"></p>
-        <p data-template-id="down-formula-one" class="canva-text display-font m-0"></p>
-        <p data-template-id="down-formula-two" class="canva-text display-font mt-3 mb-0"></p>
-        <p data-template-id="down-formula-note" class="canva-text mt-3 mb-0 leading-6"></p>
-       </article>
+    </header>
+
+    <main class="w-full px-5 py-8 md:px-10 md:py-10">
+      <div class="mx-auto max-w-6xl">
+        <!-- HOME VIEW -->
+        <section id="home-view" class="app-view is-active" aria-labelledby="home-title">
+          <div class="grid grid-cols-1 items-center gap-10 pb-14 md:grid-cols-2">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold">
+                <i data-lucide="arrow-up-down" aria-hidden="true" class="h-4 w-4"></i>
+                Gerak Vertikal
+              </div>
+              <h1 id="home-title" class="display-font mt-5 max-w-xl text-4xl font-bold leading-[1.04] md:text-5xl">
+                Modul Kinematika Gerak Vertikal
+              </h1>
+              <p class="mt-5 max-w-xl leading-7">
+                Pelajari konsep gerak vertikal ke atas dan ke bawah melalui simulasi interaktif. 
+                Pahami rumus-rumus fisika dengan visualisasi yang menarik.
+              </p>
+              <button id="hero-down-button" type="button" class="control-button mt-7 inline-flex items-center gap-2 rounded-xl bg-[#f26b38] px-5 py-3 font-bold text-white hover:bg-[#d45a2a]">
+                <i data-lucide="move-down" aria-hidden="true" class="h-4 w-4"></i>
+                Mulai Simulasi Ke Bawah
+              </button>
+            </div>
+            <div class="hero-photo-wrap">
+              <div class="absolute inset-0 flex items-center justify-center text-white/80">
+                <div class="text-center">
+                  <i data-lucide="rocket" class="mx-auto h-16 w-16"></i>
+                  <p class="mt-2 text-sm font-bold">Gerak Vertikal</p>
+                </div>
+              </div>
+              <div class="absolute bottom-5 left-5 z-10 max-w-[245px] rounded-2xl bg-[#10243b] p-4 text-white shadow-lg">
+                <p class="m-0 text-sm leading-5">Simulasikan gerak vertikal dengan parameter yang dapat diatur</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cards -->
+          <section aria-labelledby="map-title" class="mb-14">
+            <div class="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.14em] text-[#42657a]">Eksplorasi</p>
+                <h2 id="map-title" class="display-font m-0 text-2xl font-bold">Dua Jenis Gerak Vertikal</h2>
+              </div>
+              <i data-lucide="route" aria-hidden="true" class="hidden h-9 w-9 text-[#f26b38] sm:block"></i>
+            </div>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <article class="rounded-2xl border-2 border-slate-800 bg-white p-6 shadow-md">
+                <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dff3f6]">
+                  <i data-lucide="arrow-up" aria-hidden="true" class="h-5 w-5"></i>
+                </div>
+                <h3 class="mb-2 text-xl font-bold">Gerak Vertikal Ke Atas</h3>
+                <p class="m-0 leading-6">Bola dilempar ke atas dengan kecepatan awal. Gravitasi memperlambat gerak hingga mencapai titik tertinggi, lalu jatuh kembali.</p>
+              </article>
+              <article class="rounded-2xl border-2 border-slate-800 bg-white p-6 shadow-md">
+                <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f8d9c9]">
+                  <i data-lucide="move-down" aria-hidden="true" class="h-5 w-5"></i>
+                </div>
+                <h3 class="mb-2 text-xl font-bold">Gerak Vertikal Ke Bawah</h3>
+                <p class="m-0 leading-6">Bola dijatuhkan atau dilempar ke bawah dari ketinggian tertentu. Gravitasi mempercepat gerak hingga mencapai tanah.</p>
+              </article>
+            </div>
+          </section>
+
+          <!-- Formula -->
+          <section aria-labelledby="overview-formula-title" class="grid grid-cols-1 gap-6 lg:grid-cols-[.9fr_1.1fr]">
+            <div class="rounded-3xl bg-[#10243b] p-7 text-white md:p-9">
+              <p class="mb-3 text-sm font-bold uppercase tracking-[.14em] text-[#f5c85b]">Rumus Dasar</p>
+              <h2 id="overview-formula-title" class="display-font m-0 text-2xl font-bold">Persamaan Gerak Vertikal</h2>
+              <p class="mt-5 max-w-md leading-7">
+                Gunakan persamaan GLBB dengan percepatan gravitasi (g = 9,8 m/s²). 
+                Tanda positif untuk gerak ke bawah, negatif untuk gerak ke atas.
+              </p>
+            </div>
+            <div class="formula-paper rounded-3xl border-2 border-slate-800 bg-white/80 p-7 md:p-9">
+              <div class="grid gap-4">
+                <div class="formula-chip rounded-2xl p-5">
+                  <p class="mb-2 text-sm font-bold uppercase tracking-[.12em] text-[#42657a]">Posisi</p>
+                  <p class="display-font m-0 text-2xl font-bold">s = v₀ · t + ½ · g · t²</p>
+                </div>
+                <div class="formula-chip rounded-2xl p-5">
+                  <p class="mb-2 text-sm font-bold uppercase tracking-[.12em] text-[#42657a]">Kecepatan</p>
+                  <p class="display-font m-0 text-2xl font-bold">v = v₀ + g · t</p>
+                </div>
+                <p class="m-0 rounded-xl bg-[#dff3f6] p-4 text-sm font-semibold leading-6">
+                  <strong>Keterangan:</strong> s = posisi (m), v₀ = kecepatan awal (m/s), 
+                  v = kecepatan akhir (m/s), g = percepatan gravitasi (m/s²), t = waktu (s)
+                </p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- UP VIEW -->
+        <section id="up-view" class="app-view" aria-labelledby="up-title">
+          <div class="mb-7">
+            <p class="mb-2 text-sm font-bold uppercase tracking-[.14em] text-[#42657a]">Simulasi</p>
+            <h1 id="up-title" class="display-font m-0 text-3xl font-bold md:text-4xl">Gerak Vertikal Ke Atas</h1>
+            <p class="mt-3 max-w-3xl leading-7">
+              Lemparkan bola ke atas dan amati bagaimana gravitasi mempengaruhi geraknya. 
+              Bola akan mencapai titik tertinggi sebelum jatuh kembali.
+            </p>
+          </div>
+
+          <div class="mb-7 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <article class="rounded-2xl border-2 border-slate-800 bg-white p-6 shadow-md">
+              <h2 class="display-font m-0 text-xl font-bold">Konsep</h2>
+              <p class="mt-3 mb-0 leading-7">
+                Pada gerak vertikal ke atas, kecepatan awal positif. 
+                Gravitasi (g) bernilai negatif (-9,8 m/s²) karena arahnya berlawanan dengan gerak. 
+                Di titik tertinggi, kecepatan sesaat = 0 m/s.
+              </p>
+            </article>
+            <article class="formula-paper rounded-2xl border-2 border-slate-800 bg-white/80 p-6 shadow-md">
+              <p class="mb-3 text-sm font-bold uppercase tracking-[.12em] text-[#42657a]">Rumus Khusus</p>
+              <p class="display-font m-0 text-xl font-bold">t<sub>maks</sub> = v₀ / g</p>
+              <p class="display-font mt-3 mb-0 text-xl font-bold">h<sub>maks</sub> = v₀² / (2g)</p>
+              <p class="mt-3 mb-0 leading-6 text-sm">
+                <strong>Keterangan:</strong> t<sub>maks</sub> = waktu mencapai titik tertinggi, 
+                h<sub>maks</sub> = ketinggian maksimum
+              </p>
+            </article>
+          </div>
+
+          <!-- Simulasi -->
+          <section class="rounded-[30px] border-2 border-slate-800 bg-white p-5 shadow-[9px_9px_0_#10243b] md:p-8">
+            <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+              <p id="up-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dilempar</p>
+              <p class="m-0 text-sm font-medium text-[#42657a]">Atur kecepatan dan gravitasi</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
+              <div class="motion-stage upward" aria-label="Visualisasi bola dilempar vertikal ke atas">
+                <div class="height-line"></div>
+                <span class="height-label">TINGGI MAKS.</span>
+                <div class="launch-platform" aria-hidden="true"></div>
+                <div id="up-ball" class="ball up-ball" aria-hidden="true">
+                  <span class="velocity-vector" aria-hidden="true"></span>
+                </div>
+                <div class="ground-line"></div>
+                <span class="ground-label">Posisi awal</span>
+              </div>
+
+              <aside aria-label="Kontrol simulasi gerak vertikal ke atas" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
+                <div class="mb-6">
+                  <label class="mb-2 block font-bold" for="up-speed">Kecepatan Awal (v₀)</label>
+                  <div class="flex items-center justify-between gap-3">
+                    <input id="up-speed" class="range-input" type="range" min="5" max="50" step="1" value="24">
+                    <output id="up-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">24 m/s</output>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <label class="mb-2 block font-bold" for="up-gravity">Percepatan Gravitasi (g)</label>
+                  <div class="flex items-center justify-between gap-3">
+                    <input id="up-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8">
+                    <output id="up-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <button id="up-start" class="control-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#f26b38] px-3 py-3 font-bold text-white hover:bg-[#d45a2a]" type="button">
+                    <i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i> Mulai
+                  </button>
+                  <button id="up-pause" class="control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 bg-white px-3 py-3 font-bold hover:bg-[#dff3f6]" type="button">
+                    <i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i> Jeda
+                  </button>
+                  <button id="up-reset" class="control-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#f5c85b] px-3 py-3 font-bold hover:bg-[#e8b84a]" type="button">
+                    <i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i> Reset
+                  </button>
+                </div>
+              </aside>
+            </div>
+
+            <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Waktu</p>
+                <p id="up-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
+              </div>
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Ketinggian</p>
+                <p id="up-height-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
+              </div>
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Kecepatan</p>
+                <p id="up-velocity-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- DOWN VIEW -->
+        <section id="down-view" class="app-view" aria-labelledby="down-title">
+          <div class="mb-7">
+            <p class="mb-2 text-sm font-bold uppercase tracking-[.14em] text-[#42657a]">Simulasi</p>
+            <h1 id="down-title" class="display-font m-0 text-3xl font-bold md:text-4xl">Gerak Vertikal Ke Bawah</h1>
+            <p class="mt-3 max-w-3xl leading-7">
+              Jatuhkan bola dari ketinggian tertentu atau lemparkan ke bawah. 
+              Amati bagaimana gravitasi mempercepat gerak bola hingga mencapai tanah.
+            </p>
+          </div>
+
+          <div class="mb-7 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <article class="rounded-2xl border-2 border-slate-800 bg-white p-6 shadow-md">
+              <h2 class="display-font m-0 text-xl font-bold">Konsep</h2>
+              <p class="mt-3 mb-0 leading-7">
+                Pada gerak vertikal ke bawah, kecepatan awal bisa nol (jatuh bebas) atau positif. 
+                Gravitasi (g) bernilai positif (+9,8 m/s²) karena searah dengan gerak. 
+                Semakin tinggi posisi awal, semakin besar kecepatan saat menyentuh tanah.
+              </p>
+            </article>
+            <article class="formula-paper rounded-2xl border-2 border-slate-800 bg-white/80 p-6 shadow-md">
+              <p class="mb-3 text-sm font-bold uppercase tracking-[.12em] text-[#42657a]">Rumus Khusus</p>
+              <p class="display-font m-0 text-xl font-bold">t = (-v₀ + √(v₀² + 2gh)) / g</p>
+              <p class="display-font mt-3 mb-0 text-xl font-bold">v = √(v₀² + 2gh)</p>
+              <p class="mt-3 mb-0 leading-6 text-sm">
+                <strong>Keterangan:</strong> h = ketinggian awal, t = waktu jatuh, 
+                v = kecepatan saat menyentuh tanah
+              </p>
+            </article>
+          </div>
+
+          <!-- Freefall note -->
+          <div class="mb-7 rounded-2xl border-2 border-slate-800 bg-[#fef9e8] p-5 md:p-6">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+              <i data-lucide="lightbulb" aria-hidden="true" class="mt-1 h-6 w-6 shrink-0 text-[#f5c85b]"></i>
+              <div>
+                <h2 class="display-font m-0 text-xl font-bold">Kasus Khusus: Jatuh Bebas</h2>
+                <p class="mb-0 mt-2 leading-7">
+                  Jika kecepatan awal = 0 m/s, gerak disebut <strong>jatuh bebas</strong>. 
+                  Semua benda jatuh dengan percepatan yang sama (g = 9,8 m/s²) tanpa memperhatikan massa benda.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulasi -->
+          <section class="rounded-[30px] border-2 border-slate-800 bg-white p-5 shadow-[9px_9px_0_#10243b] md:p-8">
+            <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+              <div class="flex flex-wrap items-center gap-2">
+                <p id="down-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dijalankan</p>
+                <p id="freefall-badge" class="case-badge m-0 rounded-full bg-white px-4 py-2 text-sm font-bold" aria-live="polite">Mode lempar ke bawah</p>
+              </div>
+              <p class="m-0 text-sm font-medium text-[#42657a]">Atur ketinggian dan kecepatan</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
+              <div class="motion-stage" aria-label="Visualisasi bola bergerak vertikal ke bawah">
+                <div class="height-line"></div>
+                <span class="height-label">KETINGGIAN</span>
+                <div class="tower" aria-hidden="true"></div>
+                <div id="down-ball" class="ball down-ball" aria-hidden="true">
+                  <span class="velocity-vector is-downward" aria-hidden="true"></span>
+                </div>
+                <div class="ground-line"></div>
+                <span class="ground-label">Tanah</span>
+              </div>
+
+              <aside aria-label="Kontrol simulasi gerak vertikal ke bawah" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
+                <div class="mb-5">
+                  <label class="mb-2 block font-bold" for="down-height">Ketinggian Awal (h)</label>
+                  <div class="flex items-center justify-between gap-3">
+                    <input id="down-height" class="range-input" type="range" min="5" max="100" step="1" value="45">
+                    <output id="down-height-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">45 m</output>
+                  </div>
+                </div>
+
+                <div class="mb-5">
+                  <label class="mb-2 block font-bold" for="down-speed">Kecepatan Awal (v₀)</label>
+                  <div class="flex items-center justify-between gap-3">
+                    <input id="down-speed" class="range-input" type="range" min="0" max="35" step="1" value="10">
+                    <output id="down-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">10 m/s</output>
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <label class="mb-2 block font-bold" for="down-gravity">Percepatan Gravitasi (g)</label>
+                  <div class="flex items-center justify-between gap-3">
+                    <input id="down-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8">
+                    <output id="down-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                  <button id="down-start" class="control-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#f26b38] px-3 py-3 font-bold text-white hover:bg-[#d45a2a]" type="button">
+                    <i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i> Mulai
+                  </button>
+                  <button id="down-pause" class="control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 bg-white px-3 py-3 font-bold hover:bg-[#dff3f6]" type="button">
+                    <i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i> Jeda
+                  </button>
+                  <button id="down-reset" class="control-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#f5c85b] px-3 py-3 font-bold hover:bg-[#e8b84a]" type="button">
+                    <i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i> Reset
+                  </button>
+                </div>
+              </aside>
+            </div>
+
+            <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Waktu</p>
+                <p id="down-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
+              </div>
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Jarak Tempuh</p>
+                <p id="down-distance-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
+              </div>
+              <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
+                <p class="mb-2 text-sm font-bold uppercase tracking-[.1em] text-[#42657a]">Kecepatan</p>
+                <p id="down-speed-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
+              </div>
+            </div>
+          </section>
+        </section>
       </div>
-      <section data-template-id="freefall-note" class="canva-banner mb-7 rounded-2xl border-2 border-slate-800 p-5 md:p-6">
-       <div class="flex flex-col gap-3 sm:flex-row sm:items-start"><i data-lucide="lightbulb" aria-hidden="true" class="mt-1 h-6 w-6 shrink-0"></i>
-        <div>
-         <h2 data-template-id="freefall-note-title" class="canva-text display-font m-0"></h2>
-         <p data-template-id="freefall-note-text" class="canva-text mb-0 mt-2 leading-7"></p>
-        </div>
-       </div>
-      </section>
-      <section data-template-id="down-shell" class="canva-panel rounded-[30px] border-2 border-slate-800 p-5 shadow-[9px_9px_0_#10243b] md:p-8">
-       <div class="mb-7 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-        <div class="flex flex-wrap items-center gap-2">
-         <p id="down-status" class="m-0 rounded-full bg-[#dff3f6] px-4 py-2 text-sm font-bold" aria-live="polite">Siap dijalankan</p>
-         <p id="freefall-badge" class="case-badge m-0 rounded-full bg-white px-4 py-2 text-sm font-bold" aria-live="polite">Mode lempar ke bawah</p>
-        </div>
-        <p data-template-id="down-tip" class="canva-text m-0 text-sm font-medium"></p>
-       </div>
-       <div class="grid grid-cols-1 gap-7 lg:grid-cols-[1.2fr_.8fr]">
-        <div class="motion-stage" aria-label="Visualisasi bola bergerak vertikal ke bawah">
-         <div class="height-line"></div><span class="height-label">KETINGGIAN</span>
-         <div class="tower" aria-hidden="true"></div>
-         <div id="down-ball" class="ball down-ball" aria-hidden="true">
-          <span class="velocity-vector is-downward" aria-hidden="true"></span>
-         </div>
-         <div class="ground-line"></div><span class="ground-label">Tanah</span>
-        </div>
-        <aside aria-label="Kontrol simulasi gerak vertikal ke bawah" class="rounded-3xl bg-[#f7f2e8] p-5 md:p-6">
-         <div class="mb-5"><label data-template-id="down-height-label" class="canva-text mb-2 block font-bold" for="down-height"></label>
-          <div class="flex items-center justify-between gap-3"><input id="down-height" class="range-input" type="range" min="5" max="100" step="1" value="45"> <output id="down-height-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">45 m</output>
-          </div>
-         </div>
-         <div class="mb-5"><label data-template-id="down-speed-label" class="canva-text mb-2 block font-bold" for="down-speed"></label>
-          <div class="flex items-center justify-between gap-3"><input id="down-speed" class="range-input" type="range" min="0" max="35" step="1" value="10"> <output id="down-speed-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">10 m/s</output>
-          </div>
-         </div>
-         <div class="mb-6"><label data-template-id="down-gravity-label" class="canva-text mb-2 block font-bold" for="down-gravity"></label>
-          <div class="flex items-center justify-between gap-3"><input id="down-gravity" class="range-input" type="range" min="1" max="15" step=".1" value="9.8"> <output id="down-gravity-value" class="min-w-16 rounded-lg bg-white px-2 py-1 text-center font-bold">9,8 m/s²</output>
-          </div>
-         </div>
-         <div class="grid grid-cols-3 gap-2"><button id="down-start" data-template-id="down-start-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="play" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-start-text" class="canva-text"></span></button> <button id="down-pause" data-template-id="down-pause-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl border-2 border-slate-800 px-3 py-3 font-bold" type="button"><i data-lucide="pause" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-pause-text" class="canva-text"></span></button> <button id="down-reset" data-template-id="down-reset-button" class="canva-button control-button inline-flex items-center justify-center gap-2 rounded-xl px-3 py-3 font-bold" type="button"><i data-lucide="rotate-ccw" aria-hidden="true" class="h-4 w-4"></i><span data-template-id="down-reset-text" class="canva-text"></span></button>
-         </div>
-        </aside>
-       </div>
-       <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="down-time-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="down-time-result" class="display-font m-0 text-3xl font-bold">0,00 s</p>
-        </div>
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="down-distance-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="down-distance-result" class="display-font m-0 text-3xl font-bold">0,00 m</p>
-        </div>
-        <div class="rounded-2xl border border-slate-800/15 bg-white/80 p-5">
-         <p data-template-id="down-speed-result-label" class="canva-text mb-2 text-sm font-bold uppercase tracking-[.1em]"></p>
-         <p id="down-speed-result" class="display-font m-0 text-3xl font-bold">0,00 m/s</p>
-        </div>
-       </div>
-      </section>
-     </section>
-    </div>
-   </main>
-   <footer class="w-full px-5 pb-7 md:px-10">
-    <div class="mx-auto max-w-6xl border-t border-slate-800 pt-5">
-     <p data-template-id="footer-text" class="canva-text m-0 text-sm"></p>
-    </div>
-   </footer>
+    </main>
+
+    <footer class="w-full px-5 pb-7 md:px-10">
+      <div class="mx-auto max-w-6xl border-t border-slate-800 pt-5">
+        <p class="m-0 text-sm text-[#42657a]">© 2026 Modul Kinematika Gerak Vertikal | Untuk Pembelajaran Fisika SMA</p>
+      </div>
+    </footer>
   </div>
-  <script src="/_sdk/20ec72cea0cb85e1.editing_sdk.js" integrity="sha512-y1Lf0yXrnk1vqzLs9a/3x3pp+jSvei2Pbl+x/omYgN5b7HqLzMgs5Vx9HdgcQfw7jcDinPHCzHGQ6BsPf/68zQ=="></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
@@ -541,6 +657,7 @@
         maximumFractionDigits: digits
       });
 
+      // Navigation
       const views = {
         home: document.getElementById("home-view"),
         up: document.getElementById("up-view"),
@@ -554,7 +671,9 @@
       };
 
       function showView(name) {
-        Object.entries(views).forEach(([key, view]) => view.classList.toggle("is-active", key === name));
+        Object.entries(views).forEach(([key, view]) => {
+          view.classList.toggle("is-active", key === name);
+        });
         Object.entries(navs).forEach(([key, button]) => {
           button.classList.toggle("is-active", key === name);
           button.setAttribute("aria-current", key === name ? "page" : "false");
@@ -562,9 +681,13 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      Object.entries(navs).forEach(([name, button]) => button.addEventListener("click", () => showView(name)));
+      Object.entries(navs).forEach(([name, button]) => {
+        button.addEventListener("click", () => showView(name));
+      });
+
       document.getElementById("hero-down-button").addEventListener("click", () => showView("down"));
 
+      // Motion Simulation Engine
       function createMotionSimulation(options) {
         const startButton = document.getElementById(options.startId);
         const pauseButton = document.getElementById(options.pauseId);
@@ -595,7 +718,6 @@
           ball.style.transform = options.transform(state);
           const speedMagnitude = Math.abs(state.speed);
           vector.classList.toggle("is-downward", options.downward || state.speed < 0);
-          // Sembunyikan vektor sebelum frame melewati titik saat kecepatan nol.
           const isZeroVelocity = speedMagnitude <= 0.35;
           vector.classList.toggle("is-zero", isZeroVelocity);
           ball.classList.toggle("is-zero-velocity", !options.downward && isZeroVelocity);
@@ -671,6 +793,7 @@
         reset();
       }
 
+      // Up simulation
       const upSpeed = document.getElementById("up-speed");
       const upGravity = document.getElementById("up-gravity");
 
@@ -707,6 +830,7 @@
         onReset: () => {}
       });
 
+      // Down simulation
       const downHeight = document.getElementById("down-height");
       const downSpeed = document.getElementById("down-speed");
       const downGravity = document.getElementById("down-gravity");
@@ -756,7 +880,10 @@
         transform: state => "translateY(" + (state.ratio * 225) + "px)",
         onReset: updateCaseBadge
       });
+
+      // Initial badge update
+      updateCaseBadge();
     });
   </script>
- </body>
+</body>
 </html>
