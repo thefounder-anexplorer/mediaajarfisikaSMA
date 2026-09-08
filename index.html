@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portal Fisika - Pilih Kelas</title>
+    <title>Portal Fisika - Klasik & Modern</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         /* ===== RESET & ROOT ===== */
@@ -22,9 +22,11 @@
             --success: #2ecc71;
             --warning: #f39c12;
             --danger: #e74c3c;
-            --gradient-1: linear-gradient(135deg, #3498db, #2c3e50);
+            --gradient-1: linear-gradient(135deg, #2c3e50, #1a252f);
             --gradient-2: linear-gradient(135deg, #1abc9c, #16a085);
             --gradient-3: linear-gradient(135deg, #9b59b6, #8e44ad);
+            --gradient-classic: linear-gradient(135deg, #2c3e50, #34495e);
+            --gradient-modern: linear-gradient(135deg, #6c3483, #4a235a);
         }
 
         body {
@@ -35,7 +37,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
@@ -46,7 +48,7 @@
             background: var(--gradient-1);
             color: #fff;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.4);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -57,9 +59,20 @@
             position: absolute;
             top: -50%;
             right: -20%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.05);
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -10%;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 50%;
         }
 
@@ -104,18 +117,62 @@
             color: #555;
         }
 
+        /* ===== SECTION DIVIDER ===== */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 50px 0 30px 0;
+            padding: 0 10px;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+        }
+
+        .section-divider h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            white-space: nowrap;
+            padding: 0 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .section-divider h2 i {
+            margin-right: 12px;
+        }
+
+        .section-divider.classic h2 {
+            color: #2c3e50;
+        }
+        .section-divider.classic i {
+            color: #3498db;
+        }
+
+        .section-divider.modern h2 {
+            color: #6c3483;
+        }
+        .section-divider.modern i {
+            color: #9b59b6;
+        }
+
         /* ===== KELAS CONTAINER ===== */
         .kelas-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .kelas-card {
             background: #fff;
             border-radius: 20px;
-            padding: 30px;
+            padding: 28px 24px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             border: 2px solid transparent;
             transition: all 0.3s ease;
@@ -132,14 +189,12 @@
             height: 5px;
         }
 
-        .kelas-card:nth-child(1)::before {
-            background: linear-gradient(to right, #3498db, #2980b9);
+        /* Warna border atas per card — akan di-set inline atau via class */
+        .kelas-card.classic-card::before {
+            background: linear-gradient(to right, #3498db, #2c3e50);
         }
-        .kelas-card:nth-child(2)::before {
-            background: linear-gradient(to right, #9b59b6, #8e44ad);
-        }
-        .kelas-card:nth-child(3)::before {
-            background: linear-gradient(to right, #1abc9c, #16a085);
+        .kelas-card.modern-card::before {
+            background: linear-gradient(to right, #9b59b6, #6c3483);
         }
 
         .kelas-card:hover {
@@ -151,41 +206,42 @@
         .kelas-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .kelas-icon {
-            font-size: 3rem;
-            margin-right: 15px;
+            font-size: 2.6rem;
+            margin-right: 14px;
+            width: 50px;
+            text-align: center;
         }
-        .kelas-card:nth-child(1) .kelas-icon {
+
+        .kelas-card.classic-card .kelas-icon {
             color: #3498db;
         }
-        .kelas-card:nth-child(2) .kelas-icon {
+        .kelas-card.modern-card .kelas-icon {
             color: #9b59b6;
-        }
-        .kelas-card:nth-child(3) .kelas-icon {
-            color: #1abc9c;
         }
 
         .kelas-title {
-            font-size: 2rem;
+            font-size: 1.7rem;
             font-weight: bold;
             color: var(--primary);
         }
 
         .kelas-description {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: #666;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             line-height: 1.6;
+            min-height: 44px;
         }
 
         .level-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .level-btn {
@@ -195,7 +251,7 @@
             font-weight: bold;
             text-align: center;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             border: none;
             cursor: pointer;
             color: #fff;
@@ -216,12 +272,12 @@
 
         .level-btn i {
             display: block;
-            font-size: 1.6rem;
-            margin-bottom: 4px;
+            font-size: 1.5rem;
+            margin-bottom: 3px;
         }
 
         .level-btn .level-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             opacity: 0.85;
             display: block;
             margin-top: 2px;
@@ -231,7 +287,7 @@
         .toggle-section {
             margin-top: 5px;
             border-top: 1px solid #eee;
-            padding-top: 15px;
+            padding-top: 14px;
         }
 
         .toggle-btn {
@@ -240,13 +296,13 @@
             justify-content: center;
             gap: 12px;
             width: 100%;
-            padding: 12px;
+            padding: 11px;
             border: 2px dashed #3498db;
             border-radius: 10px;
             background: #f8f9fa;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #3498db;
             transition: all 0.3s;
         }
@@ -279,7 +335,7 @@
         /* ===== MENU ITEMS ===== */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
             gap: 10px;
         }
 
@@ -291,7 +347,7 @@
             border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
             border: 1px solid #e9ecef;
             background: #fff;
@@ -305,17 +361,18 @@
         }
 
         .menu-item i {
-            font-size: 1.1rem;
-            width: 24px;
+            font-size: 1rem;
+            width: 22px;
             text-align: center;
         }
 
         .menu-item .badge {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             padding: 2px 10px;
             border-radius: 20px;
             font-weight: bold;
             margin-left: auto;
+            white-space: nowrap;
         }
 
         .badge.latihan {
@@ -332,6 +389,10 @@
         }
         .badge.free {
             background: #2ecc71;
+            color: #fff;
+        }
+        .badge.modern-badge {
+            background: #8e44ad;
             color: #fff;
         }
 
@@ -372,6 +433,21 @@
         .menu-item .fa-question-circle {
             color: #3498db;
         }
+        .menu-item .fa-rocket {
+            color: #e67e22;
+        }
+        .menu-item .fa-star {
+            color: #f1c40f;
+        }
+        .menu-item .fa-microscope {
+            color: #1abc9c;
+        }
+        .menu-item .fa-bolt {
+            color: #e67e22;
+        }
+        .menu-item .fa-asterisk {
+            color: #9b59b6;
+        }
 
         .quiz-divider {
             display: flex;
@@ -389,7 +465,7 @@
         }
 
         .quiz-divider span {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #888;
             font-weight: bold;
             letter-spacing: 1px;
@@ -417,6 +493,12 @@
         }
 
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .kelas-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -428,7 +510,7 @@
                 grid-template-columns: 1fr;
             }
             .kelas-card {
-                padding: 25px 20px;
+                padding: 22px 18px;
             }
             .level-buttons {
                 grid-template-columns: 1fr 1fr;
@@ -445,6 +527,14 @@
             .intro h2 {
                 font-size: 1.4rem;
             }
+            .section-divider h2 {
+                font-size: 1.6rem;
+                padding: 0 12px;
+            }
+            .section-divider {
+                gap: 10px;
+                margin: 35px 0 20px 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -454,6 +544,13 @@
             .level-buttons {
                 grid-template-columns: 1fr;
             }
+            .kelas-title {
+                font-size: 1.4rem;
+            }
+            .section-divider h2 {
+                font-size: 1.3rem;
+                padding: 0 8px;
+            }
         }
     </style>
 </head>
@@ -462,63 +559,75 @@
         <!-- ===== HEADER ===== -->
         <header>
             <h1><i class="fas fa-atom"></i> PORTAL FISIKA</h1>
-            <p class="subtitle">Media Pembelajaran Fisika SMA Lengkap dengan Latihan Soal & Quiz</p>
+            <p class="subtitle">Belajar Fisika Klasik &amp; Modern dengan Latihan Soal &amp; Quiz Interaktif</p>
         </header>
 
         <!-- ===== INTRO ===== -->
         <div class="intro">
             <h2>Selamat Datang!</h2>
             <p>
-                Pilih kelas dan level pembelajaran yang sesuai. Klik <strong>"Latihan Soal & Quiz"</strong>
-                di setiap kelas untuk mengakses soal dan quiz per topik.
+                Pilih cabang fisika yang ingin kamu pelajari. Setiap topik dilengkapi dengan
+                <strong>Level Steady</strong> (bertahap &amp; detail) dan <strong>Level Fast</strong> (cepat &amp; intensif),
+                serta latihan soal dan quiz per subtopik.
             </p>
         </div>
 
-        <!-- ===== KELAS 10 ===== -->
+        <!-- ============================================================ -->
+        <!-- ===== SECTION: FISIKA KLASIK ===== -->
+        <!-- ============================================================ -->
+        <div class="section-divider classic">
+            <h2><i class="fas fa-scroll"></i> Fisika Klasik</h2>
+        </div>
+
         <div class="kelas-container">
-            <div class="kelas-card">
+            <!-- ===== MEKANIKA ===== -->
+            <div class="kelas-card classic-card">
                 <div class="kelas-header">
-                    <div class="kelas-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="kelas-title">KELAS 10</div>
+                    <div class="kelas-icon"><i class="fas fa-car"></i></div>
+                    <div class="kelas-title">Mekanika</div>
                 </div>
                 <div class="kelas-description">
-                    Kinematika, Dinamika, Usaha & Energi, Momentum.
+                    Kinematika, Dinamika, Usaha &amp; Energi, Momentum, Gravitasi.
                 </div>
 
                 <div class="level-buttons">
-                    <a href="kelas10-steady.html" class="level-btn steady">
+                    <a href="mekanika-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
                         Level Steady
-                        <span class="level-label">Bertahap & Detail</span>
+                        <span class="level-label">Bertahap &amp; Detail</span>
                     </a>
-                    <a href="kelas10-fast.html" class="level-btn fast">
+                    <a href="mekanika-fast.html" class="level-btn fast">
                         <i class="fas fa-running"></i>
                         Level Fast
-                        <span class="level-label">Cepat & Intensif</span>
+                        <span class="level-label">Cepat &amp; Intensif</span>
                     </a>
                 </div>
 
                 <div class="toggle-section">
-                    <button class="toggle-btn" onclick="toggleMenu('kelas10-menu')">
+                    <button class="toggle-btn" onclick="toggleMenu('mekanika-menu')">
                         <i class="fas fa-chevron-down"></i>
-                        <span>📝 Latihan Soal & Quiz</span>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
                     </button>
-                    <div class="toggle-content" id="kelas10-menu">
+                    <div class="toggle-content" id="mekanika-menu">
                         <div class="menu-grid">
-                            <a href="latihan/kelas10/steady/kinematika.html" class="menu-item">
+                            <a href="latihan/mekanika/kinematika.html" class="menu-item">
                                 <i class="fas fa-car"></i> Kinematika
                                 <span class="badge latihan">15 Soal</span>
                             </a>
-                            <a href="latihan/kelas10/steady/dinamika.html" class="menu-item">
+                            <a href="latihan/mekanika/dinamika.html" class="menu-item">
                                 <i class="fas fa-weight-hanging"></i> Dinamika
                                 <span class="badge latihan">12 Soal</span>
                             </a>
-                            <a href="latihan/kelas10/usaha-energi.html" class="menu-item">
-                                <i class="fas fa-bolt"></i> Usaha & Energi
+                            <a href="latihan/mekanika/usaha-energi.html" class="menu-item">
+                                <i class="fas fa-bolt"></i> Usaha &amp; Energi
                                 <span class="badge latihan">10 Soal</span>
                             </a>
-                            <a href="latihan/kelas10/momentum.html" class="menu-item">
+                            <a href="latihan/mekanika/momentum.html" class="menu-item">
                                 <i class="fas fa-bowling-ball"></i> Momentum
+                                <span class="badge latihan">8 Soal</span>
+                            </a>
+                            <a href="latihan/mekanika/gravitasi.html" class="menu-item">
+                                <i class="fas fa-globe-asia"></i> Gravitasi
                                 <span class="badge latihan">8 Soal</span>
                             </a>
                         </div>
@@ -526,16 +635,16 @@
                         <div class="quiz-divider"><span>🎯 QUIZ</span></div>
 
                         <div class="menu-grid">
-                            <a href="quiz/kelas10/kinematika-quiz.html" class="menu-item">
+                            <a href="quiz/mekanika/kinematika-quiz.html" class="menu-item">
                                 <i class="fas fa-question-circle"></i> Kinematika
                                 <span class="badge quiz">10 Q</span>
                             </a>
-                            <a href="quiz/kelas10/dinamika-quiz.html" class="menu-item">
+                            <a href="quiz/mekanika/dinamika-quiz.html" class="menu-item">
                                 <i class="fas fa-question-circle"></i> Dinamika
                                 <span class="badge quiz">8 Q</span>
                             </a>
-                            <a href="quiz/kelas10/usaha-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Usaha & Energi
+                            <a href="quiz/mekanika/usaha-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Usaha &amp; Energi
                                 <span class="badge quiz">6 Q</span>
                             </a>
                         </div>
@@ -543,50 +652,50 @@
                 </div>
             </div>
 
-            <!-- ===== KELAS 11 ===== -->
-            <div class="kelas-card">
+            <!-- ===== TERMODINAMIKA ===== -->
+            <div class="kelas-card classic-card">
                 <div class="kelas-header">
-                    <div class="kelas-icon"><i class="fas fa-book-open"></i></div>
-                    <div class="kelas-title">KELAS 11</div>
+                    <div class="kelas-icon"><i class="fas fa-fire"></i></div>
+                    <div class="kelas-title">Termodinamika</div>
                 </div>
                 <div class="kelas-description">
-                    Fluida, Termodinamika, Gelombang, Elastisitas.
+                    Hukum-hukum Termodinamika, Mesin Kalor, Entropi, Gas Ideal.
                 </div>
 
                 <div class="level-buttons">
-                    <a href="kelas11-steady.html" class="level-btn steady">
+                    <a href="termodinamika-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
                         Level Steady
-                        <span class="level-label">Bertahap & Detail</span>
+                        <span class="level-label">Bertahap &amp; Detail</span>
                     </a>
-                    <a href="kelas11-fast.html" class="level-btn fast">
+                    <a href="termodinamika-fast.html" class="level-btn fast">
                         <i class="fas fa-running"></i>
                         Level Fast
-                        <span class="level-label">Cepat & Intensif</span>
+                        <span class="level-label">Cepat &amp; Intensif</span>
                     </a>
                 </div>
 
                 <div class="toggle-section">
-                    <button class="toggle-btn" onclick="toggleMenu('kelas11-menu')">
+                    <button class="toggle-btn" onclick="toggleMenu('termodinamika-menu')">
                         <i class="fas fa-chevron-down"></i>
-                        <span>📝 Latihan Soal & Quiz</span>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
                     </button>
-                    <div class="toggle-content" id="kelas11-menu">
+                    <div class="toggle-content" id="termodinamika-menu">
                         <div class="menu-grid">
-                            <a href="latihan/kelas11/fluida.html" class="menu-item">
-                                <i class="fas fa-tint"></i> Fluida
-                                <span class="badge latihan">14 Soal</span>
-                            </a>
-                            <a href="latihan/kelas11/termodinamika.html" class="menu-item">
-                                <i class="fas fa-fire"></i> Termodinamika
+                            <a href="latihan/termodinamika/hukum-termo.html" class="menu-item">
+                                <i class="fas fa-fire"></i> Hukum Termo
                                 <span class="badge latihan">12 Soal</span>
                             </a>
-                            <a href="latihan/kelas11/gelombang.html" class="menu-item">
-                                <i class="fas fa-wave-square"></i> Gelombang
+                            <a href="latihan/termodinamika/mesin-kalor.html" class="menu-item">
+                                <i class="fas fa-cogs"></i> Mesin Kalor
                                 <span class="badge latihan">10 Soal</span>
                             </a>
-                            <a href="latihan/kelas11/elastisitas.html" class="menu-item">
-                                <i class="fas fa-expand-arrows-alt"></i> Elastisitas
+                            <a href="latihan/termodinamika/entropi.html" class="menu-item">
+                                <i class="fas fa-random"></i> Entropi
+                                <span class="badge latihan">8 Soal</span>
+                            </a>
+                            <a href="latihan/termodinamika/gas-ideal.html" class="menu-item">
+                                <i class="fas fa-wind"></i> Gas Ideal
                                 <span class="badge latihan">8 Soal</span>
                             </a>
                         </div>
@@ -594,16 +703,12 @@
                         <div class="quiz-divider"><span>🎯 QUIZ</span></div>
 
                         <div class="menu-grid">
-                            <a href="quiz/kelas11/fluida-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Fluida
+                            <a href="quiz/termodinamika/termo-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Termodinamika
                                 <span class="badge quiz">10 Q</span>
                             </a>
-                            <a href="quiz/kelas11/termodinamika-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Termodinamika
-                                <span class="badge quiz">8 Q</span>
-                            </a>
-                            <a href="quiz/kelas11/gelombang-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Gelombang
+                            <a href="quiz/termodinamika/mesin-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Mesin Kalor
                                 <span class="badge quiz">8 Q</span>
                             </a>
                         </div>
@@ -611,72 +716,589 @@
                 </div>
             </div>
 
-            <!-- ===== KELAS 12 ===== -->
-            <div class="kelas-card">
+            <!-- ===== OPTIKA ===== -->
+            <div class="kelas-card classic-card">
                 <div class="kelas-header">
-                    <div class="kelas-icon"><i class="fas fa-rocket"></i></div>
-                    <div class="kelas-title">KELAS 12</div>
+                    <div class="kelas-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="kelas-title">Optika</div>
                 </div>
                 <div class="kelas-description">
-                    Listrik-Magnet, Gelombang EM, Optik, Fisika Modern.
+                    Optik Geometri, Optik Fisis, Alat-alat Optik, Interferensi.
                 </div>
 
                 <div class="level-buttons">
-                    <a href="kelas12-steady.html" class="level-btn steady">
+                    <a href="optika-steady.html" class="level-btn steady">
                         <i class="fas fa-walking"></i>
                         Level Steady
-                        <span class="level-label">Bertahap & Detail</span>
+                        <span class="level-label">Bertahap &amp; Detail</span>
                     </a>
-                    <a href="kelas12-fast.html" class="level-btn fast">
+                    <a href="optika-fast.html" class="level-btn fast">
                         <i class="fas fa-running"></i>
                         Level Fast
-                        <span class="level-label">Cepat & Intensif</span>
+                        <span class="level-label">Cepat &amp; Intensif</span>
                     </a>
                 </div>
 
                 <div class="toggle-section">
-                    <button class="toggle-btn" onclick="toggleMenu('kelas12-menu')">
+                    <button class="toggle-btn" onclick="toggleMenu('optika-menu')">
                         <i class="fas fa-chevron-down"></i>
-                        <span>📝 Latihan Soal & Quiz</span>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
                     </button>
-                    <div class="toggle-content" id="kelas12-menu">
+                    <div class="toggle-content" id="optika-menu">
                         <div class="menu-grid">
-                            <a href="latihan/kelas12/listrik-magnet.html" class="menu-item">
-                                <i class="fas fa-magnet"></i> Listrik & Magnet
-                                <span class="badge utbk">20 Soal</span>
-                            </a>
-                            <a href="latihan/kelas12/gelombang-em.html" class="menu-item">
-                                <i class="fas fa-satellite"></i> Gelombang EM
+                            <a href="latihan/optika/geometri.html" class="menu-item">
+                                <i class="fas fa-eye"></i> Optik Geometri
                                 <span class="badge latihan">12 Soal</span>
                             </a>
-                            <a href="latihan/kelas12/optik.html" class="menu-item">
-                                <i class="fas fa-lightbulb"></i> Optik Fisis
+                            <a href="latihan/optika/fisis.html" class="menu-item">
+                                <i class="fas fa-wave-square"></i> Optik Fisis
                                 <span class="badge latihan">10 Soal</span>
                             </a>
-                            <a href="latihan/kelas12/fisika-modern.html" class="menu-item">
-                                <i class="fas fa-atom"></i> Fisika Modern
-                                <span class="badge utbk">15 Soal</span>
+                            <a href="latihan/optika/alat-optik.html" class="menu-item">
+                                <i class="fas fa-microscope"></i> Alat Optik
+                                <span class="badge latihan">8 Soal</span>
                             </a>
                         </div>
 
                         <div class="quiz-divider"><span>🎯 QUIZ</span></div>
 
                         <div class="menu-grid">
-                            <a href="quiz/kelas12/listrik-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Listrik-Magnet
-                                <span class="badge quiz">12 Q</span>
-                            </a>
-                            <a href="quiz/kelas12/optik-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Optik
+                            <a href="quiz/optika/geometri-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Geometri
                                 <span class="badge quiz">8 Q</span>
                             </a>
-                            <a href="quiz/kelas12/modern-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Fisika Modern
-                                <span class="badge quiz">10 Q</span>
+                            <a href="quiz/optika/fisis-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Fisis
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== LISTRIK-MAGNET ===== -->
+            <div class="kelas-card classic-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-magnet"></i></div>
+                    <div class="kelas-title">Listrik-Magnet</div>
+                </div>
+                <div class="kelas-description">
+                    Listrik Statis &amp; Dinamis, Medan Magnet, Induksi, Rangkaian AC.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="listrik-magnet-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="listrik-magnet-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('listrik-magnet-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="listrik-magnet-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/listrik-magnet/statis.html" class="menu-item">
+                                <i class="fas fa-bolt"></i> Listrik Statis
+                                <span class="badge latihan">14 Soal</span>
+                            </a>
+                            <a href="latihan/listrik-magnet/dinamis.html" class="menu-item">
+                                <i class="fas fa-plug"></i> Listrik Dinamis
+                                <span class="badge latihan">12 Soal</span>
+                            </a>
+                            <a href="latihan/listrik-magnet/medan-magnet.html" class="menu-item">
+                                <i class="fas fa-magnet"></i> Medan Magnet
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/listrik-magnet/induksi.html" class="menu-item">
+                                <i class="fas fa-sync-alt"></i> Induksi
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/listrik-magnet/ac.html" class="menu-item">
+                                <i class="fas fa-wave-square"></i> Rangkaian AC
+                                <span class="badge latihan">8 Soal</span>
                             </a>
                         </div>
 
-                        <div class="quiz-divider" style="margin-top:15px;"><span>🎓 TRY OUT UTBK</span></div>
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/listrik-magnet/statis-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Listrik Statis
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/listrik-magnet/dinamis-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Dinamis
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/listrik-magnet/magnet-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Medan Magnet
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== GELOMBANG ===== -->
+            <div class="kelas-card classic-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-wave-square"></i></div>
+                    <div class="kelas-title">Gelombang</div>
+                </div>
+                <div class="kelas-description">
+                    Gelombang Mekanik, Bunyi, Cahaya, Interferensi &amp; Difraksi.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="gelombang-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="gelombang-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('gelombang-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="gelombang-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/gelombang/mekanik.html" class="menu-item">
+                                <i class="fas fa-wave-square"></i> Gelombang Mekanik
+                                <span class="badge latihan">12 Soal</span>
+                            </a>
+                            <a href="latihan/gelombang/bunyi.html" class="menu-item">
+                                <i class="fas fa-music"></i> Bunyi
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/gelombang/cahaya.html" class="menu-item">
+                                <i class="fas fa-sun"></i> Cahaya
+                                <span class="badge latihan">10 Soal</span>
+                            </a>
+                            <a href="latihan/gelombang/interferensi.html" class="menu-item">
+                                <i class="fas fa-arrows-alt-h"></i> Interferensi
+                                <span class="badge latihan">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/gelombang/mekanik-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Mekanik
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/gelombang/bunyi-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Bunyi
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/gelombang/cahaya-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Cahaya
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ===== SECTION: FISIKA MODERN ===== -->
+        <!-- ============================================================ -->
+        <div class="section-divider modern">
+            <h2><i class="fas fa-atom"></i> Fisika Modern</h2>
+        </div>
+
+        <div class="kelas-container">
+            <!-- ===== RELATIVITAS ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="kelas-title">Relativitas</div>
+                </div>
+                <div class="kelas-description">
+                    Relativitas Khusus, Transformasi Lorentz, Dilatasi Waktu, Relativitas Umum.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="relativitas-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="relativitas-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('relativitas-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="relativitas-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/relativitas/khusus.html" class="menu-item">
+                                <i class="fas fa-rocket"></i> Relativitas Khusus
+                                <span class="badge modern-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/relativitas/lorentz.html" class="menu-item">
+                                <i class="fas fa-arrows-alt"></i> Transformasi Lorentz
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/relativitas/umum.html" class="menu-item">
+                                <i class="fas fa-globe"></i> Relativitas Umum
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/relativitas/khusus-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Relativitas Khusus
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/relativitas/umum-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Relativitas Umum
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== KUANTUM ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-asterisk"></i></div>
+                    <div class="kelas-title">Kuantum</div>
+                </div>
+                <div class="kelas-description">
+                    Teori Kuantum, Efek Fotolistrik, Dualisme, Fungsi Gelombang.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="kuantum-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="kuantum-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('kuantum-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="kuantum-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/kuantum/teori.html" class="menu-item">
+                                <i class="fas fa-asterisk"></i> Teori Kuantum
+                                <span class="badge modern-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/kuantum/fotolistrik.html" class="menu-item">
+                                <i class="fas fa-bolt"></i> Efek Fotolistrik
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/kuantum/dualisme.html" class="menu-item">
+                                <i class="fas fa-wave-square"></i> Dualisme
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                            <a href="latihan/kuantum/fungsi-gelombang.html" class="menu-item">
+                                <i class="fas fa-chart-line"></i> Fungsi Gelombang
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/kuantum/kuantum-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Kuantum
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/kuantum/fotolistrik-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Fotolistrik
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ATOM ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-atom"></i></div>
+                    <div class="kelas-title">Atom</div>
+                </div>
+                <div class="kelas-description">
+                    Model Atom, Spektrum Atom, Transisi, Efek Zeeman.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="atom-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="atom-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('atom-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="atom-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/atom/model.html" class="menu-item">
+                                <i class="fas fa-atom"></i> Model Atom
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/atom/spektrum.html" class="menu-item">
+                                <i class="fas fa-chart-bar"></i> Spektrum Atom
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/atom/transisi.html" class="menu-item">
+                                <i class="fas fa-exchange-alt"></i> Transisi
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/atom/atom-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Atom
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/atom/spektrum-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Spektrum
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== INTI ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="kelas-title">Inti</div>
+                </div>
+                <div class="kelas-description">
+                    Struktur Inti, Radioaktivitas, Reaksi Inti, Fisi &amp; Fusi.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="inti-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="inti-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('inti-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="inti-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/inti/struktur.html" class="menu-item">
+                                <i class="fas fa-bolt"></i> Struktur Inti
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/inti/radioaktivitas.html" class="menu-item">
+                                <i class="fas fa-radiation"></i> Radioaktivitas
+                                <span class="badge modern-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/inti/reaksi.html" class="menu-item">
+                                <i class="fas fa-exchange-alt"></i> Reaksi Inti
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/inti/fisi-fusi.html" class="menu-item">
+                                <i class="fas fa-fire"></i> Fisi &amp; Fusi
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/inti/inti-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Inti
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/inti/radioaktivitas-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Radioaktivitas
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PARTIKEL ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-star"></i></div>
+                    <div class="kelas-title">Partikel</div>
+                </div>
+                <div class="kelas-description">
+                    Partikel Dasar, Interaksi Fundamental, Model Standar, Kuark.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="partikel-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="partikel-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('partikel-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="partikel-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/partikel/dasar.html" class="menu-item">
+                                <i class="fas fa-star"></i> Partikel Dasar
+                                <span class="badge modern-badge">12 Soal</span>
+                            </a>
+                            <a href="latihan/partikel/interaksi.html" class="menu-item">
+                                <i class="fas fa-handshake"></i> Interaksi Fundamental
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/partikel/standar.html" class="menu-item">
+                                <i class="fas fa-th-large"></i> Model Standar
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/partikel/kuark.html" class="menu-item">
+                                <i class="fas fa-circle"></i> Kuark
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/partikel/partikel-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Partikel
+                                <span class="badge quiz">10 Q</span>
+                            </a>
+                            <a href="quiz/partikel/interaksi-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Interaksi
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== LANJUTAN ===== -->
+            <div class="kelas-card modern-card">
+                <div class="kelas-header">
+                    <div class="kelas-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="kelas-title">Lanjutan</div>
+                </div>
+                <div class="kelas-description">
+                    Fisika Material, Astrofisika, Kosmologi, Topik-topik mutakhir.
+                </div>
+
+                <div class="level-buttons">
+                    <a href="lanjutan-steady.html" class="level-btn steady">
+                        <i class="fas fa-walking"></i>
+                        Level Steady
+                        <span class="level-label">Bertahap &amp; Detail</span>
+                    </a>
+                    <a href="lanjutan-fast.html" class="level-btn fast">
+                        <i class="fas fa-running"></i>
+                        Level Fast
+                        <span class="level-label">Cepat &amp; Intensif</span>
+                    </a>
+                </div>
+
+                <div class="toggle-section">
+                    <button class="toggle-btn" onclick="toggleMenu('lanjutan-menu')">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>📝 Latihan Soal &amp; Quiz</span>
+                    </button>
+                    <div class="toggle-content" id="lanjutan-menu">
+                        <div class="menu-grid">
+                            <a href="latihan/lanjutan/material.html" class="menu-item">
+                                <i class="fas fa-cubes"></i> Fisika Material
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/lanjutan/astrofisika.html" class="menu-item">
+                                <i class="fas fa-globe-asia"></i> Astrofisika
+                                <span class="badge modern-badge">10 Soal</span>
+                            </a>
+                            <a href="latihan/lanjutan/kosmologi.html" class="menu-item">
+                                <i class="fas fa-galaxy"></i> Kosmologi
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                            <a href="latihan/lanjutan/mutakhir.html" class="menu-item">
+                                <i class="fas fa-flask"></i> Topik Mutakhir
+                                <span class="badge modern-badge">8 Soal</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                        <div class="menu-grid">
+                            <a href="quiz/lanjutan/material-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Material
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                            <a href="quiz/lanjutan/astro-quiz.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Astrofisika
+                                <span class="badge quiz">8 Q</span>
+                            </a>
+                        </div>
+
+                        <div class="quiz-divider" style="margin-top:15px;"><span>🎓 TRY OUT &amp; UTBK</span></div>
 
                         <div class="menu-grid">
                             <a href="utbk/tryout-1.html" class="menu-item">
@@ -705,7 +1327,7 @@
         <footer>
             <div class="footer-logo"><i class="fas fa-atom"></i></div>
             <h3>Portal Media Pembelajaran Fisika SMA</h3>
-            <p class="footer-text">© 2023 - Belajar fisika dengan materi lengkap, latihan soal, dan quiz interaktif</p>
+            <p class="footer-text">© 2023 - Belajar fisika klasik &amp; modern dengan materi lengkap, latihan soal, dan quiz interaktif</p>
         </footer>
     </div>
 
@@ -764,6 +1386,15 @@
                 intro.style.transition = 'opacity 0.8s ease';
                 intro.style.opacity = '1';
             }, 100);
+
+            const dividers = document.querySelectorAll('.section-divider');
+            dividers.forEach((div, idx) => {
+                div.style.opacity = '0';
+                setTimeout(() => {
+                    div.style.transition = 'opacity 0.8s ease';
+                    div.style.opacity = '1';
+                }, 200 + 200 * idx);
+            });
         });
 
         // ===== ESC TUTUP SEMUA =====
