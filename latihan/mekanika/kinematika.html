@@ -6,452 +6,75 @@
     <title>Latihan Soal Kinematika - Kelas 10</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-        }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(to right, #2ecc71, #3498db);
-        }
-        
-        .back-button {
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateX(-5px);
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .level-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        
-        .content {
-            padding: 40px;
-        }
-        
-        .section-title {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 15px;
-            color: #3498db;
-        }
-        
-        .section-desc {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.05rem;
-            line-height: 1.6;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #3498db;
-        }
-        
-        .hierarchy-container {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-        }
-        
-        .materi-utama {
-            margin-bottom: 25px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
-        }
-        
-        .materi-utama-header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .materi-utama-header:hover {
-            background: linear-gradient(135deg, #34495e, #2c3e50);
-        }
-        
-        .materi-utama-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .materi-utama-title i {
-            margin-right: 15px;
-            color: #2ecc71;
-        }
-        
-        .materi-utama-toggle {
-            transition: transform 0.3s;
-        }
-        
-        .materi-utama-content {
-            background: white;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.5s ease;
-        }
-        
-        .materi-utama-content.expanded {
-            max-height: 5000px;
-        }
-        
-        .submateri-level1 {
-            border-bottom: 1px solid #eee;
-        }
-        
-        .submateri-level1:last-child {
-            border-bottom: none;
-        }
-        
-        .submateri-header {
-            padding: 18px 25px;
-            background: #f1f3f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .submateri-header:hover {
-            background: #e9ecef;
-        }
-        
-        .submateri-title {
-            font-weight: 600;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            font-size: 1.1rem;
-        }
-        
-        .submateri-title i {
-            margin-right: 12px;
-            color: #3498db;
-        }
-        
-        .submateri-content {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-        
-        .submateri-content.expanded {
-            max-height: 3000px;
-            padding: 20px;
-            background: #fdfdfd;
-        }
-        
-        .submateri-level2 {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-left: 4px solid #3498db;
-        }
-        
-        .submateri-level2-title {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-        }
-        
-        .submateri-level2-title i {
-            margin-right: 8px;
-            color: #3498db;
-        }
-        
-        /* === LEVEL 3 (sub-sub bab) dengan toggle === */
-        .submateri-level3 {
-            background: #e8f0fe;
-            border-radius: 6px;
-            margin: 10px 0 10px 20px;
-            border-left: 3px solid #2ecc71;
-            overflow: hidden;
-        }
-        
-        .submateri-level3-header {
-            padding: 12px 15px;
-            background: #dce6f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-radius: 6px 6px 0 0;
-        }
-        
-        .submateri-level3-header:hover {
-            background: #cdd9eb;
-        }
-        
-        .submateri-level3-title {
-            font-weight: 600;
-            color: #1a3a5c;
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
-        }
-        
-        .submateri-level3-title i {
-            margin-right: 8px;
-            color: #27ae60;
-        }
-        
-        .submateri-level3-toggle {
-            transition: transform 0.3s;
-        }
-        
-        .submateri-level3-body {
-            padding: 12px 15px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background: #f0f5ff;
-        }
-        
-        .submateri-level3-body.expanded {
-            max-height: 2000px;
-            padding: 12px 15px;
-        }
-        
-        /* === LEVEL 4 (tetap statis) === */
-        .submateri-level4 {
-            background: #f0f8f0;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin: 8px 0 8px 35px;
-            border-left: 3px solid #f39c12;
-        }
-        
-        .materi-description {
-            font-size: 0.95rem;
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-        
-        .soal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .soal-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 18px;
-            background: white;
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            text-decoration: none;
-            color: #2c3e50;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        
-        .soal-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            border-color: #3498db;
-            background: #f8f9fa;
-        }
-        
-        .soal-item i {
-            font-size: 1.2rem;
-            width: 30px;
-            text-align: center;
-            color: #3498db;
-        }
-        
-        .soal-item .badge {
-            font-size: 0.65rem;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-left: auto;
-        }
-        
-        .badge.easy {
-            background: #2ecc71;
-            color: white;
-        }
-        .badge.medium {
-            background: #f39c12;
-            color: white;
-        }
-        .badge.hard {
-            background: #e74c3c;
-            color: white;
-        }
-        .badge.paket {
-            background: #9b59b6;
-            color: white;
-        }
-        .badge.utbk {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .soal-icon {
-            font-size: 1.1rem;
-            width: 24px;
-            text-align: center;
-        }
-        
-        .path-info {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 6px;
-            font-family: monospace;
-            background: #f1f1f1;
-            padding: 2px 8px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        
-        .soal-stats {
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #666;
-        }
-        
-        .soal-stats span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .soal-stats i {
-            font-size: 0.9rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 25px;
-            background: #2c3e50;
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .back-button {
-                position: relative;
-                left: 0;
-                top: 0;
-                margin-bottom: 15px;
-                display: inline-flex;
-            }
-            
-            .submateri-content.expanded {
-                padding: 15px;
-            }
-            
-            .submateri-level3 {
-                margin-left: 10px;
-            }
-            
-            .submateri-level4 {
-                margin-left: 20px;
-            }
-            
-            .soal-grid {
-                grid-template-columns: 1fr;
-            }
+        /* ====== CSS SAMA SEPERTI SEBELUMNYA ====== */
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+        body { background:linear-gradient(135deg,#f5f7fa,#c3cfe2); color:#333; min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.1); overflow:hidden; }
+        header { background:linear-gradient(135deg,#2c3e50,#3498db); color:white; padding:40px 30px; text-align:center; position:relative; }
+        header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5px; background:linear-gradient(to right,#2ecc71,#3498db); }
+        .back-button { position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.15); color:white; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition:all 0.3s; text-decoration:none; display:flex; align-items:center; backdrop-filter:blur(5px); border:1px solid rgba(255,255,255,0.2); }
+        .back-button:hover { background:rgba(255,255,255,0.25); transform:translateX(-5px); }
+        h1 { font-size:2.8rem; margin-bottom:10px; }
+        .subtitle { font-size:1.2rem; opacity:0.9; }
+        .level-badge { display:inline-block; background:rgba(255,255,255,0.2); padding:8px 20px; border-radius:50px; margin-top:10px; font-weight:bold; }
+        .content { padding:40px; }
+        .section-title { color:#2c3e50; margin-bottom:30px; font-size:1.8rem; display:flex; align-items:center; }
+        .section-title i { margin-right:15px; color:#3498db; }
+        .section-desc { color:#666; margin-bottom:30px; font-size:1.05rem; line-height:1.6; padding:20px; background:#f8f9fa; border-radius:10px; border-left:5px solid #3498db; }
+        .hierarchy-container { background:#f8f9fa; border-radius:15px; padding:30px; }
+        .materi-utama { margin-bottom:25px; border-radius:12px; overflow:hidden; box-shadow:0 3px 15px rgba(0,0,0,0.08); }
+        .materi-utama-header { background:linear-gradient(135deg,#2c3e50,#34495e); color:white; padding:20px 25px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:all 0.3s; }
+        .materi-utama-header:hover { background:linear-gradient(135deg,#34495e,#2c3e50); }
+        .materi-utama-title { font-size:1.3rem; font-weight:bold; display:flex; align-items:center; }
+        .materi-utama-title i { margin-right:15px; color:#2ecc71; }
+        .materi-utama-toggle { transition:transform 0.3s; }
+        .materi-utama-content { background:white; overflow:hidden; max-height:0; transition:max-height 0.5s ease; }
+        .materi-utama-content.expanded { max-height:5000px; }
+        .submateri-level1 { border-bottom:1px solid #eee; }
+        .submateri-level1:last-child { border-bottom:none; }
+        .submateri-header { padding:18px 25px; background:#f1f3f5; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:all 0.3s; }
+        .submateri-header:hover { background:#e9ecef; }
+        .submateri-title { font-weight:600; color:#2c3e50; display:flex; align-items:center; font-size:1.1rem; }
+        .submateri-title i { margin-right:12px; color:#3498db; }
+        .submateri-content { padding:0; max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+        .submateri-content.expanded { max-height:3000px; padding:20px; background:#fdfdfd; }
+        .submateri-level2 { background:#f8f9fa; border-radius:8px; padding:18px; margin-bottom:12px; border-left:4px solid #3498db; }
+        .submateri-level2-title { font-weight:600; color:#2c3e50; margin-bottom:10px; display:flex; align-items:center; font-size:1rem; }
+        .submateri-level2-title i { margin-right:8px; color:#3498db; }
+        /* Level 3 dengan toggle */
+        .submateri-level3 { background:#e8f0fe; border-radius:6px; margin:10px 0 10px 20px; border-left:3px solid #2ecc71; overflow:hidden; }
+        .submateri-level3-header { padding:12px 15px; background:#dce6f5; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background 0.2s; border-radius:6px 6px 0 0; }
+        .submateri-level3-header:hover { background:#cdd9eb; }
+        .submateri-level3-title { font-weight:600; color:#1a3a5c; display:flex; align-items:center; font-size:0.95rem; }
+        .submateri-level3-title i { margin-right:8px; color:#27ae60; }
+        .submateri-level3-toggle { transition:transform 0.3s; }
+        .submateri-level3-body { padding:12px 15px; max-height:0; overflow:hidden; transition:max-height 0.4s ease; background:#f0f5ff; }
+        .submateri-level3-body.expanded { max-height:2000px; padding:12px 15px; }
+        .submateri-level4 { background:#f0f8f0; border-radius:6px; padding:10px 15px; margin:8px 0 8px 35px; border-left:3px solid #f39c12; }
+        .materi-description { font-size:0.95rem; color:#555; line-height:1.6; margin-bottom:12px; }
+        .soal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:15px; margin-top:15px; }
+        .soal-item { display:flex; align-items:center; gap:12px; padding:12px 18px; background:white; border-radius:10px; border:2px solid #e9ecef; text-decoration:none; color:#2c3e50; transition:all 0.3s; font-weight:600; font-size:0.95rem; }
+        .soal-item:hover { transform:translateY(-3px); box-shadow:0 5px 20px rgba(0,0,0,0.1); border-color:#3498db; background:#f8f9fa; }
+        .soal-item i { font-size:1.2rem; width:30px; text-align:center; color:#3498db; }
+        .soal-item .badge { font-size:0.65rem; padding:3px 12px; border-radius:20px; font-weight:bold; margin-left:auto; }
+        .badge.easy { background:#2ecc71; color:white; }
+        .badge.medium { background:#f39c12; color:white; }
+        .badge.hard { background:#e74c3c; color:white; }
+        .badge.paket { background:#9b59b6; color:white; }
+        .badge.utbk { background:#e74c3c; color:white; }
+        .path-info { font-size:0.75rem; color:#888; margin-top:6px; font-family:monospace; background:#f1f1f1; padding:2px 8px; border-radius:4px; display:inline-block; }
+        .soal-stats { display:flex; gap:15px; margin-top:8px; font-size:0.85rem; color:#666; }
+        .soal-stats span { display:flex; align-items:center; gap:5px; }
+        .soal-stats i { font-size:0.9rem; }
+        footer { text-align:center; padding:25px; background:#2c3e50; color:white; }
+        @media (max-width:768px) {
+            h1 { font-size:2rem; }
+            .content { padding:20px; }
+            .back-button { position:relative; left:0; top:0; margin-bottom:15px; display:inline-flex; }
+            .submateri-content.expanded { padding:15px; }
+            .submateri-level3 { margin-left:10px; }
+            .submateri-level4 { margin-left:20px; }
+            .soal-grid { grid-template-columns:1fr; }
         }
     </style>
 </head>
@@ -480,7 +103,9 @@
                     <i class="fas fa-list"></i> Daftar Latihan Soal Kinematika
                 </div>
                 
-                <!-- ===== GERAK LURUS ===== -->
+                <!-- ============================================================ -->
+                <!-- 1. GERAK LURUS                                             -->
+                <!-- ============================================================ -->
                 <div class="materi-utama">
                     <div class="materi-utama-header" onclick="toggleMateri('gerak-lurus')">
                         <div class="materi-utama-title">
@@ -511,23 +136,24 @@
                                         Kumpulan soal tentang Gerak Lurus Beraturan dengan kecepatan konstan.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="soal/kelas10/steady/kinematika/glb/soal-1.html" class="soal-item">
+                                        <!-- ===== SEMUA LINK RELATIF ke folder kinematika ===== -->
+                                        <a href="glb/soal-1.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLB #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glb/soal-2.html" class="soal-item">
+                                        <a href="glb/soal-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLB #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glb/soal-3.html" class="soal-item">
+                                        <a href="glb/soal-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLB #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glb/soal-4.html" class="soal-item">
+                                        <a href="glb/soal-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLB #4
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glb/soal-5.html" class="soal-item">
+                                        <a href="glb/soal-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLB #5
                                             <span class="badge hard">Sulit</span>
                                         </a>
@@ -536,7 +162,7 @@
                                         <span><i class="fas fa-file-alt"></i> 5 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±20 menit</span>
                                     </div>
-                                    <div class="path-info">/soal/kelas10/steady/kinematika/glb/</div>
+                                    <div class="path-info">/glb/</div>
                                 </div>
                             </div>
                         </div>
@@ -560,23 +186,23 @@
                                         Kumpulan soal tentang Gerak Lurus Berubah Beraturan dengan percepatan konstan.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="soal/kelas10/steady/kinematika/glbb/soal-1.html" class="soal-item">
+                                        <a href="glbb/soal-1.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLBB #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glbb/soal-2.html" class="soal-item">
+                                        <a href="glbb/soal-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLBB #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glbb/soal-3.html" class="soal-item">
+                                        <a href="glbb/soal-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLBB #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glbb/soal-4.html" class="soal-item">
+                                        <a href="glbb/soal-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLBB #4
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="soal/kelas10/steady/kinematika/glbb/soal-5.html" class="soal-item">
+                                        <a href="glbb/soal-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal GLBB #5
                                             <span class="badge hard">Sulit</span>
                                         </a>
@@ -597,24 +223,24 @@
                                                 Kasus khusus GLBB dengan percepatan gravitasi (g = 9,8 m/s²)
                                             </p>
                                             <div class="soal-grid">
-                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-1.html" class="soal-item">
+                                                <a href="glbb/gjb/soal-1.html" class="soal-item">
                                                     <i class="fas fa-file-alt"></i> Soal GJB #1
                                                     <span class="badge easy">Mudah</span>
                                                 </a>
-                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-2.html" class="soal-item">
+                                                <a href="glbb/gjb/soal-2.html" class="soal-item">
                                                     <i class="fas fa-file-alt"></i> Soal GJB #2
                                                     <span class="badge medium">Sedang</span>
                                                 </a>
-                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-3.html" class="soal-item">
+                                                <a href="glbb/gjb/soal-3.html" class="soal-item">
                                                     <i class="fas fa-file-alt"></i> Soal GJB #3
                                                     <span class="badge medium">Sedang</span>
                                                 </a>
-                                                <a href="soal/kelas10/steady/kinematika/glbb/gjb/soal-4.html" class="soal-item">
+                                                <a href="glbb/gjb/soal-4.html" class="soal-item">
                                                     <i class="fas fa-file-alt"></i> Soal GJB #4
                                                     <span class="badge hard">Sulit</span>
                                                 </a>
                                             </div>
-                                            <div class="path-info">/soal/kelas10/steady/kinematika/glbb/gjb/</div>
+                                            <div class="path-info">/glbb/gjb/</div>
                                         </div>
                                     </div>
                                     
@@ -622,14 +248,16 @@
                                         <span><i class="fas fa-file-alt"></i> 9 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±35 menit</span>
                                     </div>
-                                    <div class="path-info">/soal/kelas10/steady/kinematika/glbb/</div>
+                                    <div class="path-info">/glbb/</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- ===== GERAK PARABOLA ===== -->
+                <!-- ============================================================ -->
+                <!-- 2. GERAK PARABOLA                                          -->
+                <!-- ============================================================ -->
                 <div class="materi-utama">
                     <div class="materi-utama-header" onclick="toggleMateri('gerak-parabola')">
                         <div class="materi-utama-title">
@@ -658,24 +286,24 @@
                                         Kumpulan soal tentang gerak parabola dengan analisis sumbu x dan y.
                                     </p>
                                     <div class="soal-grid">
-                                        <!-- ✅ Perbaikan path: gunakan absolute path atau relative yang benar -->
-                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola.html" class="soal-item">
+                                        <!-- ===== LANGSUNG di folder kinematika ===== -->
+                                        <a href="soal-gerak-parabola.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-2.html" class="soal-item">
+                                        <a href="soal-gerak-parabola-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-3.html" class="soal-item">
+                                        <a href="soal-gerak-parabola-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-4.html" class="soal-item">
+                                        <a href="soal-gerak-parabola-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #4
                                             <span class="badge hard">Sulit</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-gerak-parabola-5.html" class="soal-item">
+                                        <a href="soal-gerak-parabola-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Parabola #5
                                             <span class="badge utbk">UTBK</span>
                                         </a>
@@ -684,14 +312,16 @@
                                         <span><i class="fas fa-file-alt"></i> 5 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±25 menit</span>
                                     </div>
-                                    <div class="path-info">/latihan/mekanika/kinematika/</div>
+                                    <div class="path-info">/ (root kinematika)</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- ===== GERAK MELINGKAR ===== -->
+                <!-- ============================================================ -->
+                <!-- 3. GERAK MELINGKAR                                         -->
+                <!-- ============================================================ -->
                 <div class="materi-utama">
                     <div class="materi-utama-header" onclick="toggleMateri('gerak-melingkar')">
                         <div class="materi-utama-title">
@@ -720,23 +350,23 @@
                                         Kumpulan soal tentang gerak melingkar beraturan dan berubah beraturan.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-1.html" class="soal-item">
+                                        <a href="soal-melingkar-1.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #1
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-2.html" class="soal-item">
+                                        <a href="soal-melingkar-2.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #2
                                             <span class="badge easy">Mudah</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-3.html" class="soal-item">
+                                        <a href="soal-melingkar-3.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #3
                                             <span class="badge medium">Sedang</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-4.html" class="soal-item">
+                                        <a href="soal-melingkar-4.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #4
                                             <span class="badge hard">Sulit</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/soal-melingkar-5.html" class="soal-item">
+                                        <a href="soal-melingkar-5.html" class="soal-item">
                                             <i class="fas fa-file-alt"></i> Soal Melingkar #5
                                             <span class="badge medium">Sedang</span>
                                         </a>
@@ -757,24 +387,24 @@
                                                 Kumpulan soal tentang analisis grafik gerak melingkar (ω-t, θ-t).
                                             </p>
                                             <div class="soal-grid">
-                                                <a href="/latihan/mekanika/kinematika/grafik/soal-1.html" class="soal-item">
+                                                <a href="grafik/soal-1.html" class="soal-item">
                                                     <i class="fas fa-chart-line"></i> Grafik Melingkar #1
                                                     <span class="badge easy">Mudah</span>
                                                 </a>
-                                                <a href="/latihan/mekanika/kinematika/grafik/soal-2.html" class="soal-item">
+                                                <a href="grafik/soal-2.html" class="soal-item">
                                                     <i class="fas fa-chart-line"></i> Grafik Melingkar #2
                                                     <span class="badge medium">Sedang</span>
                                                 </a>
-                                                <a href="/latihan/mekanika/kinematika/grafik/soal-3.html" class="soal-item">
+                                                <a href="grafik/soal-3.html" class="soal-item">
                                                     <i class="fas fa-chart-line"></i> Grafik Melingkar #3
                                                     <span class="badge hard">Sulit</span>
                                                 </a>
-                                                <a href="/latihan/mekanika/kinematika/grafik/soal-4.html" class="soal-item">
+                                                <a href="grafik/soal-4.html" class="soal-item">
                                                     <i class="fas fa-chart-line"></i> Grafik Melingkar #4
                                                     <span class="badge utbk">UTBK</span>
                                                 </a>
                                             </div>
-                                            <div class="path-info">/latihan/mekanika/kinematika/grafik/</div>
+                                            <div class="path-info">/grafik/</div>
                                         </div>
                                     </div>
                                     
@@ -782,14 +412,16 @@
                                         <span><i class="fas fa-file-alt"></i> 9 Soal</span>
                                         <span><i class="fas fa-clock"></i> ±35 menit</span>
                                     </div>
-                                    <div class="path-info">/latihan/mekanika/kinematika/</div>
+                                    <div class="path-info">/ (root kinematika)</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- ===== PAKET SOAL UTBK ===== -->
+                <!-- ============================================================ -->
+                <!-- 4. PAKET UTBK                                              -->
+                <!-- ============================================================ -->
                 <div class="materi-utama">
                     <div class="materi-utama-header" onclick="toggleMateri('paket-utbk')" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
                         <div class="materi-utama-title">
@@ -818,23 +450,23 @@
                                         Kumpulan soal UTBK tentang kinematika dari berbagai tahun. Dilengkapi dengan pembahasan lengkap.
                                     </p>
                                     <div class="soal-grid">
-                                        <a href="/latihan/mekanika/kinematika/utbk/paket-1.html" class="soal-item">
+                                        <a href="utbk/paket-1.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #1
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/utbk/paket-2.html" class="soal-item">
+                                        <a href="utbk/paket-2.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #2
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/utbk/paket-3.html" class="soal-item">
+                                        <a href="utbk/paket-3.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #3
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/utbk/paket-4.html" class="soal-item">
+                                        <a href="utbk/paket-4.html" class="soal-item">
                                             <i class="fas fa-file-pdf"></i> Paket UTBK #4
                                             <span class="badge utbk">UTBK</span>
                                         </a>
-                                        <a href="/latihan/mekanika/kinematika/utbk/pembahasan.html" class="soal-item">
+                                        <a href="utbk/pembahasan.html" class="soal-item">
                                             <i class="fas fa-video"></i> Pembahasan UTBK
                                             <span class="badge paket">Free</span>
                                         </a>
@@ -843,7 +475,7 @@
                                         <span><i class="fas fa-file-alt"></i> 4 Paket</span>
                                         <span><i class="fas fa-clock"></i> ±60 menit</span>
                                     </div>
-                                    <div class="path-info">/latihan/mekanika/kinematika/utbk/</div>
+                                    <div class="path-info">/utbk/</div>
                                 </div>
                             </div>
                         </div>
@@ -863,7 +495,6 @@
         function toggleMateri(materiId) {
             const content = document.getElementById(materiId + '-content');
             const toggle = document.getElementById(materiId + '-toggle');
-            
             if (content.classList.contains('expanded')) {
                 content.classList.remove('expanded');
                 toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
@@ -877,7 +508,6 @@
         function toggleSubMateri(subMateriId) {
             const content = document.getElementById(subMateriId + '-content');
             const toggle = document.getElementById(subMateriId + '-toggle');
-            
             if (content.classList.contains('expanded')) {
                 content.classList.remove('expanded');
                 toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
@@ -891,7 +521,6 @@
         function toggleLevel3(level3Id) {
             const body = document.getElementById(level3Id + '-body');
             const toggle = document.getElementById(level3Id + '-toggle');
-            
             if (body.classList.contains('expanded')) {
                 body.classList.remove('expanded');
                 toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
