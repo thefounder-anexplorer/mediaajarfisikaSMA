@@ -53,6 +53,10 @@
       font-weight: 700;
       transition: background .18s ease, color .18s ease, transform .18s ease;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
     }
 
     .nav-button:hover,
@@ -403,6 +407,11 @@
       <div class="mx-auto max-w-6xl">
         <div class="flex flex-col gap-4 border-b-2 border-slate-800 pb-4 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex items-center gap-3">
+            <!-- Tombol Home ke Portal Fisika -->
+            <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/" class="nav-button" aria-label="Kembali ke Portal Fisika">
+              <i data-lucide="home" class="h-5 w-5"></i>
+              <span class="hidden sm:inline">Home</span>
+            </a>
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#f26b38] text-white">
               <i data-lucide="atom" aria-hidden="true" class="h-5 w-5"></i>
             </div>
