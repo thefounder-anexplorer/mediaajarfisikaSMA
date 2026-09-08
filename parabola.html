@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Fisika · Gerak Parabola</title>
+  <!-- Tailwind + Lucide + Google Fonts -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#10233e; --chalk:#f4b942; --paper:#fffdf6; --muted:#63728a; --line:#d7dfeb; }
+    * { box-sizing:border-box; }
+    body { margin:0; width:100%; font-family:"Work Sans", sans-serif; color:var(--ink); background:#e8eff6; }
+    .app-shell {
+      width:100%; min-height:100vh; overflow-x:hidden;
+      background:radial-gradient(circle at 8% 8%,rgba(244,185,66,.17),transparent 25rem),radial-gradient(circle at 92% 18%,rgba(67,159,216,.16),transparent 24rem),#e8eff6;
+    }
+    .grid-paper { background-image:linear-gradient(rgba(16,35,62,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(16,35,62,.045) 1px,transparent 1px); background-size:24px 24px; }
+    .chalkboard { position:relative; overflow:hidden; background:#10233e; background-image:radial-gradient(circle at 20% 20%,rgba(244,185,66,.18),transparent 20rem),linear-gradient(130deg,rgba(255,255,255,.04),transparent 45%); }
+    .chalkboard::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.12; background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.12) 4px); }
+    .hero-content { position:relative; z-index:1; }
+    .formula-script { font-family:"Source Serif Pro",serif; letter-spacing:.01em; }
+    .page-view { display:none; animation:rise .45s ease both; }
+    .page-view.active { display:block; }
+    .nav-tab { border-bottom:3px solid transparent; transition:.2s ease; cursor:pointer; }
+    .nav-tab.active { border-color:#f4b942; color:#f9d980; }
+    .nav-tab:focus-visible, button:focus-visible, input:focus-visible { outline:3px solid rgba(244,185,66,.8); outline-offset:3px; }
+    .control-card { box-shadow:0 16px 35px rgba(16,35,62,.10); }
+    .result-card { border-top:4px solid #f4b942; transition:transform .2s ease,box-shadow .2s ease; }
+    .result-card:hover { transform:translateY(-3px); box-shadow:0 15px 30px rgba(16,35,62,.10); }
+    .metric-value { font-variant-numeric:tabular-nums; letter-spacing:-.035em; }
+    .sim-canvas { display:block; width:100%; height:auto; border-radius:16px; background:linear-gradient(180deg,#dff3fb 0%,#f7fcff 68%,#d7ebd0 68%,#c6dfbf 100%); }
+    input[type="range"] { appearance:none; width:100%; height:7px; border-radius:999px; background:#d8e1ec; outline:none; cursor:pointer; }
+    input[type="range"]::-webkit-slider-thumb { appearance:none; width:20px; height:20px; border:3px solid #fffdf6; border-radius:50%; background:#f4b942; box-shadow:0 2px 8px rgba(16,35,62,.28); }
+    input[type="range"]::-moz-range-thumb { width:16px; height:16px; border:3px solid #fffdf6; border-radius:50%; background:#f4b942; }
+    .quiz-option { transition:transform .18s ease,border-color .18s ease,background .18s ease; cursor:pointer; }
+    .quiz-option:hover:not(:disabled) { transform:translateX(4px); border-color:#f4b942; background:#fff8e7; }
+    .quiz-option:disabled { opacity:0.7; cursor:default; }
+    .quiz-option.selected-correct { border-color:#26845b; background:#e8f7ed; }
+    .quiz-option.selected-wrong { border-color:#cf4f45; background:#fff0ed; }
+    .quiz-question { display:none; }
+    .quiz-question.active { display:block; animation:rise .4s ease both; }
+    .hidden-state { display:none!important; }
+    .explanation-box { border-left:4px solid #f4b942; }
+    @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="chalkboard">
+    <div class="hero-content max-w-7xl mx-auto px-5 pt-6 md:px-10 md:pt-8">
+      <div class="flex flex-wrap items-center justify-between gap-5 pb-5">
+        <div class="flex items-center gap-3">
+          <!-- Tombol Home sebagai link ke portal fisika -->
+          <a href="https://fisika-portal.com" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/40 px-4 py-2 text-white font-bold transition no-underline">
+            <i data-lucide="home" width="20" height="20"></i>
+            <span>Home</span>
+          </a>
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-300 text-slate-900"><i data-lucide="orbit" width="22" height="22"></i></span>
+          <div>
+            <p class="text-xs uppercase tracking-[.17em] font-bold text-amber-200/80">Fisika Seru</p>
+            <h1 class="formula-script font-bold text-2xl text-white">Gerak Parabola</h1>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-amber-100/70">Simulasi interaktif</p>
+      </div>
+      <nav aria-label="Navigasi modul" class="flex gap-2 sm:gap-7">
+        <button id="nav-home" class="nav-tab active px-2 py-3 font-bold text-amber-100/70" type="button" data-page="home">🏠 Beranda</button>
+        <button id="nav-simulation" class="nav-tab px-2 py-3 font-bold text-amber-100/70" type="button" data-page="simulation">🎯 Simulasi</button>
+        <button id="nav-quiz" class="nav-tab px-2 py-3 font-bold text-amber-100/70" type="button" data-page="quiz">📝 Kuis</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="grid-paper w-full">
+
+    <!-- HOME -->
+    <section id="home-page" class="page-view active" aria-labelledby="home-title">
+      <div class="max-w-7xl mx-auto px-5 py-8 md:px-10 md:py-12">
+        <div class="rounded-3xl overflow-hidden shadow-[0_16px_35px_rgba(16,35,62,.10)]">
+          <div class="grid md:grid-cols-[1.15fr_.85fr] bg-white">
+            <div class="p-7 md:p-10">
+              <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Materi SMA Kelas XI</p>
+              <h2 id="home-title" class="formula-script font-bold text-4xl mt-3 text-slate-800">Pahami Gerak Parabola</h2>
+              <p class="mt-5 max-w-xl leading-relaxed text-slate-600">Pelajari gerak dua dimensi dengan kecepatan awal dan percepatan gravitasi. Eksplorasi lintasan, waktu terbang, tinggi maksimum, dan jangkauan melalui simulasi visual.</p>
+              <div class="mt-7 flex flex-wrap gap-3">
+                <button id="go-simulation" class="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-5 py-3 font-bold text-slate-900 hover:bg-amber-300 transition" type="button"><i data-lucide="play-circle" width="18" height="18"></i> Mulai Simulasi</button>
+                <button id="go-quiz" class="inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-bold text-slate-800 hover:bg-slate-300 transition" type="button"><i data-lucide="circle-help" width="18" height="18"></i> Coba Kuis</button>
+              </div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=600&h=400&fit=crop&crop=center" alt="Ilustrasi parabola" class="w-full h-full min-h-[260px] object-cover">
+          </div>
+        </div>
+
+        <!-- 3 konsep dengan tombol video -->
+        <section class="mt-10" aria-labelledby="learn-title">
+          <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Konsep inti</p>
+          <h2 id="learn-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Apa yang akan kamu pelajari?</h2>
+          <div class="grid md:grid-cols-3 gap-5 mt-5">
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
+              <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-amber-100 text-amber-700"><i data-lucide="rocket" width="20" height="20"></i></span>
+              <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Lintasan Parabola</h3>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Gerak bola atau peluru membentuk kurva parabola karena kombinasi kecepatan horizontal dan vertikal.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=QwB5n-8D7Vg','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:text-amber-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
+            </article>
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
+              <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="move-right" width="20" height="20"></i></span>
+              <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Horizontal</h3>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=8T5uYcP1U2E','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
+            </article>
+            <article class="rounded-2xl p-6 shadow-sm bg-white flex flex-col">
+              <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-rose-100 text-rose-700"><i data-lucide="move-up" width="20" height="20"></i></span>
+              <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Vertikal</h3>
+              <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
+              <button onclick="window.open('https://www.youtube.com/watch?v=3H5g4H5P4xM','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
+                <i data-lucide="video" width="16" height="16"></i> Tonton video
+              </button>
+            </article>
+          </div>
+        </section>
+
+        <!-- Rumus cepat -->
+        <section class="mt-8 rounded-2xl p-6 md:p-7 bg-white/90 border border-amber-200/60" aria-labelledby="formula-title">
+          <div class="flex flex-wrap gap-4 justify-between items-start">
+            <div>
+              <p class="text-xs uppercase tracking-[.14em] font-bold text-amber-600">Rumus kunci</p>
+              <h2 id="formula-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Persamaan Gerak Parabola</h2>
+            </div>
+            <i data-lucide="sigma" class="text-amber-600" width="30" height="30"></i>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-3 mt-5">
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">Vx = V₀ · cos θ</p>
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">h<sub>max</sub> = (V₀² · sin²θ) / (2g)</p>
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">R = (V₀² · sin 2θ) / g</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- SIMULATION -->
+    <section id="simulation-page" class="page-view" aria-labelledby="simulation-title">
+      <div class="max-w-7xl mx-auto px-5 py-8 md:px-10 md:py-12">
+        <div class="mb-7">
+          <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Eksplorasi</p>
+          <h2 id="simulation-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Simulasi Gerak Parabola</h2>
+          <p class="mt-3 leading-relaxed max-w-3xl text-slate-600">Atur kecepatan awal, sudut elevasi, dan gravitasi. Amati perubahan lintasan serta nilai-nilai penting secara langsung.</p>
+        </div>
+
+        <div class="grid xl:grid-cols-[360px_1fr] gap-7">
+          <!-- kontrol -->
+          <aside class="control-card rounded-2xl p-6 h-fit bg-white">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="w-9 h-9 rounded-lg flex items-center justify-center bg-slate-800 text-amber-300"><i data-lucide="sliders-horizontal" width="19" height="19"></i></span>
+              <div>
+                <h3 class="font-bold text-slate-800">Kontrol</h3>
+                <p class="text-sm mt-1 text-slate-500">Geser untuk mengubah</p>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between gap-3 mb-3"><label class="font-semibold text-slate-700" for="speed-input">Kecepatan awal (V₀)</label><output id="speed-value" class="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold">22 m/s</output></div>
+                <input id="speed-input" type="range" min="5" max="40" step="1" value="22">
+              </div>
+              <div>
+                <div class="flex justify-between gap-3 mb-3"><label class="font-semibold text-slate-700" for="angle-input">Sudut elevasi (θ)</label><output id="angle-value" class="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold">45°</output></div>
+                <input id="angle-input" type="range" min="10" max="80" step="1" value="45">
+              </div>
+              <div>
+                <div class="flex justify-between gap-3 mb-3"><label class="font-semibold text-slate-700" for="gravity-input">Gravitasi (g)</label><output id="gravity-value" class="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold">9,8 m/s²</output></div>
+                <input id="gravity-input" type="range" min="1.6" max="15" step="0.1" value="9.8">
+              </div>
+            </div>
+            <div class="mt-8 grid grid-cols-2 gap-3">
+              <button id="play-button" type="button" class="rounded-xl px-4 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition"><span>▶ Jalankan</span></button>
+              <button id="reset-button" type="button" class="rounded-xl px-4 py-3 font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition"><span>↺ Reset</span></button>
+            </div>
+            <button id="trajectory-button" type="button" class="mt-3 w-full rounded-xl px-4 py-3 font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition border border-slate-200"><span>⊜ Tampilkan lintasan</span></button>
+          </aside>
+
+          <!-- canvas + hasil -->
+          <section class="rounded-2xl p-4 md:p-6 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
+            <div class="flex flex-wrap justify-between gap-3 mb-5">
+              <div>
+                <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Visualisasi</p>
+                <h3 class="formula-script font-bold text-xl mt-1 text-slate-800">Lintasan peluru</h3>
+              </div>
+              <p id="simulation-status" class="text-sm self-end text-slate-500">● siap</p>
+            </div>
+            <canvas id="simulation-canvas" class="sim-canvas" width="920" height="490" aria-label="Visualisasi lintasan gerak parabola"></canvas>
+            <p class="mt-4 text-sm leading-relaxed text-slate-500">Titik merah = posisi benda. Panah biru = Vx konstan, panah merah = Vy (arah vertikal).</p>
+          </section>
+        </div>
+
+        <!-- hasil angka -->
+        <section class="mt-9" aria-labelledby="results-title">
+          <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Hasil perhitungan</p>
+          <h2 id="results-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Parameter gerak</h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <article class="result-card rounded-xl p-5 shadow-sm bg-white">
+              <p class="text-sm font-semibold text-slate-500">Waktu terbang</p>
+              <p id="time-result" class="metric-value mt-2 text-3xl font-bold text-slate-800">3,17 s</p>
+            </article>
+            <article class="result-card rounded-xl p-5 shadow-sm bg-white">
+              <p class="text-sm font-semibold text-slate-500">Tinggi maksimum</p>
+              <p id="height-result" class="metric-value mt-2 text-3xl font-bold text-slate-800">12,35 m</p>
+            </article>
+            <article class="result-card rounded-xl p-5 shadow-sm bg-white">
+              <p class="text-sm font-semibold text-slate-500">Jangkauan</p>
+              <p id="range-result" class="metric-value mt-2 text-3xl font-bold text-slate-800">49,39 m</p>
+            </article>
+            <article class="result-card rounded-xl p-5 shadow-sm bg-white">
+              <p class="text-sm font-semibold text-slate-500">Vx (konstan)</p>
+              <p id="velocity-result" class="metric-value mt-2 text-3xl font-bold text-slate-800">15,56 m/s</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- QUIZ (10 soal, 5 pilihan) -->
+    <section id="quiz-page" class="page-view" aria-labelledby="quiz-title">
+      <div class="max-w-4xl mx-auto px-5 py-8 md:px-10 md:py-12">
+        <div class="text-center">
+          <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Uji pemahaman</p>
+          <h2 id="quiz-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Kuis Gerak Parabola</h2>
+          <p class="mt-3 leading-relaxed text-slate-600">Jawab 10 pertanyaan berikut. Pilih satu jawaban yang paling benar.</p>
+        </div>
+
+        <div class="mt-8 h-3 rounded-full overflow-hidden bg-slate-200">
+          <div id="quiz-progress-bar" class="h-full rounded-full bg-amber-400 transition-all duration-300" style="width:10%"></div>
+        </div>
+        <p id="quiz-progress-text" class="mt-3 text-center text-sm font-semibold text-slate-600">Pertanyaan 1 dari 10</p>
+
+        <!-- container untuk soal -->
+        <div id="quiz-container"></div>
+
+        <!-- Summary -->
+        <section id="quiz-summary" class="hidden-state mt-6">
+          <div class="rounded-2xl p-8 text-center shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
+            <i data-lucide="award" class="mx-auto text-amber-500" width="46" height="46"></i>
+            <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Kuis selesai!</h3>
+            <p id="score-result" class="metric-value mt-3 text-5xl font-bold text-slate-900">0 / 10</p>
+            <p class="mt-3 text-slate-600">Bagus, terus belajar dan eksplorasi simulasi!</p>
+            <button id="restart-quiz" class="mt-6 rounded-xl px-5 py-3 font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition" type="button"><span>↻ Ulangi Kuis</span></button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-800/90 text-slate-300">
+    <div class="max-w-7xl mx-auto px-5 py-5 md:px-10 flex flex-wrap gap-3 items-center justify-between">
+      <p class="text-sm">© 2026 · Modul Fisika Interaktif</p>
+      <p class="text-xs text-slate-400">Dibuat untuk pembelajaran · Gerak Parabola</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function() {
+    // ----- NAVIGATION -----
+    const pages = document.querySelectorAll(".page-view");
+    const navButtons = document.querySelectorAll(".nav-tab");
+
+    function showPage(pageName) {
+      pages.forEach(page => page.classList.toggle("active", page.id === pageName + "-page"));
+      navButtons.forEach(button => button.classList.toggle("active", button.dataset.page === pageName));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (pageName === "simulation") draw(pausedElapsed);
+    }
+
+    // Navigasi untuk menu Beranda, Simulasi, Kuis
+    document.querySelectorAll(".nav-tab").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        const page = this.dataset.page;
+        if (page) {
+          e.preventDefault();
+          showPage(page);
+        }
+      });
+    });
+
+    document.getElementById("go-simulation").addEventListener("click", () => showPage("simulation"));
+    document.getElementById("go-quiz").addEventListener("click", () => showPage("quiz"));
+
+    // ----- SIMULATION (sama seperti sebelumnya) -----
+    const canvas = document.getElementById("simulation-canvas");
+    const ctx = canvas.getContext("2d");
+    const speedInput = document.getElementById("speed-input");
+    const angleInput = document.getElementById("angle-input");
+    const gravityInput = document.getElementById("gravity-input");
+    let animationFrame = null, startTime = null, pausedElapsed = 0, isPlaying = false, showTrajectory = true;
+
+    function params() {
+      const speed = Number(speedInput.value), angle = Number(angleInput.value) * Math.PI / 180, gravity = Number(gravityInput.value);
+      const vx = speed * Math.cos(angle), vy = speed * Math.sin(angle), flightTime = (2 * vy) / gravity;
+      return { speed, angle, gravity, vx, vy, flightTime, maxHeight:(vy * vy) / (2 * gravity), range:vx * flightTime };
+    }
+
+    function number(value) { return value.toLocaleString("id-ID", { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+
+    function chartPoint(t) {
+      const p = params(), pad = { left:65, right:42, top:42, bottom:62 };
+      const usableW = canvas.width - pad.left - pad.right, usableH = canvas.height - pad.top - pad.bottom;
+      const maxY = Math.max(p.maxHeight * 1.28, 5);
+      return {
+        x: pad.left + ((p.vx * t) / Math.max(p.range, 1)) * usableW,
+        y: canvas.height - pad.bottom - (Math.max(0, p.vy * t - 0.5 * p.gravity * t * t) / maxY) * usableH,
+        pad, maxY
+      };
+    }
+
+    function drawArrow(fromX, fromY, toX, toY, color, label) {
+      const head = 10, angle = Math.atan2(toY - fromY, toX - fromX);
+      ctx.save();
+      ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(fromX, fromY); ctx.lineTo(toX, toY); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(toX, toY);
+      ctx.lineTo(toX - head * Math.cos(angle - Math.PI / 6), toY - head * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(toX - head * Math.cos(angle + Math.PI / 6), toY - head * Math.sin(angle + Math.PI / 6));
+      ctx.closePath(); ctx.fill();
+      ctx.font = "700 13px Work Sans"; ctx.fillStyle = color; ctx.fillText(label, toX + 8, toY - 8);
+      ctx.restore();
+    }
+
+    function draw(elapsed) {
+      const p = params(), t = Math.min(Math.max(elapsed, 0), p.flightTime);
+      const origin = chartPoint(0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle="rgba(16,35,62,.13)"; ctx.lineWidth=1;
+      for(let x=origin.pad.left; x<=canvas.width-origin.pad.right; x+=65){ ctx.beginPath(); ctx.moveTo(x,origin.pad.top); ctx.lineTo(x,canvas.height-origin.pad.bottom); ctx.stroke(); }
+      for(let y=origin.pad.top; y<=canvas.height-origin.pad.bottom; y+=50){ ctx.beginPath(); ctx.moveTo(origin.pad.left,y); ctx.lineTo(canvas.width-origin.pad.right,y); ctx.stroke(); }
+      ctx.strokeStyle="#10233e"; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(origin.pad.left, origin.pad.top); ctx.lineTo(origin.pad.left, canvas.height-origin.pad.bottom+7); ctx.lineTo(canvas.width-origin.pad.right+5, canvas.height-origin.pad.bottom+7); ctx.stroke();
+      ctx.fillStyle="#40516b"; ctx.font="600 14px Work Sans"; ctx.fillText("y (meter)", origin.pad.left-13, origin.pad.top-15); ctx.fillText("x (meter)", canvas.width-origin.pad.right-42, canvas.height-origin.pad.bottom+32);
+
+      if(showTrajectory) {
+        ctx.beginPath();
+        for(let time=0; time<=p.flightTime; time+=p.flightTime/120) {
+          const pos = chartPoint(time);
+          time===0 ? ctx.moveTo(pos.x,pos.y) : ctx.lineTo(pos.x,pos.y);
+        }
+        ctx.strokeStyle="#f4b942"; ctx.lineWidth=4; ctx.setLineDash([8,7]); ctx.stroke(); ctx.setLineDash([]);
+      }
+
+      const peak = chartPoint(p.flightTime/2);
+      ctx.fillStyle="#52637c"; ctx.font="600 13px Work Sans"; ctx.fillText("Puncak", peak.x-20, peak.y-15);
+
+      const pos = chartPoint(t);
+      ctx.beginPath(); ctx.arc(pos.x, pos.y, 11, 0, Math.PI*2); ctx.fillStyle="#e45d45"; ctx.fill(); ctx.strokeStyle="#fffdf6"; ctx.lineWidth=4; ctx.stroke();
+
+      const scale = 2.4;
+      const verticalVelocity = p.vy - p.gravity * t;
+      drawArrow(pos.x, pos.y, pos.x + p.vx * scale, pos.y, "#1677b7", "Vx");
+      if (Math.abs(verticalVelocity) > 0.15) {
+        drawArrow(pos.x, pos.y, pos.x, pos.y - verticalVelocity * scale, "#c44b3c", verticalVelocity > 0 ? "Vy ↑" : "Vy ↓");
+      } else {
+        ctx.save(); ctx.fillStyle = "#c44b3c"; ctx.font = "700 13px Work Sans"; ctx.fillText("Vy = 0", pos.x + 8, pos.y + 22); ctx.restore();
+      }
+    }
+
+    function updateReadout() {
+      const p = params();
+      document.getElementById("speed-value").textContent = p.speed + " m/s";
+      document.getElementById("angle-value").textContent = Math.round(p.angle * 180 / Math.PI) + "°";
+      document.getElementById("gravity-value").textContent = p.gravity.toLocaleString("id-ID",{minimumFractionDigits:1,maximumFractionDigits:1}) + " m/s²";
+      document.getElementById("time-result").textContent = number(p.flightTime) + " s";
+      document.getElementById("height-result").textContent = number(p.maxHeight) + " m";
+      document.getElementById("range-result").textContent = number(p.range) + " m";
+      document.getElementById("velocity-result").textContent = number(p.vx) + " m/s";
+      draw(pausedElapsed);
+    }
+
+    function animate(timestamp) {
+      if(!isPlaying) return;
+      if(!startTime) startTime = timestamp - pausedElapsed * 1000;
+      const elapsed = (timestamp - startTime) / 1000;
+      if(elapsed >= params().flightTime) { pausedElapsed = params().flightTime; isPlaying = false; startTime = null; draw(pausedElapsed); return; }
+      pausedElapsed = elapsed; draw(elapsed); animationFrame = requestAnimationFrame(animate);
+    }
+
+    function stopAnimation() { isPlaying = false; if(animationFrame) cancelAnimationFrame(animationFrame); animationFrame = null; startTime = null; }
+
+    [speedInput, angleInput, gravityInput].forEach(input => input.addEventListener("input", () => { stopAnimation(); pausedElapsed = 0; updateReadout(); }));
+    document.getElementById("play-button").addEventListener("click", () => {
+      if(pausedElapsed >= params().flightTime) pausedElapsed = 0;
+      isPlaying = !isPlaying;
+      if(isPlaying) { startTime = null; animationFrame = requestAnimationFrame(animate); }
+      else if(animationFrame) cancelAnimationFrame(animationFrame);
+    });
+    document.getElementById("reset-button").addEventListener("click", () => { stopAnimation(); pausedElapsed = 0; draw(0); });
+    document.getElementById("trajectory-button").addEventListener("click", () => { showTrajectory = !showTrajectory; draw(pausedElapsed); });
+
+    window.addEventListener("resize", () => draw(pausedElapsed));
+    lucide.createIcons();
+    updateReadout();
+
+    // ----- QUIZ (10 soal, 5 pilihan + penjelasan) -----
+    const quizData = [
+      { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1, explanation: "Tidak ada gaya horizontal, sehingga Vx konstan (GLB)." },
+      { q: "Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …", options: ["Maksimum", "Sama dengan Vx", "Nol", "Negatif", "Tidak tentu"], correct: 2, explanation: "Di puncak, benda berhenti sesaat secara vertikal, Vy = 0." },
+      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0, explanation: "R = V₀² sin 2θ / g. sin 60° = sin 120°, jadi R sama." },
+      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²θ / (2g)", "h = V₀² sin 2θ / g", "h = V₀² cos²θ / (2g)", "h = V₀ sin θ / g", "h = V₀² / (2g)"], correct: 0, explanation: "Tinggi maksimum dicapai saat Vy = 0, sehingga h = V₀² sin²θ / (2g)." },
+      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2θ / g", "R = V₀² sin²θ / (2g)", "R = V₀ cos θ · t", "R = V₀² / g", "R = V₀ sin θ · t"], correct: 0, explanation: "Jangkauan R = Vx × t = V₀ cos θ × (2V₀ sin θ / g) = V₀² sin 2θ / g." },
+      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin θ / g", "t = V₀ sin θ / g", "t = 2 V₀ cos θ / g", "t = V₀ cos θ / g", "t = V₀ / g"], correct: 0, explanation: "Waktu total dari lemparan hingga kembali ke ketinggian awal: t = 2V₀ sin θ / g." },
+      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1, explanation: "R maksimum saat sin 2θ = 1 → 2θ = 90° → θ = 45°." },
+      { q: "Gerak parabola merupakan perpaduan dari …", options: ["GLB dan GLBB", "GLBB dan GLBB", "GLB dan GLB", "GLBB dan gerak melingkar", "Gerak harmonik dan GLB"], correct: 0, explanation: "Horizontal: GLB (Vx tetap). Vertikal: GLBB (percepatan g)." },
+      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1, explanation: "h_max = V₀² sin²θ / (2g). g di penyebut, jadi jika g besar, h kecil." },
+      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1, explanation: "Vx = V₀ cos θ = 20 × 0,866 = 17,32 m/s." }
+    ];
+
+    const totalQuestions = quizData.length;
+    let currentQuestion = 0, score = 0;
+    const container = document.getElementById("quiz-container");
+    const progressBar = document.getElementById("quiz-progress-bar");
+    const progressText = document.getElementById("quiz-progress-text");
+    const summaryDiv = document.getElementById("quiz-summary");
+    const scoreResult = document.getElementById("score-result");
+    const restartBtn = document.getElementById("restart-quiz");
+
+    function renderQuestion(index) {
+      const data = quizData[index];
+      const html = `
+        <article class="quiz-question active mt-6" data-question="${index}" data-answered="false">
+          <div class="rounded-2xl p-6 md:p-8 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
+            <p class="text-xs font-bold uppercase tracking-[.14em] text-amber-600">Pertanyaan ${index+1} dari ${totalQuestions}</p>
+            <h3 class="formula-script font-bold text-xl mt-3 text-slate-800">${data.q}</h3>
+            <div class="mt-6 space-y-3">
+              ${data.options.map((opt, i) => `
+                <button class="quiz-option w-full text-left rounded-xl border-2 px-5 py-4 font-semibold bg-white/80" type="button" data-correct="${i === data.correct}" data-optindex="${i}" ${index !== currentQuestion ? 'disabled' : ''}>
+                  <span>${String.fromCharCode(65 + i)}. ${opt}</span>
+                </button>
+              `).join('')}
+            </div>
+            <div class="explanation-box mt-5 rounded-xl p-4 bg-slate-50 border border-slate-200 hidden-state" id="explanation-${index}">
+              <p class="text-sm font-semibold text-slate-700">💡 Penjelasan:</p>
+              <p class="text-sm text-slate-600 mt-1">${data.explanation}</p>
+            </div>
+            <p class="quiz-feedback correct hidden-state mt-3 rounded-xl p-4 bg-emerald-50 text-emerald-800 border border-emerald-200">✅ Benar!</p>
+            <p class="quiz-feedback wrong hidden-state mt-3 rounded-xl p-4 bg-rose-50 text-rose-800 border border-rose-200">❌ Jawaban yang benar adalah ${String.fromCharCode(65 + data.correct)}.</p>
+            <button class="next-question hidden-state mt-6 rounded-xl px-5 py-3 font-bold bg-amber-400 text-slate-900 hover:bg-amber-300 transition" type="button">
+              <span>${index === totalQuestions-1 ? 'Lihat hasil' : 'Lanjut →'}</span>
+            </button>
+          </div>
+        </article>
+      `;
+      container.innerHTML = html;
+
+      // event listeners untuk opsi
+      document.querySelectorAll(".quiz-option").forEach(btn => {
+        btn.addEventListener("click", function() {
+          const card = this.closest(".quiz-question");
+          if(card.dataset.answered === "true") return;
+          card.dataset.answered = "true";
+          const correct = this.dataset.correct === "true";
+          const optIndex = parseInt(this.dataset.optindex);
+          const dataIndex = parseInt(card.dataset.question);
+          const data = quizData[dataIndex];
+          
+          this.classList.add(correct ? "selected-correct" : "selected-wrong");
+          if(correct) score++;
+          
+          // Tampilkan feedback dan penjelasan
+          card.querySelector(correct ? ".quiz-feedback.correct" : ".quiz-feedback.wrong").classList.remove("hidden-state");
+          card.querySelector(`#explanation-${dataIndex}`).classList.remove("hidden-state");
+          
+          // Tandai jawaban benar
+          card.querySelectorAll(".quiz-option").forEach(item => {
+            item.disabled = true;
+            if(item.dataset.correct === "true") {
+              item.classList.add("selected-correct");
+            }
+          });
+          
+          card.querySelector(".next-question").classList.remove("hidden-state");
+        });
+      });
+
+      // next button
+      document.querySelector(".next-question")?.addEventListener("click", function() {
+        if(currentQuestion === totalQuestions-1) {
+          // selesai
+          document.querySelector(".quiz-question").classList.remove("active");
+          summaryDiv.classList.remove("hidden-state");
+          scoreResult.textContent = score + " / " + totalQuestions;
+          progressText.textContent = "Kuis selesai";
+          progressBar.style.width = "100%";
+        } else {
+          currentQuestion++;
+          renderQuestion(currentQuestion);
+          progressBar.style.width = ((currentQuestion+1) / totalQuestions * 100) + "%";
+          progressText.textContent = "Pertanyaan " + (currentQuestion+1) + " dari " + totalQuestions;
+        }
+      });
+    }
+
+    function resetQuiz() {
+      currentQuestion = 0; score = 0;
+      summaryDiv.classList.add("hidden-state");
+      renderQuestion(0);
+      progressBar.style.width = ((0+1) / totalQuestions * 100) + "%";
+      progressText.textContent = "Pertanyaan 1 dari " + totalQuestions;
+    }
+
+    restartBtn.addEventListener("click", resetQuiz);
+    // inisialisasi
+    resetQuiz();
+
+  })();
+</script>
+</body>
+</html>
