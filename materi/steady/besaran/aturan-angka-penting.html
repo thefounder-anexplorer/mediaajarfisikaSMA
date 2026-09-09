@@ -16,6 +16,7 @@
       --orange: #f97316;
       --teal: #0f766e;
       --purple: #7c3aed;
+      --rose: #f43f5e;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -60,6 +61,7 @@
     .operation-card.orange { border-left-color: #f97316; }
     .operation-card.teal { border-left-color: #0f766e; }
     .operation-card.purple { border-left-color: #7c3aed; }
+    .operation-card.rose { border-left-color: #f43f5e; }
     .choice {
       border-color: #cbd5e1;
       background: #ffffff;
@@ -190,6 +192,29 @@
     .rounding-example {
       background: linear-gradient(135deg, #fef3c7, #fde68a);
       border-left: 4px solid #f59e0b;
+    }
+    .rounding-simulator {
+      background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+    }
+    .sim-card {
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+    .sim-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .sim-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #075985;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
     }
   </style>
  </head>
@@ -345,7 +370,185 @@
       </div>
      </section>
 
-     <!-- OPERASI HITUNG -->
+     <!-- ====== URUTAN SIMULASI ====== -->
+     <!-- 1. SIMULASI HITUNG ANGKA PENTING -->
+     <section class="mt-14 w-full bg-white py-12 rounded-2xl shadow-sm sim-card">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8">
+       <div class="flex items-center gap-3 mb-2">
+        <span class="sim-number">1</span>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Simulasi</p>
+       </div>
+       <h2 class="display-font text-3xl font-bold">Hitung Angka Penting</h2>
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan bilangan, dapatkan jumlah angka pentingnya secara instan.</p>
+       
+       <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        <div>
+         <form id="sig-form" class="flex flex-col gap-3 sm:flex-row" novalidate>
+          <label for="number-input" class="sr-only">Masukkan bilangan</label>
+          <input id="number-input" class="focus-ring min-w-0 flex-1 rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 3,20e2">
+          <button type="submit" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white transition hover:brightness-110">Hitung</button>
+         </form>
+         <div id="calc-result" class="mt-4 min-h-[3rem] rounded-xl bg-sky-50 px-4 py-3 font-semibold text-sky-800" aria-live="polite">Masukkan bilangan dan tekan Hitung.</div>
+        </div>
+        <aside class="rounded-2xl bg-sky-50 p-6">
+         <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Contoh</p>
+         <p class="display-font mt-3 text-3xl font-bold text-slate-800">0,00450</p>
+         <p class="mt-4 leading-7 text-slate-600">Angka nol di depan (00) bukan penting. Angka 4,5,0 adalah penting → <span class="font-bold">3 angka penting</span>.</p>
+        </aside>
+       </div>
+      </div>
+     </section>
+
+     <!-- 2. SIMULASI PEMBULATAN -->
+     <section class="mt-8 w-full py-12 rounded-2xl shadow-sm sim-card rounding-simulator">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8">
+       <div class="flex items-center gap-3 mb-2">
+        <span class="sim-number" style="background: #f43f5e;">2</span>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-rose-500">Simulasi</p>
+       </div>
+       <h2 class="display-font text-3xl font-bold">Latihan Pembulatan Angka</h2>
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan bilangan dan pilih jumlah tempat desimal yang diinginkan. Simulator akan membulatkan sesuai aturan yang benar.</p>
+       
+       <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+         <form id="rounding-form" class="space-y-4" novalidate>
+          <div>
+           <label for="rounding-number" class="mb-2 block font-semibold text-slate-700">Masukkan bilangan desimal</label>
+           <input id="rounding-number" class="focus-ring w-full rounded-xl border-2 border-rose-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 3,4567">
+          </div>
+          <div>
+           <label for="decimal-places" class="mb-2 block font-semibold text-slate-700">Jumlah tempat desimal</label>
+           <select id="decimal-places" class="focus-ring w-full rounded-xl border-2 border-rose-200 bg-white px-4 py-3 text-slate-900">
+            <option value="0">0 tempat desimal (pembulatan ke satuan)</option>
+            <option value="1" selected>1 tempat desimal</option>
+            <option value="2">2 tempat desimal</option>
+            <option value="3">3 tempat desimal</option>
+            <option value="4">4 tempat desimal</option>
+           </select>
+          </div>
+          <button type="submit" class="w-full rounded-xl bg-rose-500 px-5 py-3 font-bold text-white shadow-lg transition hover:bg-rose-600 hover:scale-[1.02]">Bulatkan</button>
+         </form>
+         
+         <div class="mt-4">
+          <p class="text-sm font-semibold text-slate-600">Contoh cepat:</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+           <button type="button" onclick="document.getElementById('rounding-number').value='3,4567'; document.getElementById('rounding-form').dispatchEvent(new Event('submit'));" class="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-semibold text-rose-700 hover:bg-rose-200 transition">3,4567</button>
+           <button type="button" onclick="document.getElementById('rounding-number').value='2,345'; document.getElementById('rounding-form').dispatchEvent(new Event('submit'));" class="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-semibold text-rose-700 hover:bg-rose-200 transition">2,345</button>
+           <button type="button" onclick="document.getElementById('rounding-number').value='4,55'; document.getElementById('rounding-form').dispatchEvent(new Event('submit'));" class="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-semibold text-rose-700 hover:bg-rose-200 transition">4,55</button>
+           <button type="button" onclick="document.getElementById('rounding-number').value='7,650'; document.getElementById('rounding-form').dispatchEvent(new Event('submit'));" class="rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-semibold text-rose-700 hover:bg-rose-200 transition">7,650</button>
+          </div>
+         </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-rose-500 to-rose-700 rounded-2xl p-6 shadow-lg text-white">
+         <p class="text-sm font-bold uppercase tracking-[.16em] text-rose-100">Hasil Pembulatan</p>
+         <div class="mt-4 space-y-3">
+          <div>
+           <p class="text-sm font-semibold text-rose-200">Bilangan asli:</p>
+           <p id="rounding-original" class="text-xl font-bold">-</p>
+          </div>
+          <div class="border-t border-rose-400 pt-3">
+           <p class="text-sm font-semibold text-rose-200">Hasil pembulatan:</p>
+           <p id="rounding-result" class="display-font text-4xl font-bold">-</p>
+          </div>
+          <div class="border-t border-rose-400 pt-3">
+           <p class="text-sm font-semibold text-rose-200">Penjelasan:</p>
+           <p id="rounding-explanation" class="text-sm text-rose-100 leading-relaxed">Masukkan bilangan dan pilih jumlah desimal.</p>
+          </div>
+          <div class="border-t border-rose-400 pt-3">
+           <p class="text-sm font-semibold text-rose-200">Aturan yang digunakan:</p>
+           <p id="rounding-rule" class="text-sm text-rose-100">-</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+
+     <!-- 3. SIMULASI NOTASI ILMIAH -->
+     <section class="mt-8 w-full bg-sky-50 py-12 rounded-2xl shadow-sm sim-card">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8">
+       <div class="flex items-center gap-3 mb-2">
+        <span class="sim-number" style="background: #0f766e;">3</span>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-teal-600">Simulasi</p>
+       </div>
+       <h2 class="display-font text-3xl font-bold">Notasi Ilmiah (Bentuk Baku)</h2>
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Ubah bilangan ke bentuk notasi ilmiah a × 10^n dengan 1 ≤ a < 10.</p>
+       
+       <div class="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
+        <div>
+         <div class="rounded-2xl bg-white p-5 shadow-sm">
+          <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh</p>
+          <p class="display-font mt-3 text-2xl font-bold text-slate-800">0,00450 = 4,50 × 10⁻³</p>
+          <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif.</p>
+         </div>
+         <div class="mt-4 rounded-2xl bg-white p-5 shadow-sm">
+          <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh Lain</p>
+          <p class="display-font mt-3 text-2xl font-bold text-slate-800">2500000 = 2,5 × 10⁶</p>
+          <p class="mt-2 leading-6 text-slate-600">Geser koma 6 kali ke kiri, pangkat positif.</p>
+         </div>
+        </div>
+        <div class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
+         <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Konverter</p>
+         <form id="scientific-form" class="mt-5 flex flex-col gap-3" novalidate>
+          <label for="scientific-number" class="font-semibold text-sky-100">Masukkan bilangan</label>
+          <input id="scientific-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 125000">
+          <button type="submit" class="rounded-xl bg-white px-5 py-3 font-bold text-sky-700 transition hover:brightness-95">Ubah ke Notasi Ilmiah</button>
+         </form>
+         <div class="mt-5 rounded-xl bg-sky-800 p-4">
+          <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-200">Hasil</p>
+          <p id="scientific-result" class="display-font mt-2 text-2xl font-bold text-white" aria-live="polite">-</p>
+          <p id="scientific-explanation" class="mt-2 leading-6 text-sky-100" aria-live="polite">Masukkan bilangan untuk dikonversi.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+
+     <!-- 4. SIMULASI OPERASI ANGKA PENTING -->
+     <section class="mt-8 w-full bg-white py-12 rounded-2xl shadow-sm sim-card">
+      <div class="mx-auto max-w-6xl px-5 sm:px-8">
+       <div class="flex items-center gap-3 mb-2">
+        <span class="sim-number" style="background: #f97316;">4</span>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-orange-600">Simulasi</p>
+       </div>
+       <h2 class="display-font text-3xl font-bold">Operasi Angka Penting</h2>
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting.</p>
+       
+       <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        <div>
+         <form id="operation-form" class="grid gap-4 sm:grid-cols-2" novalidate>
+          <div>
+           <label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label>
+           <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 12,34">
+          </div>
+          <div>
+           <label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label>
+           <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 0,0560">
+          </div>
+          <div class="sm:col-span-2">
+           <label for="operation-select" class="mb-2 block font-semibold text-slate-700">Pilih operasi</label>
+           <select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900">
+            <option value="add">Penjumlahan (+)</option>
+            <option value="subtract">Pengurangan (−)</option>
+            <option value="multiply">Perkalian (×)</option>
+            <option value="divide">Pembagian (÷)</option>
+           </select>
+          </div>
+          <button type="submit" class="sm:col-span-2 rounded-xl bg-orange-500 px-5 py-3 font-bold text-white shadow-lg transition hover:brightness-110">Hitung</button>
+         </form>
+        </div>
+        <aside class="simulator-panel rounded-2xl p-6 shadow-lg text-white" style="background: linear-gradient(135deg, #ea580c, #f97316);">
+         <p class="text-sm font-bold uppercase tracking-[.16em] text-orange-100">Hasil Perhitungan</p>
+         <p id="operation-raw-result" class="mt-4 text-sm font-semibold text-orange-200" aria-live="polite">Hasil sebelum pembulatan: -</p>
+         <p id="operation-final-result" class="result-number mt-2 font-bold" aria-live="polite">-</p>
+         <p id="operation-explanation" class="mt-4 leading-7 text-orange-100" aria-live="polite">Masukkan bilangan dan pilih operasi.</p>
+        </aside>
+       </div>
+      </div>
+     </section>
+
+     <!-- OPERASI HITUNG (materi) -->
      <section class="mt-14" aria-labelledby="operations-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Operasi hitung</p>
       <h2 id="operations-heading" class="display-font mt-2 text-3xl font-bold">Aturan Penjumlahan &amp; Perkalian</h2>
@@ -353,94 +556,6 @@
        <article class="operation-card rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">➕ Penjumlahan</p><h3 class="mt-3 font-bold text-slate-800">Hasil dibulatkan ke desimal paling sedikit</h3><p class="mt-3 leading-6 text-slate-600">Contoh: 12,1 + 3,45 = 15,55 → 15,6 (1 desimal)</p></article>
        <article class="operation-card orange rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-orange-600">✖️ Perkalian</p><h3 class="mt-3 font-bold text-slate-800">Hasil memiliki angka penting paling sedikit</h3><p class="mt-3 leading-6 text-slate-600">Contoh: 2,5 × 3,45 = 8,625 → 8,6 (2 AP)</p></article>
        <article class="operation-card teal rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-teal-600">🔢 Pembulatan</p><h3 class="mt-3 font-bold text-slate-800">Perhatikan aturan pembulatan</h3><p class="mt-3 leading-6 text-slate-600">Gunakan aturan 4 langkah di atas untuk hasil yang akurat.</p></article>
-      </div>
-     </section>
-
-     <!-- ========== SIMULASI 1: OPERASI ANGKA PENTING ========== -->
-     <section class="mt-14 w-full bg-white py-12 rounded-2xl shadow-sm">
-      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[1.15fr_.85fr]">
-       <div>
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🧪 Simulasi</p>
-        <h2 class="display-font mt-2 text-3xl font-bold">Hitung dengan Angka Penting</h2>
-        <p class="mt-3 max-w-2xl leading-7 text-slate-600">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting.</p>
-        <form id="operation-form" class="mt-6 grid gap-4 sm:grid-cols-2" novalidate>
-         <div>
-          <label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label>
-          <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 12,34">
-         </div>
-         <div>
-          <label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label>
-          <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 0,0560">
-         </div>
-         <div class="sm:col-span-2">
-          <label for="operation-select" class="mb-2 block font-semibold text-slate-700">Pilih operasi</label>
-          <select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900">
-           <option value="add">Penjumlahan (+)</option>
-           <option value="subtract">Pengurangan (−)</option>
-           <option value="multiply">Perkalian (×)</option>
-           <option value="divide">Pembagian (÷)</option>
-          </select>
-         </div>
-         <button type="submit" class="sm:col-span-2 rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-lg transition hover:brightness-110">Hitung</button>
-        </form>
-       </div>
-       <aside class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Hasil Perhitungan</p>
-        <p id="operation-raw-result" class="mt-4 text-sm font-semibold text-sky-200" aria-live="polite">Hasil sebelum pembulatan: -</p>
-        <p id="operation-final-result" class="result-number mt-2 font-bold" aria-live="polite">-</p>
-        <p id="operation-explanation" class="mt-4 leading-7 text-sky-100" aria-live="polite">Masukkan bilangan dan pilih operasi.</p>
-       </aside>
-      </div>
-     </section>
-
-     <!-- ========== SIMULASI 2: NOTASI ILMIAH ========== -->
-     <section class="mt-8 w-full bg-sky-50 py-12 rounded-2xl shadow-sm">
-      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-start">
-       <div>
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🔬 Notasi Ilmiah</p>
-        <h2 class="display-font mt-2 text-3xl font-bold">Ubah ke Bentuk Baku</h2>
-        <p class="mt-3 max-w-2xl leading-7 text-slate-600">Notasi ilmiah menuliskan bilangan sebagai a × 10^n dengan 1 ≤ a < 10. Sangat berguna untuk bilangan sangat besar/kecil.</p>
-        <div class="mt-6 rounded-2xl bg-white p-5 shadow-sm">
-         <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh</p>
-         <p class="display-font mt-3 text-2xl font-bold text-slate-800">0,00450 = 4,50 × 10⁻³</p>
-         <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif.</p>
-        </div>
-       </div>
-       <div class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Konverter</p>
-        <form id="scientific-form" class="mt-5 flex flex-col gap-3" novalidate>
-         <label for="scientific-number" class="font-semibold text-sky-100">Masukkan bilangan</label>
-         <input id="scientific-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 125000">
-         <button type="submit" class="rounded-xl bg-white px-5 py-3 font-bold text-sky-700 transition hover:brightness-95">Ubah ke Notasi Ilmiah</button>
-        </form>
-        <div class="mt-5 rounded-xl bg-sky-800 p-4">
-         <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-200">Hasil</p>
-         <p id="scientific-result" class="display-font mt-2 text-2xl font-bold text-white" aria-live="polite">-</p>
-         <p id="scientific-explanation" class="mt-2 leading-6 text-sky-100" aria-live="polite">Masukkan bilangan untuk dikonversi.</p>
-        </div>
-       </div>
-      </div>
-     </section>
-
-     <!-- ========== SIMULASI 3: HITUNG ANGKA PENTING ========== -->
-     <section class="mt-8 w-full bg-white py-12 rounded-2xl shadow-sm">
-      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-2 lg:items-center">
-       <div>
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🔢 Alat</p>
-        <h2 class="display-font mt-2 text-3xl font-bold">Hitung Angka Penting</h2>
-        <p class="mt-3 max-w-lg leading-7 text-slate-600">Masukkan bilangan, dapatkan jumlah angka pentingnya secara instan.</p>
-        <form id="sig-form" class="mt-6 flex flex-col gap-3 sm:flex-row" novalidate>
-         <label for="number-input" class="sr-only">Masukkan bilangan</label>
-         <input id="number-input" class="focus-ring min-w-0 flex-1 rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 3,20e2">
-         <button type="submit" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white transition hover:brightness-110">Hitung</button>
-        </form>
-        <div id="calc-result" class="mt-4 min-h-[3rem] rounded-xl bg-sky-50 px-4 py-3 font-semibold text-sky-800" aria-live="polite">Masukkan bilangan dan tekan Hitung.</div>
-       </div>
-       <aside class="rounded-2xl bg-sky-50 p-6">
-        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Contoh</p>
-        <p class="display-font mt-3 text-3xl font-bold text-slate-800">0,00450</p>
-        <p class="mt-4 leading-7 text-slate-600">Angka nol di depan (00) bukan penting. Angka 4,5,0 adalah penting → <span class="font-bold">3 angka penting</span>.</p>
-       </aside>
       </div>
      </section>
     </div>
@@ -562,7 +677,145 @@
         }).format(value);
       }
 
-      // ========== SIMULASI 1: OPERASI ==========
+      // ====== SIMULASI 1: HITUNG ANGKA PENTING ======
+      document.getElementById("sig-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = normaliseNumber(document.getElementById("number-input").value);
+        const result = document.getElementById("calc-result");
+        if (!raw) {
+          result.textContent = "⚠️ Masukkan bilangan yang valid, misalnya 0,00450 atau 3,20e2.";
+          return;
+        }
+        const count = significantFigures(raw);
+        result.textContent = raw.replace(".", ",") + " memiliki " + count + " angka penting.";
+      });
+
+      // ====== SIMULASI 2: PEMBULATAN ======
+      document.getElementById("rounding-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = normaliseNumber(document.getElementById("rounding-number").value);
+        const places = parseInt(document.getElementById("decimal-places").value);
+        const originalEl = document.getElementById("rounding-original");
+        const resultEl = document.getElementById("rounding-result");
+        const explanationEl = document.getElementById("rounding-explanation");
+        const ruleEl = document.getElementById("rounding-rule");
+
+        if (!raw) {
+          originalEl.textContent = "⚠️ Input tidak valid";
+          resultEl.textContent = "-";
+          explanationEl.textContent = "Masukkan bilangan desimal yang valid, misalnya 3,4567";
+          ruleEl.textContent = "-";
+          return;
+        }
+
+        const value = Number(raw);
+        const rounded = roundToDecimal(value, places);
+        const originalStr = formatIndonesian(value, Math.max(decimalPlaces(raw), 4));
+        const resultStr = formatIndonesian(rounded, places);
+
+        originalEl.textContent = originalStr;
+        resultEl.textContent = resultStr;
+
+        // Cek digit yang dibuang
+        const factor = Math.pow(10, places);
+        const scaled = value * factor;
+        const roundedScaled = Math.round(scaled);
+        const diff = Math.abs(scaled - roundedScaled);
+        const digitToCheck = Math.floor(scaled * 10) % 10;
+
+        let rule = "";
+        let explanation = "";
+
+        if (places === 0) {
+          // Pembulatan ke satuan
+          const decimalPart = Math.abs(value - Math.floor(value));
+          if (decimalPart < 0.5) {
+            rule = "Aturan 1: Angka desimal < 5";
+            explanation = `Angka desimal ${decimalPart.toFixed(2)} < 0,5, maka dibulatkan ke bawah.`;
+          } else if (decimalPart > 0.5) {
+            rule = "Aturan 2: Angka desimal > 5";
+            explanation = `Angka desimal ${decimalPart.toFixed(2)} > 0,5, maka dibulatkan ke atas.`;
+          } else {
+            // decimalPart === 0.5
+            const integerPart = Math.floor(Math.abs(value));
+            if (integerPart % 2 === 0) {
+              rule = "Aturan 4: Aturan genap (angka 5 murni)";
+              explanation = `Angka desimal = 0,5 dan ${integerPart} genap, maka dibulatkan ke bawah (${integerPart}).`;
+            } else {
+              rule = "Aturan 4: Aturan genap (angka 5 murni)";
+              explanation = `Angka desimal = 0,5 dan ${integerPart} ganjil, maka dibulatkan ke atas (${integerPart + 1}).`;
+            }
+          }
+        } else {
+          // Pembulatan ke desimal tertentu
+          const rawStr = raw.toString();
+          const decimalIdx = rawStr.indexOf('.');
+          if (decimalIdx === -1) {
+            rule = "Tidak ada pembulatan";
+            explanation = "Bilangan tidak memiliki angka desimal.";
+          } else {
+            const decimalPart = rawStr.substring(decimalIdx + 1);
+            if (decimalPart.length <= places) {
+              rule = "Tidak ada pembulatan";
+              explanation = "Jumlah desimal sudah sesuai atau kurang.";
+            } else {
+              const digitToCut = parseInt(decimalPart[places]);
+              const nextDigit = places + 1 < decimalPart.length ? parseInt(decimalPart[places + 1]) : 0;
+              const hasMoreDigits = places + 1 < decimalPart.length;
+
+              if (digitToCut < 5) {
+                rule = "Aturan 1: Angka < 5";
+                explanation = `Angka ke-${places+1} desimal = ${digitToCut} < 5, maka angka di depannya tetap.`;
+              } else if (digitToCut > 5) {
+                rule = "Aturan 2: Angka > 5";
+                explanation = `Angka ke-${places+1} desimal = ${digitToCut} > 5, maka angka di depannya ditambah 1.`;
+              } else { // digitToCut === 5
+                if (hasMoreDigits) {
+                  rule = "Aturan 3: Angka = 5 dan masih ada angka lain";
+                  explanation = `Angka ke-${places+1} desimal = 5 dan masih ada angka ${nextDigit} setelahnya, maka dibulatkan ke atas.`;
+                } else {
+                  const prevDigit = parseInt(decimalPart[places - 1] || '0');
+                  if (prevDigit % 2 === 0) {
+                    rule = "Aturan 4: Aturan genap (angka 5 murni)";
+                    explanation = `Angka 5 murni dan angka sebelumnya (${prevDigit}) genap, maka dibulatkan ke bawah.`;
+                  } else {
+                    rule = "Aturan 4: Aturan genap (angka 5 murni)";
+                    explanation = `Angka 5 murni dan angka sebelumnya (${prevDigit}) ganjil, maka dibulatkan ke atas.`;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (!rule) {
+          rule = "Pembulatan standar";
+          explanation = `Hasil pembulatan ke ${places} tempat desimal.`;
+        }
+
+        ruleEl.textContent = rule;
+        explanationEl.textContent = explanation;
+      });
+
+      // ====== SIMULASI 3: NOTASI ILMIAH ======
+      document.getElementById("scientific-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = normaliseNumber(document.getElementById("scientific-number").value);
+        const result = document.getElementById("scientific-result");
+        const explanation = document.getElementById("scientific-explanation");
+        if (!raw || Number(raw) === 0) {
+          result.textContent = "⚠️ Input tidak valid";
+          explanation.textContent = "Masukkan bilangan selain nol, misalnya 0,00450 atau 125000.";
+          return;
+        }
+        const value = Number(raw);
+        const exponent = Math.floor(Math.log10(Math.abs(value)));
+        const coefficient = value / Math.pow(10, exponent);
+        result.textContent = coefficient.toLocaleString("id-ID", { maximumFractionDigits: 12 }) + " × 10^" + exponent;
+        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan. Banyak pergeseran menjadi pangkat 10.";
+      });
+
+      // ====== SIMULASI 4: OPERASI ======
       document.getElementById("operation-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const firstRaw = normaliseNumber(document.getElementById("first-number").value);
@@ -613,37 +866,6 @@
         rawResult.textContent = "Hasil sebelum pembulatan: " + formatIndonesian(result, 0);
         finalResult.textContent = formatIndonesian(rounded, decimalResult);
         explanation.textContent = explanationText;
-      });
-
-      // ========== SIMULASI 2: NOTASI ILMIAH ==========
-      document.getElementById("scientific-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const raw = normaliseNumber(document.getElementById("scientific-number").value);
-        const result = document.getElementById("scientific-result");
-        const explanation = document.getElementById("scientific-explanation");
-        if (!raw || Number(raw) === 0) {
-          result.textContent = "⚠️ Input tidak valid";
-          explanation.textContent = "Masukkan bilangan selain nol, misalnya 0,00450 atau 125000.";
-          return;
-        }
-        const value = Number(raw);
-        const exponent = Math.floor(Math.log10(Math.abs(value)));
-        const coefficient = value / Math.pow(10, exponent);
-        result.textContent = coefficient.toLocaleString("id-ID", { maximumFractionDigits: 12 }) + " × 10^" + exponent;
-        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan. Banyak pergeseran menjadi pangkat 10.";
-      });
-
-      // ========== SIMULASI 3: HITUNG ANGKA PENTING ==========
-      document.getElementById("sig-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const raw = normaliseNumber(document.getElementById("number-input").value);
-        const result = document.getElementById("calc-result");
-        if (!raw) {
-          result.textContent = "⚠️ Masukkan bilangan yang valid, misalnya 0,00450 atau 3,20e2.";
-          return;
-        }
-        const count = significantFigures(raw);
-        result.textContent = raw.replace(".", ",") + " memiliki " + count + " angka penting.";
       });
 
       // ========== KUIS SLIDE ==========
