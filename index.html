@@ -169,6 +169,62 @@
             color: #9b59b6;
         }
 
+        /* ===== TOGGLE INTRO SECTION ===== */
+        .intro-toggle-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .intro-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            width: 100%;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .intro-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .intro-toggle-btn i {
+            font-size: 1.6rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .intro-toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+
+        .intro-toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.3s ease;
+            opacity: 0;
+            padding: 0 0;
+        }
+
+        .intro-toggle-content.open {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 20px 0 0 0;
+        }
+
+        .intro-toggle-content .kelas-container {
+            margin-top: 0;
+        }
+
         /* ===== TOGGLE MODERN SECTION ===== */
         .modern-toggle-wrapper {
             margin-bottom: 20px;
@@ -635,6 +691,7 @@
                 gap: 10px;
                 margin: 35px 0 20px 0;
             }
+            .intro-toggle-btn,
             .modern-toggle-btn {
                 font-size: 1.1rem;
                 padding: 14px 16px;
@@ -655,6 +712,7 @@
                 font-size: 1.3rem;
                 padding: 0 8px;
             }
+            .intro-toggle-btn,
             .modern-toggle-btn {
                 font-size: 1rem;
                 padding: 12px 14px;
@@ -682,83 +740,94 @@
         </div>
 
         <!-- ============================================================ -->
-        <!-- ===== SECTION: PENDAHULUAN FISIKA (Besaran & Pengukuran) ===== -->
+        <!-- ===== SECTION: PENDAHULUAN FISIKA (dengan toggle) ===== -->
         <!-- ============================================================ -->
         <div class="section-divider intro-divider">
             <h2><i class="fas fa-ruler"></i> Pendahuluan Fisika</h2>
         </div>
 
-        <div class="kelas-container">
-            <div class="kelas-card intro-card">
-                <div class="kelas-header">
-                    <div class="kelas-icon"><i class="fas fa-ruler-combined"></i></div>
-                    <div class="kelas-title">Besaran &amp; Pengukuran</div>
-                </div>
-                <div class="kelas-description">
-                    Besaran Pokok, Besaran Turunan, Satuan SI, Konversi Satuan, Angka Penting, dan Pengukuran.
-                </div>
+        <!-- Tombol toggle untuk seluruh bagian Pendahuluan Fisika -->
+        <div class="intro-toggle-wrapper">
+            <button class="intro-toggle-btn" id="introToggleBtn" onclick="toggleIntroSection()">
+                <i class="fas fa-chevron-down" id="introToggleIcon"></i>
+                <span>Tampilkan / Sembunyikan Pendahuluan Fisika</span>
+            </button>
 
-                <div class="level-buttons">
-                    <a href="besaran-steady.html" class="level-btn intro-steady">
-                        <i class="fas fa-walking"></i>
-                        Level Steady
-                        <span class="level-label">Bertahap &amp; Detail</span>
-                    </a>
-                    <a href="besaran-fast.html" class="level-btn intro-fast">
-                        <i class="fas fa-running"></i>
-                        Level Fast
-                        <span class="level-label">Cepat &amp; Intensif</span>
-                    </a>
-                </div>
+            <!-- Konten yang bisa dilipat -->
+            <div class="intro-toggle-content" id="introContent">
+                <div class="kelas-container">
+                    <div class="kelas-card intro-card">
+                        <div class="kelas-header">
+                            <div class="kelas-icon"><i class="fas fa-ruler-combined"></i></div>
+                            <div class="kelas-title">Besaran &amp; Pengukuran</div>
+                        </div>
+                        <div class="kelas-description">
+                            Besaran Pokok, Besaran Turunan, Satuan SI, Konversi Satuan, Angka Penting, dan Pengukuran.
+                        </div>
 
-                <div class="toggle-section">
-                    <button class="toggle-btn intro-toggle" onclick="toggleMenu('besaran-menu')">
-                        <i class="fas fa-chevron-down"></i>
-                        <span>📝 Latihan Soal &amp; Quiz</span>
-                    </button>
-                    <div class="toggle-content" id="besaran-menu">
-                        <div class="menu-grid">
-                            <a href="latihan/besaran/besaran-pokok.html" class="menu-item">
-                                <i class="fas fa-ruler"></i> Besaran Pokok
-                                <span class="badge intro-badge">12 Soal</span>
+                        <div class="level-buttons">
+                            <a href="besaran-steady.html" class="level-btn intro-steady">
+                                <i class="fas fa-walking"></i>
+                                Level Steady
+                                <span class="level-label">Bertahap &amp; Detail</span>
                             </a>
-                            <a href="latihan/besaran/besaran-turunan.html" class="menu-item">
-                                <i class="fas fa-cubes"></i> Besaran Turunan
-                                <span class="badge intro-badge">10 Soal</span>
-                            </a>
-                            <a href="latihan/besaran/satuan-si.html" class="menu-item">
-                                <i class="fas fa-weight"></i> Satuan SI
-                                <span class="badge intro-badge">10 Soal</span>
-                            </a>
-                            <a href="latihan/besaran/konversi.html" class="menu-item">
-                                <i class="fas fa-exchange-alt"></i> Konversi Satuan
-                                <span class="badge intro-badge">12 Soal</span>
-                            </a>
-                            <a href="latihan/besaran/angka-penting.html" class="menu-item">
-                                <i class="fas fa-calculator"></i> Angka Penting
-                                <span class="badge intro-badge">10 Soal</span>
-                            </a>
-                            <a href="latihan/besaran/pengukuran.html" class="menu-item">
-                                <i class="fas fa-clock"></i> Pengukuran &amp; Ketidakpastian
-                                <span class="badge intro-badge">8 Soal</span>
+                            <a href="besaran-fast.html" class="level-btn intro-fast">
+                                <i class="fas fa-running"></i>
+                                Level Fast
+                                <span class="level-label">Cepat &amp; Intensif</span>
                             </a>
                         </div>
 
-                        <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+                        <div class="toggle-section">
+                            <button class="toggle-btn intro-toggle" onclick="toggleMenu('besaran-menu')">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>📝 Latihan Soal &amp; Quiz</span>
+                            </button>
+                            <div class="toggle-content" id="besaran-menu">
+                                <div class="menu-grid">
+                                    <a href="latihan/besaran/besaran-pokok.html" class="menu-item">
+                                        <i class="fas fa-ruler"></i> Besaran Pokok
+                                        <span class="badge intro-badge">12 Soal</span>
+                                    </a>
+                                    <a href="latihan/besaran/besaran-turunan.html" class="menu-item">
+                                        <i class="fas fa-cubes"></i> Besaran Turunan
+                                        <span class="badge intro-badge">10 Soal</span>
+                                    </a>
+                                    <a href="latihan/besaran/satuan-si.html" class="menu-item">
+                                        <i class="fas fa-weight"></i> Satuan SI
+                                        <span class="badge intro-badge">10 Soal</span>
+                                    </a>
+                                    <a href="latihan/besaran/konversi.html" class="menu-item">
+                                        <i class="fas fa-exchange-alt"></i> Konversi Satuan
+                                        <span class="badge intro-badge">12 Soal</span>
+                                    </a>
+                                    <a href="latihan/besaran/angka-penting.html" class="menu-item">
+                                        <i class="fas fa-calculator"></i> Angka Penting
+                                        <span class="badge intro-badge">10 Soal</span>
+                                    </a>
+                                    <a href="latihan/besaran/pengukuran.html" class="menu-item">
+                                        <i class="fas fa-clock"></i> Pengukuran &amp; Ketidakpastian
+                                        <span class="badge intro-badge">8 Soal</span>
+                                    </a>
+                                </div>
 
-                        <div class="menu-grid">
-                            <a href="quiz/besaran/besaran-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Besaran &amp; Satuan
-                                <span class="badge quiz">10 Q</span>
-                            </a>
-                            <a href="quiz/besaran/konversi-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Konversi Satuan
-                                <span class="badge quiz">8 Q</span>
-                            </a>
-                            <a href="quiz/besaran/angka-penting-quiz.html" class="menu-item">
-                                <i class="fas fa-question-circle"></i> Angka Penting
-                                <span class="badge quiz">8 Q</span>
-                            </a>
+                                <div class="quiz-divider"><span>🎯 QUIZ</span></div>
+
+                                <div class="menu-grid">
+                                    <a href="quiz/besaran/besaran-quiz.html" class="menu-item">
+                                        <i class="fas fa-question-circle"></i> Besaran &amp; Satuan
+                                        <span class="badge quiz">10 Q</span>
+                                    </a>
+                                    <a href="quiz/besaran/konversi-quiz.html" class="menu-item">
+                                        <i class="fas fa-question-circle"></i> Konversi Satuan
+                                        <span class="badge quiz">8 Q</span>
+                                    </a>
+                                    <a href="quiz/besaran/angka-penting-quiz.html" class="menu-item">
+                                        <i class="fas fa-question-circle"></i> Angka Penting
+                                        <span class="badge quiz">8 Q</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1562,6 +1631,23 @@
             }
         }
 
+        // ===== TOGGLE INTRO SECTION =====
+        function toggleIntroSection() {
+            const content = document.getElementById('introContent');
+            const btn = document.getElementById('introToggleBtn');
+            const icon = document.getElementById('introToggleIcon');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                btn.classList.remove('active');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('open');
+                btn.classList.add('active');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
         // ===== TOGGLE MODERN SECTION (seluruh bagian) =====
         function toggleModernSection() {
             const content = document.getElementById('modernContent');
@@ -1628,7 +1714,16 @@
                     btn.classList.remove('active');
                     btn.querySelector('i').style.transform = 'rotate(0deg)';
                 });
-                // Tutup juga modern section jika terbuka
+                // Tutup intro section jika terbuka
+                const introContent = document.getElementById('introContent');
+                const introBtn = document.getElementById('introToggleBtn');
+                const introIcon = document.getElementById('introToggleIcon');
+                if (introContent.classList.contains('open')) {
+                    introContent.classList.remove('open');
+                    introBtn.classList.remove('active');
+                    introIcon.style.transform = 'rotate(0deg)';
+                }
+                // Tutup modern section jika terbuka
                 const modernContent = document.getElementById('modernContent');
                 const modernBtn = document.getElementById('modernToggleBtn');
                 const modernIcon = document.getElementById('modernToggleIcon');
