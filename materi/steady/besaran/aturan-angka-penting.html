@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modul Fisika: Angka Penting</title>
-  <!-- Tailwind + Google Fonts -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
   <style>
     :root {
@@ -80,6 +78,10 @@
       background: #fee2e2;
       color: #7f1d1d;
     }
+    .choice.disabled-true {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
     .reveal { animation: rise .55s ease both; }
     .stagger-1 { animation-delay: .08s; }
     .stagger-2 { animation-delay: .16s; }
@@ -95,7 +97,6 @@
     @media (max-width: 640px) {
       .nav-label { display: none; }
     }
-    /* tambahan untuk portal link */
     .portal-link {
       background: #e0f2fe;
       border-radius: 999px;
@@ -109,13 +110,67 @@
     .portal-link:hover {
       background: #b8dff5;
     }
+    /* slide quiz */
+    .slide-container {
+      position: relative;
+      min-height: 400px;
+    }
+    .quiz-slide {
+      display: none;
+      animation: slideIn .35s ease both;
+    }
+    .quiz-slide.active {
+      display: block;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .slide-indicator {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .dot {
+      width: 32px;
+      height: 6px;
+      border-radius: 4px;
+      background: #cbd5e1;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: #075985;
+    }
+    .dot.answered-correct {
+      background: #15803d;
+    }
+    .dot.answered-wrong {
+      background: #dc2626;
+    }
+    .nav-slide {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .nav-slide:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .nav-slide:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   </style>
  </head>
  <body class="w-full min-h-screen grid-paper">
   <header class="sticky top-0 z-30 w-full border-b border-sky-200 bg-white/95 backdrop-blur">
    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
     <div class="flex min-w-0 items-center gap-3">
-     <!-- logo -->
      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-700 text-white" aria-hidden="true">
       <i data-lucide="atom" class="h-5 w-5"></i>
      </div>
@@ -124,14 +179,11 @@
       <p class="truncate font-semibold text-slate-800">Angka Penting</p>
      </div>
     </div>
-    <!-- navigasi + portal home -->
     <div class="flex items-center gap-2 sm:gap-4">
-     <!-- TOMBOL PORTAL (kembali ke portal fisika) -->
      <a href="#" class="portal-link inline-flex items-center gap-1.5" onclick="alert('🌐 Kembali ke Portal Fisika (demo)'); return false;">
       <i data-lucide="grid-2x2" class="h-4 w-4"></i>
       <span class="hidden sm:inline">Portal</span>
      </a>
-     <!-- navigasi modul -->
      <nav aria-label="Navigasi modul" class="flex items-center gap-1 sm:gap-4">
       <button id="nav-home" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold is-active"> <i data-lucide="house" class="h-4 w-4" aria-hidden="true"></i> <span class="nav-label">Beranda</span> </button>
       <button id="nav-material" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold"> <i data-lucide="book-open" class="h-4 w-4" aria-hidden="true"></i> <span class="nav-label">Materi</span> </button>
@@ -142,7 +194,7 @@
   </header>
 
   <main class="w-full">
-   <!-- ========== HOME ========== -->
+   <!-- HOME (ringkas) -->
    <section id="home-page" class="app-page is-active" aria-labelledby="home-title">
     <div class="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:py-16">
      <div class="reveal">
@@ -170,7 +222,7 @@
     </section>
    </section>
 
-   <!-- ========== MATERI ========== -->
+   <!-- MATERI (ringkas) -->
    <section id="material-page" class="app-page" aria-labelledby="material-title">
     <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
      <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
@@ -181,88 +233,37 @@
       </div>
       <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&h=400&fit=crop&crop=center" loading="lazy" class="reveal stagger-1 h-64 w-full rounded-[2rem] object-cover shadow-lg sm:h-72" alt="Jangka sorong">
      </div>
-
-     <!-- ATURAN -->
      <section class="mt-12" aria-labelledby="rules-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Panduan</p>
       <h2 id="rules-heading" class="display-font mt-2 text-3xl font-bold">4 Aturan Angka Penting</h2>
       <div class="mt-7 grid gap-5 md:grid-cols-2">
-       <article class="rule-card rounded-2xl bg-white p-6 shadow-sm">
-        <p class="mb-3 text-sm font-bold text-sky-700">Aturan 1</p>
-        <h3 class="mb-2 font-bold text-slate-800">Semua angka bukan nol adalah angka penting</h3>
-        <p class="leading-6 text-slate-600">Contoh: 123,45 memiliki 5 angka penting. 0,00789 memiliki 3 angka penting (789).</p>
-       </article>
-       <article class="rule-card rule-orange rounded-2xl bg-white p-6 shadow-sm">
-        <p class="mb-3 text-sm font-bold text-orange-600">Aturan 2</p>
-        <h3 class="mb-2 font-bold text-slate-800">Angka nol di antara angka bukan nol adalah penting</h3>
-        <p class="leading-6 text-slate-600">Contoh: 1002 memiliki 4 angka penting. 0,0305 memiliki 3 angka penting (305).</p>
-       </article>
-       <article class="rule-card rule-teal rounded-2xl bg-white p-6 shadow-sm">
-        <p class="mb-3 text-sm font-bold text-teal-600">Aturan 3</p>
-        <h3 class="mb-2 font-bold text-slate-800">Nol di depan bukan angka penting</h3>
-        <p class="leading-6 text-slate-600">Contoh: 0,00056 memiliki 2 angka penting (56). 0,0040 memiliki 2 angka penting (40).</p>
-       </article>
-       <article class="rule-card rule-purple rounded-2xl bg-white p-6 shadow-sm">
-        <p class="mb-3 text-sm font-bold text-purple-600">Aturan 4</p>
-        <h3 class="mb-2 font-bold text-slate-800">Nol di belakang desimal adalah penting</h3>
-        <p class="leading-6 text-slate-600">Contoh: 2,500 memiliki 4 angka penting. 300,0 memiliki 4 angka penting.</p>
-       </article>
+       <article class="rule-card rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-sky-700">Aturan 1</p><h3 class="mb-2 font-bold text-slate-800">Semua angka bukan nol adalah angka penting</h3><p class="leading-6 text-slate-600">Contoh: 123,45 memiliki 5 angka penting. 0,00789 memiliki 3 angka penting (789).</p></article>
+       <article class="rule-card rule-orange rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-orange-600">Aturan 2</p><h3 class="mb-2 font-bold text-slate-800">Angka nol di antara angka bukan nol adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 1002 memiliki 4 angka penting. 0,0305 memiliki 3 angka penting (305).</p></article>
+       <article class="rule-card rule-teal rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-teal-600">Aturan 3</p><h3 class="mb-2 font-bold text-slate-800">Nol di depan bukan angka penting</h3><p class="leading-6 text-slate-600">Contoh: 0,00056 memiliki 2 angka penting (56). 0,0040 memiliki 2 angka penting (40).</p></article>
+       <article class="rule-card rule-purple rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-purple-600">Aturan 4</p><h3 class="mb-2 font-bold text-slate-800">Nol di belakang desimal adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 2,500 memiliki 4 angka penting. 300,0 memiliki 4 angka penting.</p></article>
       </div>
      </section>
-
-     <!-- OPERASI -->
+     <!-- OPERASI ringkas -->
      <section class="mt-14" aria-labelledby="operations-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Operasi hitung</p>
       <h2 id="operations-heading" class="display-font mt-2 text-3xl font-bold">Aturan Penjumlahan &amp; Perkalian</h2>
-      <p class="mt-3 max-w-3xl leading-7 text-slate-700">Penjumlahan/pengurangan mengikuti jumlah desimal paling sedikit. Perkalian/pembagian mengikuti jumlah angka penting paling sedikit.</p>
       <div class="mt-7 grid gap-5 lg:grid-cols-3">
-       <article class="operation-card rounded-2xl bg-white p-6 shadow-sm">
-        <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">➕ Penjumlahan</p>
-        <h3 class="mt-3 font-bold text-slate-800">Hasil dibulatkan ke desimal paling sedikit</h3>
-        <p class="mt-3 leading-6 text-slate-600">Contoh: 12,1 + 3,45 = 15,55 → 15,6 (1 desimal)</p>
-        <p class="mt-4 rounded-xl bg-sky-50 px-3 py-3 text-sm font-semibold text-sky-800">12,1 + 3,45 = 15,6</p>
-       </article>
-       <article class="operation-card orange rounded-2xl bg-white p-6 shadow-sm">
-        <p class="text-sm font-bold uppercase tracking-[.12em] text-orange-600">✖️ Perkalian</p>
-        <h3 class="mt-3 font-bold text-slate-800">Hasil memiliki angka penting paling sedikit</h3>
-        <p class="mt-3 leading-6 text-slate-600">Contoh: 2,5 × 3,45 = 8,625 → 8,6 (2 AP)</p>
-        <p class="mt-4 rounded-xl bg-orange-50 px-3 py-3 text-sm font-semibold text-orange-800">2,5 × 3,45 = 8,6</p>
-       </article>
-       <article class="operation-card teal rounded-2xl bg-white p-6 shadow-sm">
-        <p class="text-sm font-bold uppercase tracking-[.12em] text-teal-600">🔢 Pembulatan</p>
-        <h3 class="mt-3 font-bold text-slate-800">Perhatikan angka di belakang</h3>
-        <p class="mt-3 leading-6 text-slate-600">Jika angka berikutnya ≥5, bulatkan ke atas. Contoh: 2,345 → 2,35 (2 desimal)</p>
-        <p class="mt-4 rounded-xl bg-teal-50 px-3 py-3 text-sm font-semibold text-teal-800">2,345 → 2,35</p>
-       </article>
+       <article class="operation-card rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">➕ Penjumlahan</p><h3 class="mt-3 font-bold text-slate-800">Hasil dibulatkan ke desimal paling sedikit</h3><p class="mt-3 leading-6 text-slate-600">Contoh: 12,1 + 3,45 = 15,55 → 15,6 (1 desimal)</p></article>
+       <article class="operation-card orange rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-orange-600">✖️ Perkalian</p><h3 class="mt-3 font-bold text-slate-800">Hasil memiliki angka penting paling sedikit</h3><p class="mt-3 leading-6 text-slate-600">Contoh: 2,5 × 3,45 = 8,625 → 8,6 (2 AP)</p></article>
+       <article class="operation-card teal rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-teal-600">🔢 Pembulatan</p><h3 class="mt-3 font-bold text-slate-800">Perhatikan angka di belakang</h3><p class="mt-3 leading-6 text-slate-600">Jika angka berikutnya ≥5, bulatkan ke atas. Contoh: 2,345 → 2,35 (2 desimal)</p></article>
       </div>
      </section>
     </div>
-
-    <!-- SIMULATOR OPERASI -->
+    <!-- Simulator ringkas (tetap) -->
     <section class="w-full bg-white py-12">
      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[1.15fr_.85fr]">
       <div>
        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Simulasi</p>
        <h2 class="display-font mt-2 text-3xl font-bold">Hitung dengan Angka Penting</h2>
-       <p class="mt-3 max-w-2xl leading-7 text-slate-700">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting.</p>
        <form id="operation-form" class="mt-6 grid gap-4 sm:grid-cols-2" novalidate>
-        <div>
-         <label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label>
-         <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 12,34">
-        </div>
-        <div>
-         <label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label>
-         <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 0,0560">
-        </div>
-        <div class="sm:col-span-2">
-         <label for="operation-select" class="mb-2 block font-semibold text-slate-700">Pilih operasi</label>
-         <select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900">
-          <option value="add">Penjumlahan (+)</option>
-          <option value="subtract">Pengurangan (−)</option>
-          <option value="multiply">Perkalian (×)</option>
-          <option value="divide">Pembagian (÷)</option>
-         </select>
-        </div>
+        <div><label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label><input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="12,34"></div>
+        <div><label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label><input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,0560"></div>
+        <div class="sm:col-span-2"><label for="operation-select" class="mb-2 block font-semibold text-slate-700">Operasi</label><select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900"><option value="add">Penjumlahan (+)</option><option value="subtract">Pengurangan (−)</option><option value="multiply">Perkalian (×)</option><option value="divide">Pembagian (÷)</option></select></div>
         <button type="submit" class="sm:col-span-2 rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-lg transition hover:brightness-110">Hitung</button>
        </form>
       </div>
@@ -274,120 +275,49 @@
       </aside>
      </div>
     </section>
-
-    <!-- NOTASI ILMIAH -->
-    <section class="w-full bg-sky-50 py-12">
-     <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-start">
-      <div>
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Notasi Ilmiah</p>
-       <h2 class="display-font mt-2 text-3xl font-bold">Ubah ke Bentuk Baku</h2>
-       <p class="mt-3 max-w-2xl leading-7 text-slate-700">Notasi ilmiah menuliskan bilangan sebagai a × 10^n dengan 1 ≤ a < 10. Sangat berguna untuk bilangan sangat besar/kecil.</p>
-       <div class="mt-6 rounded-2xl bg-white p-5 shadow-sm">
-        <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh</p>
-        <p class="display-font mt-3 text-2xl font-bold text-slate-800">0,00450 = 4,50 × 10⁻³</p>
-        <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif.</p>
-       </div>
-      </div>
-      <div class="rounded-2xl bg-sky-700 p-6 shadow-lg">
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Konverter</p>
-       <form id="scientific-form" class="mt-5 flex flex-col gap-3" novalidate>
-        <label for="scientific-number" class="font-semibold text-sky-100">Masukkan bilangan</label>
-        <input id="scientific-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 125000">
-        <button type="submit" class="rounded-xl bg-white px-5 py-3 font-bold text-sky-700 transition hover:brightness-95">Ubah ke Notasi Ilmiah</button>
-       </form>
-       <div class="mt-5 rounded-xl bg-sky-800 p-4">
-        <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-200">Hasil</p>
-        <p id="scientific-result" class="display-font mt-2 text-3xl font-bold text-white" aria-live="polite">-</p>
-        <p id="scientific-explanation" class="mt-2 leading-6 text-sky-100" aria-live="polite">Masukkan bilangan untuk dikonversi.</p>
-       </div>
-      </div>
-     </div>
-    </section>
-
-    <!-- TOOL HITUNG ANGKA PENTING -->
-    <section class="w-full bg-white py-12">
-     <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-2 lg:items-center">
-      <div>
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Alat</p>
-       <h2 class="display-font mt-2 text-3xl font-bold">Hitung Angka Penting</h2>
-       <p class="mt-3 max-w-lg leading-7 text-slate-700">Masukkan bilangan, dapatkan jumlah angka pentingnya secara instan.</p>
-       <form id="sig-form" class="mt-6 flex flex-col gap-3 sm:flex-row" novalidate>
-        <label for="number-input" class="sr-only">Masukkan bilangan</label>
-        <input id="number-input" class="focus-ring min-w-0 flex-1 rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 3,20e2">
-        <button type="submit" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white transition hover:brightness-110">Hitung</button>
-       </form>
-       <p id="calc-result" class="mt-4 min-h-6 font-semibold text-sky-700" aria-live="polite">Masukkan bilangan dan tekan Hitung.</p>
-      </div>
-      <aside class="rounded-2xl bg-sky-50 p-6">
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Contoh</p>
-       <p class="display-font mt-3 text-3xl font-bold text-slate-800">0,00450</p>
-       <p class="mt-4 leading-7 text-slate-600">Angka nol di depan (00) bukan penting. Angka 4,5,0 adalah penting → <span class="font-bold">3 angka penting</span>.</p>
-      </aside>
-     </div>
-    </section>
    </section>
 
-   <!-- ========== QUIZ ========== -->
+   <!-- ========== QUIZ SLIDE 10 SOAL ========== -->
    <section id="quiz-page" class="app-page" aria-labelledby="quiz-page-title">
-    <div class="mx-auto max-w-4xl px-5 py-10 sm:px-8 lg:py-14">
+    <div class="mx-auto max-w-4xl px-5 py-8 sm:px-8 lg:py-12">
      <div class="reveal text-center">
-      <p class="inline-flex rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">📝 Kuis</p>
-      <h1 id="quiz-page-title" class="display-font mt-4 text-4xl font-bold">Uji Pemahamanmu</h1>
-      <p class="mx-auto mt-3 max-w-2xl leading-7 text-slate-600">Jawab 3 soal tentang angka penting. Klik jawaban, dapatkan umpan balik.</p>
+      <p class="inline-flex rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">📝 Kuis Interaktif</p>
+      <h1 id="quiz-page-title" class="display-font mt-3 text-4xl font-bold">Angka Penting &amp; Operasi</h1>
+      <p class="mx-auto mt-2 max-w-2xl leading-7 text-slate-600">10 soal dengan 5 pilihan. Navigasi slide, lihat progres dan skor akhir.</p>
      </div>
-     <div class="mt-8 flex flex-col gap-4 rounded-2xl bg-sky-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+
+     <!-- Score & progress -->
+     <div class="mt-6 flex flex-col gap-3 rounded-2xl bg-sky-50 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Skor</p>
-       <p id="score-value" class="mt-1 text-2xl font-bold text-sky-950" aria-live="polite">0 / 3</p>
+       <p id="score-value" class="mt-1 text-2xl font-bold text-sky-950" aria-live="polite">0 / 10</p>
       </div>
       <div class="w-full sm:max-w-xs">
        <div class="h-3 overflow-hidden rounded-full bg-sky-100">
         <div id="progress-bar" class="h-full rounded-full bg-sky-700 transition-all duration-300" style="width: 0%"></div>
        </div>
-       <p id="progress-text" class="mt-2 text-right text-sm font-semibold text-sky-800" aria-live="polite">0 dari 3 soal dijawab</p>
+       <p id="progress-text" class="mt-2 text-right text-sm font-semibold text-sky-800" aria-live="polite">0 dari 10 dijawab</p>
       </div>
      </div>
 
-     <div class="mt-7 space-y-5">
-      <!-- Soal 1 -->
-      <article class="rounded-2xl bg-white p-6 shadow-sm">
-       <p class="text-sm font-bold text-sky-700">Soal 1</p>
-       <h2 class="mt-2 font-bold leading-7 text-slate-800">Berapa angka penting dari 0,05060?</h2>
-       <div class="mt-5 grid gap-3" role="group" aria-label="Pilihan jawaban soal 1">
-        <button type="button" data-question="1" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">3</button>
-        <button type="button" data-question="1" data-answer="correct" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">4</button>
-        <button type="button" data-question="1" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">5</button>
-       </div>
-       <p id="feedback-1-correct" class="mt-4 hidden rounded-xl bg-emerald-100 px-4 py-3 font-semibold text-emerald-800" aria-live="polite">✅ Benar! 0,05060 memiliki 4 angka penting (5,0,6,0).</p>
-       <p id="feedback-1-wrong" class="mt-4 hidden rounded-xl bg-rose-100 px-4 py-3 font-semibold text-rose-800" aria-live="polite">❌ Kurang tepat. 0,05060 memiliki 4 angka penting (5,0,6,0). Nol di belakang desimal setelah 6 adalah penting.</p>
-      </article>
-      <!-- Soal 2 -->
-      <article class="rounded-2xl bg-white p-6 shadow-sm">
-       <p class="text-sm font-bold text-sky-700">Soal 2</p>
-       <h2 class="mt-2 font-bold leading-7 text-slate-800">Hasil dari 3,2 × 4,567 menurut aturan angka penting adalah ...</h2>
-       <div class="mt-5 grid gap-3" role="group" aria-label="Pilihan jawaban soal 2">
-        <button type="button" data-question="2" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">14,6</button>
-        <button type="button" data-question="2" data-answer="correct" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">15</button>
-        <button type="button" data-question="2" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">14,61</button>
-       </div>
-       <p id="feedback-2-correct" class="mt-4 hidden rounded-xl bg-emerald-100 px-4 py-3 font-semibold text-emerald-800" aria-live="polite">✅ Benar! 3,2 (2 AP) × 4,567 (4 AP) → hasil harus 2 AP: 14,6144 → 15.</p>
-       <p id="feedback-2-wrong" class="mt-4 hidden rounded-xl bg-rose-100 px-4 py-3 font-semibold text-rose-800" aria-live="polite">❌ Perkalian mengikuti angka penting paling sedikit (2 AP). 3,2 × 4,567 = 14,6144 → 15.</p>
-      </article>
-      <!-- Soal 3 -->
-      <article class="rounded-2xl bg-white p-6 shadow-sm">
-       <p class="text-sm font-bold text-sky-700">Soal 3</p>
-       <h2 class="mt-2 font-bold leading-7 text-slate-800">Notasi ilmiah dari 0,000450 adalah ...</h2>
-       <div class="mt-5 grid gap-3" role="group" aria-label="Pilihan jawaban soal 3">
-        <button type="button" data-question="3" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">4,5 × 10⁻⁴</button>
-        <button type="button" data-question="3" data-answer="correct" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">4,50 × 10⁻⁴</button>
-        <button type="button" data-question="3" data-answer="wrong" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold">45 × 10⁻⁵</button>
-       </div>
-       <p id="feedback-3-correct" class="mt-4 hidden rounded-xl bg-emerald-100 px-4 py-3 font-semibold text-emerald-800" aria-live="polite">✅ Benar! 0,000450 = 4,50 × 10⁻⁴ (mempertahankan 3 angka penting).</p>
-       <p id="feedback-3-wrong" class="mt-4 hidden rounded-xl bg-rose-100 px-4 py-3 font-semibold text-rose-800" aria-live="polite">❌ 0,000450 memiliki 3 angka penting, notasi ilmiah yang tepat: 4,50 × 10⁻⁴.</p>
-      </article>
+     <!-- Slide container -->
+     <div class="slide-container mt-6">
+      <!-- 10 slide akan di-generate oleh JS -->
+      <div id="slide-wrapper" class="space-y-0"></div>
      </div>
+
+     <!-- Navigasi slide & indikator -->
+     <div class="mt-8 flex flex-col items-center gap-4">
+      <div class="slide-indicator" id="dot-indicator"></div>
+      <div class="flex items-center gap-3">
+       <button id="prev-slide" class="nav-slide" disabled>‹ Sebelum</button>
+       <span id="slide-counter" class="text-sm font-semibold text-slate-600">1 / 10</span>
+       <button id="next-slide" class="nav-slide">Selanjutnya ›</button>
+      </div>
+     </div>
+
      <div class="mt-7 flex justify-center">
-      <button id="restart-quiz-button" type="button" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-sky-800">⟳ Ulangi Kuis</button>
+      <button id="restart-quiz-button" type="button" class="rounded-xl bg-sky-700 px-6 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-sky-800">⟳ Ulangi Kuis</button>
      </div>
     </div>
    </section>
@@ -412,7 +342,6 @@
         material: document.getElementById("nav-material"),
         quiz: document.getElementById("nav-quiz")
       };
-
       function showPage(pageName) {
         Object.entries(pages).forEach(([name, page]) => {
           page.classList.toggle("is-active", name === pageName);
@@ -423,7 +352,6 @@
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-
       navButtons.home.addEventListener("click", () => showPage("home"));
       navButtons.material.addEventListener("click", () => showPage("material"));
       navButtons.quiz.addEventListener("click", () => showPage("quiz"));
@@ -469,7 +397,7 @@
         }).format(value);
       }
 
-      // ---------- OPERASI ----------
+      // ---------- OPERASI (tetap) ----------
       document.getElementById("operation-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const firstRaw = normaliseNumber(document.getElementById("first-number").value);
@@ -478,7 +406,6 @@
         const rawResult = document.getElementById("operation-raw-result");
         const finalResult = document.getElementById("operation-final-result");
         const explanation = document.getElementById("operation-explanation");
-
         if (!firstRaw || !secondRaw) {
           rawResult.textContent = "";
           finalResult.textContent = "Input belum valid";
@@ -493,7 +420,6 @@
           explanation.textContent = "Ubah bilangan kedua dengan nilai selain nol.";
           return;
         }
-
         let result, rounded, explanationText, decimalResult = 0;
         if (operation === "add") {
           result = first + second;
@@ -516,90 +442,190 @@
           rounded = roundToSignificant(result, figures);
           explanationText = "Pembagian mengikuti jumlah angka penting paling sedikit, yaitu " + figures + " angka penting.";
         }
-
         rawResult.textContent = "Hasil sebelum pembulatan: " + formatIndonesian(result, 0);
         finalResult.textContent = "Hasil akhir: " + formatIndonesian(rounded, decimalResult);
         explanation.textContent = explanationText;
       });
 
-      // ---------- NOTASI ILMIAH ----------
-      document.getElementById("scientific-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const raw = normaliseNumber(document.getElementById("scientific-number").value);
-        const result = document.getElementById("scientific-result");
-        const explanation = document.getElementById("scientific-explanation");
-        if (!raw || Number(raw) === 0) {
-          result.textContent = "Input belum valid";
-          explanation.textContent = "Masukkan bilangan selain nol, misalnya 0,00450 atau 125000.";
-          return;
-        }
-        const value = Number(raw);
-        const exponent = Math.floor(Math.log10(Math.abs(value)));
-        const coefficient = value / Math.pow(10, exponent);
-        result.textContent = coefficient.toLocaleString("id-ID", { maximumFractionDigits: 12 }) + " × 10^" + exponent;
-        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan. Banyak pergeseran menjadi pangkat 10.";
-      });
+      // ========== KUIS SLIDE ==========
+      const quizData = [
+        { question: "Berapa angka penting dari 0,05060?", options: ["2", "3", "4", "5", "6"], correct: 2 },
+        { question: "Hasil dari 3,2 × 4,567 menurut aturan angka penting adalah ...", options: ["14,6", "14,61", "14,614", "15", "14,7"], correct: 3 },
+        { question: "Notasi ilmiah dari 0,000450 adalah ...", options: ["4,5 × 10⁻⁴", "4,50 × 10⁻⁴", "45 × 10⁻⁵", "4,5 × 10⁻³", "4,50 × 10⁻³"], correct: 1 },
+        { question: "Berapa angka penting dari 2300 (tanpa desimal)?", options: ["2", "3", "4", "1", "5"], correct: 0 },
+        { question: "Hasil dari 12,56 + 2,3 adalah ... (aturan AP)", options: ["14,86", "14,9", "14,8", "15", "14,86"], correct: 1 },
+        { question: "Bilangan 0,00030 memiliki angka penting sebanyak ...", options: ["1", "2", "3", "4", "5"], correct: 1 },
+        { question: "Perkalian 5,0 × 2,00 menghasilkan ... (AP)", options: ["10", "10,0", "10,00", "10,000", "9,9"], correct: 1 },
+        { question: "Notasi ilmiah dari 2500000 adalah ...", options: ["2,5 × 10⁶", "2,50 × 10⁶", "25 × 10⁵", "2,5 × 10⁷", "2,50 × 10⁷"], correct: 0 },
+        { question: "Berapa angka penting dari 0,01020?", options: ["3", "4", "5", "6", "2"], correct: 1 },
+        { question: "Hasil dari 45,6 ÷ 2,0 (dalam AP) adalah ...", options: ["22,8", "23", "22,80", "22", "22,8"], correct: 1 }
+      ];
 
-      // ---------- HITUNG ANGKA PENTING ----------
-      document.getElementById("sig-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const raw = normaliseNumber(document.getElementById("number-input").value);
-        const result = document.getElementById("calc-result");
-        if (!raw) {
-          result.textContent = "Masukkan bilangan yang valid, misalnya 0,00450 atau 3,20e2.";
-          return;
-        }
-        const count = significantFigures(raw);
-        result.textContent = raw.replace(".", ",") + " memiliki " + count + " angka penting.";
-      });
+      const totalSlides = quizData.length;
+      let currentSlide = 0;
+      let answered = new Array(totalSlides).fill(null); // null: belum, true: benar, false: salah
+      let selectedOption = new Array(totalSlides).fill(null);
+      let score = 0;
+      let answeredCount = 0;
 
-      // ---------- KUIS ----------
-      let answeredCount = 0, score = 0;
-      const answeredQuestions = new Set();
+      const slideWrapper = document.getElementById("slide-wrapper");
+      const dotIndicator = document.getElementById("dot-indicator");
+      const prevBtn = document.getElementById("prev-slide");
+      const nextBtn = document.getElementById("next-slide");
+      const slideCounter = document.getElementById("slide-counter");
       const scoreValue = document.getElementById("score-value");
       const progressBar = document.getElementById("progress-bar");
       const progressText = document.getElementById("progress-text");
 
-      function updateQuizStatus() {
-        scoreValue.textContent = score + " / 3";
-        progressBar.style.width = (answeredCount / 3) * 100 + "%";
-        progressText.textContent = answeredCount + " dari 3 soal dijawab";
+      function renderSlides() {
+        slideWrapper.innerHTML = '';
+        quizData.forEach((item, idx) => {
+          const slide = document.createElement('div');
+          slide.className = 'quiz-slide' + (idx === 0 ? ' active' : '');
+          slide.dataset.index = idx;
+          let optionsHtml = item.options.map((opt, oi) => {
+            return `<button type="button" data-q="${idx}" data-opt="${oi}" class="choice focus-ring w-full rounded-xl border-2 px-5 py-3.5 text-left font-semibold transition">${String.fromCharCode(65 + oi)}. ${opt}</button>`;
+          }).join('');
+          slide.innerHTML = `
+            <div class="rounded-2xl bg-white p-6 shadow-md border border-sky-100">
+              <p class="text-sm font-bold text-sky-700">Soal ${idx+1} dari ${totalSlides}</p>
+              <h2 class="mt-3 text-xl font-bold text-slate-800 leading-relaxed">${item.question}</h2>
+              <div class="mt-5 grid gap-3" role="group" aria-label="Pilihan jawaban">${optionsHtml}</div>
+              <div id="feedback-${idx}" class="mt-4 hidden rounded-xl px-4 py-3 font-semibold" aria-live="polite"></div>
+            </div>
+          `;
+          slideWrapper.appendChild(slide);
+        });
+        // event listeners untuk pilihan
+        document.querySelectorAll('.choice[data-q]').forEach(btn => {
+          btn.addEventListener('click', handleChoice);
+        });
+        updateDots();
+        updateNavButtons();
+        updateSlideCounter();
+        updateScoreAndProgress();
       }
 
-      document.querySelectorAll(".choice").forEach((choice) => {
-        choice.addEventListener("click", function() {
-          const question = this.dataset.question;
-          if (answeredQuestions.has(question)) return;
-          answeredQuestions.add(question);
-          answeredCount += 1;
+      function handleChoice(e) {
+        const btn = e.currentTarget;
+        const qIdx = parseInt(btn.dataset.q);
+        if (answered[qIdx] !== null) return; // sudah dijawab
+        const optIdx = parseInt(btn.dataset.opt);
+        const isCorrect = (optIdx === quizData[qIdx].correct);
+        // tandai jawaban
+        answered[qIdx] = isCorrect;
+        selectedOption[qIdx] = optIdx;
+        if (isCorrect) score += 1;
+        answeredCount += 1;
 
-          const isCorrect = this.dataset.answer === "correct";
-          const choices = document.querySelectorAll('.choice[data-question="' + question + '"]');
-          choices.forEach((item) => {
-            item.disabled = true;
-            if (item.dataset.answer === "correct") item.classList.add("is-correct");
-          });
-          if (isCorrect) {
-            score += 1;
-            document.getElementById("feedback-" + question + "-correct").classList.remove("hidden");
-          } else {
-            this.classList.add("is-wrong");
-            document.getElementById("feedback-" + question + "-wrong").classList.remove("hidden");
-          }
-          updateQuizStatus();
+        // disable semua pilihan di slide ini
+        const allChoices = document.querySelectorAll(`.choice[data-q="${qIdx}"]`);
+        allChoices.forEach(c => {
+          c.disabled = true;
+          c.classList.add('disabled-true');
+          const oi = parseInt(c.dataset.opt);
+          if (oi === quizData[qIdx].correct) c.classList.add('is-correct');
+          else if (oi === optIdx && !isCorrect) c.classList.add('is-wrong');
         });
+
+        // tampilkan feedback
+        const feedback = document.getElementById(`feedback-${qIdx}`);
+        feedback.classList.remove('hidden');
+        if (isCorrect) {
+          feedback.className = 'mt-4 rounded-xl bg-emerald-100 px-4 py-3 font-semibold text-emerald-800';
+          feedback.textContent = '✅ Benar!';
+        } else {
+          feedback.className = 'mt-4 rounded-xl bg-rose-100 px-4 py-3 font-semibold text-rose-800';
+          feedback.textContent = '❌ Kurang tepat. Jawaban yang benar: ' + String.fromCharCode(65 + quizData[qIdx].correct);
+        }
+
+        updateDots();
+        updateScoreAndProgress();
+        updateNavButtons();
+        // jika semua sudah dijawab, aktifkan tombol next
+        if (answeredCount === totalSlides) {
+          // tetap bisa navigasi
+        }
+      }
+
+      function updateDots() {
+        dotIndicator.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          if (i === currentSlide) dot.classList.add('active');
+          if (answered[i] === true) dot.classList.add('answered-correct');
+          else if (answered[i] === false) dot.classList.add('answered-wrong');
+          dot.dataset.index = i;
+          dot.addEventListener('click', () => goToSlide(i));
+          dotIndicator.appendChild(dot);
+        }
+      }
+
+      function updateNavButtons() {
+        prevBtn.disabled = (currentSlide === 0);
+        nextBtn.disabled = (currentSlide === totalSlides - 1);
+      }
+
+      function updateSlideCounter() {
+        slideCounter.textContent = `${currentSlide+1} / ${totalSlides}`;
+      }
+
+      function updateScoreAndProgress() {
+        scoreValue.textContent = score + ' / ' + totalSlides;
+        const pct = (answeredCount / totalSlides) * 100;
+        progressBar.style.width = pct + '%';
+        progressText.textContent = answeredCount + ' dari ' + totalSlides + ' dijawab';
+      }
+
+      function goToSlide(idx) {
+        if (idx < 0 || idx >= totalSlides) return;
+        // hide all
+        document.querySelectorAll('.quiz-slide').forEach(s => s.classList.remove('active'));
+        document.querySelector(`.quiz-slide[data-index="${idx}"]`).classList.add('active');
+        currentSlide = idx;
+        updateDots();
+        updateNavButtons();
+        updateSlideCounter();
+        // scroll ke atas slide
+        document.querySelector('.slide-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+      nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+      // Restart
+      document.getElementById('restart-quiz-button').addEventListener('click', () => {
+        answered = new Array(totalSlides).fill(null);
+        selectedOption = new Array(totalSlides).fill(null);
+        score = 0;
+        answeredCount = 0;
+        // reset UI
+        document.querySelectorAll('.choice').forEach(c => {
+          c.disabled = false;
+          c.classList.remove('is-correct', 'is-wrong', 'disabled-true');
+        });
+        document.querySelectorAll('[id^="feedback-"]').forEach(fb => {
+          fb.classList.add('hidden');
+          fb.textContent = '';
+        });
+        // reset slide ke awal
+        goToSlide(0);
+        updateScoreAndProgress();
+        updateDots();
+        // re-enable nav
+        updateNavButtons();
       });
 
-      document.getElementById("restart-quiz-button").addEventListener("click", () => {
-        answeredCount = 0; score = 0; answeredQuestions.clear();
-        document.querySelectorAll(".choice").forEach((choice) => {
-          choice.disabled = false;
-          choice.classList.remove("is-correct", "is-wrong");
-        });
-        document.querySelectorAll('[id^="feedback-"]').forEach((fb) => fb.classList.add("hidden"));
-        updateQuizStatus();
+      // inisialisasi
+      renderSlides();
+      updateScoreAndProgress();
+
+      // ---------- TOMBOL PORTAL ----------
+      document.querySelector('.portal-link')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('🌐 Kembali ke Portal Fisika (demo)');
       });
-      updateQuizStatus();
     });
   </script>
  </body>
