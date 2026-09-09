@@ -97,18 +97,28 @@
     @media (max-width: 640px) {
       .nav-label { display: none; }
     }
-    .portal-link {
-      background: #e0f2fe;
+    /* Tombol portal yang lebih jelas */
+    .portal-button {
+      background: linear-gradient(135deg, #075985, #0a6b9e);
+      color: white;
       border-radius: 999px;
-      padding: 0.35rem 1rem;
-      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      font-weight: 700;
       font-size: 0.9rem;
-      color: #075985;
-      transition: background 0.2s;
-      border: 1px solid #b8dff5;
+      transition: all 0.25s ease;
+      border: none;
+      box-shadow: 0 2px 8px rgba(7, 89, 133, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .portal-link:hover {
-      background: #b8dff5;
+    .portal-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(7, 89, 133, 0.4);
+      background: linear-gradient(135deg, #0a6b9e, #075985);
+    }
+    .portal-button i {
+      font-size: 1.1rem;
     }
     /* slide quiz */
     .slide-container {
@@ -169,32 +179,34 @@
  </head>
  <body class="w-full min-h-screen grid-paper">
   <header class="sticky top-0 z-30 w-full border-b border-sky-200 bg-white/95 backdrop-blur">
-   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
+   <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:px-8 sm:py-3">
     <div class="flex min-w-0 items-center gap-3">
-     <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-700 text-white" aria-hidden="true">
-      <i data-lucide="atom" class="h-5 w-5"></i>
+     <div class="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-sky-700 text-white" aria-hidden="true">
+      <i data-lucide="atom" class="h-4 w-4 sm:h-5 sm:w-5"></i>
      </div>
      <div class="min-w-0">
-      <p class="truncate text-xs font-bold uppercase tracking-[.18em] text-sky-800">Fisika</p>
-      <p class="truncate font-semibold text-slate-800">Angka Penting</p>
+      <p class="truncate text-[10px] sm:text-xs font-bold uppercase tracking-[.18em] text-sky-800">Fisika</p>
+      <p class="truncate text-sm sm:text-base font-semibold text-slate-800">Angka Penting</p>
      </div>
     </div>
     <div class="flex items-center gap-2 sm:gap-4">
-     <a href="#" class="portal-link inline-flex items-center gap-1.5" onclick="alert('🌐 Kembali ke Portal Fisika (demo)'); return false;">
-      <i data-lucide="grid-2x2" class="h-4 w-4"></i>
-      <span class="hidden sm:inline">Portal</span>
-     </a>
-     <nav aria-label="Navigasi modul" class="flex items-center gap-1 sm:gap-4">
-      <button id="nav-home" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold is-active"> <i data-lucide="house" class="h-4 w-4" aria-hidden="true"></i> <span class="nav-label">Beranda</span> </button>
-      <button id="nav-material" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold"> <i data-lucide="book-open" class="h-4 w-4" aria-hidden="true"></i> <span class="nav-label">Materi</span> </button>
-      <button id="nav-quiz" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold"> <i data-lucide="circle-help" class="h-4 w-4" aria-hidden="true"></i> <span class="nav-label">Kuis</span> </button>
+     <!-- TOMBOL PORTAL UTAMA yang jelas -->
+     <button id="portal-main-btn" class="portal-button focus-ring" onclick="alert('🌐 Kembali ke Portal Fisika Utama (demo)');">
+      <i data-lucide="home" class="h-4 w-4"></i>
+      <span class="hidden sm:inline">Kembali ke Home</span>
+      <span class="sm:hidden">Portal</span>
+     </button>
+     <nav aria-label="Navigasi modul" class="flex items-center gap-0.5 sm:gap-4">
+      <button id="nav-home" type="button" class="nav-link focus-ring inline-flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-2 text-xs sm:text-sm font-bold is-active"> <i data-lucide="house" class="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true"></i> <span class="nav-label">Beranda</span> </button>
+      <button id="nav-material" type="button" class="nav-link focus-ring inline-flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-2 text-xs sm:text-sm font-bold"> <i data-lucide="book-open" class="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true"></i> <span class="nav-label">Materi</span> </button>
+      <button id="nav-quiz" type="button" class="nav-link focus-ring inline-flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-2 text-xs sm:text-sm font-bold"> <i data-lucide="circle-help" class="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true"></i> <span class="nav-label">Kuis</span> </button>
      </nav>
     </div>
    </div>
   </header>
 
   <main class="w-full">
-   <!-- HOME (ringkas) -->
+   <!-- HOME -->
    <section id="home-page" class="app-page is-active" aria-labelledby="home-title">
     <div class="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:py-16">
      <div class="reveal">
@@ -222,7 +234,7 @@
     </section>
    </section>
 
-   <!-- MATERI (ringkas) -->
+   <!-- MATERI -->
    <section id="material-page" class="app-page" aria-labelledby="material-title">
     <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
      <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
@@ -243,7 +255,6 @@
        <article class="rule-card rule-purple rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-purple-600">Aturan 4</p><h3 class="mb-2 font-bold text-slate-800">Nol di belakang desimal adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 2,500 memiliki 4 angka penting. 300,0 memiliki 4 angka penting.</p></article>
       </div>
      </section>
-     <!-- OPERASI ringkas -->
      <section class="mt-14" aria-labelledby="operations-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Operasi hitung</p>
       <h2 id="operations-heading" class="display-font mt-2 text-3xl font-bold">Aturan Penjumlahan &amp; Perkalian</h2>
@@ -254,7 +265,7 @@
       </div>
      </section>
     </div>
-    <!-- Simulator ringkas (tetap) -->
+    <!-- Simulator -->
     <section class="w-full bg-white py-12">
      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[1.15fr_.85fr]">
       <div>
@@ -302,7 +313,6 @@
 
      <!-- Slide container -->
      <div class="slide-container mt-6">
-      <!-- 10 slide akan di-generate oleh JS -->
       <div id="slide-wrapper" class="space-y-0"></div>
      </div>
 
@@ -358,6 +368,13 @@
       document.getElementById("home-material-button").addEventListener("click", () => showPage("material"));
       document.getElementById("home-quiz-button").addEventListener("click", () => showPage("quiz"));
 
+      // ---------- TOMBOL PORTAL UTAMA ----------
+      document.getElementById("portal-main-btn").addEventListener("click", function(e) {
+        // Ganti dengan URL portal utama Anda yang sebenarnya
+        alert('🌐 Kembali ke Portal Fisika Utama (demo)\nGanti URL dengan alamat portal Anda.');
+        // window.location.href = "https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/"; // uncomment untuk produksi
+      });
+
       // ---------- UTILITY ----------
       function normaliseNumber(value) {
         const raw = value.trim().replace(",", ".");
@@ -397,7 +414,7 @@
         }).format(value);
       }
 
-      // ---------- OPERASI (tetap) ----------
+      // ---------- OPERASI ----------
       document.getElementById("operation-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const firstRaw = normaliseNumber(document.getElementById("first-number").value);
@@ -463,7 +480,7 @@
 
       const totalSlides = quizData.length;
       let currentSlide = 0;
-      let answered = new Array(totalSlides).fill(null); // null: belum, true: benar, false: salah
+      let answered = new Array(totalSlides).fill(null);
       let selectedOption = new Array(totalSlides).fill(null);
       let score = 0;
       let answeredCount = 0;
@@ -496,7 +513,6 @@
           `;
           slideWrapper.appendChild(slide);
         });
-        // event listeners untuk pilihan
         document.querySelectorAll('.choice[data-q]').forEach(btn => {
           btn.addEventListener('click', handleChoice);
         });
@@ -509,16 +525,14 @@
       function handleChoice(e) {
         const btn = e.currentTarget;
         const qIdx = parseInt(btn.dataset.q);
-        if (answered[qIdx] !== null) return; // sudah dijawab
+        if (answered[qIdx] !== null) return;
         const optIdx = parseInt(btn.dataset.opt);
         const isCorrect = (optIdx === quizData[qIdx].correct);
-        // tandai jawaban
         answered[qIdx] = isCorrect;
         selectedOption[qIdx] = optIdx;
         if (isCorrect) score += 1;
         answeredCount += 1;
 
-        // disable semua pilihan di slide ini
         const allChoices = document.querySelectorAll(`.choice[data-q="${qIdx}"]`);
         allChoices.forEach(c => {
           c.disabled = true;
@@ -528,7 +542,6 @@
           else if (oi === optIdx && !isCorrect) c.classList.add('is-wrong');
         });
 
-        // tampilkan feedback
         const feedback = document.getElementById(`feedback-${qIdx}`);
         feedback.classList.remove('hidden');
         if (isCorrect) {
@@ -542,10 +555,6 @@
         updateDots();
         updateScoreAndProgress();
         updateNavButtons();
-        // jika semua sudah dijawab, aktifkan tombol next
-        if (answeredCount === totalSlides) {
-          // tetap bisa navigasi
-        }
       }
 
       function updateDots() {
@@ -580,27 +589,23 @@
 
       function goToSlide(idx) {
         if (idx < 0 || idx >= totalSlides) return;
-        // hide all
         document.querySelectorAll('.quiz-slide').forEach(s => s.classList.remove('active'));
         document.querySelector(`.quiz-slide[data-index="${idx}"]`).classList.add('active');
         currentSlide = idx;
         updateDots();
         updateNavButtons();
         updateSlideCounter();
-        // scroll ke atas slide
         document.querySelector('.slide-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
       nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
-      // Restart
       document.getElementById('restart-quiz-button').addEventListener('click', () => {
         answered = new Array(totalSlides).fill(null);
         selectedOption = new Array(totalSlides).fill(null);
         score = 0;
         answeredCount = 0;
-        // reset UI
         document.querySelectorAll('.choice').forEach(c => {
           c.disabled = false;
           c.classList.remove('is-correct', 'is-wrong', 'disabled-true');
@@ -609,23 +614,14 @@
           fb.classList.add('hidden');
           fb.textContent = '';
         });
-        // reset slide ke awal
         goToSlide(0);
         updateScoreAndProgress();
         updateDots();
-        // re-enable nav
         updateNavButtons();
       });
 
-      // inisialisasi
       renderSlides();
       updateScoreAndProgress();
-
-      // ---------- TOMBOL PORTAL ----------
-      document.querySelector('.portal-link')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('🌐 Kembali ke Portal Fisika (demo)');
-      });
     });
   </script>
  </body>
