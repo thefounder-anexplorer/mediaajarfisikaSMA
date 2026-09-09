@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Fisika: Angka Penting</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+   :root {
+      --ink: #10243b;
+      --blue: #075985;
+      --sky: #e0f2fe;
+      --paper: #f6fbff;
+      --orange: #f97316;
+      --teal: #0f766e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background-image:
+        linear-gradient(rgba(14, 116, 144, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 116, 144, .08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      min-height: 100vh;
+    }
+
+    .display-font {
+      font-family: "Fraunces", serif;
+    }
+
+    .app-page {
+      display: none;
+      animation: page-in .4s ease both;
+    }
+
+    .app-page.is-active {
+      display: block;
+    }
+
+    .nav-link {
+      border-bottom: 2px solid transparent;
+      color: #526b81;
+      transition: color .2s ease, border-color .2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: var(--blue);
+      border-color: var(--orange);
+    }
+
+    .focus-ring:focus-visible {
+      outline: 3px solid #fb923c;
+      outline-offset: 3px;
+    }
+
+    .choice {
+      border-color: #cbd5e1;
+      background: #ffffff;
+      color: #10243b;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+
+    .choice:not(:disabled):hover {
+      border-color: #075985;
+      background: #f0f9ff;
+      transform: translateY(-1px);
+    }
+
+    .choice.is-correct {
+      border-color: #15803d;
+      background: #dcfce7;
+      color: #14532d;
+    }
+
+    .choice.is-wrong {
+      border-color: #dc2626;
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    .choice.disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .reveal {
+      animation: rise .55s ease both;
+    }
+
+    .stagger-1 {
+      animation-delay: .08s;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes page-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-label {
+        display: none;
+      }
+    }
+  </style>
+ </head>
+ <body>
+  <!-- HEADER -->
+  <header class="sticky top-0 z-30 w-full border-b border-sky-200 bg-white/95 backdrop-blur">
+   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
+    <div class="flex min-w-0 items-center gap-3">
+     <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-700 text-white" aria-hidden="true">
+      <i data-lucide="atom" class="h-5 w-5"></i>
+     </div>
+     <div class="min-w-0">
+      <p class="truncate text-xs font-bold uppercase tracking-[.18em]">Fisika</p>
+      <p class="truncate font-semibold">Angka Penting</p>
+     </div>
+    </div>
+    <nav aria-label="Navigasi modul" class="flex items-center gap-1 sm:gap-4">
+     <button id="nav-home" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold is-active">
+      <i data-lucide="house" class="h-4 w-4" aria-hidden="true"></i>
+      <span class="nav-label">Beranda</span>
+     </button>
+     <button id="nav-material" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold">
+      <i data-lucide="book-open" class="h-4 w-4" aria-hidden="true"></i>
+      <span class="nav-label">Materi</span>
+     </button>
+     <button id="nav-quiz" type="button" class="nav-link focus-ring inline-flex items-center gap-2 px-2 py-2 text-sm font-bold">
+      <i data-lucide="circle-help" class="h-4 w-4" aria-hidden="true"></i>
+      <span class="nav-label">Kuis</span>
+     </button>
+    </nav>
+   </div>
+  </header>
+
+  <main class="w-full">
+   <!-- HOME PAGE -->
+   <section id="home-page" class="app-page is-active" aria-labelledby="home-title">
+    <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-16">
+     <div class="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+      <div class="reveal">
+       <p class="mb-4 inline-flex rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">#Fisika</p>
+       <h1 id="home-title" class="display-font mb-5 text-4xl font-bold leading-tight lg:text-5xl">Pahami <span class="text-sky-700">Angka Penting</span> dengan Mudah</h1>
+       <p class="max-w-xl leading-7 text-slate-600">Belajar aturan, operasi, dan notasi ilmiah angka penting. Dilengkapi kuis interaktif untuk menguji pemahamanmu.</p>
+       <div class="mt-7 flex flex-wrap gap-3">
+        <button id="home-material-button" type="button" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-800">Pelajari Materi</button>
+        <button id="home-quiz-button" type="button" class="rounded-xl border-2 border-sky-200 px-5 py-3 font-bold text-sky-700 transition hover:-translate-y-0.5 hover:bg-sky-50">Coba Kuis</button>
+       </div>
+      </div>
+      <div class="reveal stagger-1 overflow-hidden rounded-[2rem] bg-sky-100 p-3 shadow-xl">
+       <img loading="lazy" class="h-72 w-full rounded-[1.4rem] object-cover sm:h-96" src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=600&h=400&fit=crop&crop=center" alt="Ilustrasi angka penting">
+       <div class="relative -mt-12 mx-4 rounded-xl bg-white/90 px-4 py-3 shadow-lg backdrop-blur-sm">
+        <p class="text-sm font-semibold text-sky-800">Setiap angka punya peran penting dalam pengukuran.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- MATERIAL PAGE -->
+   <section id="material-page" class="app-page" aria-labelledby="material-title">
+    <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
+     <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+      <div class="reveal">
+       <p class="inline-flex rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">Materi</p>
+       <h1 id="material-title" class="display-font mt-4 text-3xl font-bold leading-tight">Aturan Angka Penting</h1>
+       <p class="mt-4 max-w-2xl leading-7 text-slate-600">Angka penting adalah semua angka yang diperoleh dari hasil pengukuran, terdiri dari angka pasti dan angka taksiran. Berikut aturan dasarnya:</p>
+      </div>
+      <img loading="lazy" class="reveal stagger-1 h-64 w-full rounded-[2rem] object-cover shadow-lg sm:h-72" src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=600&h=400&fit=crop&crop=center" alt="Alat ukur">
+     </div>
+
+     <!-- Rules -->
+     <section class="mt-12" aria-labelledby="rules-heading">
+      <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Aturan</p>
+      <h2 id="rules-heading" class="display-font mt-2 text-2xl font-bold">4 Aturan Dasar</h2>
+      <div class="mt-7 grid gap-5 md:grid-cols-2">
+       <article class="rounded-2xl border-t-4 border-sky-400 bg-white p-6 shadow-sm">
+        <p class="mb-3 text-sm font-bold text-sky-600">ATURAN 1</p>
+        <h3 class="mb-2 font-bold">Semua angka bukan nol adalah angka penting.</h3>
+        <p class="leading-6 text-slate-600">Contoh: 123,45 memiliki 5 angka penting.</p>
+       </article>
+       <article class="rounded-2xl border-t-4 border-orange-400 bg-white p-6 shadow-sm">
+        <p class="mb-3 text-sm font-bold text-orange-600">ATURAN 2</p>
+        <h3 class="mb-2 font-bold">Angka nol di antara angka bukan nol adalah penting.</h3>
+        <p class="leading-6 text-slate-600">Contoh: 1.005 memiliki 4 angka penting.</p>
+       </article>
+       <article class="rounded-2xl border-t-4 border-teal-400 bg-white p-6 shadow-sm">
+        <p class="mb-3 text-sm font-bold text-teal-600">ATURAN 3</p>
+        <h3 class="mb-2 font-bold">Nol di depan angka bukan nol tidak penting.</h3>
+        <p class="leading-6 text-slate-600">Contoh: 0,0025 memiliki 2 angka penting.</p>
+       </article>
+       <article class="rounded-2xl border-t-4 border-purple-400 bg-white p-6 shadow-sm">
+        <p class="mb-3 text-sm font-bold text-purple-600">ATURAN 4</p>
+        <h3 class="mb-2 font-bold">Nol di belakang angka bukan nol bisa penting jika ada desimal.</h3>
+        <p class="leading-6 text-slate-600">Contoh: 150,0 memiliki 4 angka penting.</p>
+       </article>
+      </div>
+     </section>
+
+     <!-- Operations -->
+     <section class="mt-14" aria-labelledby="operations-heading">
+      <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Operasi</p>
+      <h2 id="operations-heading" class="display-font mt-2 text-2xl font-bold">Operasi Angka Penting</h2>
+      <p class="mt-3 max-w-3xl leading-7 text-slate-600">Hasil operasi harus mengikuti aturan angka penting.</p>
+      <div class="mt-7 grid gap-5 lg:grid-cols-3">
+       <article class="rounded-2xl border-l-4 border-sky-600 bg-white p-6 shadow-sm">
+        <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-600">Penjumlahan</p>
+        <h3 class="mt-3 font-bold">Ikuti desimal paling sedikit</h3>
+        <p class="mt-3 leading-6 text-slate-600">Jumlahkan biasa, lalu bulatkan ke desimal terkecil dari komponen.</p>
+        <p class="mt-4 rounded-xl bg-sky-50 px-3 py-3 text-sm font-semibold">12,34 + 5,6 = 17,94 → 17,9</p>
+       </article>
+       <article class="rounded-2xl border-l-4 border-orange-500 bg-white p-6 shadow-sm">
+        <p class="text-sm font-bold uppercase tracking-[.12em] text-orange-500">Perkalian</p>
+        <h3 class="mt-3 font-bold">Ikuti AP paling sedikit</h3>
+        <p class="mt-3 leading-6 text-slate-600">Kalikan biasa, bulatkan sesuai jumlah AP terkecil.</p>
+        <p class="mt-4 rounded-xl bg-orange-50 px-3 py-3 text-sm font-semibold">2,5 × 3,42 = 8,55 → 8,6 (2 AP)</p>
+       </article>
+       <article class="rounded-2xl border-l-4 border-teal-500 bg-white p-6 shadow-sm">
+        <p class="text-sm font-bold uppercase tracking-[.12em] text-teal-500">Pembulatan</p>
+        <h3 class="mt-3 font-bold">Aturan 5 ke atas</h3>
+        <p class="mt-3 leading-6 text-slate-600">Jika angka di belakang ≥ 5, bulatkan ke atas.</p>
+        <p class="mt-4 rounded-xl bg-teal-50 px-3 py-3 text-sm font-semibold">2,345 → 2,35 (3 AP)</p>
+       </article>
+      </div>
+     </section>
+    </div>
+   </section>
+
+   <!-- QUIZ PAGE (10 Soal) -->
+   <section id="quiz-page" class="app-page" aria-labelledby="quiz-page-title">
+    <div class="mx-auto max-w-4xl px-5 py-10 sm:px-8 lg:py-14">
+     <div class="reveal text-center">
+      <p class="inline-flex rounded-full bg-sky-100 px-3 py-1 text-sm font-bold text-sky-800">Kuis</p>
+      <h1 id="quiz-page-title" class="display-font mt-4 text-3xl font-bold">Latihan Angka Penting</h1>
+      <p class="mx-auto mt-3 max-w-2xl leading-7 text-slate-600">Jawab 10 soal di bawah ini. Pilih satu jawaban yang paling tepat.</p>
+     </div>
+
+     <!-- Score -->
+     <div class="mt-8 flex flex-col gap-4 rounded-2xl bg-sky-50 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Skor Anda</p>
+       <p id="score-value" class="mt-1 text-2xl font-bold text-sky-950" aria-live="polite">0 / 10</p>
+      </div>
+      <div class="w-full sm:max-w-xs">
+       <div class="h-3 overflow-hidden rounded-full bg-sky-100">
+        <div id="progress-bar" class="h-full rounded-full bg-sky-700 transition-all duration-300" style="width: 0%"></div>
+       </div>
+       <p id="progress-text" class="mt-2 text-right text-sm font-semibold text-sky-800" aria-live="polite">0 dari 10 soal dijawab</p>
+      </div>
+     </div>
+
+     <!-- Quiz Cards -->
+     <div class="mt-7 space-y-5" id="quiz-container">
+      <!-- Soal 1 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="1">
+       <p class="text-sm font-bold text-sky-600">Soal 1</p>
+       <h2 class="mt-2 font-bold leading-7">Berapa angka penting pada bilangan 0,00450?</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">1</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 0,00450 memiliki 3 AP (4,5,0).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 0,00450 memiliki 3 AP (angka 4, 5, dan 0 di belakang).</p>
+      </div>
+      <!-- Soal 2 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="2">
+       <p class="text-sm font-bold text-sky-600">Soal 2</p>
+       <h2 class="mt-2 font-bold leading-7">Hasil operasi 12,34 + 5,6 menurut aturan angka penting adalah ...</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">18,0</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">17,94</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">17,9</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">18</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">17,94</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 17,9 (1 desimal).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. Hasilnya 17,9 (mengikuti desimal paling sedikit).</p>
+      </div>
+      <!-- Soal 3 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="3">
+       <p class="text-sm font-bold text-sky-600">Soal 3</p>
+       <h2 class="mt-2 font-bold leading-7">Berapa angka penting pada 1,005 × 10³?</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">4</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">1</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 1,005 memiliki 4 AP.</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 1,005 memiliki 4 AP (1,0,0,5).</p>
+      </div>
+      <!-- Soal 4 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="4">
+       <p class="text-sm font-bold text-sky-600">Soal 4</p>
+       <h2 class="mt-2 font-bold leading-7">Hasil 2,5 × 3,42 dalam AP adalah ...</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">8,55</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">8,6</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">9</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">8,5</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">8,55</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 8,6 (2 AP).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 2,5 (2 AP) × 3,42 (3 AP) → 2 AP, hasil 8,6.</p>
+      </div>
+      <!-- Soal 5 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="5">
+       <p class="text-sm font-bold text-sky-600">Soal 5</p>
+       <h2 class="mt-2 font-bold leading-7">Bilangan 150,0 memiliki berapa AP?</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">4</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">1</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 150,0 memiliki 4 AP.</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 150,0 memiliki 4 AP (1,5,0,0).</p>
+      </div>
+      <!-- Soal 6 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="6">
+       <p class="text-sm font-bold text-sky-600">Soal 6</p>
+       <h2 class="mt-2 font-bold leading-7">Berapa AP pada 0,000340?</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">1</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 0,000340 memiliki 3 AP (3,4,0).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 0,000340 memiliki 3 AP.</p>
+      </div>
+      <!-- Soal 7 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="7">
+       <p class="text-sm font-bold text-sky-600">Soal 7</p>
+       <h2 class="mt-2 font-bold leading-7">Hasil 5,6 - 2,34 dalam AP adalah ...</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">3,3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3,26</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3,2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3,30</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 3,3 (1 desimal).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 5,6 (1 desimal) - 2,34 (2 desimal) → 1 desimal, hasil 3,3.</p>
+      </div>
+      <!-- Soal 8 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="8">
+       <p class="text-sm font-bold text-sky-600">Soal 8</p>
+       <h2 class="mt-2 font-bold leading-7">Berapa AP pada 0,005070?</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">3</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">4</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">2</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">6</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 0,005070 memiliki 4 AP (5,0,7,0).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 0,005070 memiliki 4 AP.</p>
+      </div>
+      <!-- Soal 9 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="9">
+       <p class="text-sm font-bold text-sky-600">Soal 9</p>
+       <h2 class="mt-2 font-bold leading-7">Hasil 8,4 ÷ 2,05 dalam AP adalah ...</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4,1</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4,10</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">4,1</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4,097</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">4,0</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 4,1 (2 AP).</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 8,4 (2 AP) ÷ 2,05 (3 AP) → 2 AP, hasil 4,1.</p>
+      </div>
+      <!-- Soal 10 -->
+      <div class="quiz-card rounded-2xl bg-white p-6 shadow-sm" data-question="10">
+       <p class="text-sm font-bold text-sky-600">Soal 10</p>
+       <h2 class="mt-2 font-bold leading-7">Notasi ilmiah 0,0000560 adalah ...</h2>
+       <div class="mt-5 grid gap-3" role="group">
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5,60 × 10⁻⁵</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="correct">5,60 × 10⁻⁵</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">5,6 × 10⁻⁵</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">0,56 × 10⁻⁴</button>
+        <button type="button" class="choice focus-ring rounded-xl border-2 px-5 py-4 text-left font-semibold" data-answer="wrong">56 × 10⁻⁶</button>
+       </div>
+       <p class="feedback-correct mt-4 hidden rounded-xl bg-green-100 px-4 py-3 font-semibold text-green-800">✅ Benar! 0,0000560 = 5,60 × 10⁻⁵.</p>
+       <p class="feedback-wrong mt-4 hidden rounded-xl bg-red-100 px-4 py-3 font-semibold text-red-800">❌ Salah. 0,0000560 = 5,60 × 10⁻⁵ (3 AP).</p>
+      </div>
+     </div>
+
+     <!-- Restart Button -->
+     <div class="mt-7 flex justify-center">
+      <button id="restart-quiz-button" type="button" class="rounded-xl border-2 border-sky-200 px-5 py-3 font-bold text-sky-700 transition hover:-translate-y-0.5 hover:bg-sky-50">Ulangi Kuis</button>
+     </div>
+    </div>
+   </section>
+  </main>
+
+  <footer class="mt-10 w-full border-t border-sky-100 bg-white px-5 py-7 text-center text-sm text-slate-500 sm:px-8">
+   <p>© 2025 · Modul Fisika Angka Penting untuk pembelajaran interaktif.</p>
+  </footer>
+
+  <script>
+   document.addEventListener("DOMContentLoaded", function() {
+    lucide.createIcons();
+
+    // Navigasi
+    const pages = {
+      home: document.getElementById("home-page"),
+      material: document.getElementById("material-page"),
+      quiz: document.getElementById("quiz-page")
+    };
+    const navButtons = {
+      home: document.getElementById("nav-home"),
+      material: document.getElementById("nav-material"),
+      quiz: document.getElementById("nav-quiz")
+    };
+
+    function showPage(pageName) {
+      Object.keys(pages).forEach(name => {
+        pages[name].classList.toggle("is-active", name === pageName);
+        navButtons[name].classList.toggle("is-active", name === pageName);
+        navButtons[name].setAttribute("aria-current", name === pageName ? "page" : "false");
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    navButtons.home.addEventListener("click", () => showPage("home"));
+    navButtons.material.addEventListener("click", () => showPage("material"));
+    navButtons.quiz.addEventListener("click", () => showPage("quiz"));
+    document.getElementById("home-material-button").addEventListener("click", () => showPage("material"));
+    document.getElementById("home-quiz-button").addEventListener("click", () => showPage("quiz"));
+
+    // === QUIZ LOGIC (10 soal) ===
+    const cards = document.querySelectorAll('.quiz-card');
+    const scoreValue = document.getElementById('score-value');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
+    let answered = 0;
+    let correct = 0;
+    const answeredSet = new Set();
+
+    function updateScore() {
+      scoreValue.textContent = correct + ' / 10';
+      const pct = (answered / 10) * 100;
+      progressBar.style.width = pct + '%';
+      progressText.textContent = answered + ' dari 10 soal dijawab';
+    }
+
+    cards.forEach(card => {
+      const questionId = card.dataset.question;
+      const choices = card.querySelectorAll('.choice');
+      const feedbackCorrect = card.querySelector('.feedback-correct');
+      const feedbackWrong = card.querySelector('.feedback-wrong');
+
+      choices.forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (answeredSet.has(questionId)) return;
+
+          // Tandai sudah dijawab
+          answeredSet.add(questionId);
+          answered++;
+          const isCorrect = this.dataset.answer === 'correct';
+
+          // Disable semua pilihan
+          choices.forEach(ch => {
+            ch.disabled = true;
+            if (ch.dataset.answer === 'correct') ch.classList.add('is-correct');
+          });
+
+          if (isCorrect) {
+            correct++;
+            feedbackCorrect.classList.remove('hidden');
+          } else {
+            this.classList.add('is-wrong');
+            feedbackWrong.classList.remove('hidden');
+          }
+
+          updateScore();
+        });
+      });
+    });
+
+    // Reset
+    document.getElementById('restart-quiz-button').addEventListener('click', function() {
+      answered = 0;
+      correct = 0;
+      answeredSet.clear();
+
+      cards.forEach(card => {
+        card.querySelectorAll('.choice').forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('is-correct', 'is-wrong');
+        });
+        card.querySelector('.feedback-correct').classList.add('hidden');
+        card.querySelector('.feedback-wrong').classList.add('hidden');
+      });
+
+      updateScore();
+    });
+
+    updateScore();
+   });
+  </script>
+ </body>
+</html>

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendahuluan Fisika - Besaran & Pengukuran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* ===== RESET & ROOT ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #1abc9c;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --gradient-intro: linear-gradient(135deg, #f39c12, #e67e22);
+            --gradient-1: linear-gradient(135deg, #2c3e50, #1a252f);
+        }
+
+        body {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            padding: 40px 30px;
+            margin-bottom: 40px;
+            background: var(--gradient-intro);
+            color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        header .back-link {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            color: #fff;
+            font-size: 1.1rem;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            z-index: 2;
+            backdrop-filter: blur(4px);
+        }
+
+        header .back-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-3px);
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-section {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            padding: 25px 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #f39c12;
+        }
+
+        .intro-section h2 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.8rem;
+        }
+
+        .intro-section h2 i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+
+        .intro-section p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .intro-section .highlight-box {
+            background: #fef9e7;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .intro-section .highlight-box strong {
+            color: #e67e22;
+        }
+
+        /* ===== MATERI GRID ===== */
+        .materi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .materi-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 25px 22px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            border-top: 5px solid #f39c12;
+            transition: all 0.3s ease;
+        }
+
+        .materi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .materi-card .card-icon {
+            font-size: 2.2rem;
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .materi-card h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .materi-card p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .materi-card .sub-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .materi-card .sub-topics span {
+            background: #fef9e7;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #e67e22;
+            border: 1px solid #fdebd0;
+        }
+
+        .materi-card .btn-materi {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 10px 24px;
+            background: var(--gradient-intro);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .materi-card .btn-materi:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.35);
+        }
+
+        /* ===== TABEL BESARAN ===== */
+        .table-section {
+            background: #fff;
+            border-radius: 18px;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+            overflow-x: auto;
+        }
+
+        .table-section h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .table-section h3 i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        table thead {
+            background: var(--gradient-intro);
+            color: #fff;
+        }
+
+        table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table tbody tr:hover {
+            background: #fef9e7;
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-si {
+            background: #2ecc71;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-dimensi {
+            background: #3498db;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* ===== CONTOH SOAL ===== */
+        .contoh-section {
+            background: #fff;
+            border-radius: 18px;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .contoh-section h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .contoh-section h3 i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+
+        .contoh-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f39c12;
+        }
+
+        .contoh-box .soal {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .contoh-box .jawaban {
+            color: #27ae60;
+            margin-top: 8px;
+            padding: 10px 15px;
+            background: #eafaf1;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .contoh-box .jawaban.show {
+            display: block;
+        }
+
+        .btn-jawaban {
+            padding: 6px 18px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 6px;
+        }
+
+        .btn-jawaban:hover {
+            background: #2980b9;
+        }
+
+        /* ===== NAVIGASI LEVEL ===== */
+        .level-nav {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 30px 0 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .level-nav a {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .level-nav a.steady {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .level-nav a.fast {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .level-nav a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
+        }
+
+        .level-nav a i {
+            font-size: 1.2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .materi-container {
+                grid-template-columns: 1fr;
+            }
+            header .back-link {
+                position: relative;
+                top: 0;
+                left: 0;
+                display: inline-block;
+                margin-bottom: 15px;
+                font-size: 0.95rem;
+            }
+            header {
+                padding: 25px 20px;
+            }
+            .intro-section {
+                padding: 20px;
+            }
+            .table-section,
+            .contoh-section {
+                padding: 18px 15px;
+            }
+            table {
+                font-size: 0.8rem;
+            }
+            table th,
+            table td {
+                padding: 8px 10px;
+            }
+            .level-nav a {
+                padding: 10px 22px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .materi-card {
+                padding: 20px 16px;
+            }
+            .level-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .level-nav a {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <header>
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Portal</a>
+            <h1><i class="fas fa-ruler-combined"></i> Pendahuluan Fisika</h1>
+            <p class="subtitle">Besaran, Satuan, dan Pengukuran — Fondasi dasar dalam mempelajari fisika</p>
+        </header>
+
+        <!-- ===== INTRO ===== -->
+        <div class="intro-section">
+            <h2><i class="fas fa-book-open"></i> Apa itu Besaran dan Pengukuran?</h2>
+            <p>
+                Dalam fisika, <strong>besaran</strong> adalah segala sesuatu yang dapat diukur dan dinyatakan dengan angka.
+                <strong>Pengukuran</strong> adalah proses membandingkan suatu besaran dengan besaran sejenis yang digunakan sebagai satuan.
+                Pemahaman tentang besaran dan pengukuran sangat penting sebelum mempelajari topik fisika lainnya.
+            </p>
+            <div class="highlight-box">
+                <strong><i class="fas fa-lightbulb"></i> Perlu diingat:</strong> Setiap besaran memiliki <strong>satuan</strong> dan <strong>dimensi</strong>.
+                Satuan adalah pembanding dalam pengukuran, sedangkan dimensi menunjukkan bagaimana suatu besaran tersusun dari besaran pokok.
+            </div>
+        </div>
+
+        <!-- ===== NAVIGASI LEVEL ===== -->
+        <div class="level-nav">
+            <a href="besaran-steady.html" class="steady">
+                <i class="fas fa-walking"></i> Level Steady
+                <span style="font-weight:normal;font-size:0.8rem;opacity:0.85;">(Bertahap &amp; Detail)</span>
+            </a>
+            <a href="besaran-fast.html" class="fast">
+                <i class="fas fa-running"></i> Level Fast
+                <span style="font-weight:normal;font-size:0.8rem;opacity:0.85;">(Cepat &amp; Intensif)</span>
+            </a>
+        </div>
+
+        <!-- ===== MATERI ===== -->
+        <div class="materi-container">
+            <!-- Besaran Pokok -->
+            <div class="materi-card">
+                <div class="card-icon"><i class="fas fa-ruler"></i></div>
+                <h3>Besaran Pokok</h3>
+                <p>
+                    Besaran yang satuannya didefinisikan secara bebas dan tidak bergantung pada besaran lain.
+                    Terdapat 7 besaran pokok dalam Sistem Internasional (SI).
+                </p>
+                <div class="sub-topics">
+                    <span>Panjang</span>
+                    <span>Massa</span>
+                    <span>Waktu</span>
+                    <span>Arus Listrik</span>
+                    <span>Suhu</span>
+                    <span>Jumlah Zat</span>
+                    <span>Intensitas Cahaya</span>
+                </div>
+                <a href="#besaran-pokok" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+            </div>
+
+            <!-- Besaran Turunan -->
+            <div class="materi-card">
+                <div class="card-icon"><i class="fas fa-cubes"></i></div>
+                <h3>Besaran Turunan</h3>
+                <p>
+                    Besaran yang diturunkan dari besaran pokok melalui operasi matematika.
+                    Contoh: kecepatan, percepatan, gaya, energi, tekanan, dan lain-lain.
+                </p>
+                <div class="sub-topics">
+                    <span>Kecepatan</span>
+                    <span>Percepatan</span>
+                    <span>Gaya</span>
+                    <span>Energi</span>
+                    <span>Tekanan</span>
+                    <span>Daya</span>
+                </div>
+                <a href="#besaran-turunan" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+            </div>
+
+            <!-- Konversi Satuan -->
+            <div class="materi-card">
+                <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+                <h3>Konversi Satuan</h3>
+                <p>
+                    Mengubah nilai suatu besaran dari satu satuan ke satuan lain tanpa mengubah nilai besaran tersebut.
+                    Penting untuk memahami awalan-awalan dalam SI.
+                </p>
+                <div class="sub-topics">
+                    <span>km → m</span>
+                    <span>kg → g</span>
+                    <span>jam → detik</span>
+                    <span>Liter → m³</span>
+                    <span>°C → K</span>
+                </div>
+                <a href="#konversi" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+            </div>
+
+            <!-- Angka Penting -->
+            <div class="materi-card">
+                <div class="card-icon"><i class="fas fa-calculator"></i></div>
+                <h3>Angka Penting</h3>
+                <p>
+                    Aturan dalam penulisan hasil pengukuran yang menunjukkan ketelitian.
+                    Semua angka yang diperoleh dari hasil pengukuran disebut angka penting.
+                </p>
+                <div class="sub-topics">
+                    <span>Aturan AP</span>
+                    <span>Operasi AP</span>
+                    <span>Pembulatan</span>
+                    <span>Notasi Ilmiah</span>
+                </div>
+                <a href="#angka-penting" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+            </div>
+
+            <!-- Pengukuran -->
+            <div class="materi-card">
+                <div class="card-icon"><i class="fas fa-clock"></i></div>
+                <h3>Pengukuran &amp; Ketidakpastian</h3>
+                <p>
+                    Pengukuran selalu memiliki ketidakpastian karena keterbatasan alat dan kemampuan pengamat.
+                    Ketidakpastian dinyatakan dalam bentuk kesalahan mutlak dan relatif.
+                </p>
+                <div class="sub-topics">
+                    <span>Ketelitian</span>
+                    <span>Kecermatan</span>
+                    <span>Kesalahan Mutlak</span>
+                    <span>Kesalahan Relatif</span>
+                </div>
+                <a href="#pengukuran" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+            </div>
+        </div>
+
+        <!-- ===== TABEL BESARAN POKOK ===== -->
+        <div class="table-section" id="besaran-pokok">
+            <h3><i class="fas fa-table"></i> Tabel Besaran Pokok SI</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Besaran Pokok</th>
+                        <th>Satuan SI</th>
+                        <th>Lambang</th>
+                        <th>Dimensi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Panjang</td>
+                        <td><span class="badge-si">meter</span></td>
+                        <td>m</td>
+                        <td><span class="badge-dimensi">[L]</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Massa</td>
+                        <td><span class="badge-si">kilogram</span></td>
+                        <td>kg</td>
+                        <td><span class="badge-dimensi">[M]</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Waktu</td>
+                        <td><span class="badge-si">sekon</span></td>
+                        <td>s</td>
+                        <td><span class="badge-dimensi">[T]</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Arus Listrik</td>
+                        <td><span class="badge-si">ampere</span></td>
+                        <td>A</td>
+                        <td><span class="badge-dimensi">[I]</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Suhu Termodinamika</td>
+                        <td><span class="badge-si">kelvin</span></td>
+                        <td>K</td>
+                        <td><span class="badge-dimensi">[θ]</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Jumlah Zat</td>
+                        <td><span class="badge-si">mol</span></td>
+                        <td>mol</td>
+                        <td><span class="badge-dimensi">[N]</span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Intensitas Cahaya</td>
+                        <td><span class="badge-si">kandela</span></td>
+                        <td>cd</td>
+                        <td><span class="badge-dimensi">[J]</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== BESARAN TURUNAN ===== -->
+        <div class="table-section" id="besaran-turunan">
+            <h3><i class="fas fa-table"></i> Contoh Besaran Turunan</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Besaran Turunan</th>
+                        <th>Rumus</th>
+                        <th>Satuan SI</th>
+                        <th>Dimensi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kecepatan</td>
+                        <td>v = s / t</td>
+                        <td>m/s</td>
+                        <td>[L][T]⁻¹</td>
+                    </tr>
+                    <tr>
+                        <td>Percepatan</td>
+                        <td>a = Δv / t</td>
+                        <td>m/s²</td>
+                        <td>[L][T]⁻²</td>
+                    </tr>
+                    <tr>
+                        <td>Gaya</td>
+                        <td>F = m × a</td>
+                        <td>kg·m/s² (N)</td>
+                        <td>[M][L][T]⁻²</td>
+                    </tr>
+                    <tr>
+                        <td>Energi</td>
+                        <td>E = F × s</td>
+                        <td>kg·m²/s² (J)</td>
+                        <td>[M][L]²[T]⁻²</td>
+                    </tr>
+                    <tr>
+                        <td>Tekanan</td>
+                        <td>P = F / A</td>
+                        <td>kg/(m·s²) (Pa)</td>
+                        <td>[M][L]⁻¹[T]⁻²</td>
+                    </tr>
+                    <tr>
+                        <td>Daya</td>
+                        <td>P = E / t</td>
+                        <td>kg·m²/s³ (W)</td>
+                        <td>[M][L]²[T]⁻³</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== KONVERSI SATUAN ===== -->
+        <div class="table-section" id="konversi">
+            <h3><i class="fas fa-table"></i> Awalan Satuan SI &amp; Konversi</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Awalan</th>
+                        <th>Simbol</th>
+                        <th>Faktor</th>
+                        <th>Contoh Konversi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>giga</td>
+                        <td>G</td>
+                        <td>10⁹</td>
+                        <td>1 Gm = 10⁹ m</td>
+                    </tr>
+                    <tr>
+                        <td>mega</td>
+                        <td>M</td>
+                        <td>10⁶</td>
+                        <td>1 Mm = 10⁶ m</td>
+                    </tr>
+                    <tr>
+                        <td>kilo</td>
+                        <td>k</td>
+                        <td>10³</td>
+                        <td>1 km = 10³ m</td>
+                    </tr>
+                    <tr>
+                        <td>hecto</td>
+                        <td>h</td>
+                        <td>10²</td>
+                        <td>1 hm = 10² m</td>
+                    </tr>
+                    <tr>
+                        <td>deka</td>
+                        <td>da</td>
+                        <td>10¹</td>
+                        <td>1 dam = 10 m</td>
+                    </tr>
+                    <tr>
+                        <td>desi</td>
+                        <td>d</td>
+                        <td>10⁻¹</td>
+                        <td>1 dm = 10⁻¹ m</td>
+                    </tr>
+                    <tr>
+                        <td>centi</td>
+                        <td>c</td>
+                        <td>10⁻²</td>
+                        <td>1 cm = 10⁻² m</td>
+                    </tr>
+                    <tr>
+                        <td>milli</td>
+                        <td>m</td>
+                        <td>10⁻³</td>
+                        <td>1 mm = 10⁻³ m</td>
+                    </tr>
+                    <tr>
+                        <td>mikro</td>
+                        <td>µ</td>
+                        <td>10⁻⁶</td>
+                        <td>1 µm = 10⁻⁶ m</td>
+                    </tr>
+                    <tr>
+                        <td>nano</td>
+                        <td>n</td>
+                        <td>10⁻⁹</td>
+                        <td>1 nm = 10⁻⁹ m</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ANGKA PENTING ===== -->
+        <div class="contoh-section" id="angka-penting">
+            <h3><i class="fas fa-calculator"></i> Angka Penting</h3>
+            <div class="contoh-box">
+                <div class="soal">Aturan Angka Penting:</div>
+                <ul style="list-style: none; padding-left: 0; margin: 8px 0;">
+                    <li style="padding: 4px 0;">✓ Semua angka bukan nol adalah angka penting.</li>
+                    <li style="padding: 4px 0;">✓ Angka nol di antara angka bukan nol adalah angka penting.</li>
+                    <li style="padding: 4px 0;">✓ Angka nol di sebelah kanan angka bukan nol (di belakang koma) adalah angka penting.</li>
+                    <li style="padding: 4px 0;">✓ Angka nol di sebelah kiri angka bukan nol (di depan koma) bukan angka penting.</li>
+                    <li style="padding: 4px 0;">✓ Angka nol di sebelah kanan angka bukan nol (tanpa koma) bisa penting atau tidak.</li>
+                </ul>
+            </div>
+            <div class="contoh-box">
+                <div class="soal">📝 Contoh 1: Tentukan jumlah angka penting dari 0,00250</div>
+                <button class="btn-jawaban" onclick="toggleJawaban(this)">Lihat Jawaban</button>
+                <div class="jawaban">
+                    <strong>Jawaban:</strong> 3 angka penting (2, 5, dan 0 di belakang 5).<br>
+                    Angka nol di depan 2 bukan angka penting.
+                </div>
+            </div>
+            <div class="contoh-box">
+                <div class="soal">📝 Contoh 2: Tentukan jumlah angka penting dari 3050</div>
+                <button class="btn-jawaban" onclick="toggleJawaban(this)">Lihat Jawaban</button>
+                <div class="jawaban">
+                    <strong>Jawaban:</strong> 3 angka penting (3, 0, 5) jika tanpa tanda desimal.<br>
+                    Jika ditulis 3050, maka angka nol di akhir tidak pasti. Jika ditulis 3050,0 maka 5 angka penting.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PENGUKURAN & KETIDAKPASTIAN ===== -->
+        <div class="contoh-section" id="pengukuran">
+            <h3><i class="fas fa-clock"></i> Pengukuran &amp; Ketidakpastian</h3>
+            <div class="contoh-box">
+                <div class="soal">📏 Ketidakpastian Pengukuran</div>
+                <p style="margin-top: 8px;">
+                    Ketidakpastian mutlak (Δx) adalah setengah dari skala terkecil alat ukur.<br>
+                    Ketidakpastian relatif = (Δx / x) × 100%.
+                </p>
+            </div>
+            <div class="contoh-box">
+                <div class="soal">📝 Contoh: Sebuah panjang diukur dengan mistar (skala terkecil 1 mm) menghasilkan 12,5 cm. Tentukan ketidakpastian mutlak dan relatifnya!</div>
+                <button class="btn-jawaban" onclick="toggleJawaban(this)">Lihat Jawaban</button>
+                <div class="jawaban">
+                    <strong>Jawaban:</strong><br>
+                    Skala terkecil = 1 mm = 0,1 cm<br>
+                    Ketidakpastian mutlak (Δx) = ½ × 0,1 cm = 0,05 cm<br>
+                    Hasil = (12,50 ± 0,05) cm<br>
+                    Ketidakpastian relatif = (0,05 / 12,50) × 100% = 0,4%
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <div class="footer-logo"><i class="fas fa-ruler-combined"></i></div>
+            <h3>Pendahuluan Fisika - Besaran &amp; Pengukuran</h3>
+            <p class="footer-text">© 2023 - Fondasi dasar fisika untuk pemahaman yang lebih baik</p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== TOGGLE JAWABAN =====
+        function toggleJawaban(btn) {
+            const jawaban = btn.nextElementSibling;
+            if (jawaban.classList.contains('show')) {
+                jawaban.classList.remove('show');
+                btn.textContent = 'Lihat Jawaban';
+            } else {
+                jawaban.classList.add('show');
+                btn.textContent = 'Sembunyikan Jawaban';
+            }
+        }
+
+        // ===== ANIMASI LOAD =====
+        window.addEventListener('load', function() {
+            const header = document.querySelector('header');
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                header.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }, 200);
+
+            const cards = document.querySelectorAll('.materi-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 + 150 * index);
+            });
+
+            const sections = document.querySelectorAll('.table-section, .contoh-section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                setTimeout(() => {
+                    section.style.transition = 'opacity 0.7s ease';
+                    section.style.opacity = '1';
+                }, 400 + 150 * index);
+            });
+
+            const intro = document.querySelector('.intro-section');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.transition = 'opacity 0.8s ease';
+                intro.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
