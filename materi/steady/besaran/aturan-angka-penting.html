@@ -97,7 +97,6 @@
     @media (max-width: 640px) {
       .nav-label { display: none; }
     }
-    /* Tombol portal yang lebih jelas */
     .portal-button {
       background: linear-gradient(135deg, #075985, #0a6b9e);
       color: white;
@@ -119,10 +118,6 @@
       box-shadow: 0 6px 16px rgba(7, 89, 133, 0.4);
       background: linear-gradient(135deg, #0a6b9e, #075985);
     }
-    .portal-button i {
-      font-size: 1.1rem;
-    }
-    /* slide quiz */
     .slide-container {
       position: relative;
       min-height: 400px;
@@ -177,6 +172,19 @@
       opacity: 0.4;
       cursor: not-allowed;
     }
+    /* Simulator styles */
+    .simulator-panel {
+      background: linear-gradient(135deg, #075985, #0a6b9e);
+    }
+    .simulator-panel .result-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    @media (min-width: 640px) {
+      .simulator-panel .result-number {
+        font-size: 3.5rem;
+      }
+    }
   </style>
  </head>
  <body class="w-full min-h-screen grid-paper">
@@ -192,14 +200,7 @@
      </div>
     </div>
     <div class="flex items-center gap-2 sm:gap-4">
-     <!-- 
-        ============================================================
-        LOKASI INPUT LINK WEB UTAMA:
-        Ganti href="#!" dengan URL portal fisika utama Anda.
-        Contoh: href="https://portal-fisika.website.com"
-        ============================================================
-     -->
-     <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/besaran-steady.html" id="portal-main-btn" class="portal-button focus-ring">
+     <a href="#!" id="portal-main-btn" class="portal-button focus-ring">
       <i data-lucide="home" class="h-4 w-4"></i>
       <span class="hidden sm:inline">Kembali ke Portal</span>
       <span class="sm:hidden">Portal</span>
@@ -242,7 +243,7 @@
     </section>
    </section>
 
-   <!-- MATERI -->
+   <!-- ========== MATERI ========== -->
    <section id="material-page" class="app-page" aria-labelledby="material-title">
     <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
      <div class="grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
@@ -253,6 +254,8 @@
       </div>
       <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&h=400&fit=crop&crop=center" loading="lazy" class="reveal stagger-1 h-64 w-full rounded-[2rem] object-cover shadow-lg sm:h-72" alt="Jangka sorong">
      </div>
+     
+     <!-- ATURAN -->
      <section class="mt-12" aria-labelledby="rules-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Panduan</p>
       <h2 id="rules-heading" class="display-font mt-2 text-3xl font-bold">4 Aturan Angka Penting</h2>
@@ -263,6 +266,8 @@
        <article class="rule-card rule-purple rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-purple-600">Aturan 4</p><h3 class="mb-2 font-bold text-slate-800">Nol di belakang desimal adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 2,500 memiliki 4 angka penting. 300,0 memiliki 4 angka penting.</p></article>
       </div>
      </section>
+
+     <!-- OPERASI -->
      <section class="mt-14" aria-labelledby="operations-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Operasi hitung</p>
       <h2 id="operations-heading" class="display-font mt-2 text-3xl font-bold">Aturan Penjumlahan &amp; Perkalian</h2>
@@ -272,31 +277,98 @@
        <article class="operation-card teal rounded-2xl bg-white p-6 shadow-sm"><p class="text-sm font-bold uppercase tracking-[.12em] text-teal-600">🔢 Pembulatan</p><h3 class="mt-3 font-bold text-slate-800">Perhatikan angka di belakang</h3><p class="mt-3 leading-6 text-slate-600">Jika angka berikutnya ≥5, bulatkan ke atas. Contoh: 2,345 → 2,35 (2 desimal)</p></article>
       </div>
      </section>
-    </div>
-    <!-- Simulator -->
-    <section class="w-full bg-white py-12">
-     <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[1.15fr_.85fr]">
-      <div>
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Simulasi</p>
-       <h2 class="display-font mt-2 text-3xl font-bold">Hitung dengan Angka Penting</h2>
-       <form id="operation-form" class="mt-6 grid gap-4 sm:grid-cols-2" novalidate>
-        <div><label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label><input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="12,34"></div>
-        <div><label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label><input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,0560"></div>
-        <div class="sm:col-span-2"><label for="operation-select" class="mb-2 block font-semibold text-slate-700">Operasi</label><select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900"><option value="add">Penjumlahan (+)</option><option value="subtract">Pengurangan (−)</option><option value="multiply">Perkalian (×)</option><option value="divide">Pembagian (÷)</option></select></div>
-        <button type="submit" class="sm:col-span-2 rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-lg transition hover:brightness-110">Hitung</button>
-       </form>
+
+     <!-- ========== SIMULASI 1: OPERASI ANGKA PENTING ========== -->
+     <section class="mt-14 w-full bg-white py-12 rounded-2xl shadow-sm">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[1.15fr_.85fr]">
+       <div>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🧪 Simulasi</p>
+        <h2 class="display-font mt-2 text-3xl font-bold">Hitung dengan Angka Penting</h2>
+        <p class="mt-3 max-w-2xl leading-7 text-slate-600">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting.</p>
+        <form id="operation-form" class="mt-6 grid gap-4 sm:grid-cols-2" novalidate>
+         <div>
+          <label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label>
+          <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 12,34">
+         </div>
+         <div>
+          <label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label>
+          <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 0,0560">
+         </div>
+         <div class="sm:col-span-2">
+          <label for="operation-select" class="mb-2 block font-semibold text-slate-700">Pilih operasi</label>
+          <select id="operation-select" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900">
+           <option value="add">Penjumlahan (+)</option>
+           <option value="subtract">Pengurangan (−)</option>
+           <option value="multiply">Perkalian (×)</option>
+           <option value="divide">Pembagian (÷)</option>
+          </select>
+         </div>
+         <button type="submit" class="sm:col-span-2 rounded-xl bg-sky-700 px-5 py-3 font-bold text-white shadow-lg transition hover:brightness-110">Hitung</button>
+        </form>
+       </div>
+       <aside class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Hasil Perhitungan</p>
+        <p id="operation-raw-result" class="mt-4 text-sm font-semibold text-sky-200" aria-live="polite">Hasil sebelum pembulatan: -</p>
+        <p id="operation-final-result" class="result-number mt-2 font-bold" aria-live="polite">-</p>
+        <p id="operation-explanation" class="mt-4 leading-7 text-sky-100" aria-live="polite">Masukkan bilangan dan pilih operasi.</p>
+       </aside>
       </div>
-      <aside class="rounded-2xl bg-sky-700 p-6 shadow-lg">
-       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Hasil</p>
-       <p id="operation-raw-result" class="mt-4 text-sm font-semibold text-sky-200" aria-live="polite">Hasil sebelum pembulatan: -</p>
-       <p id="operation-final-result" class="display-font mt-3 text-4xl font-bold text-white" aria-live="polite">-</p>
-       <p id="operation-explanation" class="mt-5 leading-7 text-sky-100" aria-live="polite">Masukkan bilangan dan pilih operasi.</p>
-      </aside>
-     </div>
-    </section>
+     </section>
+
+     <!-- ========== SIMULASI 2: NOTASI ILMIAH ========== -->
+     <section class="mt-8 w-full bg-sky-50 py-12 rounded-2xl shadow-sm">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-[.95fr_1.05fr] lg:items-start">
+       <div>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🔬 Notasi Ilmiah</p>
+        <h2 class="display-font mt-2 text-3xl font-bold">Ubah ke Bentuk Baku</h2>
+        <p class="mt-3 max-w-2xl leading-7 text-slate-600">Notasi ilmiah menuliskan bilangan sebagai a × 10^n dengan 1 ≤ a < 10. Sangat berguna untuk bilangan sangat besar/kecil.</p>
+        <div class="mt-6 rounded-2xl bg-white p-5 shadow-sm">
+         <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh</p>
+         <p class="display-font mt-3 text-2xl font-bold text-slate-800">0,00450 = 4,50 × 10⁻³</p>
+         <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif.</p>
+        </div>
+       </div>
+       <div class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-100">Konverter</p>
+        <form id="scientific-form" class="mt-5 flex flex-col gap-3" novalidate>
+         <label for="scientific-number" class="font-semibold text-sky-100">Masukkan bilangan</label>
+         <input id="scientific-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 125000">
+         <button type="submit" class="rounded-xl bg-white px-5 py-3 font-bold text-sky-700 transition hover:brightness-95">Ubah ke Notasi Ilmiah</button>
+        </form>
+        <div class="mt-5 rounded-xl bg-sky-800 p-4">
+         <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-200">Hasil</p>
+         <p id="scientific-result" class="display-font mt-2 text-2xl font-bold text-white" aria-live="polite">-</p>
+         <p id="scientific-explanation" class="mt-2 leading-6 text-sky-100" aria-live="polite">Masukkan bilangan untuk dikonversi.</p>
+        </div>
+       </div>
+      </div>
+     </section>
+
+     <!-- ========== SIMULASI 3: HITUNG ANGKA PENTING ========== -->
+     <section class="mt-8 w-full bg-white py-12 rounded-2xl shadow-sm">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 sm:px-8 lg:grid-cols-2 lg:items-center">
+       <div>
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">🔢 Alat</p>
+        <h2 class="display-font mt-2 text-3xl font-bold">Hitung Angka Penting</h2>
+        <p class="mt-3 max-w-lg leading-7 text-slate-600">Masukkan bilangan, dapatkan jumlah angka pentingnya secara instan.</p>
+        <form id="sig-form" class="mt-6 flex flex-col gap-3 sm:flex-row" novalidate>
+         <label for="number-input" class="sr-only">Masukkan bilangan</label>
+         <input id="number-input" class="focus-ring min-w-0 flex-1 rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 3,20e2">
+         <button type="submit" class="rounded-xl bg-sky-700 px-5 py-3 font-bold text-white transition hover:brightness-110">Hitung</button>
+        </form>
+        <div id="calc-result" class="mt-4 min-h-[3rem] rounded-xl bg-sky-50 px-4 py-3 font-semibold text-sky-800" aria-live="polite">Masukkan bilangan dan tekan Hitung.</div>
+       </div>
+       <aside class="rounded-2xl bg-sky-50 p-6">
+        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Contoh</p>
+        <p class="display-font mt-3 text-3xl font-bold text-slate-800">0,00450</p>
+        <p class="mt-4 leading-7 text-slate-600">Angka nol di depan (00) bukan penting. Angka 4,5,0 adalah penting → <span class="font-bold">3 angka penting</span>.</p>
+       </aside>
+      </div>
+     </section>
+    </div>
    </section>
 
-   <!-- ========== QUIZ SLIDE 10 SOAL ========== -->
+   <!-- ========== QUIZ ========== -->
    <section id="quiz-page" class="app-page" aria-labelledby="quiz-page-title">
     <div class="mx-auto max-w-4xl px-5 py-8 sm:px-8 lg:py-12">
      <div class="reveal text-center">
@@ -305,7 +377,6 @@
       <p class="mx-auto mt-2 max-w-2xl leading-7 text-slate-600">10 soal dengan 5 pilihan. Navigasi slide, lihat progres dan skor akhir.</p>
      </div>
 
-     <!-- Score & progress -->
      <div class="mt-6 flex flex-col gap-3 rounded-2xl bg-sky-50 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
        <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Skor</p>
@@ -319,12 +390,10 @@
       </div>
      </div>
 
-     <!-- Slide container -->
      <div class="slide-container mt-6">
       <div id="slide-wrapper" class="space-y-0"></div>
      </div>
 
-     <!-- Navigasi slide & indikator -->
      <div class="mt-8 flex flex-col items-center gap-4">
       <div class="slide-indicator" id="dot-indicator"></div>
       <div class="flex items-center gap-3">
@@ -376,9 +445,6 @@
       document.getElementById("home-material-button").addEventListener("click", () => showPage("material"));
       document.getElementById("home-quiz-button").addEventListener("click", () => showPage("quiz"));
 
-      // ---------- TOMBOL PORTAL UTAMA ----------
-      // Tidak perlu event listener tambahan karena menggunakan <a href> langsung
-
       // ---------- UTILITY ----------
       function normaliseNumber(value) {
         const raw = value.trim().replace(",", ".");
@@ -418,7 +484,7 @@
         }).format(value);
       }
 
-      // ---------- OPERASI ----------
+      // ========== SIMULASI 1: OPERASI ==========
       document.getElementById("operation-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const firstRaw = normaliseNumber(document.getElementById("first-number").value);
@@ -427,9 +493,10 @@
         const rawResult = document.getElementById("operation-raw-result");
         const finalResult = document.getElementById("operation-final-result");
         const explanation = document.getElementById("operation-explanation");
+
         if (!firstRaw || !secondRaw) {
           rawResult.textContent = "";
-          finalResult.textContent = "Input belum valid";
+          finalResult.textContent = "⚠️ Input tidak valid";
           explanation.textContent = "Gunakan bilangan yang valid, misalnya 12,34 atau 0,0560.";
           return;
         }
@@ -437,10 +504,11 @@
         const second = Number(secondRaw);
         if (operation === "divide" && second === 0) {
           rawResult.textContent = "";
-          finalResult.textContent = "Tidak dapat dibagi nol";
+          finalResult.textContent = "🚫 Tidak dapat dibagi nol";
           explanation.textContent = "Ubah bilangan kedua dengan nilai selain nol.";
           return;
         }
+
         let result, rounded, explanationText, decimalResult = 0;
         if (operation === "add") {
           result = first + second;
@@ -463,9 +531,41 @@
           rounded = roundToSignificant(result, figures);
           explanationText = "Pembagian mengikuti jumlah angka penting paling sedikit, yaitu " + figures + " angka penting.";
         }
+
         rawResult.textContent = "Hasil sebelum pembulatan: " + formatIndonesian(result, 0);
-        finalResult.textContent = "Hasil akhir: " + formatIndonesian(rounded, decimalResult);
+        finalResult.textContent = formatIndonesian(rounded, decimalResult);
         explanation.textContent = explanationText;
+      });
+
+      // ========== SIMULASI 2: NOTASI ILMIAH ==========
+      document.getElementById("scientific-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = normaliseNumber(document.getElementById("scientific-number").value);
+        const result = document.getElementById("scientific-result");
+        const explanation = document.getElementById("scientific-explanation");
+        if (!raw || Number(raw) === 0) {
+          result.textContent = "⚠️ Input tidak valid";
+          explanation.textContent = "Masukkan bilangan selain nol, misalnya 0,00450 atau 125000.";
+          return;
+        }
+        const value = Number(raw);
+        const exponent = Math.floor(Math.log10(Math.abs(value)));
+        const coefficient = value / Math.pow(10, exponent);
+        result.textContent = coefficient.toLocaleString("id-ID", { maximumFractionDigits: 12 }) + " × 10^" + exponent;
+        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan. Banyak pergeseran menjadi pangkat 10.";
+      });
+
+      // ========== SIMULASI 3: HITUNG ANGKA PENTING ==========
+      document.getElementById("sig-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const raw = normaliseNumber(document.getElementById("number-input").value);
+        const result = document.getElementById("calc-result");
+        if (!raw) {
+          result.textContent = "⚠️ Masukkan bilangan yang valid, misalnya 0,00450 atau 3,20e2.";
+          return;
+        }
+        const count = significantFigures(raw);
+        result.textContent = raw.replace(".", ",") + " memiliki " + count + " angka penting.";
       });
 
       // ========== KUIS SLIDE ==========
