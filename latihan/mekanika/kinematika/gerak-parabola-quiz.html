@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fisika Gerak Parabola · 10 Soal</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f5faff;
+    }
+    .page {
+      display: none;
+      animation: fadeUp 0.3s ease both;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(14px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .nav-link {
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      color: #1e3a5f;
+      font-weight: 600;
+    }
+    .nav-link:hover { color: #0b4f6c; }
+    .nav-link.active {
+      border-bottom-color: #f97316;
+      color: #0b3b4f;
+    }
+    .choice-btn {
+      transition: all 0.15s;
+      background: white;
+      border: 2px solid #dce7f5;
+    }
+    .choice-btn:hover:not(:disabled) {
+      border-color: #0b6b8a;
+      background: #e9f4fc;
+      transform: scale(1.01);
+    }
+    .choice-btn.correct {
+      border-color: #15803d;
+      background: #dcfce7;
+    }
+    .choice-btn.wrong {
+      border-color: #b91c1c;
+      background: #fee2e2;
+    }
+    .choice-btn:disabled { opacity: 0.8; cursor: not-allowed; }
+    .badge-score {
+      background: #0b3b4f;
+      color: white;
+    }
+    .card-shadow {
+      box-shadow: 0 10px 25px -8px rgba(0, 20, 30, 0.08);
+    }
+    .footer-text {
+      color: #3f5a73;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER dengan navigasi -->
+  <header class="sticky top-0 z-30 w-full bg-white/95 backdrop-blur border-b border-sky-100/70 shadow-sm">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-sky-700 p-2 rounded-xl text-white">
+          <i data-lucide="rocket" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-sky-700">Portal Fisika</p>
+          <p class="font-bold text-slate-800 leading-4">Gerak Parabola</p>
+        </div>
+      </div>
+      <nav class="flex gap-3 sm:gap-5 text-sm">
+        <button id="navHome" class="nav-link active flex items-center gap-1.5 px-2 py-1.5">
+          <i data-lucide="house" class="w-4 h-4"></i> <span class="hidden sm:inline">Beranda</span>
+        </button>
+        <button id="navQuiz" class="nav-link flex items-center gap-1.5 px-2 py-1.5">
+          <i data-lucide="file-question" class="w-4 h-4"></i> <span class="hidden sm:inline">Latihan</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-5 sm:px-8 py-8">
+
+    <!-- ========== HALAMAN HOME ========== -->
+    <section id="pageHome" class="page active">
+      <div class="bg-gradient-to-br from-sky-50/80 to-white rounded-3xl p-8 card-shadow border border-sky-100/50">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="flex-1">
+            <span class="inline-block bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full tracking-wide">📐 FISIKA</span>
+            <h1 class="text-3xl md:text-4xl font-extrabold mt-3 text-slate-800 leading-tight">Gerak Parabola<br><span class="text-sky-700">10 Soal &amp; Pembahasan</span></h1>
+            <p class="text-slate-600 mt-4 max-w-xl leading-relaxed">
+              Pelajari konsep gerak peluru, kecepatan awal, sudut elevasi, waktu terbang, dan jarak maksimum. 
+              Kerjakan 10 soal pilihan ganda dan uji pemahamanmu.
+            </p>
+            <button id="startQuizBtn" class="mt-6 bg-sky-700 hover:bg-sky-800 text-white font-bold py-3 px-8 rounded-2xl shadow-md transition flex items-center gap-2">
+              <i data-lucide="play" class="w-5 h-5"></i> Mulai Latihan
+            </button>
+          </div>
+          <div class="flex-1 flex justify-center">
+            <div class="w-56 h-56 bg-sky-100 rounded-full flex items-center justify-center relative">
+              <i data-lucide="target" class="w-28 h-28 text-sky-600 opacity-80"></i>
+              <span class="absolute bottom-4 right-4 bg-sky-800 text-white text-sm font-bold px-4 py-1.5 rounded-full">10 soal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview ringkas -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 border-t border-sky-100 pt-7">
+          <div class="flex items-center gap-3"><i data-lucide="clock" class="w-5 h-5 text-sky-600"></i><span class="text-sm text-slate-700">Waktu tempuh &amp; titik tertinggi</span></div>
+          <div class="flex items-center gap-3"><i data-lucide="ruler" class="w-5 h-5 text-sky-600"></i><span class="text-sm text-slate-700">Jarak horizontal &amp; kecepatan</span></div>
+          <div class="flex items-center gap-3"><i data-lucide="calculator" class="w-5 h-5 text-sky-600"></i><span class="text-sm text-slate-700">Rumus dasar &amp; aplikasi</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== HALAMAN KUIS ========== -->
+    <section id="pageQuiz" class="page">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-5 rounded-2xl card-shadow border border-sky-100/60">
+        <div>
+          <p class="text-sm font-bold text-sky-700 uppercase tracking-wider">Skor</p>
+          <p id="scoreDisplay" class="text-2xl font-extrabold text-slate-800">0 / 10</p>
+        </div>
+        <div class="flex-1 max-w-xs">
+          <div class="h-3 w-full bg-sky-100 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full bg-sky-700 transition-all duration-300" style="width:0%"></div>
+          </div>
+          <p id="progressText" class="text-xs font-semibold text-slate-500 mt-1 text-right">0 dari 10 soal</p>
+        </div>
+        <button id="resetQuizBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-5 py-2 rounded-xl transition text-sm flex items-center gap-1.5">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Ulangi
+        </button>
+      </div>
+
+      <!-- container soal (diisi JS) -->
+      <div id="quizContainer" class="mt-6 space-y-5"></div>
+
+      <!-- tombol kembali ke home -->
+      <div class="mt-8 flex justify-center">
+        <button id="backHomeBtn" class="inline-flex items-center gap-2 text-sm font-medium text-sky-700 hover:text-sky-900 border border-sky-200 px-6 py-2.5 rounded-full transition">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer kecil -->
+  <footer class="max-w-6xl mx-auto px-5 sm:px-8 py-6 border-t border-sky-100/70 mt-8 text-center">
+    <p class="text-sm footer-text">Portal Fisika · Gerak Parabola · 10 soal pilihan ganda</p>
+  </footer>
+
+  <script>
+    // ========== DATA SOAL ==========
+    const questions = [
+      {
+        id: 1,
+        text: 'Sebuah peluru ditembakkan dengan kecepatan awal 50 m/s dan sudut elevasi 30° (sin 30° = 0,5). Berapa waktu yang dibutuhkan untuk mencapai titik tertinggi? (g = 10 m/s²)',
+        options: ['1,5 s', '2,0 s', '2,5 s', '3,0 s', '4,0 s'],
+        correct: 2, // index 2 => 2,5 s
+        explanation: 't<sub>puncak</sub> = (v₀ sin θ)/g = (50·0,5)/10 = 2,5 s'
+      },
+      {
+        id: 2,
+        text: 'Bola dilempar dengan kecepatan 20 m/s membentuk sudut 60° terhadap horizontal. (sin 60°=0,87, cos 60°=0,5). Tinggi maksimum yang dicapai bola adalah … (g=10 m/s²)',
+        options: ['10,2 m', '15,1 m', '18,3 m', '20,4 m', '24,5 m'],
+        correct: 1, // 15,1 m
+        explanation: 'h<sub>max</sub> = (v₀² sin²θ)/(2g) = (400·0,7569)/20 ≈ 15,1 m'
+      },
+      {
+        id: 3,
+        text: 'Sebuah proyektil ditembakkan dengan kecepatan 40 m/s sudut 45°. Jarak horizontal maksimum (R) adalah … (g=10 m/s²)',
+        options: ['80 m', '120 m', '160 m', '200 m', '240 m'],
+        correct: 2, // 160 m
+        explanation: 'R = v₀² sin 2θ / g = 1600·1 /10 = 160 m'
+      },
+      {
+        id: 4,
+        text: 'Waktu terbang total sebuah peluru yang ditembakkan dengan kecepatan awal 30 m/s sudut 37° (sin 37°=0,6) adalah … (g=10 m/s²)',
+        options: ['2,4 s', '3,0 s', '3,6 s', '4,2 s', '5,0 s'],
+        correct: 2, // 3,6 s
+        explanation: 't<sub>total</sub> = 2 v₀ sinθ / g = 2·30·0,6 /10 = 3,6 s'
+      },
+      {
+        id: 5,
+        text: 'Pada gerak parabola, komponen kecepatan horizontal (vₓ) bersifat …',
+        options: ['berubah secara linear', 'tetap (konstan)', 'berkurang karena gravitasi', 'meningkat', 'nol di puncak'],
+        correct: 1, // tetap
+        explanation: 'Karena tidak ada percepatan horizontal (abaikan gesekan), vₓ = v₀ cosθ konstan.'
+      },
+      {
+        id: 6,
+        text: 'Sebuah benda dilempar dengan kecepatan 25 m/s sudut 53° (cos 53°=0,6). Komponen kecepatan awal horizontal adalah …',
+        options: ['10 m/s', '12 m/s', '15 m/s', '18 m/s', '20 m/s'],
+        correct: 2, // 15 m/s
+        explanation: 'v₀ₓ = v₀ cosθ = 25·0,6 = 15 m/s'
+      },
+      {
+        id: 7,
+        text: 'Waktu yang diperlukan untuk mencapai titik tertinggi pada gerak parabola disebut …',
+        options: ['waktu tempuh', 'waktu naik', 'waktu turun', 'waktu total', 'waktu puncak'],
+        correct: 4, // waktu puncak
+        explanation: 'Waktu untuk mencapai puncak = t<sub>puncak</sub> = v₀ sinθ / g.'
+      },
+      {
+        id: 8,
+        text: 'Jika sudut elevasi suatu proyektil dinaikkan dari 30° menjadi 60° (dengan v₀ sama), maka jarak maksimum (R) akan …',
+        options: ['turun', 'tetap', 'naik', 'naik dua kali lipat', 'naik 4 kali'],
+        correct: 2, // naik
+        explanation: 'R ∝ sin 2θ; sin 60°=0,866 > sin 30°=0,5 sehingga R naik.'
+      },
+      {
+        id: 9,
+        text: 'Sebuah bola ditendang dengan kecepatan 18 m/s membentuk sudut 30°. Tinggi maksimum yang dicapai adalah … (g=10 m/s², sin30=0,5)',
+        options: ['2,0 m', '3,0 m', '4,0 m', '4,5 m', '5,0 m'],
+        correct: 2, // 4,0 m
+        explanation: 'h = (18²·0,25)/(20) = (324·0,25)/20 = 81/20 = 4,05 ≈ 4,0 m'
+      },
+      {
+        id: 10,
+        text: 'Pada saat di titik tertinggi gerak parabola, kecepatan benda adalah …',
+        options: ['nol', 'sama dengan kecepatan awal', 'hanya komponen horizontal', 'hanya komponen vertikal', 'maksimum'],
+        correct: 2, // hanya komponen horizontal
+        explanation: 'Di puncak, vᵧ = 0, sehingga kecepatan hanya vₓ (horizontal).'
+      }
+    ];
+
+    // ========== RENDER KUIS ==========
+    let answered = new Array(questions.length).fill(false);
+    let selectedIdx = new Array(questions.length).fill(null);
+    let score = 0;
+
+    const quizContainer = document.getElementById('quizContainer');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    function renderQuiz() {
+      let html = '';
+      questions.forEach((q, idx) => {
+        const qNum = idx + 1;
+        const isAnswered = answered[idx];
+        const sel = selectedIdx[idx];
+        html += `
+          <div class="bg-white rounded-2xl p-5 card-shadow border border-sky-100/70 transition" id="qcard-${idx}">
+            <div class="flex items-start gap-3">
+              <span class="bg-sky-100 text-sky-800 font-bold text-sm min-w-[28px] h-8 flex items-center justify-center rounded-full">${qNum}</span>
+              <div class="flex-1">
+                <p class="font-semibold text-slate-800 leading-relaxed">${q.text}</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-4" id="options-${idx}">
+                  ${q.options.map((opt, optIdx) => `
+                    <button class="choice-btn text-left px-4 py-3 rounded-xl text-sm font-medium transition disabled:opacity-80" 
+                      data-q="${idx}" data-opt="${optIdx}" ${isAnswered ? 'disabled' : ''}>
+                      ${String.fromCharCode(65 + optIdx)}. ${opt}
+                    </button>
+                  `).join('')}
+                </div>
+                <!-- feedback -->
+                <div id="feedback-${idx}" class="mt-3 text-sm font-medium ${isAnswered ? 'block' : 'hidden'}">
+                  ${isAnswered ? `
+                    <div class="p-3 rounded-xl ${sel === q.correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                      ${sel === q.correct ? '✅ Benar!' : '❌ Salah.'} 
+                      <span class="font-normal">${q.explanation}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      quizContainer.innerHTML = html;
+      updateScoreAndProgress();
+
+      // event listener untuk setiap tombol pilihan
+      document.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const qIdx = parseInt(this.dataset.q);
+          const optIdx = parseInt(this.dataset.opt);
+          if (answered[qIdx]) return;
+
+          // tandai sudah dijawab
+          answered[qIdx] = true;
+          selectedIdx[qIdx] = optIdx;
+          const correct = questions[qIdx].correct;
+
+          // disable semua tombol di group
+          const parent = document.getElementById(`options-${qIdx}`);
+          const btns = parent.querySelectorAll('button');
+          btns.forEach(b => b.disabled = true);
+
+          // beri class benar/salah
+          btns.forEach((b, i) => {
+            if (i === correct) b.classList.add('correct');
+            else if (i === optIdx && i !== correct) b.classList.add('wrong');
+          });
+
+          // update score
+          if (optIdx === correct) score += 1;
+
+          // tampilkan feedback
+          const fb = document.getElementById(`feedback-${qIdx}`);
+          fb.classList.remove('hidden');
+          fb.innerHTML = `
+            <div class="p-3 rounded-xl ${optIdx === correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+              ${optIdx === correct ? '✅ Benar!' : '❌ Salah.'} 
+              <span class="font-normal">${questions[qIdx].explanation}</span>
+            </div>
+          `;
+
+          updateScoreAndProgress();
+        });
+      });
+    }
+
+    function updateScoreAndProgress() {
+      const total = questions.length;
+      const answeredCount = answered.filter(v => v === true).length;
+      scoreDisplay.textContent = `${score} / ${total}`;
+      const pct = (answeredCount / total) * 100;
+      progressBar.style.width = pct + '%';
+      progressText.textContent = `${answeredCount} dari ${total} soal`;
+    }
+
+    // Reset kuis
+    function resetQuiz() {
+      answered = new Array(questions.length).fill(false);
+      selectedIdx = new Array(questions.length).fill(null);
+      score = 0;
+      renderQuiz();
+      // scroll ke atas
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ========== NAVIGASI ==========
+    const pageHome = document.getElementById('pageHome');
+    const pageQuiz = document.getElementById('pageQuiz');
+    const navHome = document.getElementById('navHome');
+    const navQuiz = document.getElementById('navQuiz');
+
+    function showPage(page) {
+      pageHome.classList.remove('active');
+      pageQuiz.classList.remove('active');
+      navHome.classList.remove('active');
+      navQuiz.classList.remove('active');
+      if (page === 'home') {
+        pageHome.classList.add('active');
+        navHome.classList.add('active');
+      } else {
+        pageQuiz.classList.add('active');
+        navQuiz.classList.add('active');
+      }
+    }
+
+    navHome.addEventListener('click', () => showPage('home'));
+    navQuiz.addEventListener('click', () => {
+      showPage('quiz');
+      // reset jika belum pernah dijawab semua (opsional)
+    });
+    document.getElementById('startQuizBtn').addEventListener('click', () => {
+      showPage('quiz');
+      resetQuiz(); // fresh start
+    });
+    document.getElementById('backHomeBtn').addEventListener('click', () => showPage('home'));
+    document.getElementById('resetQuizBtn').addEventListener('click', resetQuiz);
+
+    // ========== INIT ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      lucide.createIcons();
+      renderQuiz();
+    });
+  </script>
+
+</body>
+</html>
