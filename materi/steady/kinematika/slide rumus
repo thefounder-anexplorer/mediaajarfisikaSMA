@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentasi Gerak Parabola</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,600;0,700;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  <style>
+    :root {
+      --ink: #f8f4e7;
+      --chalk-blue: #93d8ff;
+      --chalk-yellow: #f5ca68;
+      --chalk-coral: #ff9678;
+      --board: #112a30;
+      --board-dark: #09191d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden;
+    }
+
+    .board-shell {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      padding: clamp(1rem, 3vw, 2.25rem);
+      background-color: var(--board);
+      background-image:
+        radial-gradient(circle at 18% 17%, rgba(147, 216, 255, .10) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 76% 73%, rgba(245, 202, 104, .08) 0 1px, transparent 1.5px);
+      background-size: 24px 24px, 31px 31px;
+    }
+
+    .board-shell::before,
+    .board-shell::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 999px;
+      opacity: .32;
+    }
+
+    .board-shell::before {
+      width: 24rem;
+      height: 24rem;
+      background: radial-gradient(circle, rgba(105, 198, 210, .16), transparent 67%);
+      top: -12rem;
+      right: -8rem;
+    }
+
+    .board-shell::after {
+      width: 20rem;
+      height: 20rem;
+      background: radial-gradient(circle, rgba(255, 150, 120, .10), transparent 70%);
+      bottom: -10rem;
+      left: -9rem;
+    }
+
+    .presentation-frame {
+      width: 100%;
+      max-width: 1120px;
+      min-height: calc(100vh - 4rem);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chalk-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(248, 244, 231, .35), transparent);
+    }
+
+    .slide-stage {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 1.25rem 0;
+    }
+
+    .slide {
+      width: 100%;
+      display: none;
+      animation: arrive .48s ease both;
+    }
+
+    .slide.is-active { display: block; }
+
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(14px) rotate(-.2deg); }
+      to { opacity: 1; transform: translateY(0) rotate(0); }
+    }
+
+    .chalk-card {
+      border: 1px solid rgba(248, 244, 231, .22);
+      box-shadow: inset 0 0 0 1px rgba(147, 216, 255, .04), 0 20px 45px rgba(0, 0, 0, .23);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chalk-card::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(248, 244, 231, .09);
+      pointer-events: none;
+      border-radius: 12px;
+    }
+
+    .chalk-serif { font-family: "Source Serif Pro", serif; }
+    .formula { font-family: "Space Mono", monospace; letter-spacing: -.045em; }
+
+    .formula-box {
+      border-left: 4px solid var(--chalk-yellow);
+      background: rgba(4, 23, 27, .52);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .15);
+    }
+
+    .slide-dot {
+      width: 10px;
+      height: 10px;
+      border: 1px solid rgba(248, 244, 231, .7);
+      border-radius: 100%;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .slide-dot.is-current {
+      background: var(--chalk-yellow);
+      border-color: var(--chalk-yellow);
+      transform: scale(1.35);
+    }
+
+    .nav-button:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    .nav-button:not(:disabled):hover { transform: translateY(-2px); }
+    .nav-button:focus-visible, .slide-dot:focus-visible {
+      outline: 3px solid var(--chalk-yellow);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 700px) {
+      .presentation-frame { min-height: calc(100vh - 2rem); }
+      .slide-stage { padding: .75rem 0; }
+    }
+  </style>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="board-shell">
+   <div class="presentation-frame">
+    <header class="flex items-center justify-between gap-4 pb-4">
+     <div>
+      <p class="uppercase tracking-[0.2em] text-xs font-semibold" style="color: var(--chalk-blue);">Fisika SMA</p>
+      <h1 class="chalk-serif font-bold leading-tight mt-1 text-2xl sm:text-3xl" style="color: var(--ink);">Gerak Parabola</h1>
+     </div>
+     <div class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap" style="background: rgba(100,255,218,0.08); border: 1px solid rgba(100,255,218,0.3); color: var(--chalk-yellow);">
+      <span id="counter-current">1</span> / 5
+     </div>
+    </header>
+    <div class="chalk-line"></div>
+    <main class="slide-stage" aria-live="polite">
+
+     <!-- Slide 1: Konsep Dasar -->
+     <section class="slide is-active" data-slide="0" aria-label="Slide 1: Konsep dasar">
+      <article class="chalk-card rounded-3xl p-6 sm:p-10">
+       <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center relative z-10">
+        <div>
+         <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(147,216,255,0.1); color: var(--chalk-blue);">Pengantar</p>
+         <h2 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl" style="color: var(--ink);">Gerak Parabola: Perpaduan GLB & GLBB</h2>
+         <p class="leading-relaxed mt-5 max-w-xl" style="color: rgba(248,244,231,0.8);">
+          Gerak parabola adalah perpaduan dua gerak lurus yang saling tegak lurus: <strong style="color: var(--chalk-blue);">GLB pada sumbu X</strong> (kecepatan konstan) dan <strong style="color: var(--chalk-coral);">GLBB pada sumbu Y</strong> (percepatan gravitasi konstan).
+         </p>
+         <div class="rounded-xl px-5 py-4 mt-6" style="background: rgba(245,202,104,0.08); border: 1px dashed rgba(245,202,104,0.4);">
+          <p class="font-medium" style="color: var(--chalk-yellow);">
+           Kunci analisis: uraikan v₀ menjadi komponen v₀ₓ = v₀ cos α dan v₀ᵧ = v₀ sin α.
+          </p>
+         </div>
+        </div>
+        <div class="flex items-center justify-center">
+         <svg width="280" height="200" viewBox="0 0 280 200" aria-hidden="true">
+          <line x1="30" y1="160" x2="260" y2="160" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="30" y1="160" x2="30" y2="20" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
+          <path d="M30 160 Q 120 20 240 160" fill="none" stroke="#ff9678" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="120" cy="47" r="6" fill="#f5ca68" opacity="0.9"/>
+          <line x1="30" y1="160" x2="140" y2="80" stroke="#93d8ff" stroke-width="2.5"/>
+          <polygon points="140,80 132,84 137,90" fill="#93d8ff"/>
+          <path d="M 65 160 A 40 40 0 0 0 55 130" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
+          <text x="70" y="145" fill="#f5ca68" font-size="16" font-weight="bold">α</text>
+          <text x="75" y="110" fill="#93d8ff" font-size="14" font-weight="bold">v₀</text>
+          <text x="255" y="180" fill="#f8f4e7" font-size="13" opacity="0.7">x</text>
+          <text x="10" y="30" fill="#f8f4e7" font-size="13" opacity="0.7">y</text>
+         </svg>
+        </div>
+       </div>
+      </article>
+     </section>
+
+     <!-- Slide 2: Komponen Kecepatan Awal -->
+     <section class="slide" data-slide="1" aria-label="Slide 2: Komponen kecepatan awal">
+      <article class="chalk-card rounded-3xl p-6 sm:p-10">
+       <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold relative z-10" style="background: rgba(147,216,255,0.1); color: var(--chalk-blue);">Langkah 1</p>
+       <div class="grid lg:grid-cols-2 gap-8 mt-5 items-center relative z-10">
+        <div>
+         <h2 class="chalk-serif font-bold leading-tight text-2xl sm:text-3xl" style="color: var(--ink);">Menguraikan Kecepatan Awal</h2>
+         <p class="leading-relaxed mt-4" style="color: rgba(248,244,231,0.8);">
+          Kecepatan awal v₀ membentuk sudut α terhadap horizontal. Kita uraikan menjadi dua komponen yang saling tegak lurus.
+         </p>
+         <div class="formula-box rounded-r-xl px-5 py-5 mt-7">
+          <p class="formula font-bold text-lg" style="color: var(--chalk-blue);">
+           \[ v_{0x} = v_0 \cos\alpha \]
+          </p>
+          <p class="formula font-bold text-lg mt-4" style="color: var(--chalk-coral);">
+           \[ v_{0y} = v_0 \sin\alpha \]
+          </p>
+         </div>
+        </div>
+        <div class="rounded-2xl p-6 min-h-72 flex items-center justify-center" style="background: rgba(4,23,27,0.4); border: 1px solid rgba(248,244,231,0.1);">
+         <svg width="300" height="220" viewBox="0 0 300 220" aria-hidden="true">
+          <line x1="40" y1="180" x2="280" y2="180" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="40" y1="180" x2="40" y2="30" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
+          <line x1="40" y1="180" x2="230" y2="60" stroke="#f5ca68" stroke-width="3"/>
+          <polygon points="230,60 218,64 224,72" fill="#f5ca68"/>
+          <line x1="40" y1="180" x2="230" y2="180" stroke="#93d8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <line x1="230" y1="180" x2="230" y2="60" stroke="#ff9678" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <path d="M 80 180 A 40 40 0 0 0 70 148" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
+          <text x="85" y="165" fill="#f5ca68" font-size="16" font-weight="bold">θ</text>
+          <text x="120" y="115" fill="#f5ca68" font-size="15" font-weight="bold">v₀</text>
+          <text x="130" y="198" fill="#93d8ff" font-size="14" font-weight="bold">v₀ₓ = v₀ cos θ</text>
+          <text x="240" y="120" fill="#ff9678" font-size="14" font-weight="bold">v₀ᵧ = v₀ sin θ</text>
+         </svg>
+        </div>
+       </div>
+      </article>
+     </section>
+
+     <!-- Slide 3: Gerak Horizontal (GLB) -->
+     <section class="slide" data-slide="2" aria-label="Slide 3: Gerak horizontal">
+      <article class="chalk-card rounded-3xl p-6 sm:p-10">
+       <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-9 items-center relative z-10">
+        <div>
+         <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(147,216,255,0.1); color: var(--chalk-blue);">Langkah 2</p>
+         <h2 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl" style="color: var(--ink);">Komponen Horizontal (Sumbu X)</h2>
+         <p class="leading-relaxed mt-4" style="color: rgba(248,244,231,0.8);">
+          Karena tidak ada percepatan pada arah horizontal, kecepatan pada sumbu X selalu konstan. Ini adalah ciri <strong style="color: var(--chalk-blue);">Gerak Lurus Beraturan (GLB)</strong>.
+         </p>
+         <p class="leading-relaxed mt-4" style="color: rgba(248,244,231,0.8);">
+          Jarak horizontal yang ditempuh benda setiap saat:
+         </p>
+        </div>
+        <div>
+         <div class="formula-box rounded-r-xl p-6">
+          <p class="formula font-bold text-lg" style="color: var(--chalk-blue);">
+           \[ v_x = v_{0x} = v_0 \cos\alpha \]
+          </p>
+          <div class="h-px my-5" style="background: rgba(248,244,231,0.15);"></div>
+          <p class="formula font-bold text-lg" style="color: var(--chalk-blue);">
+           \[ x = v_{0x} \cdot t = (v_0 \cos\alpha) \, t \]
+          </p>
+         </div>
+         <div class="rounded-xl p-5 mt-5" style="background: rgba(147,216,255,0.05); border: 1px dashed rgba(147,216,255,0.3);">
+          <p style="color: rgba(248,244,231,0.8);">
+           <strong style="color: var(--chalk-blue);">Ingat:</strong> Kecepatan horizontal tidak berubah selama benda bergerak (abaikan hambatan udara).
+          </p>
+         </div>
+        </div>
+       </div>
+      </article>
+     </section>
+
+     <!-- Slide 4: Gerak Vertikal (GLBB) -->
+     <section class="slide" data-slide="3" aria-label="Slide 4: Gerak vertikal">
+      <article class="chalk-card rounded-3xl p-6 sm:p-10">
+       <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center relative z-10">
+        <div>
+         <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(255,150,120,0.1); color: var(--chalk-coral);">Langkah 3</p>
+         <h2 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl" style="color: var(--ink);">Komponen Vertikal (Sumbu Y)</h2>
+         <p class="leading-relaxed mt-4" style="color: rgba(248,244,231,0.8);">
+          Pada arah vertikal, benda mengalami percepatan gravitasi g yang konstan ke bawah. Maka berlaku <strong style="color: var(--chalk-coral);">Gerak Lurus Berubah Beraturan (GLBB)</strong>.
+         </p>
+         <div class="formula-box rounded-r-xl p-6 mt-6">
+          <p class="formula font-bold text-lg" style="color: var(--chalk-coral);">
+           \[ v_{ty} = v_{0y} + g t = v_0 \sin\alpha + g t \]
+          </p>
+          <p class="formula font-bold text-lg mt-5" style="color: var(--chalk-coral);">
+           \[ \Delta h = v_{0y} t + \tfrac{1}{2} g t^2 = (v_0 \sin\alpha) t + \tfrac{1}{2} g t^2 \]
+          </p>
+         </div>
+        </div>
+        <aside class="rounded-2xl p-6" style="background: rgba(4,23,27,0.4); border: 1px solid rgba(248,244,231,0.1);">
+         <h3 class="chalk-serif font-bold text-xl" style="color: var(--chalk-yellow);">Titik Puncak</h3>
+         <div class="mt-5 space-y-4">
+          <div class="flex gap-3">
+           <span class="w-3 h-3 rounded-full mt-1.5 shrink-0" style="background: var(--chalk-coral);"></span>
+           <p style="color: rgba(248,244,231,0.8);">
+            Di titik tertinggi, kecepatan vertikal benda <strong style="color: var(--chalk-coral);">v<sub>ty</sub> = 0</strong>.
+           </p>
+          </div>
+          <div class="flex gap-3">
+           <span class="w-3 h-3 rounded-full mt-1.5 shrink-0" style="background: var(--chalk-yellow);"></span>
+           <p style="color: rgba(248,244,231,0.8);">
+            Waktu untuk mencapai puncak: <strong style="color: var(--chalk-yellow);">\[ t = \frac{v_0 \sin\alpha}{g} \]</strong>
+           </p>
+          </div>
+         </div>
+        </aside>
+       </div>
+      </article>
+     </section>
+
+     <!-- Slide 5: Penurunan Rumus R dan h_max -->
+     <section class="slide" data-slide="4" aria-label="Slide 5: Penurunan rumus">
+      <article class="chalk-card rounded-3xl p-6 sm:p-10">
+       <div class="relative z-10">
+        <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(245,202,104,0.1); color: var(--chalk-yellow);">Langkah 4</p>
+        <h2 class="chalk-serif font-bold leading-tight mt-5 max-w-3xl text-2xl sm:text-3xl" style="color: var(--ink);">Menggabungkan Persamaan & Identitas Trigonometri</h2>
+        <p class="leading-relaxed mt-4 max-w-3xl" style="color: rgba(248,244,231,0.8);">
+         Substitusi waktu dari persamaan sumbu X ke persamaan sumbu Y, lalu gunakan identitas trigonometri untuk mendapatkan rumus praktis.
+        </p>
+        <div class="grid md:grid-cols-3 gap-4 mt-7">
+         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
+          <p class="font-bold" style="color: var(--chalk-blue);">Waktu total (2t)</p>
+          <p class="formula mt-4 text-base" style="color: var(--chalk-blue);">
+           \[ t = \frac{v_0 \sin\alpha}{g} \]
+          </p>
+         </div>
+         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
+          <p class="font-bold" style="color: var(--chalk-coral);">Substitusi ke R</p>
+          <p class="formula mt-4 text-base" style="color: var(--chalk-coral);">
+           \[ R = v_0 \cos\alpha \cdot 2t \]
+          </p>
+         </div>
+         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
+          <p class="font-bold" style="color: var(--chalk-yellow);">Identitas 2 sin α cos α</p>
+          <p class="formula mt-4 text-base" style="color: var(--chalk-yellow);">
+           \[ 2\sin\alpha\cos\alpha = \sin 2\alpha \]
+          </p>
+         </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 mt-6">
+         <div class="rounded-2xl px-6 py-6" style="background: rgba(147,216,255,0.06); border: 1px solid rgba(147,216,255,0.3);">
+          <p class="uppercase tracking-[.16em] text-xs font-bold" style="color: var(--chalk-blue);">Jarak Terjauh (R)</p>
+          <p class="formula font-bold mt-3 text-xl" style="color: var(--ink);">
+           \[ R = \frac{v_0^2 \sin 2\alpha}{g} \]
+          </p>
+         </div>
+         <div class="rounded-2xl px-6 py-6" style="background: rgba(255,150,120,0.06); border: 1px solid rgba(255,150,120,0.3);">
+          <p class="uppercase tracking-[.16em] text-xs font-bold" style="color: var(--chalk-coral);">Tinggi Maksimum (h<sub>max</sub>)</p>
+          <p class="formula font-bold mt-3 text-xl" style="color: var(--ink);">
+           \[ h_{max} = \frac{v_0^2 \sin^2\alpha}{2g} \]
+          </p>
+         </div>
+        </div>
+       </div>
+      </article>
+     </section>
+
+    </main>
+    <footer class="pt-4">
+     <div class="chalk-line"></div>
+     <nav class="flex flex-wrap items-center justify-between gap-4 pt-5" aria-label="Navigasi slide">
+      <button id="prev-button" type="button" class="nav-button flex items-center gap-2 px-4 py-3 rounded-xl border border-[#f8f4e7]/25 text-[#f8f4e7] transition" aria-label="Slide sebelumnya"> <i data-lucide="arrow-left" width="18" height="18"></i> <span class="font-semibold">Sebelumnya</span> </button>
+      <div class="flex items-center gap-3" aria-label="Pilih slide">
+       <button type="button" class="slide-dot is-current" data-go-to="0" aria-label="Buka slide 1" aria-current="true"></button>
+       <button type="button" class="slide-dot" data-go-to="1" aria-label="Buka slide 2"></button>
+       <button type="button" class="slide-dot" data-go-to="2" aria-label="Buka slide 3"></button>
+       <button type="button" class="slide-dot" data-go-to="3" aria-label="Buka slide 4"></button>
+       <button type="button" class="slide-dot" data-go-to="4" aria-label="Buka slide 5"></button>
+      </div>
+      <button id="next-button" type="button" class="nav-button flex items-center gap-2 px-4 py-3 rounded-xl transition" aria-label="Slide selanjutnya"> <span class="font-semibold">Selanjutnya</span> <i data-lucide="arrow-right" width="18" height="18"></i> </button>
+     </nav>
+    </footer>
+   </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = [...document.querySelectorAll(".slide")];
+      const dots = [...document.querySelectorAll(".slide-dot")];
+      const prevButton = document.getElementById("prev-button");
+      const nextButton = document.getElementById("next-button");
+      const counter = document.getElementById("counter-current");
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        currentSlide = Math.max(0, Math.min(index, slides.length - 1));
+
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle("is-active", slideIndex === currentSlide);
+        });
+
+        dots.forEach((dot, dotIndex) => {
+          const isCurrent = dotIndex === currentSlide;
+          dot.classList.toggle("is-current", isCurrent);
+          dot.setAttribute("aria-current", String(isCurrent));
+        });
+
+        counter.textContent = String(currentSlide + 1);
+        prevButton.disabled = currentSlide === 0;
+        nextButton.disabled = currentSlide === slides.length - 1;
+
+        // Render ulang MathJax setelah slide berubah
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise();
+        }
+      }
+
+      prevButton.addEventListener("click", () => showSlide(currentSlide - 1));
+      nextButton.addEventListener("click", () => showSlide(currentSlide + 1));
+
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => showSlide(Number(dot.dataset.goTo)));
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") showSlide(currentSlide - 1);
+        if (event.key === "ArrowRight") showSlide(currentSlide + 1);
+      });
+
+      lucide.createIcons();
+      showSlide(0);
+    });
+  </script>
+ </body>
+</html>
