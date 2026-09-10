@@ -331,48 +331,68 @@
       </article>
      </section>
 
-     <!-- Slide 5: Penurunan Rumus R dan h_max -->
+     <!-- Slide 5: Penurunan Rumus R dan h_max (DIPERBAIKI) -->
      <section class="slide" data-slide="4" aria-label="Slide 5: Penurunan rumus">
       <article class="chalk-card rounded-3xl p-6 sm:p-10">
        <div class="relative z-10">
         <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(245,202,104,0.1); color: var(--chalk-yellow);">Langkah 4</p>
-        <h2 class="chalk-serif font-bold leading-tight mt-5 max-w-3xl text-2xl sm:text-3xl" style="color: var(--ink);">Menggabungkan Persamaan & Identitas Trigonometri</h2>
+        <h2 class="chalk-serif font-bold leading-tight mt-5 max-w-3xl text-2xl sm:text-3xl" style="color: var(--ink);">Penurunan Rumus Praktis (R dan h<sub>max</sub>)</h2>
         <p class="leading-relaxed mt-4 max-w-3xl" style="color: rgba(248,244,231,0.8);">
-         Substitusi waktu dari persamaan sumbu X ke persamaan sumbu Y, lalu gunakan identitas trigonometri untuk mendapatkan rumus praktis.
+         Substitusi waktu dari persamaan sumbu X ke persamaan sumbu Y, lalu gunakan identitas trigonometri untuk mendapatkan rumus yang lebih ringkas.
         </p>
-        <div class="grid md:grid-cols-3 gap-4 mt-7">
-         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-          <p class="font-bold" style="color: var(--chalk-blue);">Waktu total (2t)</p>
-          <p class="formula mt-4 text-base" style="color: var(--chalk-blue);">
-           \[ t = \frac{v_0 \sin\alpha}{g} \]
-          </p>
+
+        <div class="grid lg:grid-cols-2 gap-6 mt-7">
+         <!-- Kolom Kiri: Jarak Terjauh (R) -->
+         <div class="rounded-2xl p-6" style="background: rgba(147,216,255,0.05); border: 1px solid rgba(147,216,255,0.2);">
+          <h3 class="chalk-serif font-bold text-xl mb-4" style="color: var(--chalk-blue);">Jarak Terjauh (R)</h3>
+          <div class="space-y-3 text-sm" style="color: rgba(248,244,231,0.85);">
+           <p>1. Waktu total di udara: \(t_{total} = 2t_p = \frac{2v_0 \sin\alpha}{g}\)</p>
+           <p>2. Substitusi ke persamaan X:</p>
+           <p class="formula text-center py-2" style="color: var(--chalk-blue);">
+            \[ R = v_0 \cos\alpha \cdot t_{total} \]
+           </p>
+           <p class="formula text-center py-2" style="color: var(--chalk-blue);">
+            \[ R = v_0 \cos\alpha \cdot \frac{2v_0 \sin\alpha}{g} \]
+           </p>
+           <p>3. Gunakan identitas \(2\sin\alpha\cos\alpha = \sin 2\alpha\):</p>
+           <div class="formula-box rounded-r-xl px-4 py-3 mt-2">
+            <p class="formula font-bold text-center text-lg" style="color: var(--chalk-blue);">
+             \[ R = \frac{v_0^2 \sin 2\alpha}{g} \]
+            </p>
+           </div>
+          </div>
          </div>
-         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-          <p class="font-bold" style="color: var(--chalk-coral);">Substitusi ke R</p>
-          <p class="formula mt-4 text-base" style="color: var(--chalk-coral);">
-           \[ R = v_0 \cos\alpha \cdot 2t \]
-          </p>
-         </div>
-         <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-          <p class="font-bold" style="color: var(--chalk-yellow);">Identitas 2 sin α cos α</p>
-          <p class="formula mt-4 text-base" style="color: var(--chalk-yellow);">
-           \[ 2\sin\alpha\cos\alpha = \sin 2\alpha \]
-          </p>
+
+         <!-- Kolom Kanan: Tinggi Maksimum (h_max) -->
+         <div class="rounded-2xl p-6" style="background: rgba(255,150,120,0.05); border: 1px solid rgba(255,150,120,0.2);">
+          <h3 class="chalk-serif font-bold text-xl mb-4" style="color: var(--chalk-coral);">Tinggi Maksimum (\(h_{max}\))</h3>
+          <div class="space-y-3 text-sm" style="color: rgba(248,244,231,0.85);">
+           <p>1. Di titik puncak, \(v_{ty} = 0\). Maka waktu untuk mencapai puncak:</p>
+           <p class="formula text-center py-2" style="color: var(--chalk-coral);">
+            \[ 0 = v_{0y} - g t_p \Rightarrow t_p = \frac{v_0 \sin\alpha}{g} \]
+           </p>
+           <p>2. Substitusi \(t_p\) ke persamaan \(\Delta h = v_{0y} t - \frac{1}{2} g t^2\):</p>
+           <p class="formula text-center py-2" style="color: var(--chalk-coral);">
+            \[ h_{max} = v_0 \sin\alpha \left(\frac{v_0 \sin\alpha}{g}\right) - \frac{1}{2} g \left(\frac{v_0 \sin\alpha}{g}\right)^2 \]
+           </p>
+           <p class="formula text-center py-2" style="color: var(--chalk-coral);">
+            \[ = \frac{v_0^2 \sin^2\alpha}{g} - \frac{1}{2} \frac{v_0^2 \sin^2\alpha}{g} \]
+           </p>
+           <p>3. Sederhanakan (ingat: \(1 - \frac{1}{2} = \frac{1}{2}\)):</p>
+           <div class="formula-box rounded-r-xl px-4 py-3 mt-2" style="border-left-color: var(--chalk-coral);">
+            <p class="formula font-bold text-center text-lg" style="color: var(--chalk-coral);">
+             \[ h_{max} = \frac{v_0^2 \sin^2\alpha}{2g} \]
+            </p>
+           </div>
+          </div>
          </div>
         </div>
-        <div class="grid md:grid-cols-2 gap-5 mt-6">
-         <div class="rounded-2xl px-6 py-6" style="background: rgba(147,216,255,0.06); border: 1px solid rgba(147,216,255,0.3);">
-          <p class="uppercase tracking-[.16em] text-xs font-bold" style="color: var(--chalk-blue);">Jarak Terjauh (R)</p>
-          <p class="formula font-bold mt-3 text-xl" style="color: var(--ink);">
-           \[ R = \frac{v_0^2 \sin 2\alpha}{g} \]
-          </p>
-         </div>
-         <div class="rounded-2xl px-6 py-6" style="background: rgba(255,150,120,0.06); border: 1px solid rgba(255,150,120,0.3);">
-          <p class="uppercase tracking-[.16em] text-xs font-bold" style="color: var(--chalk-coral);">Tinggi Maksimum (h<sub>max</sub>)</p>
-          <p class="formula font-bold mt-3 text-xl" style="color: var(--ink);">
-           \[ h_{max} = \frac{v_0^2 \sin^2\alpha}{2g} \]
-          </p>
-         </div>
+
+        <!-- Catatan Koreksi -->
+        <div class="mt-6 rounded-xl p-4" style="background: rgba(245,202,104,0.08); border: 1px dashed rgba(245,202,104,0.4);">
+         <p class="text-sm" style="color: var(--chalk-yellow);">
+          <strong>⚠️ Perhatikan:</strong> Sering terjadi kesalahan dengan melupakan faktor \(\frac{1}{2}\) pada rumus \(h_{max}\). Pastikan penyebutnya adalah \(2g\), bukan \(g\).
+         </p>
         </div>
        </div>
       </article>
