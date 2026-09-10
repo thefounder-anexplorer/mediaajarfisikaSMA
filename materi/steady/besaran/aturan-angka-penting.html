@@ -152,15 +152,9 @@
       transition: background 0.3s;
       cursor: pointer;
     }
-    .dot.active {
-      background: #075985;
-    }
-    .dot.answered-correct {
-      background: #15803d;
-    }
-    .dot.answered-wrong {
-      background: #dc2626;
-    }
+    .dot.active { background: #075985; }
+    .dot.answered-correct { background: #15803d; }
+    .dot.answered-wrong { background: #dc2626; }
     .nav-slide {
       background: white;
       border: 1px solid #e2e8f0;
@@ -185,9 +179,7 @@
       font-weight: 700;
     }
     @media (min-width: 640px) {
-      .simulator-panel .result-number {
-        font-size: 3.5rem;
-      }
+      .simulator-panel .result-number { font-size: 3.5rem; }
     }
     .rounding-example {
       background: linear-gradient(135deg, #fef3c7, #fde68a);
@@ -285,25 +277,25 @@
       </div>
       <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&h=400&fit=crop&crop=center" loading="lazy" class="reveal stagger-1 h-64 w-full rounded-[2rem] object-cover shadow-lg sm:h-72" alt="Jangka sorong">
      </div>
-     
-     <!-- ====== 1. ATURAN ANGKA PENTING ====== -->
+
+     <!-- 1. ATURAN ANGKA PENTING -->
      <section class="mt-12" aria-labelledby="rules-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Bagian 1</p>
       <h2 id="rules-heading" class="display-font mt-2 text-3xl font-bold">4 Aturan Angka Penting</h2>
       <div class="mt-7 grid gap-5 md:grid-cols-2">
-       <article class="rule-card rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-sky-700">Aturan 1</p><h3 class="mb-2 font-bold text-slate-800">Semua angka bukan nol adalah angka penting</h3><p class="leading-6 text-slate-600">Contoh: 123,45 memiliki 5 angka penting. 78.900 memiliki 3 angka penting (789).</p></article>
+       <article class="rule-card rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-sky-700">Aturan 1</p><h3 class="mb-2 font-bold text-slate-800">Semua angka bukan nol adalah angka penting</h3><p class="leading-6 text-slate-600">Contoh: 123,45 memiliki 5 angka penting. 0,00789 memiliki 3 angka penting (789).</p></article>
        <article class="rule-card rule-orange rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-orange-600">Aturan 2</p><h3 class="mb-2 font-bold text-slate-800">Angka nol di antara angka bukan nol adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 1002 memiliki 4 angka penting. 0,0305 memiliki 3 angka penting (305).</p></article>
        <article class="rule-card rule-teal rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-teal-600">Aturan 3</p><h3 class="mb-2 font-bold text-slate-800">Nol di depan bukan angka penting</h3><p class="leading-6 text-slate-600">Contoh: 0,00056 memiliki 2 angka penting (56). 0,0040 memiliki 2 angka penting (40).</p></article>
        <article class="rule-card rule-purple rounded-2xl bg-white p-6 shadow-sm"><p class="mb-3 text-sm font-bold text-purple-600">Aturan 4</p><h3 class="mb-2 font-bold text-slate-800">Nol di belakang desimal adalah penting</h3><p class="leading-6 text-slate-600">Contoh: 2,500 memiliki 4 angka penting. 300,0 memiliki 4 angka penting.</p></article>
       </div>
      </section>
 
-     <!-- ====== 2. ATURAN PEMBULATAN ====== -->
+     <!-- 2. ATURAN PEMBULATAN -->
      <section class="mt-14" aria-labelledby="rounding-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-rose-500">Bagian 2</p>
       <h2 id="rounding-heading" class="display-font mt-2 text-3xl font-bold">Aturan Pembulatan Angka Penting</h2>
       <p class="mt-3 max-w-3xl leading-7 text-slate-600">Setelah melakukan operasi hitung, hasil harus dibulatkan sesuai aturan. Berikut panduan pembulatan yang benar:</p>
-      
+
       <div class="mt-6 grid gap-5 md:grid-cols-2">
        <article class="rule-card rule-rose rounded-2xl bg-white p-6 shadow-sm">
         <p class="mb-3 text-sm font-bold text-rose-500">Aturan 1</p>
@@ -369,12 +361,12 @@
       </div>
      </section>
 
-     <!-- ====== 3. OPERASI HITUNG ====== -->
+     <!-- 3. OPERASI HITUNG -->
      <section class="mt-14" aria-labelledby="operations-heading">
       <p class="text-sm font-bold uppercase tracking-[.16em] text-sky-700">Bagian 3</p>
       <h2 id="operations-heading" class="display-font mt-2 text-3xl font-bold">Operasi Hitung Angka Penting</h2>
       <p class="mt-3 max-w-3xl leading-7 text-slate-600">Aturan operasi hitung angka penting berbeda untuk penjumlahan/pengurangan dan perkalian/pembagian.</p>
-      
+
       <div class="mt-7 grid gap-5 lg:grid-cols-2">
        <article class="operation-card rounded-2xl bg-white p-6 shadow-sm">
         <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">➕➖ Penjumlahan &amp; Pengurangan</p>
@@ -398,7 +390,6 @@
        </article>
       </div>
 
-      <!-- Ringkasan Aturan Operasi -->
       <div class="mt-6 rounded-2xl bg-gradient-to-r from-sky-50 to-blue-50 p-6 shadow-sm border border-sky-200">
        <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">📌 Ringkasan Aturan Operasi</p>
        <div class="mt-4 grid gap-4 md:grid-cols-2">
@@ -416,8 +407,8 @@
       </div>
      </section>
 
-     <!-- ====== SIMULASI (URUTAN: 1. HITUNG AP, 2. PEMBULATAN, 3. NOTASI ILMIAH, 4. OPERASI) ====== -->
-     
+     <!-- ====== SIMULASI ====== -->
+
      <!-- SIMULASI 1: HITUNG ANGKA PENTING -->
      <section class="mt-14 w-full bg-white py-12 rounded-2xl shadow-sm sim-card">
       <div class="mx-auto max-w-6xl px-5 sm:px-8">
@@ -427,7 +418,7 @@
        </div>
        <h2 class="display-font text-3xl font-bold">Hitung Angka Penting</h2>
        <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan bilangan, dapatkan jumlah angka pentingnya secara instan.</p>
-       
+
        <div class="mt-6 grid gap-6 lg:grid-cols-2">
         <div>
          <form id="sig-form" class="flex flex-col gap-3 sm:flex-row" novalidate>
@@ -455,7 +446,7 @@
        </div>
        <h2 class="display-font text-3xl font-bold">Latihan Pembulatan Angka</h2>
        <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan bilangan dan pilih jumlah tempat desimal yang diinginkan. Simulator akan membulatkan sesuai aturan yang benar.</p>
-       
+
        <div class="mt-6 grid gap-6 lg:grid-cols-2">
         <div class="bg-white rounded-2xl p-6 shadow-sm">
          <form id="rounding-form" class="space-y-4" novalidate>
@@ -475,7 +466,7 @@
           </div>
           <button type="submit" class="w-full rounded-xl bg-rose-500 px-5 py-3 font-bold text-white shadow-lg transition hover:bg-rose-600 hover:scale-[1.02]">Bulatkan</button>
          </form>
-         
+
          <div class="mt-4">
           <p class="text-sm font-semibold text-slate-600">Contoh cepat:</p>
           <div class="mt-2 flex flex-wrap gap-2">
@@ -486,7 +477,7 @@
           </div>
          </div>
         </div>
-        
+
         <div class="bg-gradient-to-br from-rose-500 to-rose-700 rounded-2xl p-6 shadow-lg text-white">
          <p class="text-sm font-bold uppercase tracking-[.16em] text-rose-100">Hasil Pembulatan</p>
          <div class="mt-4 space-y-3">
@@ -512,7 +503,7 @@
       </div>
      </section>
 
-     <!-- SIMULASI 3: NOTASI ILMIAH -->
+     <!-- SIMULASI 3: NOTASI ILMIAH (dengan opsi jumlah desimal) -->
      <section class="mt-8 w-full bg-sky-50 py-12 rounded-2xl shadow-sm sim-card">
       <div class="mx-auto max-w-6xl px-5 sm:px-8">
        <div class="flex items-center gap-3 mb-2">
@@ -520,19 +511,19 @@
         <p class="text-sm font-bold uppercase tracking-[.16em] text-teal-600">Simulasi</p>
        </div>
        <h2 class="display-font text-3xl font-bold">Notasi Ilmiah (Bentuk Baku)</h2>
-       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Ubah bilangan ke bentuk notasi ilmiah a × 10^n dengan 1 ≤ a < 10.</p>
-       
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Ubah bilangan ke bentuk notasi ilmiah a × 10^n dengan 1 ≤ a < 10. Pilih jumlah desimal untuk koefisien.</p>
+
        <div class="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
         <div>
          <div class="rounded-2xl bg-white p-5 shadow-sm">
           <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh</p>
           <p class="display-font mt-3 text-2xl font-bold text-slate-800">0,00450 = 4,50 × 10⁻³</p>
-          <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif.</p>
+          <p class="mt-2 leading-6 text-slate-600">Geser koma 3 kali ke kanan, pangkat negatif. Koefisien 4,50 memiliki 2 desimal.</p>
          </div>
          <div class="mt-4 rounded-2xl bg-white p-5 shadow-sm">
           <p class="text-sm font-bold uppercase tracking-[.12em] text-sky-700">Contoh Lain</p>
           <p class="display-font mt-3 text-2xl font-bold text-slate-800">2500000 = 2,5 × 10⁶</p>
-          <p class="mt-2 leading-6 text-slate-600">Geser koma 6 kali ke kiri, pangkat positif.</p>
+          <p class="mt-2 leading-6 text-slate-600">Geser koma 6 kali ke kiri, pangkat positif. Koefisien 2,5 memiliki 1 desimal.</p>
          </div>
         </div>
         <div class="simulator-panel rounded-2xl p-6 shadow-lg text-white">
@@ -540,6 +531,16 @@
          <form id="scientific-form" class="mt-5 flex flex-col gap-3" novalidate>
           <label for="scientific-number" class="font-semibold text-sky-100">Masukkan bilangan</label>
           <input id="scientific-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="0,00450 atau 125000">
+
+          <label for="scientific-decimals" class="font-semibold text-sky-100">Jumlah desimal koefisien</label>
+          <select id="scientific-decimals" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900">
+           <option value="0">0 desimal (contoh: 4 × 10⁻³)</option>
+           <option value="1">1 desimal (contoh: 4,5 × 10⁻³)</option>
+           <option value="2" selected>2 desimal (contoh: 4,50 × 10⁻³)</option>
+           <option value="3">3 desimal (contoh: 4,500 × 10⁻³)</option>
+           <option value="4">4 desimal (contoh: 4,5000 × 10⁻³)</option>
+          </select>
+
           <button type="submit" class="rounded-xl bg-white px-5 py-3 font-bold text-sky-700 transition hover:brightness-95">Ubah ke Notasi Ilmiah</button>
          </form>
          <div class="mt-5 rounded-xl bg-sky-800 p-4">
@@ -560,18 +561,18 @@
         <p class="text-sm font-bold uppercase tracking-[.16em] text-orange-600">Simulasi</p>
        </div>
        <h2 class="display-font text-3xl font-bold">Operasi Angka Penting</h2>
-       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting.</p>
-       
+       <p class="mt-2 max-w-2xl leading-7 text-slate-600">Masukkan dua bilangan dan pilih operasi. Sistem akan membulatkan sesuai aturan angka penting (termasuk trailing zero).</p>
+
        <div class="mt-6 grid gap-6 lg:grid-cols-2">
         <div>
          <form id="operation-form" class="grid gap-4 sm:grid-cols-2" novalidate>
           <div>
            <label for="first-number" class="mb-2 block font-semibold text-slate-700">Bilangan pertama</label>
-           <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 12,34">
+           <input id="first-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 6,0">
           </div>
           <div>
            <label for="second-number" class="mb-2 block font-semibold text-slate-700">Bilangan kedua</label>
-           <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 0,0560">
+           <input id="second-number" class="focus-ring w-full rounded-xl border-2 border-sky-200 bg-white px-4 py-3 text-slate-900" inputmode="decimal" placeholder="contoh: 1,2">
           </div>
           <div class="sm:col-span-2">
            <label for="operation-select" class="mb-2 block font-semibold text-slate-700">Pilih operasi</label>
@@ -747,16 +748,13 @@
         const value = Number(raw);
         const rounded = roundToDecimal(value, places);
         const originalStr = formatIndonesian(value, Math.max(decimalPlaces(raw), 4));
-        const resultStr = formatIndonesian(rounded, places);
+        const resultStr = new Intl.NumberFormat("id-ID", {
+          minimumFractionDigits: places,
+          maximumFractionDigits: places
+        }).format(rounded);
 
         originalEl.textContent = originalStr;
         resultEl.textContent = resultStr;
-
-        const factor = Math.pow(10, places);
-        const scaled = value * factor;
-        const roundedScaled = Math.round(scaled);
-        const diff = Math.abs(scaled - roundedScaled);
-        const digitToCheck = Math.floor(scaled * 10) % 10;
 
         let rule = "";
         let explanation = "";
@@ -829,25 +827,49 @@
         explanationEl.textContent = explanation;
       });
 
-      // ====== SIMULASI 3: NOTASI ILMIAH ======
+      // ====== SIMULASI 3: NOTASI ILMIAH (dengan opsi desimal) ======
       document.getElementById("scientific-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const raw = normaliseNumber(document.getElementById("scientific-number").value);
+        const decimals = parseInt(document.getElementById("scientific-decimals").value);
         const result = document.getElementById("scientific-result");
         const explanation = document.getElementById("scientific-explanation");
+
         if (!raw || Number(raw) === 0) {
           result.textContent = "⚠️ Input tidak valid";
           explanation.textContent = "Masukkan bilangan selain nol, misalnya 0,00450 atau 125000.";
           return;
         }
+
         const value = Number(raw);
         const exponent = Math.floor(Math.log10(Math.abs(value)));
-        const coefficient = value / Math.pow(10, exponent);
-        result.textContent = coefficient.toLocaleString("id-ID", { maximumFractionDigits: 12 }) + " × 10^" + exponent;
-        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan. Banyak pergeseran menjadi pangkat 10.";
+        let coefficient = value / Math.pow(10, exponent);
+
+        // Bulatkan koefisien sesuai jumlah desimal yang dipilih
+        coefficient = roundToDecimal(coefficient, decimals);
+
+        // Format koefisien dengan trailing zero sesuai pilihan desimal
+        const coefficientStr = new Intl.NumberFormat("id-ID", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        }).format(coefficient);
+
+        result.textContent = coefficientStr + " × 10^" + exponent;
+        explanation.textContent = "Geser koma hingga tersisa satu digit bukan nol di depan (koefisien antara 1 dan 10). Banyak pergeseran menjadi pangkat 10. Koefisien ditampilkan dengan " + decimals + " desimal.";
       });
 
-      // ====== SIMULASI 4: OPERASI ======
+      // ====== SIMULASI 4: OPERASI (perbaikan trailing zero) ======
+      // Fungsi format hasil sesuai angka penting
+      function formatWithSignificantFigures(value, sigFigs) {
+        if (value === 0) return "0";
+        const magnitude = Math.floor(Math.log10(Math.abs(value)));
+        const decimalPlaces = Math.max(0, sigFigs - 1 - magnitude);
+        return new Intl.NumberFormat("id-ID", {
+          minimumFractionDigits: decimalPlaces,
+          maximumFractionDigits: decimalPlaces
+        }).format(value);
+      }
+
       document.getElementById("operation-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const firstRaw = normaliseNumber(document.getElementById("first-number").value);
@@ -872,7 +894,7 @@
           return;
         }
 
-        let result, rounded, explanationText, decimalResult = 0;
+        let result, rounded, explanationText, decimalResult = 0, sigFigs = null;
         if (operation === "add") {
           result = first + second;
           decimalResult = Math.min(decimalPlaces(firstRaw), decimalPlaces(secondRaw));
@@ -885,33 +907,49 @@
           explanationText = "Pengurangan mengikuti jumlah tempat desimal paling sedikit, yaitu " + decimalResult + " tempat desimal.";
         } else if (operation === "multiply") {
           result = first * second;
-          const figures = Math.min(significantFigures(firstRaw), significantFigures(secondRaw));
-          rounded = roundToSignificant(result, figures);
-          explanationText = "Perkalian mengikuti jumlah angka penting paling sedikit, yaitu " + figures + " angka penting.";
+          sigFigs = Math.min(significantFigures(firstRaw), significantFigures(secondRaw));
+          rounded = roundToSignificant(result, sigFigs);
+          explanationText = "Perkalian mengikuti jumlah angka penting paling sedikit, yaitu " + sigFigs + " angka penting.";
         } else {
           result = first / second;
-          const figures = Math.min(significantFigures(firstRaw), significantFigures(secondRaw));
-          rounded = roundToSignificant(result, figures);
-          explanationText = "Pembagian mengikuti jumlah angka penting paling sedikit, yaitu " + figures + " angka penting.";
+          sigFigs = Math.min(significantFigures(firstRaw), significantFigures(secondRaw));
+          rounded = roundToSignificant(result, sigFigs);
+          explanationText = "Pembagian mengikuti jumlah angka penting paling sedikit, yaitu " + sigFigs + " angka penting.";
         }
 
         rawResult.textContent = "Hasil sebelum pembulatan: " + formatIndonesian(result, 0);
-        finalResult.textContent = formatIndonesian(rounded, decimalResult);
+
+        // Tampilkan hasil akhir dengan trailing zero yang benar
+        if (sigFigs !== null) {
+          // Untuk perkalian/pembagian, tampilkan sesuai angka penting
+          finalResult.textContent = formatWithSignificantFigures(rounded, sigFigs);
+          explanationText += " Hasil ditampilkan dengan " + sigFigs + " angka penting.";
+        } else {
+          // Untuk penjumlahan/pengurangan, tampilkan sesuai jumlah desimal
+          finalResult.textContent = new Intl.NumberFormat("id-ID", {
+            minimumFractionDigits: decimalResult,
+            maximumFractionDigits: decimalResult
+          }).format(rounded);
+        }
+
         explanation.textContent = explanationText;
       });
 
       // ========== KUIS SLIDE ==========
+      // PERBAIKAN: Soal 3 dan 10 hanya punya 1 jawaban benar
       const quizData = [
         { question: "Berapa angka penting dari 0,05060?", options: ["2", "3", "4", "5", "6"], correct: 2 },
         { question: "Hasil dari 3,2 × 4,567 menurut aturan angka penting adalah ...", options: ["14,6", "14,61", "14,614", "15", "14,7"], correct: 3 },
-        { question: "Notasi ilmiah dari 0,000450 adalah ...", options: ["4,5 × 10⁻⁴", "4,50 × 10⁻⁴", "45 × 10⁻⁵", "4,5 × 10⁻³", "4,50 × 10⁻³"], correct: 1 },
+        // Soal 3: Hanya "4,50 × 10⁻⁴" yang benar (karena 0,000450 memiliki 3 angka penting → 4,50 × 10⁻⁴)
+        { question: "Notasi ilmiah dari 0,000450 adalah ...", options: ["4,5 × 10⁻³", "4,50 × 10⁻³", "4,5 × 10⁻⁴", "4,50 × 10⁻⁴", "45 × 10⁻⁵"], correct: 3 },
         { question: "Berapa angka penting dari 2300 (tanpa desimal)?", options: ["2", "3", "4", "1", "5"], correct: 0 },
         { question: "Hasil dari 12,56 + 2,3 adalah ... (aturan AP)", options: ["14,86", "14,9", "14,8", "15", "14,86"], correct: 1 },
         { question: "Bilangan 0,00030 memiliki angka penting sebanyak ...", options: ["1", "2", "3", "4", "5"], correct: 1 },
         { question: "Perkalian 5,0 × 2,00 menghasilkan ... (AP)", options: ["10", "10,0", "10,00", "10,000", "9,9"], correct: 1 },
         { question: "Notasi ilmiah dari 2500000 adalah ...", options: ["2,5 × 10⁶", "2,50 × 10⁶", "25 × 10⁵", "2,5 × 10⁷", "2,50 × 10⁷"], correct: 0 },
         { question: "Berapa angka penting dari 0,01020?", options: ["3", "4", "5", "6", "2"], correct: 1 },
-        { question: "Hasil dari 45,6 ÷ 2,0 (dalam AP) adalah ...", options: ["22,8", "23", "22,80", "22", "22,8"], correct: 1 }
+        // Soal 10: Hanya "23" yang benar (45,6 ÷ 2,0 = 22,8 → 2 AP → 23, karena 22,8 dibulatkan ke 2 AP menjadi 23)
+        { question: "Hasil dari 45,6 ÷ 2,0 (dalam AP) adalah ...", options: ["22,8", "23", "22,80", "22", "23,0"], correct: 1 }
       ];
 
       const totalSlides = quizData.length;
@@ -1061,4 +1099,4 @@
     });
   </script>
  </body>
- </html>
+</html>
