@@ -4,25 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modul Fisika · Gerak Parabola</title>
-  <!-- Tailwind + Lucide + Google Fonts -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- MathJax untuk rumus matematika -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']],
-        processEscapes: true
-      },
-      svg: { fontCache: 'global' },
-      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --ink:#10233e; --chalk:#f4b942; --paper:#fffdf6; --muted:#63728a; --line:#d7dfeb; }
     * { box-sizing:border-box; }
@@ -58,124 +42,54 @@
     .quiz-question.active { display:block; animation:rise .4s ease both; }
     .hidden-state { display:none!important; }
     .explanation-box { border-left:4px solid #f4b942; }
+    .formula-pill { font-family:"Source Serif Pro",serif; border-radius:12px; padding:12px 16px; display:block; }
+    .step-card { border-left:5px solid #f4b942; }
+
+    /* ===== RUMUS SLIDES ===== */
+    .rumus-slide { display:none; }
+    .rumus-slide.active { display:block; animation:slideArrive .45s ease both; }
+    @keyframes slideArrive { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+    .rumus-dot {
+      width:11px; height:11px; border-radius:50%;
+      background:#cbd5e1; border:1px solid #94a3b8;
+      transition:all .2s ease; cursor:pointer; padding:0;
+    }
+    .rumus-dot.active { background:#f4b942; border-color:#d97706; transform:scale(1.3); }
+    .rumus-dot:focus-visible { outline:3px solid #f4b942; outline-offset:3px; }
+
+    .rumus-nav-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 18px; border-radius:12px;
+      font-weight:700; font-size:0.9rem;
+      transition:all .2s ease; cursor:pointer;
+      border:1px solid transparent;
+    }
+    .rumus-nav-btn:disabled { opacity:.35; cursor:not-allowed; }
+    .rumus-nav-btn:not(:disabled):hover { transform:translateY(-2px); }
+    .rumus-nav-btn.prev { background:#f1f5f9; color:#334155; border-color:#e2e8f0; }
+    .rumus-nav-btn.next { background:#f4b942; color:#10233e; }
+
+    /* Slide stage - fixed height with scroll */
+    .rumus-stage {
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 16px 35px rgba(16,35,62,.10);
+      background:#fff;
+      min-height:520px;
+    }
+    .rumus-slide-inner {
+      padding: 1.75rem;
+    }
+    @media (min-width: 768px) {
+      .rumus-slide-inner { padding: 2.5rem; }
+    }
+
+    @media (max-width: 640px) {
+      .formula-pill { font-size: 0.85rem; padding: 10px 12px; }
+      .rumus-stage { min-height:auto; }
+    }
     @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-
-    /* ===== STYLING UNTUK HALAMAN RUMUS (SLIDE PRESENTASI) ===== */
-    .rumus-shell {
-      --r-ink: #f8f4e7;
-      --r-chalk-blue: #93d8ff;
-      --r-chalk-yellow: #f5ca68;
-      --r-chalk-coral: #ff9678;
-      --r-board: #112a30;
-      background-color: var(--r-board);
-      background-image:
-        radial-gradient(circle at 18% 17%, rgba(147, 216, 255, .10) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 76% 73%, rgba(245, 202, 104, .08) 0 1px, transparent 1.5px);
-      background-size: 24px 24px, 31px 31px;
-      border-radius: 24px;
-      padding: clamp(1rem, 3vw, 2rem);
-      position: relative;
-      overflow: hidden;
-    }
-    .rumus-shell::before,
-    .rumus-shell::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-      border-radius: 999px;
-      opacity: .32;
-    }
-    .rumus-shell::before {
-      width: 24rem; height: 24rem;
-      background: radial-gradient(circle, rgba(105, 198, 210, .16), transparent 67%);
-      top: -12rem; right: -8rem;
-    }
-    .rumus-shell::after {
-      width: 20rem; height: 20rem;
-      background: radial-gradient(circle, rgba(255, 150, 120, .10), transparent 70%);
-      bottom: -10rem; left: -9rem;
-    }
-    .rumus-frame {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .chalk-line {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(248, 244, 231, .35), transparent);
-    }
-    .slide-stage {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 1.25rem 0;
-    }
-    .slide {
-      width: 100%;
-      display: none;
-      animation: arrive .48s ease both;
-    }
-    .slide.is-active { display: block; }
-    @keyframes arrive {
-      from { opacity: 0; transform: translateY(14px) rotate(-.2deg); }
-      to { opacity: 1; transform: translateY(0) rotate(0); }
-    }
-    .chalk-card {
-      border: 1px solid rgba(248, 244, 231, .22);
-      box-shadow: inset 0 0 0 1px rgba(147, 216, 255, .04), 0 20px 45px rgba(0, 0, 0, .23);
-      position: relative;
-      overflow: hidden;
-    }
-    .chalk-card::after {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border: 1px dashed rgba(248, 244, 231, .09);
-      pointer-events: none;
-      border-radius: 12px;
-    }
-    .chalk-serif { font-family: "Source Serif Pro", serif; }
-    .formula { font-family: "Space Mono", monospace; letter-spacing: -.045em; }
-    .formula-box {
-      border-left: 4px solid var(--r-chalk-yellow);
-      background: rgba(4, 23, 27, .52);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, .15);
-    }
-    .slide-dot {
-      width: 10px; height: 10px;
-      border: 1px solid rgba(248, 244, 231, .7);
-      border-radius: 100%;
-      transition: transform .2s ease, background .2s ease;
-      cursor: pointer;
-      background: transparent;
-    }
-    .slide-dot.is-current {
-      background: var(--r-chalk-yellow);
-      border-color: var(--r-chalk-yellow);
-      transform: scale(1.35);
-    }
-    .nav-button-rumus:disabled {
-      opacity: .35;
-      cursor: not-allowed;
-    }
-    .nav-button-rumus:not(:disabled):hover { transform: translateY(-2px); }
-    .nav-button-rumus:focus-visible, .slide-dot:focus-visible {
-      outline: 3px solid var(--r-chalk-yellow);
-      outline-offset: 4px;
-    }
-    .rumus-text-ink { color: var(--r-ink); }
-    .rumus-text-blue { color: var(--r-chalk-blue); }
-    .rumus-text-yellow { color: var(--r-chalk-yellow); }
-    .rumus-text-coral { color: var(--r-chalk-coral); }
-    .rumus-text-soft { color: rgba(248,244,231,0.8); }
-
-    @media (max-width: 700px) {
-      .slide-stage { padding: .75rem 0; }
-    }
   </style>
 </head>
 <body>
@@ -186,7 +100,6 @@
     <div class="hero-content max-w-7xl mx-auto px-5 pt-6 md:px-10 md:pt-8">
       <div class="flex flex-wrap items-center justify-between gap-5 pb-5">
         <div class="flex items-center gap-3">
-          <!-- Tombol Home sebagai link ke portal fisika -->
           <a href="https://fisika-portal.com" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/40 px-4 py-2 text-white font-bold transition no-underline">
             <i data-lucide="home" width="20" height="20"></i>
             <span>Home</span>
@@ -218,10 +131,10 @@
             <div class="p-7 md:p-10">
               <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Materi SMA Kelas XI</p>
               <h2 id="home-title" class="formula-script font-bold text-4xl mt-3 text-slate-800">Pahami Gerak Parabola</h2>
-              <p class="mt-5 max-w-xl leading-relaxed text-slate-600">Pelajari gerak dua dimensi dengan kecepatan awal dan percepatan gravitasi. Eksplorasi lintasan, waktu terbang, tinggi maksimum, dan jangkauan melalui simulasi visual.</p>
+              <p class="mt-5 max-w-xl leading-relaxed text-slate-600">Gerak parabola terjadi ketika sebuah benda dilempar dengan kecepatan awal v₀ membentuk sudut θ terhadap arah horizontal. Kuncinya: gerak dapat diuraikan menjadi komponen x dan komponen y.</p>
               <div class="mt-7 flex flex-wrap gap-3">
                 <button id="go-simulation" class="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-5 py-3 font-bold text-slate-900 hover:bg-amber-300 transition" type="button"><i data-lucide="play-circle" width="18" height="18"></i> Mulai Simulasi</button>
-                <button id="go-rumus" class="inline-flex items-center gap-2 rounded-xl bg-slate-800 px-5 py-3 font-bold text-white hover:bg-slate-700 transition" type="button"><i data-lucide="sigma" width="18" height="18"></i> Lihat Rumus</button>
+                <button id="go-rumus" class="inline-flex items-center gap-2 rounded-xl bg-sky-100 px-5 py-3 font-bold text-sky-800 hover:bg-sky-200 transition" type="button"><i data-lucide="sigma" width="18" height="18"></i> Lihat Rumus</button>
                 <button id="go-quiz" class="inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-bold text-slate-800 hover:bg-slate-300 transition" type="button"><i data-lucide="circle-help" width="18" height="18"></i> Coba Kuis</button>
               </div>
             </div>
@@ -229,7 +142,6 @@
           </div>
         </div>
 
-        <!-- 3 konsep dengan tombol video -->
         <section class="mt-10" aria-labelledby="learn-title">
           <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Konsep inti</p>
           <h2 id="learn-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Apa yang akan kamu pelajari?</h2>
@@ -246,7 +158,7 @@
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-sky-100 text-sky-700"><i data-lucide="move-right" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Horizontal</h3>
               <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan horizontal (Vx) tetap karena tidak ada percepatan. Jarak tempuh = Vx × waktu.</p>
-              <button onclick="window.open('https://www.youtube.com/watch?v=j1URC2G2qnc','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
+              <button onclick="window.open('https://www.youtube.com/watch?v=zMF4CD7i3hg','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
@@ -254,14 +166,13 @@
               <span class="inline-flex w-10 h-10 items-center justify-center rounded-full bg-rose-100 text-rose-700"><i data-lucide="move-up" width="20" height="20"></i></span>
               <h3 class="formula-script font-bold text-xl mt-4 text-slate-800">Gerak Vertikal</h3>
               <p class="mt-3 leading-relaxed text-slate-600 flex-1">Kecepatan vertikal (Vy) berubah karena gravitasi. Titik tertinggi saat Vy = 0.</p>
-              <button onclick="window.open('https://www.youtube.com/watch?v=zMF4CD7i3hg','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
+              <button onclick="window.open('https://www.youtube.com/watch?v=eQwVjREMp5s','_blank')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-800 transition">
                 <i data-lucide="video" width="16" height="16"></i> Tonton video
               </button>
             </article>
           </div>
         </section>
 
-        <!-- Rumus cepat -->
         <section class="mt-8 rounded-2xl p-6 md:p-7 bg-white/90 border border-amber-200/60" aria-labelledby="formula-title">
           <div class="flex flex-wrap gap-4 justify-between items-start">
             <div>
@@ -289,7 +200,6 @@
         </div>
 
         <div class="grid xl:grid-cols-[360px_1fr] gap-7">
-          <!-- kontrol -->
           <aside class="control-card rounded-2xl p-6 h-fit bg-white">
             <div class="flex items-center gap-3 mb-6">
               <span class="w-9 h-9 rounded-lg flex items-center justify-center bg-slate-800 text-amber-300"><i data-lucide="sliders-horizontal" width="19" height="19"></i></span>
@@ -319,7 +229,6 @@
             <button id="trajectory-button" type="button" class="mt-3 w-full rounded-xl px-4 py-3 font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition border border-slate-200"><span>⊜ Tampilkan lintasan</span></button>
           </aside>
 
-          <!-- canvas + hasil -->
           <section class="rounded-2xl p-4 md:p-6 shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
             <div class="flex flex-wrap justify-between gap-3 mb-5">
               <div>
@@ -333,7 +242,6 @@
           </section>
         </div>
 
-        <!-- hasil angka -->
         <section class="mt-9" aria-labelledby="results-title">
           <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Hasil perhitungan</p>
           <h2 id="results-title" class="formula-script font-bold text-2xl mt-2 text-slate-800">Parameter gerak</h2>
@@ -359,245 +267,402 @@
       </div>
     </section>
 
-    <!-- RUMUS (SLIDE PRESENTASI) -->
+    <!-- RUMUS PAGE (SLIDE-BASED) -->
     <section id="rumus-page" class="page-view" aria-labelledby="rumus-title">
-      <div class="max-w-7xl mx-auto px-5 py-8 md:px-10 md:py-12">
-        <div class="mb-7">
-          <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Presentasi Interaktif</p>
-          <h2 id="rumus-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Penurunan Rumus Gerak Parabola</h2>
-          <p class="mt-3 leading-relaxed max-w-3xl text-slate-600">Ikuti langkah demi langkah penurunan rumus gerak parabola melalui 5 slide interaktif. Gunakan tombol navigasi atau tombol panah keyboard.</p>
-        </div>
+      <div class="max-w-6xl mx-auto px-5 py-8 md:px-10 md:py-12">
 
-        <!-- WADAH PRESENTASI -->
-        <div class="rumus-shell">
-          <div class="rumus-frame">
-            <header class="flex items-center justify-between gap-4 pb-4">
-              <div>
-                <p class="uppercase tracking-[0.2em] text-xs font-semibold rumus-text-blue">Fisika SMA</p>
-                <h3 class="chalk-serif font-bold leading-tight mt-1 text-2xl sm:text-3xl rumus-text-ink">Gerak Parabola</h3>
-              </div>
-              <div class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap" style="background: rgba(100,255,218,0.08); border: 1px solid rgba(100,255,218,0.3); color: var(--r-chalk-yellow);">
-                <span id="rumus-counter">1</span> / 5
-              </div>
-            </header>
-            <div class="chalk-line"></div>
-            <main class="slide-stage" aria-live="polite">
-
-              <!-- Slide 1: Konsep Dasar -->
-              <section class="slide is-active" data-slide="0" aria-label="Slide 1: Konsep dasar">
-                <article class="chalk-card rounded-3xl p-6 sm:p-10">
-                  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center relative z-10">
-                    <div>
-                      <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(147,216,255,0.1); color: var(--r-chalk-blue);">Pengantar</p>
-                      <h4 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl rumus-text-ink">Gerak Parabola: Perpaduan GLB & GLBB</h4>
-                      <p class="leading-relaxed mt-5 max-w-xl rumus-text-soft">
-                        Gerak parabola adalah perpaduan dua gerak lurus yang saling tegak lurus: <strong class="rumus-text-blue">GLB pada sumbu X</strong> (kecepatan konstan) dan <strong class="rumus-text-coral">GLBB pada sumbu Y</strong> (percepatan gravitasi konstan).
-                      </p>
-                      <div class="rounded-xl px-5 py-4 mt-6" style="background: rgba(245,202,104,0.08); border: 1px dashed rgba(245,202,104,0.4);">
-                        <p class="font-medium rumus-text-yellow">
-                          Kunci analisis: uraikan v₀ menjadi komponen v₀ₓ = v₀ cos α dan v₀ᵧ = v₀ sin α.
-                        </p>
-                      </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                      <svg width="280" height="200" viewBox="0 0 280 200" aria-hidden="true">
-                        <line x1="30" y1="160" x2="260" y2="160" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                        <line x1="30" y1="160" x2="30" y2="20" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                        <path d="M30 160 Q 120 20 240 160" fill="none" stroke="#ff9678" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="120" cy="47" r="6" fill="#f5ca68" opacity="0.9"/>
-                        <line x1="30" y1="160" x2="140" y2="80" stroke="#93d8ff" stroke-width="2.5"/>
-                        <polygon points="140,80 132,84 137,90" fill="#93d8ff"/>
-                        <path d="M 65 160 A 40 40 0 0 0 55 130" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
-                        <text x="70" y="145" fill="#f5ca68" font-size="16" font-weight="bold">α</text>
-                        <text x="75" y="110" fill="#93d8ff" font-size="14" font-weight="bold">v₀</text>
-                        <text x="255" y="180" fill="#f8f4e7" font-size="13" opacity="0.7">x</text>
-                        <text x="10" y="30" fill="#f8f4e7" font-size="13" opacity="0.7">y</text>
-                      </svg>
-                    </div>
-                  </div>
-                </article>
-              </section>
-
-              <!-- Slide 2: Komponen Kecepatan Awal -->
-              <section class="slide" data-slide="1" aria-label="Slide 2: Komponen kecepatan awal">
-                <article class="chalk-card rounded-3xl p-6 sm:p-10">
-                  <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold relative z-10" style="background: rgba(147,216,255,0.1); color: var(--r-chalk-blue);">Langkah 1</p>
-                  <div class="grid lg:grid-cols-2 gap-8 mt-5 items-center relative z-10">
-                    <div>
-                      <h4 class="chalk-serif font-bold leading-tight text-2xl sm:text-3xl rumus-text-ink">Menguraikan Kecepatan Awal</h4>
-                      <p class="leading-relaxed mt-4 rumus-text-soft">
-                        Kecepatan awal v₀ membentuk sudut α terhadap horizontal. Kita uraikan menjadi dua komponen yang saling tegak lurus.
-                      </p>
-                      <div class="formula-box rounded-r-xl px-5 py-5 mt-7">
-                        <p class="formula font-bold text-lg rumus-text-blue">
-                          \[ v_{0x} = v_0 \cos\alpha \]
-                        </p>
-                        <p class="formula font-bold text-lg mt-4 rumus-text-coral">
-                          \[ v_{0y} = v_0 \sin\alpha \]
-                        </p>
-                      </div>
-                    </div>
-                    <div class="rounded-2xl p-6 min-h-72 flex items-center justify-center" style="background: rgba(4,23,27,0.4); border: 1px solid rgba(248,244,231,0.1);">
-                      <svg width="300" height="220" viewBox="0 0 300 220" aria-hidden="true">
-                        <line x1="40" y1="180" x2="280" y2="180" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                        <line x1="40" y1="180" x2="40" y2="30" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                        <line x1="40" y1="180" x2="230" y2="60" stroke="#f5ca68" stroke-width="3"/>
-                        <polygon points="230,60 218,64 224,72" fill="#f5ca68"/>
-                        <line x1="40" y1="180" x2="230" y2="180" stroke="#93d8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
-                        <line x1="230" y1="180" x2="230" y2="60" stroke="#ff9678" stroke-width="2.5" stroke-dasharray="6,4"/>
-                        <path d="M 80 180 A 40 40 0 0 0 70 148" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
-                        <text x="85" y="165" fill="#f5ca68" font-size="16" font-weight="bold">θ</text>
-                        <text x="120" y="115" fill="#f5ca68" font-size="15" font-weight="bold">v₀</text>
-                        <text x="130" y="198" fill="#93d8ff" font-size="14" font-weight="bold">v₀ₓ = v₀ cos θ</text>
-                        <text x="240" y="120" fill="#ff9678" font-size="14" font-weight="bold">v₀ᵧ = v₀ sin θ</text>
-                      </svg>
-                    </div>
-                  </div>
-                </article>
-              </section>
-
-              <!-- Slide 3: Gerak Horizontal -->
-              <section class="slide" data-slide="2" aria-label="Slide 3: Gerak horizontal">
-                <article class="chalk-card rounded-3xl p-6 sm:p-10">
-                  <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-9 items-center relative z-10">
-                    <div>
-                      <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(147,216,255,0.1); color: var(--r-chalk-blue);">Langkah 2</p>
-                      <h4 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl rumus-text-ink">Komponen Horizontal (Sumbu X)</h4>
-                      <p class="leading-relaxed mt-4 rumus-text-soft">
-                        Karena tidak ada percepatan pada arah horizontal, kecepatan pada sumbu X selalu konstan. Ini adalah ciri <strong class="rumus-text-blue">Gerak Lurus Beraturan (GLB)</strong>.
-                      </p>
-                      <p class="leading-relaxed mt-4 rumus-text-soft">
-                        Jarak horizontal yang ditempuh benda setiap saat:
-                      </p>
-                    </div>
-                    <div>
-                      <div class="formula-box rounded-r-xl p-6">
-                        <p class="formula font-bold text-lg rumus-text-blue">
-                          \[ v_x = v_{0x} = v_0 \cos\alpha \]
-                        </p>
-                        <div class="h-px my-5" style="background: rgba(248,244,231,0.15);"></div>
-                        <p class="formula font-bold text-lg rumus-text-blue">
-                          \[ x = v_{0x} \cdot t = (v_0 \cos\alpha) \, t \]
-                        </p>
-                      </div>
-                      <div class="rounded-xl p-5 mt-5" style="background: rgba(147,216,255,0.05); border: 1px dashed rgba(147,216,255,0.3);">
-                        <p class="rumus-text-soft">
-                          <strong class="rumus-text-blue">Ingat:</strong> Kecepatan horizontal tidak berubah selama benda bergerak (abaikan hambatan udara).
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </section>
-
-              <!-- Slide 4: Gerak Vertikal -->
-              <section class="slide" data-slide="3" aria-label="Slide 4: Gerak vertikal">
-                <article class="chalk-card rounded-3xl p-6 sm:p-10">
-                  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center relative z-10">
-                    <div>
-                      <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(255,150,120,0.1); color: var(--r-chalk-coral);">Langkah 3</p>
-                      <h4 class="chalk-serif font-bold leading-tight mt-5 text-2xl sm:text-3xl rumus-text-ink">Komponen Vertikal (Sumbu Y)</h4>
-                      <p class="leading-relaxed mt-4 rumus-text-soft">
-                        Pada arah vertikal, benda mengalami percepatan gravitasi g yang konstan ke bawah. Maka berlaku <strong class="rumus-text-coral">Gerak Lurus Berubah Beraturan (GLBB)</strong>.
-                      </p>
-                      <div class="formula-box rounded-r-xl p-6 mt-6">
-                        <p class="formula font-bold text-lg rumus-text-coral">
-                          \[ v_{ty} = v_{0y} + g t = v_0 \sin\alpha + g t \]
-                        </p>
-                        <p class="formula font-bold text-lg mt-5 rumus-text-coral">
-                          \[ \Delta h = v_{0y} t + \tfrac{1}{2} g t^2 = (v_0 \sin\alpha) t + \tfrac{1}{2} g t^2 \]
-                        </p>
-                      </div>
-                    </div>
-                    <aside class="rounded-2xl p-6" style="background: rgba(4,23,27,0.4); border: 1px solid rgba(248,244,231,0.1);">
-                      <h5 class="chalk-serif font-bold text-xl rumus-text-yellow">Titik Puncak</h5>
-                      <div class="mt-5 space-y-4">
-                        <div class="flex gap-3">
-                          <span class="w-3 h-3 rounded-full mt-1.5 shrink-0" style="background: var(--r-chalk-coral);"></span>
-                          <p class="rumus-text-soft">
-                            Di titik tertinggi, kecepatan vertikal benda <strong class="rumus-text-coral">v<sub>ty</sub> = 0</strong>.
-                          </p>
-                        </div>
-                        <div class="flex gap-3">
-                          <span class="w-3 h-3 rounded-full mt-1.5 shrink-0" style="background: var(--r-chalk-yellow);"></span>
-                          <p class="rumus-text-soft">
-                            Waktu untuk mencapai puncak: <strong class="rumus-text-yellow">\[ t = \frac{v_0 \sin\alpha}{g} \]</strong>
-                          </p>
-                        </div>
-                      </div>
-                    </aside>
-                  </div>
-                </article>
-              </section>
-
-              <!-- Slide 5: Penurunan Rumus R dan h_max -->
-              <section class="slide" data-slide="4" aria-label="Slide 5: Penurunan rumus">
-                <article class="chalk-card rounded-3xl p-6 sm:p-10">
-                  <div class="relative z-10">
-                    <p class="inline-block rounded-full px-3 py-1 text-sm font-semibold" style="background: rgba(245,202,104,0.1); color: var(--r-chalk-yellow);">Langkah 4</p>
-                    <h4 class="chalk-serif font-bold leading-tight mt-5 max-w-3xl text-2xl sm:text-3xl rumus-text-ink">Menggabungkan Persamaan & Identitas Trigonometri</h4>
-                    <p class="leading-relaxed mt-4 max-w-3xl rumus-text-soft">
-                      Substitusi waktu dari persamaan sumbu X ke persamaan sumbu Y, lalu gunakan identitas trigonometri untuk mendapatkan rumus praktis.
-                    </p>
-                    <div class="grid md:grid-cols-3 gap-4 mt-7">
-                      <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-                        <p class="font-bold rumus-text-blue">Waktu total (2t)</p>
-                        <p class="formula mt-4 text-base rumus-text-blue">
-                          \[ t = \frac{v_0 \sin\alpha}{g} \]
-                        </p>
-                      </div>
-                      <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-                        <p class="font-bold rumus-text-coral">Substitusi ke R</p>
-                        <p class="formula mt-4 text-base rumus-text-coral">
-                          \[ R = v_0 \cos\alpha \cdot 2t \]
-                        </p>
-                      </div>
-                      <div class="rounded-2xl p-5" style="background: rgba(4,23,27,0.5); border: 1px solid rgba(248,244,231,0.1);">
-                        <p class="font-bold rumus-text-yellow">Identitas 2 sin α cos α</p>
-                        <p class="formula mt-4 text-base rumus-text-yellow">
-                          \[ 2\sin\alpha\cos\alpha = \sin 2\alpha \]
-                        </p>
-                      </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-5 mt-6">
-                      <div class="rounded-2xl px-6 py-6" style="background: rgba(147,216,255,0.06); border: 1px solid rgba(147,216,255,0.3);">
-                        <p class="uppercase tracking-[.16em] text-xs font-bold rumus-text-blue">Jarak Terjauh (R)</p>
-                        <p class="formula font-bold mt-3 text-xl rumus-text-ink">
-                          \[ R = \frac{v_0^2 \sin 2\alpha}{g} \]
-                        </p>
-                      </div>
-                      <div class="rounded-2xl px-6 py-6" style="background: rgba(255,150,120,0.06); border: 1px solid rgba(255,150,120,0.3);">
-                        <p class="uppercase tracking-[.16em] text-xs font-bold rumus-text-coral">Tinggi Maksimum (h<sub>max</sub>)</p>
-                        <p class="formula font-bold mt-3 text-xl rumus-text-ink">
-                          \[ h_{max} = \frac{v_0^2 \sin^2\alpha}{2g} \]
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </section>
-
-            </main>
-            <footer class="pt-4">
-              <div class="chalk-line"></div>
-              <nav class="flex flex-wrap items-center justify-between gap-4 pt-5" aria-label="Navigasi slide">
-                <button id="rumus-prev" type="button" class="nav-button-rumus flex items-center gap-2 px-4 py-3 rounded-xl border border-[#f8f4e7]/25 text-[#f8f4e7] transition" aria-label="Slide sebelumnya"> <i data-lucide="arrow-left" width="18" height="18"></i> <span class="font-semibold">Sebelumnya</span> </button>
-                <div class="flex items-center gap-3" aria-label="Pilih slide">
-                  <button type="button" class="slide-dot is-current" data-go-to="0" aria-label="Buka slide 1" aria-current="true"></button>
-                  <button type="button" class="slide-dot" data-go-to="1" aria-label="Buka slide 2"></button>
-                  <button type="button" class="slide-dot" data-go-to="2" aria-label="Buka slide 3"></button>
-                  <button type="button" class="slide-dot" data-go-to="3" aria-label="Buka slide 4"></button>
-                  <button type="button" class="slide-dot" data-go-to="4" aria-label="Buka slide 5"></button>
-                </div>
-                <button id="rumus-next" type="button" class="nav-button-rumus flex items-center gap-2 px-4 py-3 rounded-xl transition" aria-label="Slide selanjutnya"> <span class="font-semibold">Selanjutnya</span> <i data-lucide="arrow-right" width="18" height="18"></i> </button>
-              </nav>
-            </footer>
+        <!-- Header + counter -->
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Materi lengkap</p>
+            <h2 id="rumus-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Penurunan Rumus Gerak Parabola</h2>
+            <p class="mt-2 text-sm text-slate-500 max-w-2xl">Ikuti langkah-langkah penurunan rumus dari konsep dasar hingga rumus praktis.</p>
+          </div>
+          <div class="px-4 py-2 rounded-full text-sm font-bold bg-amber-100 text-amber-800 border border-amber-300 whitespace-nowrap">
+            Slide <span id="rumus-counter">1</span> / 7
           </div>
         </div>
+
+        <!-- Slide stage -->
+        <div class="rumus-stage">
+
+          <!-- ===== SLIDE 1: KONSEP DASAR ===== -->
+          <article class="rumus-slide active" data-rumus-slide="0" aria-label="Slide 1: Konsep dasar">
+            <div class="rumus-slide-inner">
+              <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+                <div>
+                  <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 1 · Pengantar</span>
+                  <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Gerak Parabola: Perpaduan GLB & GLBB</h3>
+                  <p class="mt-4 leading-relaxed text-slate-600">
+                    Gerak parabola adalah perpaduan dua gerak lurus yang saling tegak lurus: <strong class="text-sky-700">GLB pada sumbu X</strong> (kecepatan konstan) dan <strong class="text-rose-600">GLBB pada sumbu Y</strong> (percepatan gravitasi konstan).
+                  </p>
+                  <div class="mt-5 rounded-xl px-5 py-4 bg-amber-50 border border-amber-200">
+                    <p class="font-semibold text-amber-800 text-sm">
+                      💡 Kunci analisis: uraikan v₀ menjadi komponen v₀ₓ = v₀ cos α dan v₀ᵧ = v₀ sin α.
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center justify-center">
+                  <svg width="100%" height="100%" viewBox="0 0 300 220" class="max-w-xs" aria-hidden="true">
+                    <line x1="30" y1="180" x2="280" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <line x1="30" y1="180" x2="30" y2="20" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <path d="M30 180 Q 130 20 260 180" fill="none" stroke="#f4b942" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="130" cy="47" r="6" fill="#e45d45" opacity="0.9"/>
+                    <line x1="30" y1="180" x2="150" y2="90" stroke="#0284c7" stroke-width="2.5"/>
+                    <polygon points="150,90 142,94 147,100" fill="#0284c7"/>
+                    <path d="M 65 180 A 40 40 0 0 0 55 150" fill="none" stroke="#d97706" stroke-width="1.8"/>
+                    <text x="70" y="165" fill="#d97706" font-size="15" font-weight="bold">α</text>
+                    <text x="85" y="125" fill="#0284c7" font-size="14" font-weight="bold">v₀</text>
+                    <text x="275" y="200" fill="#475569" font-size="12" font-weight="600">x</text>
+                    <text x="10" y="30" fill="#475569" font-size="12" font-weight="600">y</text>
+                    <text x="100" y="30" fill="#e45d45" font-size="11" font-weight="bold">Puncak</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 2: MENGURAIKAN KECEPATAN AWAL ===== -->
+          <article class="rumus-slide" data-rumus-slide="1" aria-label="Slide 2: Komponen kecepatan awal">
+            <div class="rumus-slide-inner">
+              <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 2 · Komponen Kecepatan Awal</span>
+                  <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Menguraikan Kecepatan Awal</h3>
+                  <p class="mt-4 leading-relaxed text-slate-600">
+                    Kecepatan awal v₀ membentuk sudut α terhadap horizontal. Kita uraikan menjadi dua komponen yang saling tegak lurus.
+                  </p>
+                  <div class="mt-6 space-y-3">
+                    <div class="formula-pill bg-sky-50 border-l-4 border-sky-500 text-sky-800 font-bold">
+                      v₀ₓ = v₀ · cos α
+                    </div>
+                    <div class="formula-pill bg-rose-50 border-l-4 border-rose-500 text-rose-800 font-bold">
+                      v₀ᵧ = v₀ · sin α
+                    </div>
+                  </div>
+                </div>
+                <div class="rounded-2xl p-4 bg-slate-50 border border-slate-200 flex items-center justify-center">
+                  <svg width="100%" height="100%" viewBox="0 0 300 220" class="max-w-xs" aria-hidden="true">
+                    <line x1="40" y1="180" x2="280" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <line x1="40" y1="180" x2="40" y2="30" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <line x1="40" y1="180" x2="230" y2="60" stroke="#d97706" stroke-width="3"/>
+                    <polygon points="230,60 218,64 224,72" fill="#d97706"/>
+                    <line x1="40" y1="180" x2="230" y2="180" stroke="#0284c7" stroke-width="2.5" stroke-dasharray="6,4"/>
+                    <line x1="230" y1="180" x2="230" y2="60" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="6,4"/>
+                    <path d="M 80 180 A 40 40 0 0 0 70 148" fill="none" stroke="#d97706" stroke-width="1.8"/>
+                    <text x="85" y="165" fill="#d97706" font-size="15" font-weight="bold">θ</text>
+                    <text x="120" y="115" fill="#d97706" font-size="14" font-weight="bold">v₀</text>
+                    <text x="60" y="200" fill="#0284c7" font-size="13" font-weight="bold">v₀ₓ = v₀ cos θ</text>
+                    <text x="238" y="120" fill="#e11d48" font-size="13" font-weight="bold">v₀ᵧ = v₀ sin θ</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 3: GERAK HORIZONTAL ===== -->
+          <article class="rumus-slide" data-rumus-slide="2" aria-label="Slide 3: Gerak horizontal">
+            <div class="rumus-slide-inner">
+              <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-9 items-center">
+                <div>
+                  <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 3 · Sumbu X</span>
+                  <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Komponen Horizontal (GLB)</h3>
+                  <p class="mt-4 leading-relaxed text-slate-600">
+                    Karena tidak ada percepatan pada arah horizontal, kecepatan pada sumbu X selalu konstan. Ini adalah ciri <strong class="text-sky-700">Gerak Lurus Beraturan (GLB)</strong>.
+                  </p>
+                  <p class="mt-3 leading-relaxed text-slate-600">
+                    Jarak horizontal yang ditempuh benda setiap saat:
+                  </p>
+                </div>
+                <div>
+                  <div class="rounded-2xl p-5 bg-slate-50 border border-slate-200">
+                    <div class="formula-pill bg-sky-50 border-l-4 border-sky-500 text-sky-800 font-bold">
+                      vₓ = v₀ₓ = v₀ · cos α
+                    </div>
+                    <div class="h-px my-4 bg-slate-200"></div>
+                    <div class="formula-pill bg-sky-50 border-l-4 border-sky-500 text-sky-800 font-bold">
+                      x = v₀ₓ · t = (v₀ cos α) · t
+                    </div>
+                  </div>
+                  <div class="rounded-xl p-4 mt-4 bg-sky-50 border border-dashed border-sky-300">
+                    <p class="text-sm text-slate-700">
+                      <strong class="text-sky-700">Ingat:</strong> Kecepatan horizontal tidak berubah selama benda bergerak (abaikan hambatan udara).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 4: GERAK VERTIKAL + TITIK PUNCAK ===== -->
+          <article class="rumus-slide" data-rumus-slide="3" aria-label="Slide 4: Gerak vertikal">
+            <div class="rumus-slide-inner">
+              <div class="grid lg:grid-cols-2 gap-8 items-start">
+                <div>
+                  <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-rose-100 text-rose-700">Langkah 4 · Sumbu Y</span>
+                  <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Komponen Vertikal (GLBB)</h3>
+                  <p class="mt-4 leading-relaxed text-slate-600">
+                    Pada arah vertikal, benda mengalami percepatan gravitasi <em>g</em> yang konstan ke bawah. Maka berlaku <strong class="text-rose-600">Gerak Lurus Berubah Beraturan (GLBB)</strong>.
+                  </p>
+                  <div class="rounded-2xl p-5 bg-slate-50 border border-slate-200 mt-5">
+                    <div class="formula-pill bg-rose-50 border-l-4 border-rose-500 text-rose-800 font-bold">
+                      v<sub>ty</sub> = v₀ᵧ − g · t = v₀ sin α − g · t
+                    </div>
+                    <div class="formula-pill bg-rose-50 border-l-4 border-rose-500 text-rose-800 font-bold mt-3">
+                      Δh = v₀ᵧ · t − ½ g · t²
+                    </div>
+                  </div>
+                  <p class="text-xs mt-3 text-slate-500">
+                    *Tanda negatif (−) menunjukkan arah gravitasi ke bawah berlawanan dengan arah positif sumbu Y (ke atas).
+                  </p>
+                </div>
+
+                <div class="rounded-2xl p-5 bg-amber-50 border border-amber-200">
+                  <h4 class="formula-script font-bold text-xl text-slate-800 mb-4">Analisis di Titik Puncak</h4>
+                  <div class="flex justify-center mb-5">
+                    <svg width="100%" height="100%" viewBox="0 0 280 200" class="max-h-44" aria-hidden="true">
+                      <line x1="30" y1="170" x2="260" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                      <line x1="30" y1="170" x2="30" y2="20" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                      <text x="265" y="185" fill="#475569" font-size="11" font-weight="600">x</text>
+                      <text x="15" y="25" fill="#475569" font-size="11" font-weight="600">y</text>
+                      <path d="M 30 170 Q 130 20 230 170" fill="none" stroke="#f4b942" stroke-width="2.5" stroke-dasharray="5,3"/>
+                      <circle cx="130" cy="52" r="6" fill="#e45d45"/>
+                      <text x="140" y="45" fill="#e45d45" font-size="11" font-weight="bold">Titik Puncak</text>
+                      <line x1="130" y1="52" x2="180" y2="52" stroke="#0284c7" stroke-width="2.5"/>
+                      <polygon points="180,52 172,47 172,57" fill="#0284c7"/>
+                      <text x="185" y="56" fill="#0284c7" font-size="10" font-weight="bold">v_tx = v₀ cos α</text>
+                      <line x1="130" y1="52" x2="130" y2="95" stroke="#e11d48" stroke-width="2.5"/>
+                      <polygon points="130,95 125,87 135,87" fill="#e11d48"/>
+                      <text x="135" y="90" fill="#e11d48" font-size="10" font-weight="bold">v_ty = 0</text>
+                    </svg>
+                  </div>
+                  <div class="space-y-2 text-sm text-slate-700">
+                    <p>Karena di titik puncak <strong>v<sub>ty</sub> = 0</strong>, maka:</p>
+                    <div class="formula-pill bg-white border-l-4 border-rose-500 text-rose-800 font-bold text-sm">
+                      0 = v₀ᵧ − g · t<sub>p</sub>
+                    </div>
+                    <div class="formula-pill bg-white border-l-4 border-rose-500 text-rose-800 font-bold text-sm">
+                      g · t<sub>p</sub> = v₀ᵧ → t<sub>p</sub> = v₀ᵧ / g
+                    </div>
+                    <p class="text-xs">Substitusi v₀ᵧ = v₀ sin α:</p>
+                    <div class="formula-pill bg-amber-100 border-l-4 border-amber-500 text-amber-900 font-bold text-base">
+                      t<sub>p</sub> = (v₀ sin α) / g
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 5: PENURUNAN RUMUS R (dengan ilustrasi 2tp) ===== -->
+          <article class="rumus-slide" data-rumus-slide="4" aria-label="Slide 5: Penurunan rumus R">
+            <div class="rumus-slide-inner">
+              <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-8 items-center">
+                <div>
+                  <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 5 · Jarak Terjauh</span>
+                  <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Menurunkan Rumus Jangkauan (R)</h3>
+                  <p class="mt-4 leading-relaxed text-slate-600">
+                    Karena lintasan parabola <strong>simetris</strong>, waktu untuk naik ke puncak sama dengan waktu untuk turun kembali ke tanah. Maka <strong class="text-amber-700">waktu total di udara = 2 t<sub>p</sub></strong>.
+                  </p>
+                  <div class="mt-5 space-y-3">
+                    <p class="text-sm text-slate-700"><strong>1.</strong> Waktu total di udara:</p>
+                    <div class="formula-pill bg-amber-50 border-l-4 border-amber-500 text-amber-900 font-bold text-sm">
+                      t<sub>total</sub> = 2 · t<sub>p</sub> = 2 · (v₀ sin α) / g
+                    </div>
+                    <p class="text-sm text-slate-700"><strong>2.</strong> Substitusi ke persamaan X (GLB):</p>
+                    <div class="formula-pill bg-sky-50 border-l-4 border-sky-500 text-sky-800 font-bold text-sm">
+                      R = v₀ₓ · t<sub>total</sub> = v₀ cos α · (2 v₀ sin α) / g
+                    </div>
+                    <p class="text-sm text-slate-700"><strong>3.</strong> Gunakan identitas 2 sin α cos α = sin 2α:</p>
+                    <div class="formula-pill bg-sky-500 text-white font-bold text-base">
+                      R = (v₀² · sin 2α) / g
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ilustrasi 2tp -->
+                <div class="rounded-2xl p-4 bg-slate-50 border border-slate-200">
+                  <p class="text-center text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Ilustrasi: Simetri Lintasan → t<sub>total</sub> = 2t<sub>p</sub></p>
+                  <svg viewBox="0 0 520 320" class="w-full" aria-label="Ilustrasi waktu total 2tp untuk jangkauan R">
+                    <!-- Ground line -->
+                    <line x1="50" y1="240" x2="490" y2="240" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="496" y="244" fill="#475569" font-size="11" font-weight="600">x</text>
+                    <text x="40" y="34" fill="#475569" font-size="11" font-weight="600">y</text>
+
+                    <!-- Y axis (dashed) -->
+                    <line x1="50" y1="240" x2="50" y2="40" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- Vertical guides at key points (behind curve) -->
+                    <line x1="50" y1="240" x2="50" y2="270" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="260" y1="80" x2="260" y2="270" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="470" y1="240" x2="470" y2="270" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- Parabola curve -->
+                    <path d="M 50 240 Q 260 -80 470 240" fill="none" stroke="#f4b942" stroke-width="3.5"/>
+
+                    <!-- Peak point -->
+                    <circle cx="260" cy="80" r="7" fill="#e45d45"/>
+                    <text x="270" y="72" fill="#e45d45" font-size="11" font-weight="bold">Puncak (v_ty = 0)</text>
+
+                    <!-- tp marker on first half (above curve) -->
+                    <line x1="50" y1="30" x2="260" y2="30" stroke="#0284c7" stroke-width="2"/>
+                    <polygon points="50,30 62,25 62,35" fill="#0284c7"/>
+                    <polygon points="260,30 248,25 248,35" fill="#0284c7"/>
+                    <text x="105" y="22" fill="#0284c7" font-size="12" font-weight="bold">t_p (naik)</text>
+
+                    <!-- tp marker on second half -->
+                    <line x1="260" y1="30" x2="470" y2="30" stroke="#0284c7" stroke-width="2"/>
+                    <polygon points="260,30 272,25 272,35" fill="#0284c7"/>
+                    <polygon points="470,30 458,25 458,35" fill="#0284c7"/>
+                    <text x="330" y="22" fill="#0284c7" font-size="12" font-weight="bold">t_p (turun)</text>
+
+                    <!-- Brace connecting both tp segments -->
+                    <path d="M 50 12 L 50 6 L 260 6 L 260 12" fill="none" stroke="#94a3b8" stroke-width="1"/>
+                    <path d="M 260 12 L 260 6 L 470 6 L 470 12" fill="none" stroke="#94a3b8" stroke-width="1"/>
+
+                    <!-- Total time 2tp (below axis) -->
+                    <line x1="50" y1="295" x2="470" y2="295" stroke="#d97706" stroke-width="3"/>
+                    <polygon points="50,295 62,290 62,300" fill="#d97706"/>
+                    <polygon points="470,295 458,290 458,300" fill="#d97706"/>
+                    <text x="205" y="316" fill="#d97706" font-size="14" font-weight="bold">t_total = 2 t_p</text>
+
+                    <!-- Range R on x axis -->
+                    <line x1="50" y1="240" x2="470" y2="240" stroke="#f4b942" stroke-width="5"/>
+                    <rect x="245" y="228" width="30" height="24" fill="#fff" opacity="0.85" rx="4"/>
+                    <text x="253" y="246" fill="#d97706" font-size="15" font-weight="bold">R</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 6: PENURUNAN RUMUS h_max ===== -->
+          <article class="rumus-slide" data-rumus-slide="5" aria-label="Slide 6: Penurunan rumus h_max">
+            <div class="rumus-slide-inner">
+              <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-rose-100 text-rose-700">Langkah 6 · Tinggi Maksimum</span>
+              <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Menurunkan Rumus h<sub>max</sub></h3>
+              <p class="mt-3 leading-relaxed max-w-3xl text-slate-600">
+                Substitusikan waktu puncak \(t_p = \frac{v_0 \sin\alpha}{g}\) ke persamaan posisi vertikal.
+              </p>
+
+              <div class="grid lg:grid-cols-2 gap-6 mt-6">
+                <div class="rounded-2xl p-5 bg-rose-50 border border-rose-200">
+                  <h4 class="formula-script font-bold text-lg text-rose-800 mb-3">Langkah Substitusi</h4>
+                  <div class="space-y-3 text-sm text-slate-700">
+                    <p><strong>1.</strong> Persamaan posisi vertikal:</p>
+                    <div class="formula-pill bg-white border-l-4 border-rose-500 text-rose-800 font-bold text-xs">
+                      h<sub>max</sub> = v₀ sin α · t<sub>p</sub> − ½ g · t<sub>p</sub>²
+                    </div>
+                    <p><strong>2.</strong> Substitusi \(t_p = \frac{v_0 \sin\alpha}{g}\):</p>
+                    <div class="formula-pill bg-white border-l-4 border-rose-500 text-rose-800 font-bold text-xs">
+                      h<sub>max</sub> = v₀ sin α · (v₀ sin α)/g − ½ g · [(v₀ sin α)/g]²
+                    </div>
+                    <p><strong>3.</strong> Sederhanakan suku pertama:</p>
+                    <div class="formula-pill bg-white border-l-4 border-rose-500 text-rose-800 font-bold text-xs">
+                      = (v₀² sin²α)/g − ½ · (v₀² sin²α)/g
+                    </div>
+                    <p><strong>4.</strong> Faktorkan (1 − ½ = ½):</p>
+                    <div class="formula-pill bg-rose-500 text-white font-bold text-base">
+                      h<sub>max</sub> = (v₀² · sin²α) / (2g)
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rounded-2xl p-5 bg-amber-50 border border-amber-200">
+                  <h4 class="formula-script font-bold text-lg text-amber-900 mb-3">⚠️ Kesalahan Umum</h4>
+                  <p class="text-sm text-slate-700 leading-relaxed">
+                    Banyak siswa lupa mengalikan faktor ½ saat menyederhanakan, sehingga menuliskan:
+                  </p>
+                  <div class="formula-pill bg-rose-100 border-l-4 border-rose-500 text-rose-800 font-bold text-sm mt-3 line-through opacity-70">
+                    h_max = (v₀² sin²α) / g  ❌
+                  </div>
+                  <p class="text-sm text-slate-700 mt-3">Hasil yang <strong>benar</strong> adalah:</p>
+                  <div class="formula-pill bg-emerald-100 border-l-4 border-emerald-500 text-emerald-900 font-bold text-base mt-2">
+                    h_max = (v₀² sin²α) / (2g)  ✅
+                  </div>
+                  <p class="text-xs text-slate-600 mt-4 leading-relaxed">
+                    💡 <strong>Tips:</strong> Selalu cek satuan dan pastikan faktor ½ pada suku kedua tidak hilang saat menggabungkan suku-suku sejenis.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ===== SLIDE 7: RINGKASAN ===== -->
+          <article class="rumus-slide" data-rumus-slide="6" aria-label="Slide 7: Ringkasan rumus">
+            <div class="rumus-slide-inner">
+              <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700">Ringkasan</span>
+              <h3 class="formula-script font-bold text-2xl md:text-3xl mt-4 text-slate-800">Rumus Kunci Gerak Parabola</h3>
+              <p class="mt-3 text-slate-600 max-w-2xl">Semua rumus praktis yang telah diturunkan, dikumpulkan dalam satu tempat untuk memudahkan review.</p>
+
+              <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                <div class="rounded-xl p-4 bg-sky-50 border-l-4 border-sky-500">
+                  <p class="text-xs font-bold text-sky-700 uppercase tracking-wider">Kecepatan Awal</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">v₀ₓ = v₀ cos α</p>
+                  <p class="formula-script font-bold text-slate-800 mt-1 text-sm">v₀ᵧ = v₀ sin α</p>
+                </div>
+                <div class="rounded-xl p-4 bg-sky-50 border-l-4 border-sky-500">
+                  <p class="text-xs font-bold text-sky-700 uppercase tracking-wider">Gerak Horizontal</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">vₓ = v₀ cos α (konstan)</p>
+                  <p class="formula-script font-bold text-slate-800 mt-1 text-sm">x = (v₀ cos α) · t</p>
+                </div>
+                <div class="rounded-xl p-4 bg-rose-50 border-l-4 border-rose-500">
+                  <p class="text-xs font-bold text-rose-700 uppercase tracking-wider">Gerak Vertikal</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">v<sub>ty</sub> = v₀ sin α − g t</p>
+                  <p class="formula-script font-bold text-slate-800 mt-1 text-sm">Δh = (v₀ sin α) t − ½ g t²</p>
+                </div>
+                <div class="rounded-xl p-4 bg-amber-50 border-l-4 border-amber-500">
+                  <p class="text-xs font-bold text-amber-700 uppercase tracking-wider">Waktu Puncak</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">t<sub>p</sub> = (v₀ sin α) / g</p>
+                </div>
+                <div class="rounded-xl p-4 bg-amber-50 border-l-4 border-amber-500">
+                  <p class="text-xs font-bold text-amber-700 uppercase tracking-wider">Tinggi Maksimum</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">h<sub>max</sub> = (v₀² sin²α) / (2g)</p>
+                </div>
+                <div class="rounded-xl p-4 bg-amber-50 border-l-4 border-amber-500">
+                  <p class="text-xs font-bold text-amber-700 uppercase tracking-wider">Jarak Terjauh</p>
+                  <p class="formula-script font-bold text-slate-800 mt-2 text-sm">R = (v₀² sin 2α) / g</p>
+                </div>
+              </div>
+
+              <div class="mt-6 rounded-xl p-4 bg-slate-800 text-white flex items-start gap-3">
+                <i data-lucide="lightbulb" class="text-amber-400 shrink-0 mt-0.5" width="20" height="20"></i>
+                <p class="text-sm leading-relaxed">
+                  <strong class="text-amber-300">Catatan Penting:</strong> Semua rumus ini berlaku dengan asumsi <em>tidak ada hambatan udara</em> dan percepatan gravitasi \(g\) konstan. Untuk kondisi nyata, faktor hambatan udara perlu diperhitungkan.
+                </p>
+              </div>
+            </div>
+          </article>
+
+        </div><!-- /rumus-stage -->
+
+        <!-- Navigation for RUMUS slides -->
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-slate-200">
+          <button id="rumus-prev" type="button" class="rumus-nav-btn prev" aria-label="Slide sebelumnya">
+            <i data-lucide="arrow-left" width="16" height="16"></i>
+            <span>Sebelumnya</span>
+          </button>
+
+          <div class="flex items-center gap-2.5" aria-label="Pilih slide">
+            <button type="button" class="rumus-dot active" data-go-to="0" aria-label="Slide 1"></button>
+            <button type="button" class="rumus-dot" data-go-to="1" aria-label="Slide 2"></button>
+            <button type="button" class="rumus-dot" data-go-to="2" aria-label="Slide 3"></button>
+            <button type="button" class="rumus-dot" data-go-to="3" aria-label="Slide 4"></button>
+            <button type="button" class="rumus-dot" data-go-to="4" aria-label="Slide 5"></button>
+            <button type="button" class="rumus-dot" data-go-to="5" aria-label="Slide 6"></button>
+            <button type="button" class="rumus-dot" data-go-to="6" aria-label="Slide 7"></button>
+          </div>
+
+          <button id="rumus-next" type="button" class="rumus-nav-btn next" aria-label="Slide selanjutnya">
+            <span>Selanjutnya</span>
+            <i data-lucide="arrow-right" width="16" height="16"></i>
+          </button>
+        </div>
+
       </div>
     </section>
 
-    <!-- QUIZ (10 soal, 5 pilihan) -->
+    <!-- QUIZ -->
     <section id="quiz-page" class="page-view" aria-labelledby="quiz-title">
       <div class="max-w-4xl mx-auto px-5 py-8 md:px-10 md:py-12">
         <div class="text-center">
@@ -611,10 +676,8 @@
         </div>
         <p id="quiz-progress-text" class="mt-3 text-center text-sm font-semibold text-slate-600">Pertanyaan 1 dari 10</p>
 
-        <!-- container untuk soal -->
         <div id="quiz-container"></div>
 
-        <!-- Summary -->
         <section id="quiz-summary" class="hidden-state mt-6">
           <div class="rounded-2xl p-8 text-center shadow-[0_16px_35px_rgba(16,35,62,.10)] bg-white">
             <i data-lucide="award" class="mx-auto text-amber-500" width="46" height="46"></i>
@@ -640,7 +703,7 @@
 
 <script>
   (function() {
-    // ----- NAVIGATION -----
+    // ----- NAVIGATION (main pages) -----
     const pages = document.querySelectorAll(".page-view");
     const navButtons = document.querySelectorAll(".nav-tab");
 
@@ -649,12 +712,6 @@
       navButtons.forEach(button => button.classList.toggle("active", button.dataset.page === pageName));
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (pageName === "simulation") draw(pausedElapsed);
-      if (pageName === "rumus") {
-        // render MathJax saat halaman rumus dibuka
-        if (window.MathJax && MathJax.typesetPromise) {
-          setTimeout(() => MathJax.typesetPromise(), 100);
-        }
-      }
     }
 
     document.querySelectorAll(".nav-tab").forEach(btn => {
@@ -671,48 +728,52 @@
     document.getElementById("go-rumus").addEventListener("click", () => showPage("rumus"));
     document.getElementById("go-quiz").addEventListener("click", () => showPage("quiz"));
 
-    // ----- RUMUS SLIDESHOW -----
-    const rumusSlides = [...document.querySelectorAll("#rumus-page .slide")];
-    const rumusDots = [...document.querySelectorAll("#rumus-page .slide-dot")];
+    // ----- RUMUS SLIDES -----
+    const rumusSlides = [...document.querySelectorAll(".rumus-slide")];
+    const rumusDots = [...document.querySelectorAll(".rumus-dot")];
     const rumusPrev = document.getElementById("rumus-prev");
     const rumusNext = document.getElementById("rumus-next");
     const rumusCounter = document.getElementById("rumus-counter");
-    let rumusCurrent = 0;
+    let currentRumusSlide = 0;
 
     function showRumusSlide(index) {
-      rumusCurrent = Math.max(0, Math.min(index, rumusSlides.length - 1));
+      currentRumusSlide = Math.max(0, Math.min(index, rumusSlides.length - 1));
 
       rumusSlides.forEach((slide, i) => {
-        slide.classList.toggle("is-active", i === rumusCurrent);
+        slide.classList.toggle("active", i === currentRumusSlide);
       });
-      rumusDots.forEach((dot, i) => {
-        const isCur = i === rumusCurrent;
-        dot.classList.toggle("is-current", isCur);
-        dot.setAttribute("aria-current", String(isCur));
-      });
-      rumusCounter.textContent = String(rumusCurrent + 1);
-      rumusPrev.disabled = rumusCurrent === 0;
-      rumusNext.disabled = rumusCurrent === rumusSlides.length - 1;
 
-      // Re-render MathJax
-      if (window.MathJax && MathJax.typesetPromise) {
-        MathJax.typesetPromise();
+      rumusDots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentRumusSlide);
+      });
+
+      rumusCounter.textContent = String(currentRumusSlide + 1);
+      rumusPrev.disabled = currentRumusSlide === 0;
+      rumusNext.disabled = currentRumusSlide === rumusSlides.length - 1;
+
+      // Scroll ke atas halaman rumus agar slide terlihat dari awal
+      const rumusPage = document.getElementById("rumus-page");
+      if (rumusPage.classList.contains("active")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
 
-    rumusPrev.addEventListener("click", () => showRumusSlide(rumusCurrent - 1));
-    rumusNext.addEventListener("click", () => showRumusSlide(rumusCurrent + 1));
+    rumusPrev.addEventListener("click", () => showRumusSlide(currentRumusSlide - 1));
+    rumusNext.addEventListener("click", () => showRumusSlide(currentRumusSlide + 1));
     rumusDots.forEach(dot => {
       dot.addEventListener("click", () => showRumusSlide(Number(dot.dataset.goTo)));
     });
 
-    // Keyboard arrow untuk slide rumus (hanya aktif saat halaman rumus terbuka)
+    // Keyboard navigation hanya aktif saat halaman rumus aktif
     document.addEventListener("keydown", (event) => {
       const rumusPage = document.getElementById("rumus-page");
       if (!rumusPage.classList.contains("active")) return;
-      if (event.key === "ArrowLeft") showRumusSlide(rumusCurrent - 1);
-      if (event.key === "ArrowRight") showRumusSlide(rumusCurrent + 1);
+      if (event.key === "ArrowLeft") showRumusSlide(currentRumusSlide - 1);
+      if (event.key === "ArrowRight") showRumusSlide(currentRumusSlide + 1);
     });
+
+    // Inisialisasi
+    showRumusSlide(0);
 
     // ----- SIMULATION -----
     const canvas = document.getElementById("simulation-canvas");
@@ -827,9 +888,6 @@
     lucide.createIcons();
     updateReadout();
 
-    // Inisialisasi slide rumus
-    showRumusSlide(0);
-
     // ----- QUIZ -----
     const quizData = [
       { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1, explanation: "Tidak ada gaya horizontal, sehingga Vx konstan (GLB)." },
@@ -888,20 +946,21 @@
           card.dataset.answered = "true";
           const correct = this.dataset.correct === "true";
           const dataIndex = parseInt(card.dataset.question);
-          
+          const data = quizData[dataIndex];
+
           this.classList.add(correct ? "selected-correct" : "selected-wrong");
           if(correct) score++;
-          
+
           card.querySelector(correct ? ".quiz-feedback.correct" : ".quiz-feedback.wrong").classList.remove("hidden-state");
           card.querySelector(`#explanation-${dataIndex}`).classList.remove("hidden-state");
-          
+
           card.querySelectorAll(".quiz-option").forEach(item => {
             item.disabled = true;
             if(item.dataset.correct === "true") {
               item.classList.add("selected-correct");
             }
           });
-          
+
           card.querySelector(".next-question").classList.remove("hidden-state");
         });
       });
