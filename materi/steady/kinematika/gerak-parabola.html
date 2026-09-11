@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modul Fisika · Gerak Parabola</title>
-  <!-- Tailwind + Lucide + Google Fonts -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -77,11 +76,6 @@
       width: 28px; height: 28px; border-radius: 50%;
       font-size: 13px; font-weight: 700; flex-shrink: 0;
     }
-    .derivation-block { position: relative; }
-    .derivation-block::before {
-      content: ""; position: absolute; left: 13px; top: 32px; bottom: 0;
-      width: 2px; background: rgba(16,35,62,.08);
-    }
     .chalk-diagram {
       background: #10233e;
       background-image: radial-gradient(circle at 20% 20%, rgba(244,185,66,.12), transparent 15rem);
@@ -94,6 +88,27 @@
       background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.15) 4px);
     }
     .chalk-diagram svg { position: relative; z-index: 1; }
+
+    /* === SIDE-BY-SIDE TABLE === */
+    .sbs-table { width: 100%; border-collapse: collapse; }
+    .sbs-table th {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+      font-weight: 700; padding: 10px 12px; text-align: center;
+    }
+    .sbs-table td {
+      padding: 14px 12px; text-align: center; vertical-align: middle;
+      border-top: 1px solid rgba(16,35,62,.08);
+    }
+    .sbs-table td:first-child { text-align: center; }
+    .sbs-table td.arrow-cell {
+      width: 40px; font-weight: 700; font-size: 18px; padding: 0;
+    }
+    .sbs-blue th { background: #e0f2fe; color: #0369a1; }
+    .sbs-blue td.arrow-cell { color: #38bdf8; }
+    .sbs-blue tr:nth-child(even) td { background: rgba(224,242,254,.3); }
+    .sbs-rose th { background: #ffe4e6; color: #be123c; }
+    .sbs-rose td.arrow-cell { color: #fb7185; }
+    .sbs-rose tr:nth-child(even) td { background: rgba(255,228,230,.3); }
   </style>
 </head>
 <body>
@@ -186,26 +201,25 @@
             <i data-lucide="sigma" class="text-amber-600" width="30" height="30"></i>
           </div>
           <div class="grid sm:grid-cols-3 gap-3 mt-5">
-            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">Vx = V₀ · cos θ</p>
-            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">h<sub>max</sub> = (V₀² · sin²θ) / (2g)</p>
-            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">R = (V₀² · sin 2θ) / g</p>
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">Vx = V₀ · cos α</p>
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">h<sub>max</sub> = (V₀² · sin²α) / (2g)</p>
+            <p class="formula-script rounded-xl bg-slate-50 p-4 font-bold text-slate-800 border border-slate-200">R = (V₀² · sin 2α) / g</p>
           </div>
         </section>
       </div>
     </section>
 
-    <!-- ==================== RUMUS (merged from presentation) ==================== -->
+    <!-- ==================== RUMUS ==================== -->
     <section id="rumus-page" class="page-view" aria-labelledby="rumus-title">
       <div class="max-w-7xl mx-auto px-5 py-8 md:px-10 md:py-12">
 
-        <!-- Header -->
         <div class="mb-8">
           <p class="text-xs uppercase tracking-[.16em] font-bold text-amber-600">Referensi lengkap</p>
           <h2 id="rumus-title" class="formula-script font-bold text-3xl mt-2 text-slate-800">Rumus &amp; Penurunan Gerak Parabola</h2>
           <p class="mt-3 leading-relaxed max-w-3xl text-slate-600">Kumpulan konsep, persamaan, dan langkah penurunan rumus penting dalam gerak parabola — dari penguraian kecepatan awal hingga rumus praktis jangkauan dan tinggi maksimum.</p>
         </div>
 
-        <!-- ===== SECTION 1: Konsep Dasar ===== -->
+        <!-- SECTION 1: Konsep Dasar -->
         <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-7 items-stretch mb-8">
           <article class="formula-card rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Pengantar</span>
@@ -237,39 +251,74 @@
           </div>
         </div>
 
-        <!-- ===== SECTION 2: Komponen Kecepatan Awal ===== -->
+        <!-- SECTION 2: Komponen Kecepatan Awal (Trigonometri) -->
         <div class="formula-card blue rounded-2xl p-6 md:p-8 bg-white shadow-sm mb-8">
-          <div class="grid lg:grid-cols-2 gap-7 items-center">
-            <div>
-              <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 1</span>
-              <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Menguraikan Kecepatan Awal</h3>
-              <p class="leading-relaxed mt-4 text-slate-600">
-                Kecepatan awal v₀ membentuk sudut α terhadap horizontal. Kita uraikan menjadi dua komponen yang saling tegak lurus.
-              </p>
-              <div class="formula-box-dark mt-6 px-5 py-5">
-                <p class="font-bold text-lg text-sky-700 formula-script">\[ v_{0x} = v_0 \cos\alpha \]</p>
-                <p class="font-bold text-lg mt-4 text-rose-600 formula-script">\[ v_{0y} = v_0 \sin\alpha \]</p>
+          <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 1</span>
+          <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Menguraikan Kecepatan Awal dengan Trigonometri</h3>
+          <p class="leading-relaxed mt-4 text-slate-600">
+            Untuk mencari kecepatan awal komponen horizontal (sumbu x) dan vertikal (sumbu y), kita gunakan perbandingan trigonometri pada segitiga siku-siku yang dibentuk oleh v₀, v₀ₓ, dan v₀ᵧ.
+          </p>
+
+          <div class="grid lg:grid-cols-2 gap-7 mt-6 items-center">
+            <!-- Kiri: Penurunan V0x -->
+            <div class="rounded-2xl border border-sky-200 bg-sky-50/50 p-5">
+              <p class="text-xs font-bold uppercase tracking-wider text-sky-700 mb-3">Komponen Horizontal (V₀ₓ)</p>
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-slate-900 p-3">
+                  <svg width="130" height="100" viewBox="0 0 130 100" aria-hidden="true">
+                    <line x1="15" y1="80" x2="115" y2="20" stroke="#f5ca68" stroke-width="2.5"/>
+                    <polygon points="115,20 105,22 110,29" fill="#f5ca68"/>
+                    <text x="50" y="42" fill="#f5ca68" font-size="13" font-weight="bold">v₀</text>
+                    <line x1="15" y1="80" x2="115" y2="80" stroke="#93d8ff" stroke-width="2.5"/>
+                    <text x="55" y="95" fill="#93d8ff" font-size="12" font-weight="bold">v₀ₓ</text>
+                    <line x1="115" y1="80" x2="115" y2="20" stroke="#ff9678" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="120" y="55" fill="#ff9678" font-size="11" font-weight="bold">v₀ᵧ</text>
+                    <path d="M 40 80 A 25 25 0 0 0 33 63" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
+                    <text x="45" y="72" fill="#f5ca68" font-size="14" font-weight="bold">α</text>
+                  </svg>
+                </div>
+                <div class="space-y-2 text-sm text-slate-700">
+                  <p class="font-semibold text-slate-500 text-xs uppercase tracking-wide">Dengan trigonometri:</p>
+                  <p class="formula-script">\(\dfrac{\text{samping}}{\text{miring}} = \cos\alpha\)</p>
+                  <p class="formula-script">\(\dfrac{V_{0x}}{V_0} = \cos\alpha\)</p>
+                  <div class="rounded-lg bg-sky-100 border border-sky-300 px-3 py-2 mt-2">
+                    <p class="formula-script font-bold text-sky-800">\(\boxed{V_{0x} = V_0 \cos\alpha}\)</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="rounded-2xl p-5 flex items-center justify-center bg-slate-900/95 min-h-[220px]">
-              <svg width="300" height="220" viewBox="0 0 300 220" aria-hidden="true">
-                <line x1="40" y1="180" x2="280" y2="180" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                <line x1="40" y1="180" x2="40" y2="30" stroke="#f8f4e7" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5"/>
-                <line x1="40" y1="180" x2="230" y2="60" stroke="#f5ca68" stroke-width="3"/>
-                <polygon points="230,60 218,64 224,72" fill="#f5ca68"/>
-                <line x1="40" y1="180" x2="230" y2="180" stroke="#93d8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
-                <line x1="230" y1="180" x2="230" y2="60" stroke="#ff9678" stroke-width="2.5" stroke-dasharray="6,4"/>
-                <path d="M 80 180 A 40 40 0 0 0 70 148" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
-                <text x="85" y="165" fill="#f5ca68" font-size="16" font-weight="bold">θ</text>
-                <text x="120" y="115" fill="#f5ca68" font-size="15" font-weight="bold">v₀</text>
-                <text x="130" y="198" fill="#93d8ff" font-size="14" font-weight="bold">v₀ₓ = v₀ cos θ</text>
-                <text x="240" y="120" fill="#ff9678" font-size="14" font-weight="bold">v₀ᵧ = v₀ sin θ</text>
-              </svg>
+
+            <!-- Kanan: Penurunan V0y -->
+            <div class="rounded-2xl border border-rose-200 bg-rose-50/50 p-5">
+              <p class="text-xs font-bold uppercase tracking-wider text-rose-700 mb-3">Komponen Vertikal (V₀ᵧ)</p>
+              <div class="flex items-start gap-4">
+                <div class="shrink-0 rounded-xl bg-slate-900 p-3">
+                  <svg width="130" height="100" viewBox="0 0 130 100" aria-hidden="true">
+                    <line x1="15" y1="80" x2="115" y2="20" stroke="#f5ca68" stroke-width="2.5"/>
+                    <polygon points="115,20 105,22 110,29" fill="#f5ca68"/>
+                    <text x="50" y="42" fill="#f5ca68" font-size="13" font-weight="bold">v₀</text>
+                    <line x1="15" y1="80" x2="115" y2="80" stroke="#93d8ff" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="55" y="95" fill="#93d8ff" font-size="12" font-weight="bold">v₀ₓ</text>
+                    <line x1="115" y1="80" x2="115" y2="20" stroke="#ff9678" stroke-width="2.5"/>
+                    <text x="120" y="55" fill="#ff9678" font-size="12" font-weight="bold">v₀ᵧ</text>
+                    <path d="M 40 80 A 25 25 0 0 0 33 63" fill="none" stroke="#f5ca68" stroke-width="1.8"/>
+                    <text x="45" y="72" fill="#f5ca68" font-size="14" font-weight="bold">α</text>
+                  </svg>
+                </div>
+                <div class="space-y-2 text-sm text-slate-700">
+                  <p class="font-semibold text-slate-500 text-xs uppercase tracking-wide">Dengan trigonometri:</p>
+                  <p class="formula-script">\(\dfrac{\text{depan}}{\text{miring}} = \sin\alpha\)</p>
+                  <p class="formula-script">\(\dfrac{V_{0y}}{V_0} = \sin\alpha\)</p>
+                  <div class="rounded-lg bg-rose-100 border border-rose-300 px-3 py-2 mt-2">
+                    <p class="formula-script font-bold text-rose-800">\(\boxed{V_{0y} = V_0 \sin\alpha}\)</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- ===== SECTION 3 & 4: Horizontal & Vertikal ===== -->
+        <!-- SECTION 3 & 4: Horizontal & Vertikal -->
         <div class="grid lg:grid-cols-2 gap-7 mb-8">
           <!-- Horizontal -->
           <article class="formula-card blue rounded-2xl p-6 md:p-8 bg-white shadow-sm">
@@ -290,28 +339,91 @@
             </div>
           </article>
 
-          <!-- Vertikal -->
+          <!-- Vertikal (SIDE-BY-SIDE) -->
           <article class="formula-card coral rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-rose-100 text-rose-700">Langkah 3</span>
             <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Komponen Vertikal (Sumbu Y)</h3>
             <p class="leading-relaxed mt-4 text-slate-600">
               Pada arah vertikal, benda mengalami percepatan gravitasi g yang konstan ke bawah. Maka berlaku <strong class="text-rose-600">Gerak Lurus Berubah Beraturan (GLBB)</strong>.
             </p>
-            <div class="formula-box-dark mt-6 p-5" style="border-left-color:#e45d45;">
-              <p class="font-bold text-lg text-rose-600 formula-script">\[ v_{ty} = v_{0y} + g t = v_0 \sin\alpha + g t \]</p>
-              <p class="font-bold text-lg mt-4 text-rose-600 formula-script">\[ \Delta h = v_{0y} t + \tfrac{1}{2} g t^2 = (v_0 \sin\alpha) t + \tfrac{1}{2} g t^2 \]</p>
+
+            <div class="mt-5 rounded-xl border border-rose-200 overflow-hidden">
+              <table class="sbs-table sbs-rose">
+                <thead>
+                  <tr>
+                    <th>GLBB Umum</th>
+                    <th class="arrow-cell" style="background:#ffe4e6;"></th>
+                    <th>Komponen Vertikal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="formula-script font-bold text-slate-800">\(a = \dfrac{\Delta v}{\Delta t}\)</span></td>
+                    <td class="arrow-cell">→</td>
+                    <td>
+                      <span class="formula-script font-bold text-rose-700">\(a = g\)</span>
+                      <p class="text-xs text-slate-500 mt-1">percepatan gravitasi</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="formula-script font-bold text-slate-800">\(v_t = v_0 \pm g t\)</span></td>
+                    <td class="arrow-cell" style="width:110px;">
+                      <div class="flex flex-col items-center leading-tight px-1">
+                        <span class="text-[10px] text-slate-500 font-semibold">substitusi</span>
+                        <span class="text-base">→</span>
+                        <span class="text-[11px] font-bold text-rose-700 mt-0.5">\(v_{0y} = v_0 \sin\alpha\)</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="formula-script font-bold text-rose-700">\(v_{ty} = v_{0y} \mp g t\)</span>
+                      <p class="text-xs text-slate-500 mt-1">(−) naik, (+) turun</p>
+                      <p class="formula-script text-rose-700 text-sm mt-1 font-bold">\(= v_0 \sin\alpha \mp g t\)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="formula-script font-bold text-slate-800">\(\Delta x = v_0 t \pm \tfrac{1}{2} g t^2\)</span></td>
+                    <td class="arrow-cell" style="width:110px;">
+                      <div class="flex flex-col items-center leading-tight px-1">
+                        <span class="text-[10px] text-slate-500 font-semibold">substitusi</span>
+                        <span class="text-base">→</span>
+                        <span class="text-[11px] font-bold text-rose-700 mt-0.5">\(v_{0y} = v_0 \sin\alpha\)</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="formula-script font-bold text-rose-700">\(\Delta h = v_{0y} t - \tfrac{1}{2} g t^2\)</span>
+                      <p class="text-xs text-slate-500 mt-1">perpindahan vertikal</p>
+                      <p class="formula-script text-rose-700 text-sm mt-1 font-bold">\(= (v_0 \sin\alpha) t - \tfrac{1}{2} g t^2\)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="formula-script font-bold text-slate-800">\(v_t^2 = v_0^2 + 2a\Delta x\)</span></td>
+                    <td class="arrow-cell" style="width:110px;">
+                      <div class="flex flex-col items-center leading-tight px-1">
+                        <span class="text-[10px] text-slate-500 font-semibold">substitusi</span>
+                        <span class="text-base">→</span>
+                        <span class="text-[11px] font-bold text-rose-700 mt-0.5">\(a = -g\)</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="formula-script font-bold text-rose-700">\(v_{ty}^2 = v_{0y}^2 - 2g\Delta h\)</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="mt-5 rounded-xl p-4 bg-rose-50 border border-dashed border-rose-300">
+
+            <div class="mt-4 rounded-xl p-4 bg-rose-50 border border-dashed border-rose-300">
               <p class="text-sm font-bold text-rose-700 mb-2">Titik Puncak</p>
               <ul class="text-sm text-slate-700 space-y-2">
-                <li class="flex gap-2"><span class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-rose-500"></span>Di titik tertinggi, kecepatan vertikal benda <strong>v<sub>ty</sub> = 0</strong>.</li>
-                <li class="flex gap-2"><span class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-amber-500"></span>Waktu untuk mencapai puncak: <strong>\[ t = \frac{v_0 \sin\alpha}{g} \]</strong></li>
+                <li class="flex gap-2"><span class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-rose-500"></span>Di titik tertinggi, kecepatan vertikal benda <strong>\(v_{ty} = 0\)</strong>.</li>
+                <li class="flex gap-2"><span class="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-amber-500"></span>Waktu untuk mencapai puncak: <strong>\[ t_p = \frac{v_0 \sin\alpha}{g} \]</strong></li>
               </ul>
+              <p class="text-xs text-slate-500 mt-3 italic">Keterangan: \(t_p\) = waktu untuk mencapai titik puncak (bukan waktu terbang total).</p>
             </div>
           </article>
         </div>
 
-        <!-- ===== SECTION 5: Penurunan Rumus Praktis ===== -->
+        <!-- SECTION 5: Penurunan Rumus Praktis (SIDE-BY-SIDE) -->
         <div class="mb-8">
           <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700">Langkah 4</span>
           <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Penurunan Rumus Praktis (R dan h<sub>max</sub>)</h3>
@@ -320,57 +432,105 @@
           </p>
 
           <div class="grid lg:grid-cols-2 gap-6 mt-6">
-            <!-- Jarak Terjauh (R) -->
+
+            <!-- JARAK TERJAUH -->
             <div class="formula-card blue rounded-2xl p-6 bg-white shadow-sm">
               <h4 class="formula-script font-bold text-xl mb-4 text-sky-700">Jarak Terjauh (R)</h4>
-              <div class="space-y-3 text-sm text-slate-700 derivation-block">
-                <div class="flex gap-3">
-                  <span class="step-badge bg-sky-100 text-sky-700">1</span>
-                  <p>Waktu total di udara: \(t_{total} = 2t_p = \frac{2v_0 \sin\alpha}{g}\)</p>
-                </div>
-                <div class="flex gap-3">
-                  <span class="step-badge bg-sky-100 text-sky-700">2</span>
-                  <p>Substitusi ke persamaan X:</p>
-                </div>
-                <p class="formula-script text-center py-2 text-sky-700 font-bold">\[ R = v_0 \cos\alpha \cdot t_{total} \]</p>
-                <p class="formula-script text-center py-2 text-sky-700 font-bold">\[ R = v_0 \cos\alpha \cdot \frac{2v_0 \sin\alpha}{g} \]</p>
-                <div class="flex gap-3">
-                  <span class="step-badge bg-sky-100 text-sky-700">3</span>
-                  <p>Gunakan identitas \(2\sin\alpha\cos\alpha = \sin 2\alpha\):</p>
-                </div>
-                <div class="formula-box-dark px-4 py-3 mt-2">
-                  <p class="font-bold text-center text-lg text-sky-700 formula-script">\[ R = \frac{v_0^2 \sin 2\alpha}{g} \]</p>
-                </div>
+
+              <div class="rounded-xl border border-sky-200 overflow-hidden">
+                <table class="sbs-table sbs-blue">
+                  <thead>
+                    <tr>
+                      <th>Langkah</th>
+                      <th class="arrow-cell" style="background:#e0f2fe;"></th>
+                      <th>Hasil</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Waktu total</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(t_{total} = 2t_p\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-sky-700 text-sm">\(t_{total} = \dfrac{2v_0 \sin\alpha}{g}\)</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Persamaan X</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(R = v_{0x} \cdot t_{total}\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-sky-700 text-sm">\(R = v_0 \cos\alpha \cdot \dfrac{2v_0 \sin\alpha}{g}\)</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Identitas</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(2\sin\alpha\cos\alpha = \sin 2\alpha\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-sky-700 text-sm">\(R = \dfrac{v_0^2 \sin 2\alpha}{g}\)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="formula-box-dark px-4 py-3 mt-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-700 mb-1">Rumus akhir</p>
+                <p class="font-bold text-center text-lg text-sky-700 formula-script">\[ \boxed{R = \frac{v_0^2 \sin 2\alpha}{g}} \]</p>
               </div>
             </div>
 
-            <!-- Tinggi Maksimum -->
+            <!-- TINGGI MAKSIMUM -->
             <div class="formula-card coral rounded-2xl p-6 bg-white shadow-sm">
               <h4 class="formula-script font-bold text-xl mb-4 text-rose-600">Tinggi Maksimum (\(h_{max}\))</h4>
-              <div class="space-y-3 text-sm text-slate-700 derivation-block">
-                <div class="flex gap-3">
-                  <span class="step-badge bg-rose-100 text-rose-700">1</span>
-                  <p>Di titik puncak, \(v_{ty} = 0\). Maka waktu untuk mencapai puncak:</p>
-                </div>
-                <p class="formula-script text-center py-2 text-rose-600 font-bold">\[ 0 = v_{0y} - g t_p \Rightarrow t_p = \frac{v_0 \sin\alpha}{g} \]</p>
-                <div class="flex gap-3">
-                  <span class="step-badge bg-rose-100 text-rose-700">2</span>
-                  <p>Substitusi \(t_p\) ke persamaan \(\Delta h = v_{0y} t - \frac{1}{2} g t^2\):</p>
-                </div>
-                <p class="formula-script text-center py-2 text-rose-600 font-bold">\[ h_{max} = v_0 \sin\alpha \left(\frac{v_0 \sin\alpha}{g}\right) - \frac{1}{2} g \left(\frac{v_0 \sin\alpha}{g}\right)^2 \]</p>
-                <p class="formula-script text-center py-2 text-rose-600 font-bold">\[ = \frac{v_0^2 \sin^2\alpha}{g} - \frac{1}{2} \frac{v_0^2 \sin^2\alpha}{g} \]</p>
-                <div class="flex gap-3">
-                  <span class="step-badge bg-rose-100 text-rose-700">3</span>
-                  <p>Sederhanakan (ingat: \(1 - \frac{1}{2} = \frac{1}{2}\)):</p>
-                </div>
-                <div class="formula-box-dark px-4 py-3 mt-2" style="border-left-color:#e45d45;">
-                  <p class="font-bold text-center text-lg text-rose-600 formula-script">\[ h_{max} = \frac{v_0^2 \sin^2\alpha}{2g} \]</p>
-                </div>
+
+              <div class="rounded-xl border border-rose-200 overflow-hidden">
+                <table class="sbs-table sbs-rose">
+                  <thead>
+                    <tr>
+                      <th>Langkah</th>
+                      <th class="arrow-cell" style="background:#ffe4e6;"></th>
+                      <th>Hasil</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Saat \(v_{ty} = 0\)</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(0 = v_{0y} - g t_p\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-rose-700 text-sm">\(t_p = \dfrac{v_0 \sin\alpha}{g}\)</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Substitusi ke \(\Delta h\)</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(\Delta h = v_{0y} t_p - \tfrac{1}{2} g t_p^2\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-rose-700 text-xs">\(h_{max} = v_0 \sin\alpha \left(\dfrac{v_0 \sin\alpha}{g}\right) - \dfrac{1}{2} g \left(\dfrac{v_0 \sin\alpha}{g}\right)^2\)</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p class="text-xs text-slate-500 mb-1">Sederhanakan</p>
+                        <span class="formula-script font-bold text-slate-800 text-sm">\(\dfrac{v_0^2 \sin^2\alpha}{g} - \dfrac{1}{2}\dfrac{v_0^2 \sin^2\alpha}{g}\)</span>
+                      </td>
+                      <td class="arrow-cell">→</td>
+                      <td><span class="formula-script font-bold text-rose-700 text-sm">\(h_{max} = \dfrac{v_0^2 \sin^2\alpha}{2g}\)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="formula-box-dark px-4 py-3 mt-4" style="border-left-color:#e45d45;">
+                <p class="text-xs font-bold uppercase tracking-wider text-rose-600 mb-1">Rumus akhir</p>
+                <p class="font-bold text-center text-lg text-rose-600 formula-script">\[ \boxed{h_{max} = \frac{v_0^2 \sin^2\alpha}{2g}} \]</p>
               </div>
             </div>
+
           </div>
 
-          <!-- Catatan Koreksi -->
           <div class="mt-6 rounded-xl p-4 bg-amber-50 border border-dashed border-amber-300">
             <p class="text-sm text-amber-800">
               <strong>⚠️ Perhatikan:</strong> Sering terjadi kesalahan dengan melupakan faktor \(\frac{1}{2}\) pada rumus \(h_{max}\). Pastikan penyebutnya adalah \(2g\), bukan \(g\).
@@ -378,7 +538,7 @@
           </div>
         </div>
 
-        <!-- ===== RINGKASAN RUMUS ===== -->
+        <!-- RINGKASAN RUMUS -->
         <div class="rounded-2xl p-6 md:p-8 bg-white/95 border border-amber-200 shadow-sm">
           <div class="flex flex-wrap gap-4 justify-between items-start mb-5">
             <div>
@@ -400,8 +560,8 @@
             </div>
             <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
               <p class="text-xs font-bold text-rose-600 mb-1">Sumbu Y (GLBB)</p>
-              <p class="formula-script font-bold text-slate-800">\(v_{ty} = v_0 \sin\alpha + g t\)</p>
-              <p class="formula-script font-bold text-slate-800">\(y = (v_0 \sin\alpha)t + \frac12 g t^2\)</p>
+              <p class="formula-script font-bold text-slate-800">\(v_{ty} = v_0 \sin\alpha \mp g t\)</p>
+              <p class="formula-script font-bold text-slate-800">\(y = (v_0 \sin\alpha)t - \frac12 g t^2\)</p>
             </div>
             <div class="rounded-xl bg-slate-50 p-4 border border-slate-200">
               <p class="text-xs font-bold text-amber-700 mb-1">Waktu Terbang</p>
@@ -445,7 +605,7 @@
                 <input id="speed-input" type="range" min="5" max="40" step="1" value="22">
               </div>
               <div>
-                <div class="flex justify-between gap-3 mb-3"><label class="font-semibold text-slate-700" for="angle-input">Sudut elevasi (θ)</label><output id="angle-value" class="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold">45°</output></div>
+                <div class="flex justify-between gap-3 mb-3"><label class="font-semibold text-slate-700" for="angle-input">Sudut elevasi (α)</label><output id="angle-value" class="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold">45°</output></div>
                 <input id="angle-input" type="range" min="10" max="80" step="1" value="45">
               </div>
               <div>
@@ -528,7 +688,6 @@
 
   </main>
 
-  <!-- FOOTER -->
   <footer class="bg-slate-800/90 text-slate-300">
     <div class="max-w-7xl mx-auto px-5 py-5 md:px-10 flex flex-wrap gap-3 items-center justify-between">
       <p class="text-sm">© 2026 · Modul Fisika Interaktif</p>
@@ -539,7 +698,6 @@
 
 <script>
   (function() {
-    // ----- NAVIGATION -----
     const pages = document.querySelectorAll(".page-view");
     const navButtons = document.querySelectorAll(".nav-tab");
 
@@ -548,21 +706,15 @@
       navButtons.forEach(button => button.classList.toggle("active", button.dataset.page === pageName));
       window.scrollTo({ top: 0, behavior: "smooth" });
       if (pageName === "simulation") draw(pausedElapsed);
-      if (pageName === "rumus") {
-        // Re-render MathJax saat halaman rumus ditampilkan
-        if (window.MathJax && MathJax.typesetPromise) {
-          MathJax.typesetPromise();
-        }
+      if (pageName === "rumus" && window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
       }
     }
 
     document.querySelectorAll(".nav-tab").forEach(btn => {
       btn.addEventListener("click", function(e) {
         const page = this.dataset.page;
-        if (page) {
-          e.preventDefault();
-          showPage(page);
-        }
+        if (page) { e.preventDefault(); showPage(page); }
       });
     });
 
@@ -570,7 +722,7 @@
     document.getElementById("go-quiz").addEventListener("click", () => showPage("quiz"));
     document.getElementById("go-rumus").addEventListener("click", () => showPage("rumus"));
 
-    // ----- SIMULATION -----
+    // SIMULATION
     const canvas = document.getElementById("simulation-canvas");
     const ctx = canvas.getContext("2d");
     const speedInput = document.getElementById("speed-input");
@@ -683,18 +835,18 @@
     lucide.createIcons();
     updateReadout();
 
-    // ----- QUIZ -----
+    // QUIZ
     const quizData = [
       { q: "Apa yang terjadi pada kecepatan horizontal (Vx) selama gerak parabola (tanpa hambatan udara)?", options: ["Bertambah karena gravitasi", "Tetap konstan", "Berkurang hingga nol", "Berubah secara periodik", "Tergantung massa benda"], correct: 1, explanation: "Tidak ada gaya horizontal, sehingga Vx konstan (GLB)." },
       { q: "Pada titik tertinggi lintasan, komponen kecepatan vertikal (Vy) bernilai …", options: ["Maksimum", "Sama dengan Vx", "Nol", "Negatif", "Tidak tentu"], correct: 2, explanation: "Di puncak, benda berhenti sesaat secara vertikal, Vy = 0." },
-      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0, explanation: "R = V₀² sin 2θ / g. sin 60° = sin 120°, jadi R sama." },
-      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²θ / (2g)", "h = V₀² sin 2θ / g", "h = V₀² cos²θ / (2g)", "h = V₀ sin θ / g", "h = V₀² / (2g)"], correct: 0, explanation: "Tinggi maksimum dicapai saat Vy = 0, sehingga h = V₀² sin²θ / (2g)." },
-      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2θ / g", "R = V₀² sin²θ / (2g)", "R = V₀ cos θ · t", "R = V₀² / g", "R = V₀ sin θ · t"], correct: 0, explanation: "Jangkauan R = Vx × t = V₀ cos θ × (2V₀ sin θ / g) = V₀² sin 2θ / g." },
-      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin θ / g", "t = V₀ sin θ / g", "t = 2 V₀ cos θ / g", "t = V₀ cos θ / g", "t = V₀ / g"], correct: 0, explanation: "Waktu total dari lemparan hingga kembali ke ketinggian awal: t = 2V₀ sin θ / g." },
-      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1, explanation: "R maksimum saat sin 2θ = 1 → 2θ = 90° → θ = 45°." },
+      { q: "Jika sudut elevasi diperbesar dari 30° menjadi 60° (dengan V₀ tetap), jangkauan maksimum akan …", options: ["Tetap sama", "Pasti lebih besar", "Pasti lebih kecil", "Berlipat ganda", "Menjadi setengahnya"], correct: 0, explanation: "R = V₀² sin 2α / g. sin 60° = sin 120°, jadi R sama." },
+      { q: "Rumus tinggi maksimum dalam gerak parabola adalah …", options: ["h = V₀² sin²α / (2g)", "h = V₀² sin 2α / g", "h = V₀² cos²α / (2g)", "h = V₀ sin α / g", "h = V₀² / (2g)"], correct: 0, explanation: "Tinggi maksimum dicapai saat Vy = 0, sehingga h = V₀² sin²α / (2g)." },
+      { q: "Rumus jangkauan (R) dalam gerak parabola adalah …", options: ["R = V₀² sin 2α / g", "R = V₀² sin²α / (2g)", "R = V₀ cos α · t", "R = V₀² / g", "R = V₀ sin α · t"], correct: 0, explanation: "Jangkauan R = Vx × t = V₀ cos α × (2V₀ sin α / g) = V₀² sin 2α / g." },
+      { q: "Waktu terbang (t) dalam gerak parabola dinyatakan sebagai …", options: ["t = 2 V₀ sin α / g", "t = V₀ sin α / g", "t = 2 V₀ cos α / g", "t = V₀ cos α / g", "t = V₀ / g"], correct: 0, explanation: "Waktu total dari lemparan hingga kembali ke ketinggian awal: t = 2V₀ sin α / g." },
+      { q: "Pada sudut elevasi berapakah jangkauan maksimum untuk V₀ tetap?", options: ["30°", "45°", "60°", "75°", "90°"], correct: 1, explanation: "R maksimum saat sin 2α = 1 → 2α = 90° → α = 45°." },
       { q: "Gerak parabola merupakan perpaduan dari …", options: ["GLB dan GLBB", "GLBB dan GLBB", "GLB dan GLB", "GLBB dan gerak melingkar", "Gerak harmonik dan GLB"], correct: 0, explanation: "Horizontal: GLB (Vx tetap). Vertikal: GLBB (percepatan g)." },
-      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1, explanation: "h_max = V₀² sin²θ / (2g). g di penyebut, jadi jika g besar, h kecil." },
-      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1, explanation: "Vx = V₀ cos θ = 20 × 0,866 = 17,32 m/s." }
+      { q: "Jika gravitasi diperbesar, tinggi maksimum akan …", options: ["Semakin besar", "Semakin kecil", "Tetap", "Tergantung massa", "Berubah secara acak"], correct: 1, explanation: "h_max = V₀² sin²α / (2g). g di penyebut, jadi jika g besar, h kecil." },
+      { q: "Kecepatan awal V₀ = 20 m/s, sudut 30°. Berapa Vx? (cos 30° ≈ 0,866)", options: ["10 m/s", "17,32 m/s", "20 m/s", "11,55 m/s", "25 m/s"], correct: 1, explanation: "Vx = V₀ cos α = 20 × 0,866 = 17,32 m/s." }
     ];
 
     const totalQuestions = quizData.length;
@@ -740,7 +892,6 @@
           if(card.dataset.answered === "true") return;
           card.dataset.answered = "true";
           const correct = this.dataset.correct === "true";
-          const optIndex = parseInt(this.dataset.optindex);
           const dataIndex = parseInt(card.dataset.question);
           const data = quizData[dataIndex];
           
@@ -752,9 +903,7 @@
           
           card.querySelectorAll(".quiz-option").forEach(item => {
             item.disabled = true;
-            if(item.dataset.correct === "true") {
-              item.classList.add("selected-correct");
-            }
+            if(item.dataset.correct === "true") item.classList.add("selected-correct");
           });
           
           card.querySelector(".next-question").classList.remove("hidden-state");
@@ -788,7 +937,6 @@
     restartBtn.addEventListener("click", resetQuiz);
     resetQuiz();
 
-    // Render MathJax saat halaman pertama kali dimuat
     if (window.MathJax && MathJax.typesetPromise) {
       MathJax.typesetPromise();
     }
