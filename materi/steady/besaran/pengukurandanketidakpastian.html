@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kesalahan dan Ketidakpastian Pengukuran — Fisika</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #102a43;
+      --paper: #f6f1e6;
+      --accent: #dd6b20;
+      --teal: #137c8b;
+      --line: #d8cdb9;
+      --mist: #e6f0ef;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      width: 100%;
+      color: var(--ink);
+      font-family: "Work Sans", sans-serif;
+    }
+    .app-shell {
+      width: 100%;
+      min-height: 100vh;
+      background-image:
+        linear-gradient(rgba(16, 42, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 42, 67, .035) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .display-face { font-family: "Fraunces", serif; }
+    .paper-card { box-shadow: 7px 7px 0 rgba(16, 42, 67, .11); }
+    .lesson-page { display: none; width: 100%; animation: rise-in 460ms ease both; }
+    .lesson-page.is-active { display: block; }
+    .hero-orbit {
+      position: absolute; width: 32rem; height: 32rem; border: 1px dashed rgba(246, 241, 230, .42);
+      border-radius: 999px; right: -11rem; top: -9rem; animation: drift 15s linear infinite;
+    }
+    .formula-mark { border-left: 4px solid var(--accent); background: #fffaf0; }
+    .nav-item { border-bottom: 2px solid transparent; transition: color 180ms ease, border-color 180ms ease; }
+    .nav-item:hover, .nav-item.is-current { color: var(--accent); border-color: var(--accent); }
+    .page-dot {
+      width: .65rem; height: .65rem; border-radius: 999px; background: #b9ad98;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .page-dot.is-current { background: var(--accent); transform: scale(1.3); }
+    .page-control:focus-visible, .nav-item:focus-visible, .page-dot:focus-visible, input:focus-visible, button:focus-visible {
+      outline: 3px solid rgba(221, 107, 32, .38); outline-offset: 3px;
+    }
+    .calc-input:focus { outline: 3px solid rgba(221, 107, 32, .28); border-color: #dd6b20; }
+    .result-panel[hidden], .message-panel[hidden] { display: none; }
+    .stat-table { border-collapse: collapse; width: 100%; }
+    .stat-table th, .stat-table td { border-bottom: 1px solid #d8cdb9; padding: .75rem .8rem; text-align: left; }
+    .stat-table th { background: #102a43; color: #f6f1e6; font-size: .82rem; letter-spacing: .04em; }
+    .stat-table tbody tr:nth-child(even) { background: rgba(230, 240, 239, .6); }
+    .quiz-option { transition: background 180ms ease, border-color 180ms ease; cursor: pointer; }
+    .quiz-option:hover { background: #e6f0ef; }
+    .quiz-option.selected { background: #e6f0ef; border-color: var(--teal); }
+    .quiz-option.correct { background: #d1fae5; border-color: #10b981; }
+    .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+    @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) {
+      .hero-orbit { width: 21rem; height: 21rem; right: -9rem; top: -5rem; }
+      .stat-table th, .stat-table td { padding: .65rem .45rem; font-size: .82rem; }
+    }
+  </style>
+</head>
+<body data-template-id="__page-root">
+  <div class="app-shell">
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 border-b border-[#d8cdb9] bg-[#f6f1e6]/95 backdrop-blur">
+      <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-8">
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#102a43] text-[#f6f1e6]" aria-hidden="true">
+            <i data-lucide="ruler" width="20" height="20"></i>
+          </span>
+          <span class="display-face font-bold text-lg">Fisika — Pengukuran</span>
+        </div>
+        <nav aria-label="Navigasi materi" class="hidden items-center gap-5 text-sm font-semibold lg:flex">
+          <button class="nav-item bg-transparent py-1" type="button" data-page-target="0">Konsep Dasar</button>
+          <button class="nav-item bg-transparent py-1" type="button" data-page-target="1">Kesalahan</button>
+          <button class="nav-item bg-transparent py-1" type="button" data-page-target="2">Ketidakpastian</button>
+          <button class="nav-item bg-transparent py-1" type="button" data-page-target="3">Contoh &amp; Kalkulator</button>
+          <button class="nav-item bg-transparent py-1" type="button" data-page-target="4">Kuis</button>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href="https://portal-fisika.example.com" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-2 rounded-full bg-[#102a43] px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5">
+            <i data-lucide="home" width="16" height="16"></i>
+            <span class="hidden sm:inline">Portal Fisika</span>
+          </a>
+          <span id="page-counter" class="rounded-full border border-[#d8cdb9] px-3 py-1 text-xs font-bold" aria-live="polite">HALAMAN 1 / 5</span>
+        </div>
+      </div>
+    </header>
+
+    <main aria-live="polite">
+      <!-- ================= HALAMAN 1: KONSEP DASAR ================= -->
+      <section class="lesson-page is-active" data-page="0" aria-label="Halaman 1: Konsep dasar">
+        <section class="relative overflow-hidden bg-[#102a43]">
+          <div class="hero-orbit" aria-hidden="true"></div>
+          <div class="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-14 md:grid-cols-[1.06fr_.94fr] md:px-8 md:py-20">
+            <div>
+              <p class="mb-5 inline-flex rounded-full border border-[#f6f1e6]/30 px-4 py-2 text-sm font-semibold tracking-wide text-[#f6f1e6]">FISIKA • PENGUKURAN</p>
+              <h1 class="display-face max-w-3xl text-4xl font-bold leading-tight text-[#f6f1e6] md:text-5xl">Kesalahan dan Ketidakpastian Pengukuran</h1>
+              <p class="mt-6 max-w-2xl text-lg leading-8 text-[#f6f1e6]/90">Setiap pengukuran selalu mengandung ketidakpastian. Memahami jenis kesalahan dan cara melaporkan hasil ukur adalah keterampilan dasar dalam fisika.</p>
+              <button class="page-control mt-8 inline-flex items-center gap-2 rounded-full bg-[#dd6b20] px-6 py-3 font-bold text-white transition hover:-translate-y-0.5" type="button" data-page-target="1">
+                Mulai Belajar <i data-lucide="arrow-right" width="18" height="18"></i>
+              </button>
+            </div>
+            <div class="relative mx-auto w-full max-w-md">
+              <div class="absolute -left-4 -top-4 h-20 w-20 rounded-full border-2 border-[#dd6b20]" aria-hidden="true"></div>
+              <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" alt="Ilustrasi pengukuran" loading="lazy" class="paper-card relative aspect-[4/3] w-full rounded-[2rem] border-[7px] border-[#f6f1e6] object-cover">
+              <div class="paper-card absolute -bottom-5 -left-3 max-w-[15rem] rounded-xl bg-white p-4 md:-left-8">
+                <p class="m-0 text-sm font-semibold leading-5">"Mengukur adalah membandingkan besaran dengan satuannya."</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mx-auto w-full max-w-6xl px-5 py-16 md:px-8">
+          <div class="max-w-3xl">
+            <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Konsep Dasar</p>
+            <h2 class="display-face text-3xl font-bold leading-tight md:text-4xl">Mengapa pengukuran tidak pernah sempurna?</h2>
+            <p class="mt-4 text-lg leading-8">Alat ukur memiliki keterbatasan, indera kita memiliki ambang batas, dan lingkungan dapat memengaruhi hasil. Karena itu, hasil ukur selalu dituliskan beserta ketidakpastiannya.</p>
+          </div>
+          <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <i data-lucide="target" class="mb-5 rounded-full bg-[#dd6b20] p-3 text-white" width="44" height="44" aria-hidden="true"></i>
+              <h3 class="font-bold">Besaran</h3>
+              <p class="mt-3 leading-6">Sesuatu yang dapat diukur dan dinyatakan dengan angka serta satuan.</p>
+            </article>
+            <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <i data-lucide="ruler" class="mb-5 rounded-full bg-[#137c8b] p-3 text-white" width="44" height="44" aria-hidden="true"></i>
+              <h3 class="font-bold">Satuan</h3>
+              <p class="mt-3 leading-6">Pembanding dalam pengukuran, misalnya meter, kilogram, dan sekon.</p>
+            </article>
+            <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <i data-lucide="triangle-alert" class="mb-5 rounded-full bg-[#102a43] p-3 text-white" width="44" height="44" aria-hidden="true"></i>
+              <h3 class="font-bold">Kesalahan</h3>
+              <p class="mt-3 leading-6">Selisih antara hasil ukur dengan nilai sebenarnya.</p>
+            </article>
+            <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <i data-lucide="move-horizontal" class="mb-5 rounded-full bg-[#eab308] p-3 text-[#102a43]" width="44" height="44" aria-hidden="true"></i>
+              <h3 class="font-bold">Ketidakpastian</h3>
+              <p class="mt-3 leading-6">Rentang nilai yang mungkin menjadi nilai benar hasil pengukuran.</p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================= HALAMAN 2: KESALAHAN PENGUKURAN ================= -->
+      <section class="lesson-page" data-page="1" aria-label="Halaman 2: Kesalahan pengukuran">
+        <div class="bg-[#e6f0ef]">
+          <section class="mx-auto w-full max-w-6xl px-5 py-16 md:px-8">
+            <div class="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-end">
+              <div>
+                <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Jenis Kesalahan</p>
+                <h2 class="display-face text-3xl font-bold leading-tight md:text-4xl">Kesalahan dalam pengukuran</h2>
+                <p class="mt-4 text-lg leading-8">Kesalahan pengukuran dapat dikelompokkan menjadi tiga jenis utama. Memahaminya membantu kita memilih cara pengukuran yang lebih baik.</p>
+              </div>
+              <aside class="rounded-2xl border border-[#9ec8c6] bg-white p-5">
+                <div class="flex gap-3">
+                  <i data-lucide="lightbulb" class="mt-1 shrink-0 text-[#dd6b20]" width="22" height="22" aria-hidden="true"></i>
+                  <p class="m-0 leading-6">Kesalahan sistematis dapat dikoreksi, kesalahan acak dapat dirata-ratakan, sedangkan kesalahan manusia harus dihindari dengan ketelitian.</p>
+                </div>
+              </aside>
+            </div>
+            <div class="mt-10 grid gap-5 md:grid-cols-3">
+              <article class="rounded-2xl border border-[#9ec8c6] bg-white p-6">
+                <p class="display-face text-4xl font-bold text-[#dd6b20]">01</p>
+                <h3 class="mt-5 font-bold">Kesalahan Sistematis</h3>
+                <p class="mt-3 leading-6">Kesalahan yang terjadi secara konsisten dan teratur, biasanya disebabkan oleh alat yang tidak terkalibrasi.</p>
+                <p class="mt-5 border-t border-[#9ec8c6] pt-4 text-sm leading-6"><strong>Contoh:</strong> Neraca yang belum dinolkan, mistar yang ujungnya aus.</p>
+              </article>
+              <article class="rounded-2xl border border-[#9ec8c6] bg-white p-6">
+                <p class="display-face text-4xl font-bold text-[#137c8b]">02</p>
+                <h3 class="mt-5 font-bold">Kesalahan Acak</h3>
+                <p class="mt-3 leading-6">Kesalahan yang nilainya berubah-ubah dan sulit diprediksi, berasal dari fluktuasi lingkungan atau alat.</p>
+                <p class="mt-5 border-t border-[#9ec8c6] pt-4 text-sm leading-6"><strong>Contoh:</strong> Getaran meja, perubahan suhu ruangan.</p>
+              </article>
+              <article class="rounded-2xl border border-[#9ec8c6] bg-white p-6">
+                <p class="display-face text-4xl font-bold text-[#102a43]">03</p>
+                <h3 class="mt-5 font-bold">Kesalahan Manusia</h3>
+                <p class="mt-3 leading-6">Kesalahan yang disebabkan oleh keterbatasan atau kelalaian pengamat saat membaca dan mencatat hasil.</p>
+                <p class="mt-5 border-t border-[#9ec8c6] pt-4 text-sm leading-6"><strong>Contoh:</strong> Salah membaca skala, paralaks, salah menulis satuan.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= HALAMAN 3: KETIDAKPASTIAN ================= -->
+      <section class="lesson-page" data-page="2" aria-label="Halaman 3: Ketidakpastian pengukuran">
+        <section class="mx-auto w-full max-w-6xl px-5 py-16 md:px-8">
+          <div class="grid gap-8 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
+            <div>
+              <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Ketidakpastian</p>
+              <h2 class="display-face text-3xl font-bold leading-tight md:text-4xl">Melaporkan hasil pengukuran</h2>
+              <p class="mt-4 text-lg leading-8">Hasil pengukuran yang baik selalu dilaporkan sebagai nilai terbaik beserta ketidakpastiannya, sehingga pembaca tahu seberapa dapat dipercaya nilai tersebut.</p>
+              <article class="formula-mark mt-8 rounded-r-2xl p-6">
+                <h3 class="font-bold">Penulisan hasil</h3>
+                <p class="display-face mt-3 text-xl font-bold">x = x̄ ± Δx</p>
+                <p class="mt-4 leading-7">dengan x̄ adalah nilai rata-rata hasil pengukuran dan Δx adalah ketidakpastiannya. Semakin kecil Δx, semakin presisi pengukuran.</p>
+              </article>
+            </div>
+            <aside class="paper-card overflow-hidden rounded-[2rem] border border-[#d8cdb9] bg-white">
+              <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80" alt="Alat ukur laboratorium" loading="lazy" class="h-52 w-full object-cover">
+              <div class="p-7">
+                <p class="font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Praktik Baik</p>
+                <h3 class="display-face mt-3 text-xl font-bold">Langkah pengukuran</h3>
+                <ul class="mt-5 space-y-3">
+                  <li class="flex gap-3"><i data-lucide="check-circle-2" class="shrink-0 text-[#137c8b]" width="20" height="20" aria-hidden="true"></i><span class="leading-6">Kalibrasi alat sebelum digunakan.</span></li>
+                  <li class="flex gap-3"><i data-lucide="check-circle-2" class="shrink-0 text-[#137c8b]" width="20" height="20" aria-hidden="true"></i><span class="leading-6">Ulangi pengukuran beberapa kali.</span></li>
+                  <li class="flex gap-3"><i data-lucide="check-circle-2" class="shrink-0 text-[#137c8b]" width="20" height="20" aria-hidden="true"></i><span class="leading-6">Catat satuan dan angka penting dengan benar.</span></li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+
+          <div class="mt-12">
+            <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Jenis Ketidakpastian</p>
+            <h2 class="display-face text-2xl font-bold md:text-3xl">Empat situasi pengukuran</h2>
+            <div class="mt-7 grid gap-5 sm:grid-cols-2">
+              <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+                <p class="display-face text-3xl font-bold text-[#dd6b20]">01</p>
+                <h3 class="mt-3 font-bold">Ketidakpastian Mutlak</h3>
+                <p class="mt-3 leading-6">Setengah dari nilai skala terkecil alat ukur. Menunjukkan seberapa besar penyimpangan maksimum yang mungkin terjadi.</p>
+                <p class="display-face mt-4 font-bold">Δx = ½ × skala terkecil</p>
+              </article>
+              <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+                <p class="display-face text-3xl font-bold text-[#137c8b]">02</p>
+                <h3 class="mt-3 font-bold">Ketidakpastian Relatif</h3>
+                <p class="mt-3 leading-6">Perbandingan ketidakpastian mutlak terhadap nilai hasil ukur, dinyatakan dalam persen.</p>
+                <p class="display-face mt-4 font-bold">KR = (Δx / x̄) × 100%</p>
+              </article>
+              <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+                <p class="display-face text-3xl font-bold text-[#102a43]">03</p>
+                <h3 class="mt-3 font-bold">Pengukuran Tunggal</h3>
+                <p class="mt-3 leading-6">Dilakukan sekali karena keterbatasan waktu atau bahan. Ketidakpastiannya ditentukan oleh skala terkecil alat.</p>
+                <p class="display-face mt-4 font-bold">x = x₀ ± ½ skala terkecil</p>
+              </article>
+              <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-6">
+                <p class="display-face text-3xl font-bold text-[#eab308]">04</p>
+                <h3 class="mt-3 font-bold">Pengukuran Berulang</h3>
+                <p class="mt-3 leading-6">Dilakukan beberapa kali untuk memperkecil kesalahan acak. Ketidakpastian dihitung dari simpangan baku rata-rata.</p>
+                <p class="display-face mt-4 font-bold">Δx = S / √n</p>
+              </article>
+            </div>
+          </div>
+
+          <!-- RUMUS LENGKAP PENGUKURAN BERULANG -->
+          <div class="mt-12 rounded-2xl border border-[#9ec8c6] bg-white p-6 md:p-8">
+            <h3 class="display-face text-xl font-bold">Rumus lengkap pengukuran berulang</h3>
+            <p class="mt-3 leading-7">Untuk <em>n</em> kali pengukuran, langkah perhitungannya adalah sebagai berikut.</p>
+            <ol class="mt-5 space-y-4">
+              <li>
+                <p class="font-semibold">1. Nilai rata-rata</p>
+                <p class="display-face mt-1 text-lg font-bold">x̄ = (Σ xᵢ) / n</p>
+              </li>
+              <li>
+                <p class="font-semibold">2. Simpangan baku (standar deviasi)</p>
+                <p class="display-face mt-1 text-lg font-bold">S = √[ Σ (xᵢ − x̄)² / (n − 1) ]</p>
+              </li>
+              <li>
+                <p class="font-semibold">3. Ketidakpastian pengukuran berulang</p>
+                <p class="display-face mt-1 text-lg font-bold">Δx = S / √n</p>
+              </li>
+              <li>
+                <p class="font-semibold">4. Hasil pengukuran</p>
+                <p class="display-face mt-1 text-lg font-bold">x = x̄ ± Δx</p>
+              </li>
+            </ol>
+            <p class="mt-5 text-sm leading-6 text-[#102a43]/80">Keterangan: xᵢ = data ke-i, x̄ = rata-rata, S = simpangan baku, n = jumlah data, Δx = ketidakpastian.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================= HALAMAN 4: CONTOH & KALKULATOR ================= -->
+      <section class="lesson-page" data-page="3" aria-label="Halaman 4: Contoh statistik dan kalkulator">
+        <div class="bg-[#102a43]">
+          <section class="mx-auto w-full max-w-6xl px-5 py-16 md:px-8">
+            <div class="max-w-3xl">
+              <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Contoh &amp; Kalkulator</p>
+              <h2 class="display-face text-3xl font-bold leading-tight text-[#f6f1e6] md:text-4xl">Belajar dari data nyata</h2>
+              <p class="mt-4 text-lg leading-8 text-[#f6f1e6]/90">Berikut contoh pengukuran berulang sebanyak enam kali, lengkap dengan perhitungan rata-rata, simpangan baku, dan ketidakpastiannya. Gunakan kalkulator di bawah untuk mencoba data Anda sendiri.</p>
+            </div>
+
+            <article class="mt-9 overflow-hidden rounded-2xl border border-[#d8cdb9] bg-white">
+              <div class="p-6 md:p-8">
+                <h3 class="display-face text-xl font-bold">Contoh: pengukuran panjang meja</h3>
+                <p class="mt-3 leading-7">Data hasil pengukuran panjang meja (dalam cm) sebanyak enam kali:</p>
+                <div class="mt-6 overflow-x-auto rounded-xl border border-[#d8cdb9]">
+                  <table class="stat-table" aria-label="Tabel contoh enam hasil pengukuran berulang">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Data (cm)</th>
+                        <th>Simpangan (xᵢ − x̄)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td>120,1</td><td>0,05</td></tr>
+                      <tr><td>2</td><td>120,0</td><td>−0,05</td></tr>
+                      <tr><td>3</td><td>120,2</td><td>0,15</td></tr>
+                      <tr><td>4</td><td>119,9</td><td>−0,15</td></tr>
+                      <tr><td>5</td><td>120,1</td><td>0,05</td></tr>
+                      <tr><td>6</td><td>120,0</td><td>−0,05</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mt-6 grid gap-4 md:grid-cols-3">
+                  <div class="rounded-xl bg-[#e6f0ef] p-4">
+                    <p class="text-sm font-bold">Rata-rata (x̄)</p>
+                    <p class="display-face mt-2 text-xl font-bold">120,05 cm</p>
+                  </div>
+                  <div class="rounded-xl bg-[#e6f0ef] p-4">
+                    <p class="text-sm font-bold">Simpangan baku (S)</p>
+                    <p class="display-face mt-2 text-xl font-bold">0,105 cm</p>
+                  </div>
+                  <div class="rounded-xl bg-[#e6f0ef] p-4">
+                    <p class="text-sm font-bold">Ketidakpastian (Δx = S/√n)</p>
+                    <p class="display-face mt-2 text-xl font-bold">0,043 cm</p>
+                  </div>
+                </div>
+                <p class="display-face mt-5 text-lg font-bold">Hasil: x = (120,05 ± 0,04) cm</p>
+              </div>
+            </article>
+
+            <div class="mt-10 grid gap-9 lg:grid-cols-[.85fr_1.15fr]">
+              <div>
+                <h3 class="display-face text-xl font-bold text-[#f6f1e6]">Kalkulator ketidakpastian</h3>
+                <p class="mt-4 leading-7 text-[#f6f1e6]/90">Masukkan data pengukuran Anda, pisahkan dengan koma atau spasi. Kalkulator akan menghitung rata-rata, simpangan baku, dan ketidakpastian pengukuran berulang.</p>
+              </div>
+              <form id="measurement-form" class="rounded-2xl bg-[#f6f1e6] p-6 md:p-8" novalidate>
+                <label class="block font-bold" for="measurement-values">Data pengukuran</label>
+                <input id="measurement-values" class="calc-input mt-3 w-full rounded-xl border border-[#d8cdb9] bg-white px-4 py-3 text-[#102a43] transition" type="text" inputmode="decimal" placeholder="Contoh: 120,1; 120,0; 120,2; 119,9" aria-describedby="measurement-helper">
+                <p id="measurement-helper" class="mt-3 text-sm leading-6">Gunakan koma atau titik sebagai desimal. Minimal dua angka.</p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <button class="rounded-full bg-[#dd6b20] px-5 py-3 font-bold text-white transition hover:-translate-y-0.5" type="submit">Hitung</button>
+                  <button id="reset-button" class="rounded-full border border-[#102a43] px-5 py-3 font-bold transition hover:bg-[#102a43]/10" type="button">Reset</button>
+                </div>
+                <p id="calc-message" class="mt-5 rounded-xl border px-4 py-3 text-sm font-medium" role="alert" hidden></p>
+                <div id="calc-result" class="mt-6 rounded-xl border border-[#9ec8c6] bg-[#e6f0ef] p-5 text-[#102a43]" aria-live="polite" hidden>
+                  <p class="font-bold">Hasil perhitungan</p>
+                  <dl class="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-lg bg-white p-3">
+                      <dt class="text-sm font-semibold">Rata-rata (x̄)</dt>
+                      <dd id="average-value" class="display-face mt-1 text-2xl font-bold"></dd>
+                    </div>
+                    <div class="rounded-lg bg-white p-3">
+                      <dt class="text-sm font-semibold">Simpangan baku (S)</dt>
+                      <dd id="stddev-value" class="display-face mt-1 text-2xl font-bold"></dd>
+                    </div>
+                    <div class="rounded-lg bg-white p-3">
+                      <dt class="text-sm font-semibold">Ketidakpastian (Δx)</dt>
+                      <dd id="uncertainty-value" class="display-face mt-1 text-2xl font-bold"></dd>
+                    </div>
+                    <div class="rounded-lg bg-white p-3">
+                      <dt class="text-sm font-semibold">Jumlah data (n)</dt>
+                      <dd id="count-value" class="display-face mt-1 text-2xl font-bold"></dd>
+                    </div>
+                  </dl>
+                  <div class="mt-4 border-t border-[#9ec8c6] pt-4">
+                    <p class="text-sm font-semibold">Hasil pengukuran</p>
+                    <p id="final-value" class="display-face mt-1 text-xl font-bold"></p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= HALAMAN 5: KUIS ================= -->
+      <section class="lesson-page" data-page="4" aria-label="Halaman 5: Kuis">
+        <section class="mx-auto w-full max-w-4xl px-5 py-16 md:px-8">
+          <div class="max-w-3xl">
+            <p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#dd6b20]">Uji Pemahaman</p>
+            <h2 class="display-face text-3xl font-bold leading-tight md:text-4xl">Kuis: Kesalahan dan Ketidakpastian</h2>
+            <p class="mt-4 text-lg leading-8">Jawab lima pertanyaan berikut. Setiap jawaban akan langsung diberi umpan balik.</p>
+          </div>
+
+          <form id="quiz-form" class="mt-10 space-y-8">
+            <!-- Soal 1 -->
+            <fieldset class="rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <legend class="px-2 font-bold">1. Kesalahan yang disebabkan oleh alat ukur yang belum dikalibrasi termasuk jenis kesalahan…</legend>
+              <div class="mt-4 space-y-2">
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q1" value="a"> <span>Sistematis</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q1" value="b"> <span>Acak</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q1" value="c"> <span>Manusia</span></label>
+              </div>
+              <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
+            </fieldset>
+
+            <!-- Soal 2 -->
+            <fieldset class="rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <legend class="px-2 font-bold">2. Untuk pengukuran berulang, ketidakpastian Δx dihitung menggunakan rumus…</legend>
+              <div class="mt-4 space-y-2">
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="a"> <span>Δx = ½ × skala terkecil</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="b"> <span>Δx = S / √n</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="c"> <span>Δx = (Δx / x̄) × 100%</span></label>
+              </div>
+              <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
+            </fieldset>
+
+            <!-- Soal 3 -->
+            <fieldset class="rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <legend class="px-2 font-bold">3. Hasil pengukuran yang baik dituliskan sebagai…</legend>
+              <div class="mt-4 space-y-2">
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="a"> <span>x = x̄ × Δx</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="b"> <span>x = x̄ ± Δx</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="c"> <span>x = Δx / x̄</span></label>
+              </div>
+              <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
+            </fieldset>
+
+            <!-- Soal 4 -->
+            <fieldset class="rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <legend class="px-2 font-bold">4. Semakin kecil nilai ketidakpastian relatif, berarti pengukuran semakin…</legend>
+              <div class="mt-4 space-y-2">
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="a"> <span>Presisi</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="b"> <span>Tidak akurat</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="c"> <span>Bias</span></label>
+              </div>
+              <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
+            </fieldset>
+
+            <!-- Soal 5 -->
+            <fieldset class="rounded-2xl border border-[#d8cdb9] bg-white p-6">
+              <legend class="px-2 font-bold">5. Data: 10,0; 10,2; 10,1; 10,1. Rata-rata data tersebut adalah…</legend>
+              <div class="mt-4 space-y-2">
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="a"> <span>10,0</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="b"> <span>10,1</span></label>
+                <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="c"> <span>10,2</span></label>
+              </div>
+              <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
+            </fieldset>
+
+            <div class="flex flex-wrap gap-3">
+              <button type="submit" class="rounded-full bg-[#dd6b20] px-6 py-3 font-bold text-white transition hover:-translate-y-0.5">Periksa Jawaban</button>
+              <button type="button" id="quiz-reset" class="rounded-full border border-[#102a43] px-6 py-3 font-bold transition hover:bg-[#102a43]/10">Ulangi Kuis</button>
+            </div>
+            <p id="quiz-score" class="mt-4 text-lg font-bold" hidden></p>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <!-- NAVIGASI BAWAH -->
+    <nav aria-label="Kontrol halaman" class="border-t border-[#d8cdb9] bg-[#f6f1e6]">
+      <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-5 py-4 md:px-8">
+        <button id="previous-button" class="rounded-full border border-[#102a43] px-4 py-2 font-bold transition hover:bg-[#102a43] hover:text-white" type="button">← Halaman 1</button>
+        <div class="flex items-center gap-3" aria-label="Indikator halaman">
+          <button class="page-dot is-current" type="button" data-page-target="0" aria-label="Buka halaman 1"></button>
+          <button class="page-dot" type="button" data-page-target="1" aria-label="Buka halaman 2"></button>
+          <button class="page-dot" type="button" data-page-target="2" aria-label="Buka halaman 3"></button>
+          <button class="page-dot" type="button" data-page-target="3" aria-label="Buka halaman 4"></button>
+          <button class="page-dot" type="button" data-page-target="4" aria-label="Buka halaman 5"></button>
+        </div>
+        <button id="next-button" class="rounded-full bg-[#dd6b20] px-4 py-2 font-bold text-white transition hover:-translate-y-0.5" type="button">Halaman 2 →</button>
+      </div>
+    </nav>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#0b1f33]">
+      <div class="mx-auto flex w-full max-w-6xl flex-col justify-between gap-2 px-5 py-6 text-sm text-[#f6f1e6] md:flex-row md:px-8">
+        <p class="m-0">Materi Fisika — Kesalahan dan Ketidakpastian Pengukuran</p>
+        <p class="m-0">Gunakan kalkulator dan kuis untuk berlatih.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      lucide.createIcons();
+
+      // ===== NAVIGASI HALAMAN =====
+      const pages = Array.from(document.querySelectorAll(".lesson-page"));
+      const navigationButtons = Array.from(document.querySelectorAll("[data-page-target]"));
+      const navItems = Array.from(document.querySelectorAll(".nav-item"));
+      const dots = Array.from(document.querySelectorAll(".page-dot"));
+      const previousButton = document.getElementById("previous-button");
+      const nextButton = document.getElementById("next-button");
+      const pageCounter = document.getElementById("page-counter");
+      let activePage = 0;
+
+      function updateNavButtons() {
+        // Tombol sebelumnya
+        if (activePage === 0) {
+          previousButton.textContent = "← Halaman 1";
+        } else {
+          previousButton.textContent = "← Halaman " + activePage;
+        }
+        // Tombol berikutnya
+        if (activePage === pages.length - 1) {
+          nextButton.textContent = "Halaman " + pages.length + " →";
+        } else {
+          nextButton.textContent = "Halaman " + (activePage + 2) + " →";
+        }
+      }
+
+      function setPage(index) {
+        activePage = Math.max(0, Math.min(index, pages.length - 1));
+        pages.forEach(function (page, pageIndex) {
+          const isActive = pageIndex === activePage;
+          page.classList.toggle("is-active", isActive);
+          page.setAttribute("aria-hidden", String(!isActive));
+        });
+        navItems.forEach(function (item, itemIndex) {
+          item.classList.toggle("is-current", itemIndex === activePage);
+          item.setAttribute("aria-current", itemIndex === activePage ? "page" : "false");
+        });
+        dots.forEach(function (dot, dotIndex) {
+          dot.classList.toggle("is-current", dotIndex === activePage);
+          dot.setAttribute("aria-current", dotIndex === activePage ? "page" : "false");
+        });
+        previousButton.disabled = activePage === 0;
+        previousButton.classList.toggle("opacity-40", activePage === 0);
+        previousButton.classList.toggle("cursor-not-allowed", activePage === 0);
+        nextButton.disabled = activePage === pages.length - 1;
+        nextButton.classList.toggle("opacity-40", activePage === pages.length - 1);
+        nextButton.classList.toggle("cursor-not-allowed", activePage === pages.length - 1);
+        pageCounter.textContent = "HALAMAN " + (activePage + 1) + " / " + pages.length;
+        updateNavButtons();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      navigationButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          setPage(Number(button.dataset.pageTarget));
+        });
+      });
+      previousButton.addEventListener("click", function () { setPage(activePage - 1); });
+      nextButton.addEventListener("click", function () { setPage(activePage + 1); });
+
+      // ===== KALKULATOR =====
+      const form = document.getElementById("measurement-form");
+      const input = document.getElementById("measurement-values");
+      const result = document.getElementById("calc-result");
+      const message = document.getElementById("calc-message");
+      const averageValue = document.getElementById("average-value");
+      const stddevValue = document.getElementById("stddev-value");
+      const uncertaintyValue = document.getElementById("uncertainty-value");
+      const countValue = document.getElementById("count-value");
+      const finalValue = document.getElementById("final-value");
+      const resetButton = document.getElementById("reset-button");
+
+      function showMessage(text, isError) {
+        message.textContent = text;
+        message.hidden = false;
+        message.className = "mt-5 rounded-xl border px-4 py-3 text-sm font-medium " +
+          (isError
+            ? "border-[#fca5a5] bg-[#fff1f2] text-[#9f1239]"
+            : "border-[#9ec8c6] bg-[#e6f0ef] text-[#102a43]");
+      }
+
+      function getDecimalPlaces(value) {
+        const text = String(value);
+        return text.includes(".") ? text.split(".")[1].length : 0;
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const values = input.value
+          .trim()
+          .split(/[;\s,]+/)
+          .map(function (value) { return Number(value.replace(",", ".")); })
+          .filter(function (value) { return Number.isFinite(value); });
+
+        if (values.length < 2) {
+          result.hidden = true;
+          showMessage("Masukkan sedikitnya dua angka yang valid, pisahkan dengan koma atau spasi.", true);
+          input.focus();
+          return;
+        }
+
+        const n = values.length;
+        const average = values.reduce(function (sum, value) { return sum + value; }, 0) / n;
+        const variance = values.reduce(function (sum, value) {
+          return sum + Math.pow(value - average, 2);
+        }, 0) / (n - 1);
+        const stddev = Math.sqrt(variance);
+        const uncertainty = stddev / Math.sqrt(n);
+
+        const sourceDecimals = Math.max.apply(null, values.map(getDecimalPlaces));
+        const decimals = Math.min(4, Math.max(1, sourceDecimals));
+
+        averageValue.textContent = average.toFixed(decimals);
+        stddevValue.textContent = stddev.toFixed(decimals);
+        uncertaintyValue.textContent = "± " + uncertainty.toFixed(decimals);
+        countValue.textContent = n;
+        finalValue.textContent = "x = (" + average.toFixed(decimals) + " ± " + uncertainty.toFixed(decimals) + ") satuan";
+        message.hidden = true;
+        result.hidden = false;
+      });
+
+      resetButton.addEventListener("click", function () {
+        form.reset();
+        result.hidden = true;
+        message.hidden = true;
+        input.focus();
+      });
+
+      // ===== KUIS =====
+      const quizForm = document.getElementById("quiz-form");
+      const quizScore = document.getElementById("quiz-score");
+      const quizReset = document.getElementById("quiz-reset");
+
+      const answerKey = { q1: "a", q2: "b", q3: "b", q4: "a", q5: "b" };
+
+      quizForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let correctCount = 0;
+        const fieldsets = quizForm.querySelectorAll("fieldset");
+        fieldsets.forEach(function (fieldset, index) {
+          const questionName = "q" + (index + 1);
+          const selected = quizForm.querySelector('input[name="' + questionName + '"]:checked');
+          const feedback = fieldset.querySelector(".quiz-feedback");
+          fieldset.querySelectorAll(".quiz-option").forEach(function (label) {
+            label.classList.remove("correct", "incorrect", "selected");
+          });
+
+          if (!selected) {
+            feedback.textContent = "Belum dijawab.";
+            feedback.className = "quiz-feedback mt-3 text-sm font-semibold text-[#9f1239]";
+            feedback.hidden = false;
+            return;
+          }
+
+          const selectedLabel = selected.closest(".quiz-option");
+          const isCorrect = selected.value === answerKey[questionName];
+          if (isCorrect) {
+            correctCount++;
+            selectedLabel.classList.add("correct");
+            feedback.textContent = "Benar!";
+            feedback.className = "quiz-feedback mt-3 text-sm font-semibold text-[#065f46]";
+          } else {
+            selectedLabel.classList.add("incorrect");
+            const correctLabel = fieldset.querySelector('input[value="' + answerKey[questionName] + '"]').closest(".quiz-option");
+            correctLabel.classList.add("correct");
+            feedback.textContent = "Belum tepat. Jawaban benar ditandai hijau.";
+            feedback.className = "quiz-feedback mt-3 text-sm font-semibold text-[#9f1239]";
+          }
+          feedback.hidden = false;
+        });
+
+        quizScore.textContent = "Skor Anda: " + correctCount + " dari " + fieldsets.length;
+        quizScore.hidden = false;
+        quizScore.className = "mt-4 text-lg font-bold " + (correctCount === fieldsets.length ? "text-[#065f46]" : "text-[#9f1239]");
+      });
+
+      quizReset.addEventListener("click", function () {
+        quizForm.reset();
+        quizScore.hidden = true;
+        quizForm.querySelectorAll(".quiz-feedback").forEach(function (el) { el.hidden = true; });
+        quizForm.querySelectorAll(".quiz-option").forEach(function (el) {
+          el.classList.remove("correct", "incorrect", "selected");
+        });
+      });
+
+      setPage(0);
+    });
+  </script>
+</body>
+</html>
