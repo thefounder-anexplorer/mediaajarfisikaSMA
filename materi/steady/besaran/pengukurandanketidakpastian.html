@@ -19,15 +19,11 @@
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      width: 100%;
-      color: var(--ink);
-      font-family: "Work Sans", sans-serif;
-      overflow-x: hidden;
+      margin: 0; width: 100%; color: var(--ink);
+      font-family: "Work Sans", sans-serif; overflow-x: hidden;
     }
     .app-shell {
-      width: 100%;
-      min-height: 100vh;
+      width: 100%; min-height: 100vh;
       background-image:
         linear-gradient(rgba(16, 42, 67, .035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(16, 42, 67, .035) 1px, transparent 1px);
@@ -54,12 +50,71 @@
     }
     .calc-input:focus { outline: 3px solid rgba(221, 107, 32, .28); border-color: #dd6b20; }
     .result-panel[hidden], .message-panel[hidden] { display: none; }
-    .stat-table { border-collapse: collapse; width: 100%; }
-    .stat-table th, .stat-table td { border-bottom: 1px solid #d8cdb9; padding: .65rem .5rem; text-align: left; }
-    .stat-table th { background: #102a43; color: #f6f1e6; font-size: .75rem; letter-spacing: .04em; }
-    .stat-table tbody tr:nth-child(even) { background: rgba(230, 240, 239, .6); }
 
-    /* ===== KUIS SLIDE ===== */
+    /* ==== TABEL STATISTIK (seperti di buku) ==== */
+    .stat-table { border-collapse: collapse; width: 100%; background: #fff; }
+    .stat-table th, .stat-table td {
+      border: 1px solid #102a43;
+      padding: .5rem .55rem;
+      text-align: center;
+      font-size: .8rem;
+      vertical-align: middle;
+    }
+    .stat-table th {
+      background: #dbeafe;
+      color: #102a43;
+      font-weight: 700;
+      font-size: .78rem;
+    }
+    .stat-table td:first-child { font-weight: 600; }
+    .stat-table tbody tr:nth-child(even) { background: #f8fafc; }
+    .stat-table .total-row { background: #e6f0ef !important; font-weight: 700; }
+    .stat-table .total-row td { font-weight: 700; }
+    @media (max-width: 768px) {
+      .stat-table th, .stat-table td { padding: .4rem .35rem; font-size: .7rem; }
+    }
+
+    /* ==== RUMUS BERTINGKAT ==== */
+    .formula-box {
+      background: #e6f0ef;
+      border: 1.5px solid #9ec8c6;
+      border-radius: .75rem;
+      padding: .75rem 1rem;
+      margin-top: .75rem;
+      font-family: "Fraunces", serif;
+      font-weight: 700;
+      overflow-x: auto;
+    }
+    .formula-box p { margin: 0; white-space: nowrap; }
+    .frac {
+      display: inline-flex; flex-direction: column; align-items: center;
+      vertical-align: middle; margin: 0 .25rem;
+    }
+    .frac .num { border-bottom: 1.5px solid currentColor; padding: 0 .35rem .1rem; }
+    .frac .den { padding: .1rem .35rem 0; }
+    .sqrt-sym {
+      display: inline-block;
+      border-top: 1.5px solid currentColor;
+      padding: 0 .3rem;
+      margin-left: .15rem;
+      vertical-align: middle;
+    }
+    .sqrt-sym::before {
+      content: "√";
+      font-size: 1.2em;
+      vertical-align: middle;
+      margin-right: -0.15em;
+    }
+    .calc-steps {
+      background: #fffaf0;
+      border-left: 4px solid var(--accent);
+      padding: .9rem 1rem;
+      border-radius: 0 .75rem .75rem 0;
+    }
+    .calc-steps .line { margin: .35rem 0; font-family: "Fraunces", serif; }
+    .calc-steps .line strong { font-family: "Work Sans", sans-serif; font-size: .85em; color: #102a43; }
+
+    /* ==== KUIS SLIDE ==== */
     .quiz-slide { display: none; }
     .quiz-slide.is-active { display: block; animation: fade-slide 320ms ease both; }
     @keyframes fade-slide {
@@ -69,7 +124,6 @@
     .quiz-option {
       transition: background 180ms ease, border-color 180ms ease, transform 120ms ease;
       cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
     }
     .quiz-option:active { transform: scale(.985); }
     .quiz-option.selected { background: #e6f0ef; border-color: var(--teal); }
@@ -84,30 +138,24 @@
     .quiz-option.selected .quiz-letter { background: var(--teal); }
     .quiz-option.correct .quiz-letter { background: #10b981; }
     .quiz-option.incorrect .quiz-letter { background: #ef4444; }
-    .quiz-progress-bar {
-      height: .4rem; background: #d8cdb9; border-radius: 999px; overflow: hidden;
-    }
-    .quiz-progress-fill {
-      height: 100%; background: var(--accent); width: 0%;
-      transition: width 320ms ease; border-radius: 999px;
-    }
+    .quiz-progress-bar { height: .4rem; background: #d8cdb9; border-radius: 999px; overflow: hidden; }
+    .quiz-progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 320ms ease; border-radius: 999px; }
+
     @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
     @media (max-width: 768px) {
       .hero-orbit { width: 21rem; height: 21rem; right: -9rem; top: -5rem; }
       .paper-card { box-shadow: 4px 4px 0 rgba(16, 42, 67, .11); }
-      .stat-table th, .stat-table td { padding: .55rem .4rem; font-size: .78rem; }
       h1 { font-size: 1.85rem !important; line-height: 1.2 !important; }
       h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
       .display-face { word-break: break-word; }
       .quiz-letter { width: 1.75rem; height: 1.75rem; font-size: .78rem; }
     }
-    /* Safe area untuk iPhone notch */
     @supports (padding: max(0px)) {
       .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
       .safe-top { padding-top: max(0.75rem, env(safe-area-inset-top)); }
     }
-    /* Mencegah overflow rumus di mobile */
     .formula-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .formula-scroll p { white-space: nowrap; }
   </style>
@@ -131,7 +179,7 @@
           <button class="nav-item bg-transparent py-1" type="button" data-page-target="4">Kuis</button>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/besaran-steady.html#" target="_blank" rel="noopener noreferrer"
+          <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/besaran-steady.html" target="_blank" rel="noopener noreferrer"
              class="flex items-center gap-1.5 rounded-full bg-[#102a43] px-3 py-2 text-xs font-bold text-white transition hover:-translate-y-0.5 md:px-4 md:text-sm">
             <i data-lucide="home" width="14" height="14"></i>
             <span class="hidden sm:inline">Portal Fisika</span>
@@ -143,7 +191,7 @@
     </header>
 
     <main aria-live="polite">
-      <!-- ================= HALAMAN 1: KONSEP DASAR ================= -->
+      <!-- ================= HALAMAN 1 ================= -->
       <section class="lesson-page is-active" data-page="0" aria-label="Halaman 1: Konsep dasar">
         <section class="relative overflow-hidden bg-[#102a43]">
           <div class="hero-orbit" aria-hidden="true"></div>
@@ -197,7 +245,7 @@
         </section>
       </section>
 
-      <!-- ================= HALAMAN 2: KESALAHAN PENGUKURAN ================= -->
+      <!-- ================= HALAMAN 2 ================= -->
       <section class="lesson-page" data-page="1" aria-label="Halaman 2: Kesalahan pengukuran">
         <div class="bg-[#e6f0ef]">
           <section class="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 md:py-16">
@@ -238,7 +286,7 @@
         </div>
       </section>
 
-      <!-- ================= HALAMAN 3: KETIDAKPASTIAN ================= -->
+      <!-- ================= HALAMAN 3 ================= -->
       <section class="lesson-page" data-page="2" aria-label="Halaman 3: Ketidakpastian pengukuran">
         <section class="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 md:py-16">
           <div class="grid gap-6 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
@@ -268,121 +316,153 @@
 
           <div class="mt-10 md:mt-12">
             <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-[#dd6b20] md:mb-3">Jenis Ketidakpastian</p>
-            <h2 class="display-face text-xl font-bold md:text-3xl">Empat situasi pengukuran</h2>
+            <h2 class="display-face text-xl font-bold md:text-3xl">Rumus-rumus ketidakpastian</h2>
+
             <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <!-- a. Ketepatan -->
               <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-5">
-                <p class="display-face text-2xl font-bold text-[#dd6b20] md:text-3xl">01</p>
-                <h3 class="mt-3 font-bold">Ketidakpastian Mutlak</h3>
-                <p class="mt-2 text-sm leading-6 md:text-base">Setengah dari nilai skala terkecil alat ukur.</p>
-                <div class="formula-scroll"><p class="display-face mt-3 font-bold">Δx = ½ × skala terkecil</p></div>
+                <p class="display-face text-2xl font-bold text-[#dd6b20] md:text-3xl">a.</p>
+                <h3 class="mt-3 font-bold">Ketepatan</h3>
+                <p class="mt-2 text-sm leading-6 md:text-base">Ukuran seberapa dekat hasil pengukuran dengan nilai sebenarnya.</p>
+                <div class="formula-box">
+                  <p>Ketepatan = 1 − <span class="frac"><span class="num">Δx</span><span class="den">x</span></span></p>
+                </div>
+                <div class="formula-box">
+                  <p>Δx = |xᵢ − x̄|</p>
+                </div>
               </article>
+
+              <!-- b. Ketidakpastian Relatif -->
               <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-5">
-                <p class="display-face text-2xl font-bold text-[#137c8b] md:text-3xl">02</p>
+                <p class="display-face text-2xl font-bold text-[#137c8b] md:text-3xl">b.</p>
                 <h3 class="mt-3 font-bold">Ketidakpastian Relatif</h3>
-                <p class="mt-2 text-sm leading-6 md:text-base">Perbandingan ketidakpastian mutlak terhadap nilai hasil ukur, dalam persen.</p>
-                <div class="formula-scroll"><p class="display-face mt-3 font-bold">KR = (Δx / x̄) × 100%</p></div>
+                <p class="mt-2 text-sm leading-6 md:text-base">Dinyatakan dalam persen. Semakin kecil nilainya, semakin tinggi ketelitian pengukuran.</p>
+                <div class="formula-box">
+                  <p>KR = <span class="frac"><span class="num">Δx</span><span class="den">x̄</span></span> × 100%</p>
+                </div>
+                <div class="formula-box">
+                  <p>Ketelitian (%) = 100% − KR</p>
+                </div>
               </article>
+
+              <!-- c. Pengukuran Tunggal -->
               <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-5">
-                <p class="display-face text-2xl font-bold text-[#102a43] md:text-3xl">03</p>
+                <p class="display-face text-2xl font-bold text-[#102a43] md:text-3xl">c.</p>
                 <h3 class="mt-3 font-bold">Pengukuran Tunggal</h3>
-                <p class="mt-2 text-sm leading-6 md:text-base">Dilakukan sekali karena keterbatasan waktu atau bahan.</p>
-                <div class="formula-scroll"><p class="display-face mt-3 font-bold">x = x₀ ± ½ skala terkecil</p></div>
+                <p class="mt-2 text-sm leading-6 md:text-base">Hasil pengukuran tunggal dilaporkan sebagai x ± Δx, dengan x adalah hasil pengukuran tunggal.</p>
+                <div class="formula-box">
+                  <p>Δx = <span class="frac"><span class="num">1</span><span class="den">2</span></span> × skala terkecil</p>
+                </div>
+                <div class="formula-box">
+                  <p>x = x₀ ± Δx</p>
+                </div>
               </article>
+
+              <!-- d. Pengukuran Berulang -->
               <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-5">
-                <p class="display-face text-2xl font-bold text-[#eab308] md:text-3xl">04</p>
+                <p class="display-face text-2xl font-bold text-[#eab308] md:text-3xl">d.</p>
                 <h3 class="mt-3 font-bold">Pengukuran Berulang</h3>
-                <p class="mt-2 text-sm leading-6 md:text-base">Dilakukan beberapa kali untuk memperkecil kesalahan acak.</p>
-                <div class="formula-scroll"><p class="display-face mt-3 font-bold">Δx = S / √n</p></div>
+                <p class="mt-2 text-sm leading-6 md:text-base">Jika x̄ adalah nilai rata-rata sampel, xᵢ hasil pengukuran ke-i, Δx simpangan baku nilai rata-rata, dan N banyak sampel.</p>
+                <div class="formula-box">
+                  <p>x̄ = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span></p>
+                </div>
+                <div class="formula-box">
+                  <p>Δx = sₓ = <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">N Σxᵢ² − (Σxᵢ)²</span><span class="den">N − 1</span></span></span></p>
+                </div>
               </article>
             </div>
-          </div>
 
-          <!-- RUMUS LENGKAP PENGUKURAN BERULANG -->
-          <div class="mt-10 rounded-2xl border border-[#9ec8c6] bg-white p-5 md:mt-12 md:p-8">
-            <h3 class="display-face text-lg font-bold md:text-xl">Rumus lengkap pengukuran berulang</h3>
-            <p class="mt-2 text-sm leading-6 md:mt-3 md:text-base md:leading-7">Untuk <em>n</em> kali pengukuran, langkah perhitungannya adalah sebagai berikut.</p>
-            <ol class="mt-4 space-y-3 md:mt-5 md:space-y-4">
-              <li>
-                <p class="text-sm font-semibold md:text-base">1. Nilai rata-rata</p>
-                <div class="formula-scroll"><p class="display-face mt-1 text-base font-bold md:text-lg">x̄ = (Σ xᵢ) / n</p></div>
-              </li>
-              <li>
-                <p class="text-sm font-semibold md:text-base">2. Simpangan baku (standar deviasi)</p>
-                <div class="formula-scroll"><p class="display-face mt-1 text-base font-bold md:text-lg">S = √[ Σ (xᵢ − x̄)² / (n − 1) ]</p></div>
-              </li>
-              <li>
-                <p class="text-sm font-semibold md:text-base">3. Ketidakpastian pengukuran berulang</p>
-                <div class="formula-scroll"><p class="display-face mt-1 text-base font-bold md:text-lg">Δx = S / √n</p></div>
-              </li>
-              <li>
-                <p class="text-sm font-semibold md:text-base">4. Hasil pengukuran</p>
-                <div class="formula-scroll"><p class="display-face mt-1 text-base font-bold md:text-lg">x = x̄ ± Δx</p></div>
-              </li>
-            </ol>
-            <p class="mt-4 text-xs leading-6 text-[#102a43]/80 md:mt-5 md:text-sm">Keterangan: xᵢ = data ke-i, x̄ = rata-rata, S = simpangan baku, n = jumlah data, Δx = ketidakpastian.</p>
+            <p class="mt-6 rounded-xl bg-[#e6f0ef] p-4 text-xs leading-6 text-[#102a43] md:text-sm md:leading-7">
+              <strong>Catatan:</strong> Banyak angka yang dapat dilaporkan dalam pengukuran berulang ditentukan oleh ketidakpastian relatifnya.
+              Jika KR ≈ 10% berhak atas 2 angka penting; KR ≈ 1% berhak atas 3 angka penting; dan KR ≈ 0,1% berhak atas 4 angka penting.
+            </p>
           </div>
         </section>
       </section>
 
-      <!-- ================= HALAMAN 4: CONTOH & KALKULATOR ================= -->
+      <!-- ================= HALAMAN 4: CONTOH KETEBALAN KAYU ================= -->
       <section class="lesson-page" data-page="3" aria-label="Halaman 4: Contoh statistik dan kalkulator">
         <div class="bg-[#102a43]">
           <section class="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 md:py-16">
             <div class="max-w-3xl">
               <p class="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-[#dd6b20] md:mb-3">Contoh &amp; Kalkulator</p>
               <h2 class="display-face text-2xl font-bold leading-tight text-[#f6f1e6] md:text-4xl">Belajar dari data nyata</h2>
-              <p class="mt-3 text-base leading-7 text-[#f6f1e6]/90 md:mt-4 md:text-lg md:leading-8">Berikut contoh pengukuran berulang sebanyak enam kali. Gunakan kalkulator di bawah untuk mencoba data Anda sendiri.</p>
+              <p class="mt-3 text-base leading-7 text-[#f6f1e6]/90 md:mt-4 md:text-lg md:leading-8">Berikut contoh pengukuran ketebalan kayu sebanyak 6 kali, lengkap dengan perhitungan rata-rata dan ketidakpastiannya.</p>
             </div>
 
             <article class="mt-8 overflow-hidden rounded-2xl border border-[#d8cdb9] bg-white md:mt-9">
               <div class="p-5 md:p-8">
-                <h3 class="display-face text-lg font-bold md:text-xl">Contoh: pengukuran panjang meja</h3>
-                <p class="mt-2 text-sm leading-6 md:mt-3 md:text-base md:leading-7">Data hasil pengukuran panjang meja (dalam cm) sebanyak enam kali:</p>
-                <div class="mt-5 overflow-x-auto rounded-xl border border-[#d8cdb9]">
-                  <table class="stat-table" aria-label="Tabel contoh enam hasil pengukuran berulang">
+                <h3 class="display-face text-lg font-bold md:text-xl">Jawab: Pengukuran di atas termasuk pengukuran berulang.</h3>
+                <p class="mt-2 text-sm leading-6 md:mt-3 md:text-base md:leading-7">Data hasil pengukuran ketebalan kayu (xᵢ) dan kuadratnya (xᵢ²) sebanyak 6 kali:</p>
+
+                <div class="mt-5 overflow-x-auto rounded-xl">
+                  <table class="stat-table" aria-label="Tabel hasil pengukuran berulang ketebalan kayu">
                     <thead>
                       <tr>
-                        <th>No</th>
-                        <th>Data (cm)</th>
-                        <th>Simpangan (xᵢ − x̄)</th>
+                        <th style="width:3rem;">No.</th>
+                        <th>Ketebalan xᵢ (cm)</th>
+                        <th>Ketebalan Kuadrat xᵢ²</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><td>1</td><td>120,1</td><td>0,05</td></tr>
-                      <tr><td>2</td><td>120,0</td><td>−0,05</td></tr>
-                      <tr><td>3</td><td>120,2</td><td>0,15</td></tr>
-                      <tr><td>4</td><td>119,9</td><td>−0,15</td></tr>
-                      <tr><td>5</td><td>120,1</td><td>0,05</td></tr>
-                      <tr><td>6</td><td>120,0</td><td>−0,05</td></tr>
+                      <tr><td>1</td><td>1,52</td><td>2,3104</td></tr>
+                      <tr><td>2</td><td>1,53</td><td>2,3409</td></tr>
+                      <tr><td>3</td><td>1,54</td><td>2,3716</td></tr>
+                      <tr><td>4</td><td>1,55</td><td>2,4025</td></tr>
+                      <tr><td>5</td><td>1,51</td><td>2,2801</td></tr>
+                      <tr><td>6</td><td>1,52</td><td>2,3104</td></tr>
+                      <tr class="total-row">
+                        <td>Σ</td>
+                        <td>Σxᵢ = 9,17</td>
+                        <td>Σxᵢ² = 14,0159</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
+
+                <!-- Langkah perhitungan -->
+                <div class="calc-steps mt-6">
+                  <p class="line"><strong>N = 6</strong> dan <strong>N − 1 = 5</strong></p>
+                  <p class="line">x̄ = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span> = <span class="frac"><span class="num">9,17</span><span class="den">6</span></span> = <strong>1,5283 cm</strong></p>
+                  <p class="line">Δx = sₓ = <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">N Σxᵢ² − (Σxᵢ)²</span><span class="den">N − 1</span></span></span></p>
+                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">6 (14,0159) − (9,17)²</span><span class="den">5</span></span></span></p>
+                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">84,0954 − 84,0889</span><span class="den">5</span></span></span></p>
+                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">0,0065</span><span class="den">5</span></span></span></p>
+                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> × √0,0013</p>
+                  <p class="line">≈ <strong>0,0060 cm</strong></p>
+                </div>
+
                 <div class="mt-5 grid gap-3 sm:grid-cols-3">
                   <div class="rounded-xl bg-[#e6f0ef] p-4">
                     <p class="text-xs font-bold md:text-sm">Rata-rata (x̄)</p>
-                    <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">120,05 cm</p>
-                  </div>
-                  <div class="rounded-xl bg-[#e6f0ef] p-4">
-                    <p class="text-xs font-bold md:text-sm">Simpangan baku (S)</p>
-                    <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">0,105 cm</p>
+                    <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">1,5283 cm</p>
                   </div>
                   <div class="rounded-xl bg-[#e6f0ef] p-4">
                     <p class="text-xs font-bold md:text-sm">Ketidakpastian (Δx)</p>
-                    <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">0,043 cm</p>
+                    <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">0,0060 cm</p>
+                  </div>
+                  <div class="rounded-xl bg-[#e6f0ef] p-4">
+                    <p class="text-xs font-bold md:text-sm">Hasil pengukuran</p>
+                    <p class="display-face mt-1 text-base font-bold md:mt-2 md:text-lg">x = (1,5283 ± 0,0060) cm</p>
                   </div>
                 </div>
-                <p class="display-face mt-4 text-base font-bold md:mt-5 md:text-lg">Hasil: x = (120,05 ± 0,04) cm</p>
+
+                <p class="mt-4 rounded-xl border border-[#9ec8c6] bg-[#fffaf0] p-4 text-sm leading-6 text-[#102a43] md:text-base md:leading-7">
+                  <strong>Pelaporan:</strong> Karena ketidakpastian relatifnya sekitar 0,4% (berhak atas 3 angka penting), hasil pengukuran ketebalan kayu dapat dilaporkan sebagai
+                  <strong>x = (1,53 ± 0,01) cm</strong>.
+                </p>
               </div>
             </article>
 
+            <!-- KALKULATOR -->
             <div class="mt-8 grid gap-6 lg:grid-cols-[.85fr_1.15fr] md:mt-10">
               <div>
                 <h3 class="display-face text-lg font-bold text-[#f6f1e6] md:text-xl">Kalkulator ketidakpastian</h3>
-                <p class="mt-3 text-sm leading-6 text-[#f6f1e6]/90 md:mt-4 md:text-base md:leading-7">Masukkan data pengukuran Anda, pisahkan dengan koma atau spasi. Kalkulator akan menghitung rata-rata, simpangan baku, dan ketidakpastian pengukuran berulang.</p>
+                <p class="mt-3 text-sm leading-6 text-[#f6f1e6]/90 md:mt-4 md:text-base md:leading-7">Masukkan data pengukuran Anda, pisahkan dengan koma atau spasi. Kalkulator akan menghitung rata-rata, simpangan baku, dan ketidakpastian pengukuran berulang menggunakan rumus yang sama dengan buku.</p>
               </div>
               <form id="measurement-form" class="rounded-2xl bg-[#f6f1e6] p-5 md:p-8" novalidate>
                 <label class="block text-sm font-bold md:text-base" for="measurement-values">Data pengukuran</label>
-                <input id="measurement-values" class="calc-input mt-2 w-full rounded-xl border border-[#d8cdb9] bg-white px-4 py-3 text-base text-[#102a43] transition md:mt-3" type="text" inputmode="decimal" placeholder="Contoh: 120,1; 120,0; 120,2; 119,9" aria-describedby="measurement-helper">
+                <input id="measurement-values" class="calc-input mt-2 w-full rounded-xl border border-[#d8cdb9] bg-white px-4 py-3 text-base text-[#102a43] transition md:mt-3" type="text" inputmode="decimal" placeholder="Contoh: 1,52; 1,53; 1,54; 1,55; 1,51; 1,52" aria-describedby="measurement-helper">
                 <p id="measurement-helper" class="mt-2 text-xs leading-5 md:mt-3 md:text-sm md:leading-6">Gunakan koma atau titik sebagai desimal. Minimal dua angka.</p>
                 <div class="mt-5 flex flex-wrap gap-3 md:mt-6">
                   <button class="rounded-full bg-[#dd6b20] px-5 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 md:py-3 md:text-base" type="submit">Hitung</button>
@@ -397,7 +477,7 @@
                       <dd id="average-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                     <div class="rounded-lg bg-white p-3">
-                      <dt class="text-xs font-semibold md:text-sm">Simpangan baku (S)</dt>
+                      <dt class="text-xs font-semibold md:text-sm">Simpangan baku (sₓ)</dt>
                       <dd id="stddev-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                     <div class="rounded-lg bg-white p-3">
@@ -405,7 +485,7 @@
                       <dd id="uncertainty-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                     <div class="rounded-lg bg-white p-3">
-                      <dt class="text-xs font-semibold md:text-sm">Jumlah data (n)</dt>
+                      <dt class="text-xs font-semibold md:text-sm">Jumlah data (N)</dt>
                       <dd id="count-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                   </dl>
@@ -420,7 +500,7 @@
         </div>
       </section>
 
-      <!-- ================= HALAMAN 5: KUIS SLIDE 10 SOAL ================= -->
+      <!-- ================= HALAMAN 5: KUIS ================= -->
       <section class="lesson-page" data-page="4" aria-label="Halaman 5: Kuis">
         <section class="mx-auto w-full max-w-3xl px-4 py-8 md:px-8 md:py-16">
           <div class="max-w-3xl">
@@ -429,7 +509,6 @@
             <p class="mt-3 text-sm leading-6 md:mt-4 md:text-base md:leading-7">10 soal pilihan ganda. Setiap soal ditampilkan satu per satu. Pilih jawaban, lalu lanjut ke soal berikutnya.</p>
           </div>
 
-          <!-- Progress bar -->
           <div class="mt-6 md:mt-8">
             <div class="flex items-center justify-between text-xs font-bold md:text-sm">
               <span id="quiz-progress-label">Soal 1 dari 10</span>
@@ -440,9 +519,7 @@
             </div>
           </div>
 
-          <!-- Slide container -->
           <div id="quiz-container" class="mt-6 md:mt-8">
-            <!-- Slide 1 -->
             <div class="quiz-slide is-active" data-quiz="0">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 1</p>
@@ -458,23 +535,21 @@
               </div>
             </div>
 
-            <!-- Slide 2 -->
             <div class="quiz-slide" data-quiz="1">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 2</p>
                 <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Untuk pengukuran berulang, ketidakpastian Δx dihitung menggunakan rumus…</h3>
                 <div class="mt-4 space-y-2.5">
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">Δx = ½ × skala terkecil</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">Δx = S / √n</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">Δx = (1/N) √[ (N Σxᵢ² − (Σxᵢ)²) / (N−1) ]</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">Δx = (Δx / x̄) × 100%</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">Δx = x̄ × n</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">Δx = Σ xᵢ / (n − 1)</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">Δx = x̄ × N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">Δx = Σ xᵢ / (N − 1)</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
             </div>
 
-            <!-- Slide 3 -->
             <div class="quiz-slide" data-quiz="2">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 3</p>
@@ -483,14 +558,13 @@
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">x = x̄ × Δx</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">x = x̄ ± Δx</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">x = Δx / x̄</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">x = x̄ + n</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">x = x̄ + N</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">x = Σ xᵢ</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
             </div>
 
-            <!-- Slide 4 -->
             <div class="quiz-slide" data-quiz="3">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 4</p>
@@ -506,23 +580,21 @@
               </div>
             </div>
 
-            <!-- Slide 5 -->
             <div class="quiz-slide" data-quiz="4">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 5</p>
-                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Data: 10,0; 10,2; 10,1; 10,1. Rata-rata data tersebut adalah…</h3>
+                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Data ketebalan kayu: 1,52; 1,53; 1,54; 1,55; 1,51; 1,52 cm. Nilai rata-ratanya adalah…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">10,0</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">10,1</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">10,2</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">10,05</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">10,15</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">1,51 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">1,52 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">1,53 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">1,54 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q5" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">1,55 cm</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
             </div>
 
-            <!-- Slide 6 -->
             <div class="quiz-slide" data-quiz="5">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 6</p>
@@ -538,7 +610,6 @@
               </div>
             </div>
 
-            <!-- Slide 7 -->
             <div class="quiz-slide" data-quiz="6">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 7</p>
@@ -554,23 +625,21 @@
               </div>
             </div>
 
-            <!-- Slide 8 -->
             <div class="quiz-slide" data-quiz="7">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 8</p>
-                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Rumus simpangan baku (standar deviasi) untuk n data adalah…</h3>
+                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Rumus simpangan baku (standar deviasi) untuk N data pada pengukuran berulang adalah…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">S = Σ (xᵢ − x̄) / n</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">S = √[ Σ (xᵢ − x̄)² / (n − 1) ]</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">S = Σ xᵢ / n</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">S = (x̄ − xᵢ) × n</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">S = √n / Δx</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">sₓ = Σ (xᵢ − x̄) / N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">sₓ = (1/N) √[ (N Σxᵢ² − (Σxᵢ)²) / (N−1) ]</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">sₓ = Σ xᵢ / N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">sₓ = (x̄ − xᵢ) × N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">sₓ = √N / Δx</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
             </div>
 
-            <!-- Slide 9 -->
             <div class="quiz-slide" data-quiz="8">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 9</p>
@@ -586,24 +655,22 @@
               </div>
             </div>
 
-            <!-- Slide 10 -->
             <div class="quiz-slide" data-quiz="9">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 10</p>
-                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Data: 5,0; 5,2; 5,4; 5,1; 5,3. Nilai rata-ratanya adalah…</h3>
+                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Data ketebalan kayu: 1,52; 1,53; 1,54; 1,55; 1,51; 1,52 cm. Nilai ketidakpastian Δx adalah…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">5,0</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">5,1</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">5,2</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">5,3</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">5,4</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">0,0020 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">0,0040 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">0,0060 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">0,0080 cm</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q10" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">0,0100 cm</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
             </div>
           </div>
 
-          <!-- Navigasi kuis -->
           <div class="mt-6 flex items-center justify-between gap-3 md:mt-8">
             <button id="quiz-prev" class="flex items-center gap-1.5 rounded-full border border-[#102a43] px-4 py-2.5 text-sm font-bold transition hover:bg-[#102a43] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 md:px-5 md:py-3 md:text-base">
               <i data-lucide="chevron-left" width="16" height="16"></i> Kembali
@@ -613,7 +680,6 @@
             </button>
           </div>
 
-          <!-- Hasil akhir kuis -->
           <div id="quiz-final" class="mt-6 rounded-2xl border border-[#9ec8c6] bg-[#e6f0ef] p-5 text-center md:mt-8 md:p-7" hidden>
             <i data-lucide="award" class="mx-auto text-[#dd6b20]" width="40" height="40" aria-hidden="true"></i>
             <h3 class="display-face mt-3 text-xl font-bold md:text-2xl">Kuis Selesai!</h3>
@@ -747,22 +813,21 @@
           return;
         }
 
-        const n = values.length;
-        const average = values.reduce(function (sum, value) { return sum + value; }, 0) / n;
-        const variance = values.reduce(function (sum, value) {
-          return sum + Math.pow(value - average, 2);
-        }, 0) / (n - 1);
-        const stddev = Math.sqrt(variance);
-        const uncertainty = stddev / Math.sqrt(n);
+        const N = values.length;
+        const sumX = values.reduce(function (s, v) { return s + v; }, 0);
+        const sumX2 = values.reduce(function (s, v) { return s + v * v; }, 0);
+        const average = sumX / N;
+        const varianceTerm = (N * sumX2 - sumX * sumX) / (N - 1);
+        const stddev = (1 / N) * Math.sqrt(Math.max(0, varianceTerm));
 
         const sourceDecimals = Math.max.apply(null, values.map(getDecimalPlaces));
         const decimals = Math.min(4, Math.max(1, sourceDecimals));
 
         averageValue.textContent = average.toFixed(decimals);
-        stddevValue.textContent = stddev.toFixed(decimals);
-        uncertaintyValue.textContent = "± " + uncertainty.toFixed(decimals);
-        countValue.textContent = n;
-        finalValue.textContent = "x = (" + average.toFixed(decimals) + " ± " + uncertainty.toFixed(decimals) + ") satuan";
+        stddevValue.textContent = stddev.toFixed(decimals + 1);
+        uncertaintyValue.textContent = "± " + stddev.toFixed(decimals + 1);
+        countValue.textContent = N;
+        finalValue.textContent = "x = (" + average.toFixed(decimals) + " ± " + stddev.toFixed(decimals + 1) + ") satuan";
         message.hidden = true;
         result.hidden = false;
       });
@@ -774,7 +839,7 @@
         input.focus();
       });
 
-      // ===== KUIS SLIDE 10 SOAL =====
+      // ===== KUIS =====
       const quizSlides = Array.from(document.querySelectorAll(".quiz-slide"));
       const quizPrev = document.getElementById("quiz-prev");
       const quizNext = document.getElementById("quiz-next");
@@ -787,12 +852,12 @@
       const quizRestart = document.getElementById("quiz-restart");
 
       const answerKey = {
-        q1: "a", q2: "b", q3: "b", q4: "a", q5: "b",
+        q1: "a", q2: "b", q3: "b", q4: "a", q5: "c",
         q6: "b", q7: "b", q8: "b", q9: "b", q10: "c"
       };
 
       let currentSlide = 0;
-      const userAnswers = {}; // { q1: "a", ... }
+      const userAnswers = {};
       let quizFinished = false;
 
       function updateQuizUI() {
@@ -803,7 +868,6 @@
         quizProgressFill.style.width = ((currentSlide + 1) / quizSlides.length * 100) + "%";
         quizPrev.disabled = currentSlide === 0;
         quizNext.textContent = currentSlide === quizSlides.length - 1 ? "Selesai" : "Lanjut";
-        // Update score live
         let correct = 0;
         Object.keys(userAnswers).forEach(function (key) {
           if (userAnswers[key] === answerKey[key]) correct++;
@@ -811,7 +875,6 @@
         quizScoreLive.textContent = "Skor: " + correct;
       }
 
-      // Pilih jawaban
       document.querySelectorAll(".quiz-option").forEach(function (option) {
         option.addEventListener("click", function () {
           if (quizFinished) return;
@@ -819,18 +882,14 @@
           if (!radio) return;
           const questionName = radio.name;
           const value = radio.value;
-
-          // Reset pilihan dalam soal ini
           const slide = option.closest(".quiz-slide");
           slide.querySelectorAll(".quiz-option").forEach(function (opt) {
             opt.classList.remove("selected", "correct", "incorrect");
           });
-
           radio.checked = true;
           option.classList.add("selected");
           userAnswers[questionName] = value;
 
-          // Feedback langsung
           const feedback = slide.querySelector(".quiz-feedback");
           if (value === answerKey[questionName]) {
             option.classList.add("correct");
@@ -849,14 +908,10 @@
       });
 
       quizPrev.addEventListener("click", function () {
-        if (currentSlide > 0) {
-          currentSlide--;
-          updateQuizUI();
-        }
+        if (currentSlide > 0) { currentSlide--; updateQuizUI(); }
       });
 
       quizNext.addEventListener("click", function () {
-        // Cek apakah soal sudah dijawab
         const currentQuestion = "q" + (currentSlide + 1);
         if (!userAnswers[currentQuestion]) {
           const slide = quizSlides[currentSlide];
@@ -866,12 +921,10 @@
           feedback.hidden = false;
           return;
         }
-
         if (currentSlide < quizSlides.length - 1) {
           currentSlide++;
           updateQuizUI();
         } else {
-          // Selesai
           finishQuiz();
         }
       });
@@ -917,7 +970,6 @@
         updateQuizUI();
       });
 
-      // Inisialisasi kuis
       updateQuizUI();
       setPage(0);
     });
