@@ -61,18 +61,10 @@
         linear-gradient(145deg, #112d51, #08172d);
     }
 
-    /* ====== LINTASAN ====== */
-    .orbit-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 420px;
-      aspect-ratio: 1 / 1;
-      margin: 0 auto;
-    }
-
     .orbit {
-      position: absolute;
-      inset: 0;
+      position: relative;
+      width: min(78vw, 360px);
+      aspect-ratio: 1;
       border: 12px solid #18233d;
       border-radius: 999px;
       background:
@@ -80,6 +72,7 @@
         repeating-radial-gradient(circle at 50% 50%, transparent 0 30px, rgba(255,255,255,.08) 31px 32px),
         #171b2d;
       box-shadow: 0 0 0 5px #0b1020, 0 18px 28px rgba(0,0,0,.35), inset 0 0 30px rgba(0,0,0,.65);
+      overflow: visible;
     }
 
     .orbit::before {
@@ -93,10 +86,8 @@
 
     .center-dot {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 12px;
-      height: 12px;
+      left: 50%; top: 50%;
+      width: 12px; height: 12px;
       border-radius: 50%;
       background: var(--sun);
       transform: translate(-50%, -50%);
@@ -105,73 +96,46 @@
 
     .radius-line {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      height: 2px;
-      width: 0;
+      top: 50%; left: 50%;
+      width: 50%; height: 2px;
       transform-origin: left center;
-      background: rgba(248,190,75,.85);
-      pointer-events: none;
+      background: rgba(248,190,75,.8);
     }
 
     .moving-dot {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 30px;
-      height: 24px;
+      top: 50%; left: 50%;
+      width: 32px; height: 25px;
       border-radius: 48% 52% 45% 55%;
-      background: #d94335;
       transform: translate(-50%, -50%);
-      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 4px rgba(248,190,75,.25);
+      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 4px rgba(248,190,75,.2);
       z-index: 2;
       will-change: transform;
     }
 
-    .moving-dot.dot-two {
-      background: #2f9e7a;
-      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 4px rgba(83,184,212,.35);
-    }
-    .moving-dot.dot-two::before {
-      background: #3fbf94;
-      box-shadow: inset 2px 0 #1b5e49, inset -2px 0 #1b5e49, 4px 4px 0 -1px #12241f, 12px 11px 0 -1px #12241f;
-    }
+    .beetle-one { background: #d94335; }
+    .beetle-two { background: #3b82c4; }
 
     .moving-dot::before {
       content: "";
       position: absolute;
-      width: 17px;
-      height: 17px;
-      left: 7px;
-      top: 4px;
+      width: 17px; height: 17px;
+      left: 7px; top: 4px;
       border-radius: 50%;
-      background: #ef5b4f;
-      box-shadow: inset 2px 0 #8f221e, inset -2px 0 #8f221e, 4px 4px 0 -1px #35151a, 12px 11px 0 -1px #35151a;
+      box-shadow: inset 2px 0 rgba(0,0,0,.35), inset -2px 0 rgba(0,0,0,.35),
+                  4px 4px 0 -1px rgba(0,0,0,.4), 12px 11px 0 -1px rgba(0,0,0,.4);
     }
+    .beetle-one::before { background: #ef5b4f; }
+    .beetle-two::before { background: #5ba3e0; }
 
     .moving-dot::after {
       content: "";
       position: absolute;
-      left: -7px;
-      top: 4px;
-      width: 7px;
-      height: 7px;
+      left: -7px; top: 4px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: #19141b;
       box-shadow: 4px 17px 0 -1px #19141b, 27px -3px 0 -1px #35151a, 27px 15px 0 -1px #35151a;
-    }
-
-    .beetle-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 10px;
-      font-weight: 700;
-      color: #fff;
-      z-index: 3;
-      pointer-events: none;
-      text-shadow: 0 1px 3px rgba(0,0,0,.8);
     }
 
     .formula-mark {
@@ -213,22 +177,65 @@
 
     .progress-fill { width: 0%; transition: width .35s ease; }
 
-    /* ====== SIMULASI: layout kiri - tengah - kanan ====== */
+    /* Layout simulasi: kiri - tengah - kanan */
     .sim-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
+      grid-template-columns: 1fr;
       gap: 1rem;
-      align-items: center;
     }
 
-    @media (max-width: 900px) {
+    @media (min-width: 768px) {
       .sim-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(200px, 1fr) minmax(340px, 1.6fr) minmax(200px, 1fr);
+        align-items: center;
       }
-      .sim-layout .sim-side-left { order: 1; }
-      .sim-layout .sim-center { order: 2; }
-      .sim-layout .sim-side-right { order: 3; }
     }
+
+    .control-panel {
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+      padding: 1.25rem;
+    }
+
+    .btn-play {
+      width: 100%;
+      border-radius: 999px;
+      padding: .75rem 1rem;
+      font-weight: 700;
+      color: #fff;
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .btn-play:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+    .btn-play-one { background: #f26a3d; }
+    .btn-play-two { background: #3b82c4; }
+
+    /* Kartu data (jarak, putaran) */
+    .stat-card {
+      border-radius: .75rem;
+      background: rgba(255,255,255,.1);
+      padding: .5rem .6rem;
+    }
+    .stat-card p {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #d7e7ef;
+      margin: 0;
+    }
+    .stat-card output {
+      display: block;
+      margin-top: .25rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .stat-omega { color: #f8be4b; }
+    .stat-speed { color: #53b8d4; }
+    .stat-distance { color: #a7e4a7; }
+    .stat-laps { color: #f0a3c8; }
   </style>
 </head>
 <body class="w-full grid-paper">
@@ -241,7 +248,7 @@
         <span class="font-semibold tracking-wide">Gerak Melingkar</span>
       </div>
       <div class="flex flex-wrap gap-2" role="tablist" aria-label="Halaman modul">
-        <button id="materiTab" data-page-target="materi" class="tab-button focus-ring rounded-full px-4 py-2 text-sm font-semibold" type="button" role="tab" aria-selected="true">Materi</button>
+        <button id="materiTab" data-page-target="materi" class="tab-button focus-ring rounded-full px-4 py-2 text-sm font-semibold is-active" type="button" role="tab" aria-selected="true">Materi</button>
         <button id="simulasiTab" data-page-target="simulasi" class="tab-button focus-ring rounded-full px-4 py-2 text-sm font-semibold" type="button" role="tab" aria-selected="false">Simulasi</button>
         <button id="kuisTab" data-page-target="kuis" class="tab-button focus-ring rounded-full px-4 py-2 text-sm font-semibold" type="button" role="tab" aria-selected="false">Kuis</button>
       </div>
@@ -249,7 +256,7 @@
   </header>
 
   <main class="w-full">
-    <!-- ================= HALAMAN MATERI ================= -->
+    <!-- ================= MATERI ================= -->
     <section id="materiPage" class="page-view is-active" role="tabpanel" aria-labelledby="materiTab">
       <section class="mx-auto grid w-full max-w-6xl items-stretch gap-0 px-5 py-8 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:py-12">
         <div class="reveal flex flex-col justify-center rounded-t-[2rem] bg-[#10213e] p-8 text-white sm:p-12 lg:rounded-l-[2rem] lg:rounded-tr-none">
@@ -279,21 +286,21 @@
           <p class="max-w-md text-sm leading-6 text-[#526174]">Pahami ketiga besaran ini sebelum masuk ke rumus dan simulasi.</p>
         </div>
         <div class="grid gap-5 md:grid-cols-3">
-          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm" style="animation-delay:.08s">
+          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm">
             <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#f26a3d] text-white" aria-hidden="true">
               <i data-lucide="rotate-cw" width="22" height="22"></i>
             </div>
             <h3 class="mb-3 font-bold">Periode (T)</h3>
             <p class="leading-7 text-[#526174]">Waktu yang dibutuhkan benda untuk menyelesaikan satu putaran penuh. Satuan periode adalah sekon (s).</p>
           </article>
-          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm" style="animation-delay:.16s">
+          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm">
             <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#53b8d4] text-[#10213e]" aria-hidden="true">
               <i data-lucide="ruler" width="22" height="22"></i>
             </div>
             <h3 class="mb-3 font-bold">Kecepatan Sudut (ω)</h3>
             <p class="leading-7 text-[#526174]">Besar sudut yang ditempuh per satuan waktu. Dirumuskan ω = 2π / T dengan satuan rad/s.</p>
           </article>
-          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm" style="animation-delay:.24s">
+          <article class="reveal rounded-3xl border border-[#10213e]/10 bg-white p-6 shadow-sm">
             <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#f8be4b] text-[#10213e]" aria-hidden="true">
               <i data-lucide="crosshair" width="22" height="22"></i>
             </div>
@@ -346,117 +353,140 @@
       </section>
     </section>
 
-    <!-- ================= HALAMAN SIMULASI ================= -->
+    <!-- ================= SIMULASI ================= -->
     <section id="simulasiPage" class="page-view" role="tabpanel" aria-labelledby="simulasiTab">
-      <section class="w-full bg-[#10213e] py-12 text-white">
-        <div class="mx-auto w-full max-w-6xl px-5 sm:px-8">
-          <div class="mb-8">
+      <section class="w-full bg-[#10213e] py-10 text-white sm:py-12">
+        <div class="mx-auto w-full max-w-6xl px-4 sm:px-8">
+          <div class="mb-6">
             <p class="text-sm font-bold uppercase tracking-[.16em] text-[#f8be4b]">Laboratorium Virtual</p>
             <h1 class="display-font mt-2 text-3xl font-bold sm:text-4xl">Simulasi Gerak Melingkar</h1>
-            <p class="mt-3 max-w-2xl leading-7 text-[#d7e7ef]">Atur jari-jari dan periode untuk dua kumbang yang berputar pada piringan hitam. Amati perubahan kecepatan sudut dan kecepatan linearnya.</p>
+            <p class="mt-3 max-w-2xl leading-7 text-[#d7e7ef]">Atur jari-jari dan periode untuk kedua kumbang. Keduanya mulai dari titik yang sama, tetapi bergerak dengan kecepatan masing-masing. Amati jarak tempuh dan jumlah putarannya!</p>
           </div>
 
-          <!-- ====== LAYOUT: KIRI - LINTASAN - KANAN ====== -->
-          <div class="rounded-[2rem] border border-white/10 bg-[#071225] p-5 sm:p-7">
-            <div class="sim-layout">
+          <div class="sim-layout">
+            <!-- ===== Panel Kumbang 1 (KIRI) ===== -->
+            <aside class="control-panel" aria-label="Panel kendali Kumbang 1">
+              <div class="mb-3 flex items-center gap-2">
+                <span class="inline-block h-3 w-3 rounded-full bg-[#d94335]"></span>
+                <p class="font-bold">Kumbang 1</p>
+              </div>
 
-              <!-- ===== PANEL KIRI: KUMBANG 1 ===== -->
-              <aside class="sim-side-left rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div class="mb-4 flex items-center gap-2">
-                  <span class="inline-block h-3 w-3 rounded-full bg-[#d94335]"></span>
-                  <p class="font-bold">Kumbang 1</p>
+              <div>
+                <div class="mb-2 flex justify-between gap-3">
+                  <label class="text-sm font-semibold" for="radiusControl">Jari-jari</label>
+                  <output id="radiusValue" class="text-sm text-[#f8be4b]">2,0 m</output>
                 </div>
-                <div>
-                  <div class="mb-2 flex justify-between gap-3">
-                    <label class="text-sm font-semibold" for="radiusControl">Jari-jari</label>
-                    <output id="radiusValue" class="text-sm text-[#f8be4b]">2,0 m</output>
-                  </div>
-                  <input id="radiusControl" class="w-full" type="range" min="1" max="5" value="2" step="0.1">
-                </div>
-                <div class="mt-4">
-                  <div class="mb-2 flex justify-between gap-3">
-                    <label class="text-sm font-semibold" for="periodControl">Periode</label>
-                    <output id="periodValue" class="text-sm text-[#f8be4b]">4,0 s</output>
-                  </div>
-                  <input id="periodControl" class="w-full" type="range" min="1" max="10" value="4" step="0.5">
-                </div>
-                <div class="mt-4 grid grid-cols-2 gap-3">
-                  <div class="rounded-xl bg-white/10 p-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-[#d7e7ef]">ω</p>
-                    <output id="omegaOutput" class="mt-1 block text-lg font-bold text-[#f8be4b]" aria-live="polite">—</output>
-                  </div>
-                  <div class="rounded-xl bg-white/10 p-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-[#d7e7ef]">v</p>
-                    <output id="speedOutput" class="mt-1 block text-lg font-bold text-[#53b8d4]" aria-live="polite">—</output>
-                  </div>
-                </div>
-              </aside>
+                <input id="radiusControl" class="w-full" type="range" min="1" max="5" value="2" step="0.1">
+              </div>
 
-              <!-- ===== TENGAH: LINTASAN + TOMBOL ===== -->
-              <div class="sim-center flex flex-col items-center gap-5">
-                <div class="orbit-stage w-full rounded-[1.5rem] p-6">
-                  <div class="orbit-wrap">
-                    <div id="orbit" class="orbit" aria-label="Simulasi dua kumbang di atas piringan hitam yang berputar">
-                      <div class="center-dot"></div>
-                      <div id="radiusLine" class="radius-line"></div>
-                      <div id="movingDot" class="moving-dot beetle-dot">
-                        <span class="beetle-label">1</span>
-                      </div>
-                      <div id="movingDotTwo" class="moving-dot beetle-dot dot-two">
-                        <span class="beetle-label">2</span>
-                      </div>
-                    </div>
-                  </div>
+              <div class="mt-4">
+                <div class="mb-2 flex justify-between gap-3">
+                  <label class="text-sm font-semibold" for="periodControl">Periode</label>
+                  <output id="periodValue" class="text-sm text-[#f8be4b]">4,0 s</output>
                 </div>
-                <!-- Tombol tepat di bawah lintasan -->
-                <div class="flex w-full flex-wrap justify-center gap-3">
-                  <button id="playButton" type="button" class="focus-ring rounded-full bg-[#f26a3d] px-6 py-3 font-bold text-white transition hover:brightness-110" aria-pressed="true">Jeda</button>
-                  <button id="resetButton" type="button" class="focus-ring rounded-full border border-white/30 px-6 py-3 font-bold text-white transition hover:bg-white/10">Reset Posisi</button>
+                <input id="periodControl" class="w-full" type="range" min="1" max="10" value="4" step="0.5">
+              </div>
+
+              <div class="mt-4 grid grid-cols-2 gap-2">
+                <div class="stat-card">
+                  <p>ω</p>
+                  <output id="omegaOutputOne" class="stat-omega" aria-live="polite">—</output>
+                </div>
+                <div class="stat-card">
+                  <p>v</p>
+                  <output id="speedOutputOne" class="stat-speed" aria-live="polite">—</output>
+                </div>
+                <div class="stat-card">
+                  <p>Jarak</p>
+                  <output id="distanceOutputOne" class="stat-distance" aria-live="polite">0,0 m</output>
+                </div>
+                <div class="stat-card">
+                  <p>Putaran</p>
+                  <output id="lapsOutputOne" class="stat-laps" aria-live="polite">0,00</output>
                 </div>
               </div>
 
-              <!-- ===== PANEL KANAN: KUMBANG 2 ===== -->
-              <aside class="sim-side-right rounded-2xl border border-white/10 bg-white/5 p-5">
-                <div class="mb-4 flex items-center gap-2">
-                  <span class="inline-block h-3 w-3 rounded-full bg-[#2f9e7a]"></span>
-                  <p class="font-bold">Kumbang 2</p>
-                </div>
-                <div>
-                  <div class="mb-2 flex justify-between gap-3">
-                    <label class="text-sm font-semibold" for="radiusControlTwo">Jari-jari</label>
-                    <output id="radiusValueTwo" class="text-sm text-[#f8be4b]">3,5 m</output>
-                  </div>
-                  <input id="radiusControlTwo" class="w-full" type="range" min="1" max="5" value="3.5" step="0.1">
-                </div>
-                <div class="mt-4">
-                  <div class="mb-2 flex justify-between gap-3">
-                    <label class="text-sm font-semibold" for="periodControlTwo">Periode</label>
-                    <output id="periodValueTwo" class="text-sm text-[#f8be4b]">6,0 s</output>
-                  </div>
-                  <input id="periodControlTwo" class="w-full" type="range" min="1" max="10" value="6" step="0.5">
-                </div>
-                <div class="mt-4 grid grid-cols-2 gap-3">
-                  <div class="rounded-xl bg-white/10 p-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-[#d7e7ef]">ω</p>
-                    <output id="omegaOutputTwo" class="mt-1 block text-lg font-bold text-[#f8be4b]" aria-live="polite">—</output>
-                  </div>
-                  <div class="rounded-xl bg-white/10 p-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-[#d7e7ef]">v</p>
-                    <output id="speedOutputTwo" class="mt-1 block text-lg font-bold text-[#53b8d4]" aria-live="polite">—</output>
-                  </div>
-                </div>
-              </aside>
+              <button id="playButtonOne" type="button" class="btn-play btn-play-one focus-ring mt-4" aria-pressed="true">
+                ⏸ Jeda Kumbang 1
+              </button>
+            </aside>
 
+            <!-- ===== Lintasan (TENGAH) ===== -->
+            <div class="orbit-stage flex min-h-[360px] items-center justify-center rounded-3xl p-6 sm:min-h-[440px]">
+              <div id="orbit" class="orbit" aria-label="Simulasi dua kumbang di atas piringan hitam yang berputar">
+                <div class="center-dot"></div>
+                <div id="radiusLine" class="radius-line"></div>
+                <div id="movingDotOne" class="moving-dot beetle-one"></div>
+                <div id="movingDotTwo" class="moving-dot beetle-two"></div>
+              </div>
             </div>
-            <p class="mt-5 text-center text-sm leading-6 text-[#d7e7ef]">
-              Kecepatan sudut hanya bergantung pada periode, sedangkan kecepatan linear juga dipengaruhi jari-jari lintasan.
-            </p>
+
+            <!-- ===== Panel Kumbang 2 (KANAN) ===== -->
+            <aside class="control-panel" aria-label="Panel kendali Kumbang 2">
+              <div class="mb-3 flex items-center gap-2">
+                <span class="inline-block h-3 w-3 rounded-full bg-[#3b82c4]"></span>
+                <p class="font-bold">Kumbang 2</p>
+              </div>
+
+              <div>
+                <div class="mb-2 flex justify-between gap-3">
+                  <label class="text-sm font-semibold" for="radiusControlTwo">Jari-jari</label>
+                  <output id="radiusValueTwo" class="text-sm text-[#f8be4b]">3,5 m</output>
+                </div>
+                <input id="radiusControlTwo" class="w-full" type="range" min="1" max="5" value="3.5" step="0.1">
+              </div>
+
+              <div class="mt-4">
+                <div class="mb-2 flex justify-between gap-3">
+                  <label class="text-sm font-semibold" for="periodControlTwo">Periode</label>
+                  <output id="periodValueTwo" class="text-sm text-[#f8be4b]">6,0 s</output>
+                </div>
+                <input id="periodControlTwo" class="w-full" type="range" min="1" max="10" value="6" step="0.5">
+              </div>
+
+              <div class="mt-4 grid grid-cols-2 gap-2">
+                <div class="stat-card">
+                  <p>ω</p>
+                  <output id="omegaOutputTwo" class="stat-omega" aria-live="polite">—</output>
+                </div>
+                <div class="stat-card">
+                  <p>v</p>
+                  <output id="speedOutputTwo" class="stat-speed" aria-live="polite">—</output>
+                </div>
+                <div class="stat-card">
+                  <p>Jarak</p>
+                  <output id="distanceOutputTwo" class="stat-distance" aria-live="polite">0,0 m</output>
+                </div>
+                <div class="stat-card">
+                  <p>Putaran</p>
+                  <output id="lapsOutputTwo" class="stat-laps" aria-live="polite">0,00</output>
+                </div>
+              </div>
+
+              <button id="playButtonTwo" type="button" class="btn-play btn-play-two focus-ring mt-4" aria-pressed="true">
+                ⏸ Jeda Kumbang 2
+              </button>
+            </aside>
           </div>
+
+          <!-- ===== Tombol Aksi ===== -->
+          <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button id="startSamePointButton" type="button" class="focus-ring w-full rounded-full bg-[#f8be4b] px-6 py-3 font-bold text-[#10213e] transition hover:-translate-y-0.5 sm:w-auto">
+              ▶ Mulai dari Titik yang Sama
+            </button>
+            <button id="resetButton" type="button" class="focus-ring w-full rounded-full border border-white/30 px-6 py-3 font-bold text-white transition hover:bg-white/10 sm:w-auto">
+              🔄 Reset (Posisi &amp; Jarak)
+            </button>
+          </div>
+
+          <p class="mt-3 text-center text-sm text-[#d7e7ef]">
+            Jarak tempuh dihitung dengan <em>s = v × t</em>. Jumlah putaran <em>n = s / (2πr)</em>.
+          </p>
         </div>
       </section>
     </section>
 
-    <!-- ================= HALAMAN KUIS ================= -->
+    <!-- ================= KUIS ================= -->
     <section id="kuisPage" class="page-view" role="tabpanel" aria-labelledby="kuisTab">
       <section class="mx-auto w-full max-w-5xl px-5 py-10 sm:px-8 lg:py-14">
         <div class="rounded-[2rem] bg-[#10213e] p-8 text-white sm:p-10">
@@ -540,7 +570,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
 
-      // ========== NAVIGASI HALAMAN ==========
+      // ===== Navigasi Tab =====
       const pageButtons = document.querySelectorAll("[data-page-target]");
       const pages = {
         materi: document.getElementById("materiPage"),
@@ -558,15 +588,6 @@
           button.setAttribute("aria-selected", String(active));
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
-
-        // PENTING: gambar ulang lintasan setelah halaman tampil,
-        // karena clientWidth hanya valid saat elemen terlihat.
-        if (name === "simulasi") {
-          requestAnimationFrame(() => {
-            drawOrbit();
-            lastTime = performance.now();
-          });
-        }
       }
 
       pageButtons.forEach((button) => {
@@ -577,10 +598,10 @@
         showPage("simulasi");
       });
 
-      // ========== SIMULASI ==========
+      // ===== SIMULASI =====
       const orbit = document.getElementById("orbit");
-      const dot1 = document.getElementById("movingDot");
-      const dot2 = document.getElementById("movingDotTwo");
+      const dotOne = document.getElementById("movingDotOne");
+      const dotTwo = document.getElementById("movingDotTwo");
       const line = document.getElementById("radiusLine");
 
       const radiusControl = document.getElementById("radiusControl");
@@ -593,24 +614,39 @@
       const radiusValueTwo = document.getElementById("radiusValueTwo");
       const periodValueTwo = document.getElementById("periodValueTwo");
 
-      const omegaOutput = document.getElementById("omegaOutput");
-      const speedOutput = document.getElementById("speedOutput");
+      const omegaOutputOne = document.getElementById("omegaOutputOne");
+      const speedOutputOne = document.getElementById("speedOutputOne");
+      const distanceOutputOne = document.getElementById("distanceOutputOne");
+      const lapsOutputOne = document.getElementById("lapsOutputOne");
+
       const omegaOutputTwo = document.getElementById("omegaOutputTwo");
       const speedOutputTwo = document.getElementById("speedOutputTwo");
+      const distanceOutputTwo = document.getElementById("distanceOutputTwo");
+      const lapsOutputTwo = document.getElementById("lapsOutputTwo");
 
-      const playButton = document.getElementById("playButton");
+      const playButtonOne = document.getElementById("playButtonOne");
+      const playButtonTwo = document.getElementById("playButtonTwo");
       const resetButton = document.getElementById("resetButton");
+      const startSamePointButton = document.getElementById("startSamePointButton");
 
-      // sudut awal: kumbang 1 di atas, kumbang 2 di bawah
-      let angles = [-Math.PI / 2, Math.PI / 2];
-      let playing = true;
+      // Kedua kumbang mulai dari titik yang SAMA (di atas lingkaran, sudut -π/2)
+      const START_ANGLE = -Math.PI / 2;
+      let angleOne = START_ANGLE;
+      let angleTwo = START_ANGLE;
+
+      // Jarak tempuh (meter) untuk masing-masing kumbang
+      let distanceOne = 0;
+      let distanceTwo = 0;
+
+      let playingOne = true;
+      let playingTwo = true;
       let lastTime = performance.now();
 
-      function getSettings() {
-        return [
-          { radius: Number(radiusControl.value), period: Number(periodControl.value) },
-          { radius: Number(radiusControlTwo.value), period: Number(periodControlTwo.value) }
-        ];
+      function settings() {
+        return {
+          one: { radius: Number(radiusControl.value), period: Number(periodControl.value) },
+          two: { radius: Number(radiusControlTwo.value), period: Number(periodControlTwo.value) }
+        };
       }
 
       function formatNumber(value, digits) {
@@ -620,92 +656,128 @@
         });
       }
 
-      function updateReadouts() {
-        const [first, second] = getSettings();
-
-        const omega1 = (2 * Math.PI) / first.period;
-        const speed1 = omega1 * first.radius;
-        const omega2 = (2 * Math.PI) / second.period;
-        const speed2 = omega2 * second.radius;
-
-        radiusValue.textContent = formatNumber(first.radius, 1) + " m";
-        periodValue.textContent = formatNumber(first.period, 1) + " s";
-        radiusValueTwo.textContent = formatNumber(second.radius, 1) + " m";
-        periodValueTwo.textContent = formatNumber(second.period, 1) + " s";
-
-        omegaOutput.textContent = formatNumber(omega1, 2) + " rad/s";
-        speedOutput.textContent = formatNumber(speed1, 2) + " m/s";
-        omegaOutputTwo.textContent = formatNumber(omega2, 2) + " rad/s";
-        speedOutputTwo.textContent = formatNumber(speed2, 2) + " m/s";
+      // Konversi radius (1..5 m) menjadi radius visual di layar
+      function visualRadius(meterRadius) {
+        const stageRadius = orbit.clientWidth / 2;
+        return stageRadius * (0.30 + ((meterRadius - 1) / 4) * 0.62);
       }
 
-      // Hitung radius visual dari nilai fisik (1..5 m)
-      function visualRadius(stageRadius, radius) {
-        const minR = 1, maxR = 5;
-        const minVis = 0.30;   // 30% dari stageRadius
-        const maxVis = 0.90;   // 90% dari stageRadius
-        const t = (radius - minR) / (maxR - minR);
-        return stageRadius * (minVis + t * (maxVis - minVis));
+      function updateReadouts() {
+        const s = settings();
+        const omegaOne = (2 * Math.PI) / s.one.period;
+        const speedOne = omegaOne * s.one.radius;
+        const omegaTwo = (2 * Math.PI) / s.two.period;
+        const speedTwo = omegaTwo * s.two.radius;
+
+        radiusValue.textContent = formatNumber(s.one.radius, 1) + " m";
+        periodValue.textContent = formatNumber(s.one.period, 1) + " s";
+        radiusValueTwo.textContent = formatNumber(s.two.radius, 1) + " m";
+        periodValueTwo.textContent = formatNumber(s.two.period, 1) + " s";
+
+        omegaOutputOne.textContent = formatNumber(omegaOne, 2) + " rad/s";
+        speedOutputOne.textContent = formatNumber(speedOne, 2) + " m/s";
+        omegaOutputTwo.textContent = formatNumber(omegaTwo, 2) + " rad/s";
+        speedOutputTwo.textContent = formatNumber(speedTwo, 2) + " m/s";
+
+        // Update jarak & putaran
+        const circumferenceOne = 2 * Math.PI * s.one.radius;
+        const circumferenceTwo = 2 * Math.PI * s.two.radius;
+        distanceOutputOne.textContent = formatNumber(distanceOne, 1) + " m";
+        distanceOutputTwo.textContent = formatNumber(distanceTwo, 1) + " m";
+        lapsOutputOne.textContent = formatNumber(distanceOne / circumferenceOne, 2);
+        lapsOutputTwo.textContent = formatNumber(distanceTwo / circumferenceTwo, 2);
+      }
+
+      function positionDot(dot, angle, meterRadius) {
+        const r = visualRadius(meterRadius);
+        const x = Math.cos(angle) * r;
+        const y = Math.sin(angle) * r;
+        dot.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
       }
 
       function drawOrbit() {
-        const settings = getSettings();
-        // Lebar orbit (tanpa border) sudah cukup sebagai basis; bagi 2 untuk radius
-        const w = orbit.clientWidth;
-        if (w === 0) return; // belum terlihat, skip
-        const stageRadius = w / 2;
+        const s = settings();
+        positionDot(dotOne, angleOne, s.one.radius);
+        positionDot(dotTwo, angleTwo, s.two.radius);
 
-        [dot1, dot2].forEach((dot, index) => {
-          const vr = visualRadius(stageRadius, settings[index].radius);
-          const a = angles[index];
-          const x = Math.cos(a) * vr;
-          const y = Math.sin(a) * vr;
-          dot.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
-        });
-
-        // garis jari-jari mengikuti kumbang 1
-        const vr1 = visualRadius(stageRadius, settings[0].radius);
-        line.style.width = vr1 + "px";
-        line.style.transform = "rotate(" + angles[0] + "rad)";
+        // Garis radius mengikuti kumbang 1
+        const r = visualRadius(s.one.radius);
+        line.style.width = r + "px";
+        line.style.transform = "rotate(" + angleOne + "rad)";
       }
 
       function animate(now) {
-        const elapsed = Math.min((now - lastTime) / 1000, 0.1); // clamp untuk hindari lompat besar
+        const elapsed = Math.min((now - lastTime) / 1000, 0.1);
         lastTime = now;
 
-        if (playing) {
-          const settings = getSettings();
-          settings.forEach((setting, index) => {
-            angles[index] += (2 * Math.PI / setting.period) * elapsed;
-          });
-          drawOrbit();
+        const s = settings();
+
+        if (playingOne) {
+          const omegaOne = (2 * Math.PI) / s.one.period;
+          angleOne += omegaOne * elapsed;
+          // Jarak tempuh = v × t = ωr × Δt
+          distanceOne += omegaOne * s.one.radius * elapsed;
         }
+        if (playingTwo) {
+          const omegaTwo = (2 * Math.PI) / s.two.period;
+          angleTwo += omegaTwo * elapsed;
+          distanceTwo += omegaTwo * s.two.radius * elapsed;
+        }
+
+        drawOrbit();
+        updateReadouts();
         requestAnimationFrame(animate);
       }
 
-      // Event listener kontrol
+      // Slider events
       radiusControl.addEventListener("input", () => { updateReadouts(); drawOrbit(); });
-      periodControl.addEventListener("input", () => { updateReadouts(); });
+      periodControl.addEventListener("input", updateReadouts);
       radiusControlTwo.addEventListener("input", () => { updateReadouts(); drawOrbit(); });
-      periodControlTwo.addEventListener("input", () => { updateReadouts(); });
+      periodControlTwo.addEventListener("input", updateReadouts);
 
-      playButton.addEventListener("click", () => {
-        playing = !playing;
-        playButton.setAttribute("aria-pressed", String(playing));
-        playButton.textContent = playing ? "Jeda" : "Mainkan";
-        // reset lastTime supaya tidak ada lompatan saat dilanjutkan
-        lastTime = performance.now();
+      // Tombol play/pause masing-masing kumbang
+      playButtonOne.addEventListener("click", () => {
+        playingOne = !playingOne;
+        playButtonOne.setAttribute("aria-pressed", String(playingOne));
+        playButtonOne.textContent = playingOne ? "⏸ Jeda Kumbang 1" : "▶ Mulai Kumbang 1";
       });
 
-      resetButton.addEventListener("click", () => {
-        angles = [-Math.PI / 2, Math.PI / 2];
+      playButtonTwo.addEventListener("click", () => {
+        playingTwo = !playingTwo;
+        playButtonTwo.setAttribute("aria-pressed", String(playingTwo));
+        playButtonTwo.textContent = playingTwo ? "⏸ Jeda Kumbang 2" : "▶ Mulai Kumbang 2";
+      });
+
+      // Tombol "Mulai dari Titik yang Sama":
+      // reset posisi ke titik awal, reset jarak, dan langsung jalankan keduanya
+      startSamePointButton.addEventListener("click", () => {
+        angleOne = START_ANGLE;
+        angleTwo = START_ANGLE;
+        distanceOne = 0;
+        distanceTwo = 0;
+
+        playingOne = true;
+        playingTwo = true;
+        playButtonOne.setAttribute("aria-pressed", "true");
+        playButtonTwo.setAttribute("aria-pressed", "true");
+        playButtonOne.textContent = "⏸ Jeda Kumbang 1";
+        playButtonTwo.textContent = "⏸ Jeda Kumbang 2";
+
         drawOrbit();
+        updateReadouts();
       });
 
-      // Redraw saat ukuran window berubah
-      window.addEventListener("resize", drawOrbit);
+      // Reset: kembalikan posisi & jarak ke nol, tetapi tidak mengubah status play/pause
+      resetButton.addEventListener("click", () => {
+        angleOne = START_ANGLE;
+        angleTwo = START_ANGLE;
+        distanceOne = 0;
+        distanceTwo = 0;
+        drawOrbit();
+        updateReadouts();
+      });
 
-      // ========== KALKULATOR ==========
+      // ===== KALKULATOR =====
       document.getElementById("calculatorForm").addEventListener("submit", (event) => {
         event.preventDefault();
         const radius = Number(document.getElementById("calcRadius").value);
@@ -728,7 +800,7 @@
           '</div>';
       });
 
-      // ========== KUIS ==========
+      // ===== KUIS =====
       const quizButtons = document.querySelectorAll(".quiz-option");
       const scoreOutput = document.getElementById("scoreOutput");
       const progressOutput = document.getElementById("progressOutput");
@@ -740,7 +812,6 @@
         const answered = Object.keys(answers).length;
         const score = Object.values(answers).filter(Boolean).length;
         const percent = Math.round((answered / 3) * 100);
-
         scoreOutput.textContent = score + " / 3";
         progressOutput.textContent = percent + "%";
         progressFill.style.width = percent + "%";
@@ -755,11 +826,11 @@
           const isCorrect = button.dataset.correct === "true";
           answers[question] = isCorrect;
 
-          document.querySelectorAll('.quiz-option[data-question="' + question + '"]').forEach((option) => {
+          const questionButtons = document.querySelectorAll('.quiz-option[data-question="' + question + '"]');
+          questionButtons.forEach((option) => {
             option.disabled = true;
             if (option.dataset.correct === "true") option.classList.add("is-correct");
           });
-
           if (!isCorrect) button.classList.add("is-wrong");
 
           document.getElementById("feedback" + question + (isCorrect ? "Correct" : "Wrong")).classList.add("is-visible");
@@ -773,23 +844,17 @@
           button.disabled = false;
           button.classList.remove("is-correct", "is-wrong");
         });
-        document.querySelectorAll(".feedback").forEach((feedback) => {
-          feedback.classList.remove("is-visible");
-        });
+        document.querySelectorAll(".feedback").forEach((fb) => fb.classList.remove("is-visible"));
         completePanel.classList.add("hidden");
         updateQuizSummary();
         document.getElementById("kuisPage").scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
-      // ========== INISIALISASI ==========
+      // Inisialisasi
       updateReadouts();
-      // drawOrbit awal: materi aktif, jadi orbit belum terlihat.
-      // Tetap panggil untuk mengisi state; akan digambar ulang saat tab simulasi dibuka.
-      requestAnimationFrame(() => {
-        drawOrbit();
-        requestAnimationFrame(animate);
-      });
+      drawOrbit();
       updateQuizSummary();
+      requestAnimationFrame(animate);
     });
   </script>
 </body>
