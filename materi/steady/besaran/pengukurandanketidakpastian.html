@@ -51,7 +51,24 @@
     .calc-input:focus { outline: 3px solid rgba(221, 107, 32, .28); border-color: #dd6b20; }
     .result-panel[hidden], .message-panel[hidden] { display: none; }
 
-    /* ==== TABEL STATISTIK (seperti di buku) ==== */
+    /* ==== NOTASI x-bar (x dengan garis atas tepat di atas x) ==== */
+    .xbar {
+      display: inline-block;
+      position: relative;
+      padding-top: .15em;
+      line-height: 1;
+    }
+    .xbar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0.05em;
+      right: 0.05em;
+      height: 0;
+      border-top: 1.4px solid currentColor;
+    }
+
+    /* ==== TABEL STATISTIK ==== */
     .stat-table { border-collapse: collapse; width: 100%; background: #fff; }
     .stat-table th, .stat-table td {
       border: 1px solid #102a43;
@@ -74,7 +91,7 @@
       .stat-table th, .stat-table td { padding: .4rem .35rem; font-size: .7rem; }
     }
 
-    /* ==== RUMUS BERTINGKAT ==== */
+    /* ==== RUMUS BERTINGKAT (akar menyatu) ==== */
     .formula-box {
       background: #e6f0ef;
       border: 1.5px solid #9ec8c6;
@@ -86,33 +103,75 @@
       overflow-x: auto;
     }
     .formula-box p { margin: 0; white-space: nowrap; }
+
     .frac {
       display: inline-flex; flex-direction: column; align-items: center;
       vertical-align: middle; margin: 0 .25rem;
     }
     .frac .num { border-bottom: 1.5px solid currentColor; padding: 0 .35rem .1rem; }
     .frac .den { padding: .1rem .35rem 0; }
-    .sqrt-sym {
-      display: inline-block;
+
+    .sqrt-wrap {
+      display: inline-flex;
+      align-items: stretch;
+      vertical-align: middle;
+      margin-left: .25rem;
+    }
+    .sqrt-symbol {
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.4em;
+      line-height: 1;
+      padding-right: 0;
+      transform: translateY(0.05em);
+    }
+    .sqrt-body {
+      display: inline-flex;
+      align-items: center;
       border-top: 1.5px solid currentColor;
-      padding: 0 .3rem;
-      margin-left: .15rem;
-      vertical-align: middle;
+      padding: .15rem .35rem 0;
+      margin-top: .15rem;
     }
-    .sqrt-sym::before {
-      content: "√";
-      font-size: 1.2em;
-      vertical-align: middle;
-      margin-right: -0.15em;
-    }
+    .sqrt-body .frac { margin: 0 .15rem; }
+
     .calc-steps {
       background: #fffaf0;
       border-left: 4px solid var(--accent);
       padding: .9rem 1rem;
       border-radius: 0 .75rem .75rem 0;
     }
-    .calc-steps .line { margin: .35rem 0; font-family: "Fraunces", serif; }
+    .calc-steps .line { margin: .35rem 0; font-family: "Fraunces", serif; display: flex; flex-wrap: wrap; align-items: center; gap: .15rem; }
     .calc-steps .line strong { font-family: "Work Sans", sans-serif; font-size: .85em; color: #102a43; }
+
+    /* Kotak aturan AP */
+    .ap-box {
+      background: #fffaf0;
+      border: 1.5px solid #dd6b20;
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+    }
+    .ap-item {
+      display: flex; align-items: flex-start; gap: .6rem;
+      padding: .55rem 0;
+      border-bottom: 1px dashed #d8cdb9;
+    }
+    .ap-item:last-child { border-bottom: none; }
+    .ap-arrow {
+      font-family: "Fraunces", serif;
+      font-size: 1.25em;
+      color: var(--accent);
+      line-height: 1;
+      margin-top: .1rem;
+    }
+
+    /* Kotak hasil kalkulator tambahan */
+    .calc-extra {
+      background: #fffaf0;
+      border: 1.5px dashed #dd6b20;
+      border-radius: .75rem;
+      padding: .85rem 1rem;
+      margin-top: .85rem;
+    }
 
     /* ==== KUIS SLIDE ==== */
     .quiz-slide { display: none; }
@@ -151,6 +210,7 @@
       h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
       .display-face { word-break: break-word; }
       .quiz-letter { width: 1.75rem; height: 1.75rem; font-size: .78rem; }
+      .sqrt-symbol { font-size: 1.2em; }
     }
     @supports (padding: max(0px)) {
       .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
@@ -179,7 +239,7 @@
           <button class="nav-item bg-transparent py-1" type="button" data-page-target="4">Kuis</button>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="https://thefounder-anexplorer.github.io/mediaajarfisikaSMA/besaran-steady.html" target="_blank" rel="noopener noreferrer"
+          <a href="https://portal-fisika.example.com" target="_blank" rel="noopener noreferrer"
              class="flex items-center gap-1.5 rounded-full bg-[#102a43] px-3 py-2 text-xs font-bold text-white transition hover:-translate-y-0.5 md:px-4 md:text-sm">
             <i data-lucide="home" width="14" height="14"></i>
             <span class="hidden sm:inline">Portal Fisika</span>
@@ -296,8 +356,10 @@
               <p class="mt-3 text-base leading-7 md:mt-4 md:text-lg md:leading-8">Hasil pengukuran yang baik selalu dilaporkan sebagai nilai terbaik beserta ketidakpastiannya, sehingga pembaca tahu seberapa dapat dipercaya nilai tersebut.</p>
               <article class="formula-mark mt-6 rounded-r-2xl p-4 md:mt-8 md:p-6">
                 <h3 class="font-bold">Penulisan hasil</h3>
-                <div class="formula-scroll"><p class="display-face mt-3 text-lg font-bold md:text-xl">x = x̄ ± Δx</p></div>
-                <p class="mt-3 text-sm leading-6 md:mt-4 md:text-base md:leading-7">dengan x̄ adalah nilai rata-rata hasil pengukuran dan Δx adalah ketidakpastiannya. Semakin kecil Δx, semakin presisi pengukuran.</p>
+                <div class="formula-scroll">
+                  <p class="display-face mt-3 text-lg font-bold md:text-xl">x = <span class="xbar">x</span> ± Δx</p>
+                </div>
+                <p class="mt-3 text-sm leading-6 md:mt-4 md:text-base md:leading-7">dengan <span class="xbar">x</span> adalah nilai rata-rata hasil pengukuran dan Δx adalah ketidakpastiannya. Semakin kecil Δx, semakin presisi pengukuran.</p>
               </article>
             </div>
             <aside class="paper-card overflow-hidden rounded-2xl border border-[#d8cdb9] bg-white md:rounded-[2rem]">
@@ -328,7 +390,7 @@
                   <p>Ketepatan = 1 − <span class="frac"><span class="num">Δx</span><span class="den">x</span></span></p>
                 </div>
                 <div class="formula-box">
-                  <p>Δx = |xᵢ − x̄|</p>
+                  <p>Δx = |xᵢ − <span class="xbar">x</span>|</p>
                 </div>
               </article>
 
@@ -338,7 +400,7 @@
                 <h3 class="mt-3 font-bold">Ketidakpastian Relatif</h3>
                 <p class="mt-2 text-sm leading-6 md:text-base">Dinyatakan dalam persen. Semakin kecil nilainya, semakin tinggi ketelitian pengukuran.</p>
                 <div class="formula-box">
-                  <p>KR = <span class="frac"><span class="num">Δx</span><span class="den">x̄</span></span> × 100%</p>
+                  <p>KR = <span class="frac"><span class="num">Δx</span><span class="den"><span class="xbar">x</span></span></span> × 100%</p>
                 </div>
                 <div class="formula-box">
                   <p>Ketelitian (%) = 100% − KR</p>
@@ -362,25 +424,31 @@
               <article class="paper-card rounded-2xl border border-[#d8cdb9] bg-white p-5">
                 <p class="display-face text-2xl font-bold text-[#eab308] md:text-3xl">d.</p>
                 <h3 class="mt-3 font-bold">Pengukuran Berulang</h3>
-                <p class="mt-2 text-sm leading-6 md:text-base">Jika x̄ adalah nilai rata-rata sampel, xᵢ hasil pengukuran ke-i, Δx simpangan baku nilai rata-rata, dan N banyak sampel.</p>
+                <p class="mt-2 text-sm leading-6 md:text-base">Jika <span class="xbar">x</span> adalah nilai rata-rata sampel, xᵢ hasil pengukuran ke-i, Δx simpangan baku nilai rata-rata, dan N banyak sampel.</p>
                 <div class="formula-box">
-                  <p>x̄ = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span></p>
+                  <p><span class="xbar">x</span> = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span></p>
                 </div>
                 <div class="formula-box">
-                  <p>Δx = sₓ = <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">N Σxᵢ² − (Σxᵢ)²</span><span class="den">N − 1</span></span></span></p>
+                  <p>Δx = sₓ =
+                    <span class="frac"><span class="num">1</span><span class="den">N</span></span>
+                    <span class="sqrt-wrap">
+                      <span class="sqrt-symbol">√</span>
+                      <span class="sqrt-body">
+                        <span class="frac">
+                          <span class="num">N Σxᵢ² − (Σxᵢ)²</span>
+                          <span class="den">N − 1</span>
+                        </span>
+                      </span>
+                    </span>
+                  </p>
                 </div>
               </article>
             </div>
-
-            <p class="mt-6 rounded-xl bg-[#e6f0ef] p-4 text-xs leading-6 text-[#102a43] md:text-sm md:leading-7">
-              <strong>Catatan:</strong> Banyak angka yang dapat dilaporkan dalam pengukuran berulang ditentukan oleh ketidakpastian relatifnya.
-              Jika KR ≈ 10% berhak atas 2 angka penting; KR ≈ 1% berhak atas 3 angka penting; dan KR ≈ 0,1% berhak atas 4 angka penting.
-            </p>
           </div>
         </section>
       </section>
 
-      <!-- ================= HALAMAN 4: CONTOH KETEBALAN KAYU ================= -->
+      <!-- ================= HALAMAN 4 ================= -->
       <section class="lesson-page" data-page="3" aria-label="Halaman 4: Contoh statistik dan kalkulator">
         <div class="bg-[#102a43]">
           <section class="mx-auto w-full max-w-6xl px-4 py-12 md:px-8 md:py-16">
@@ -420,21 +488,64 @@
                   </table>
                 </div>
 
-                <!-- Langkah perhitungan -->
                 <div class="calc-steps mt-6">
                   <p class="line"><strong>N = 6</strong> dan <strong>N − 1 = 5</strong></p>
-                  <p class="line">x̄ = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span> = <span class="frac"><span class="num">9,17</span><span class="den">6</span></span> = <strong>1,5283 cm</strong></p>
-                  <p class="line">Δx = sₓ = <span class="frac"><span class="num">1</span><span class="den">N</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">N Σxᵢ² − (Σxᵢ)²</span><span class="den">N − 1</span></span></span></p>
-                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">6 (14,0159) − (9,17)²</span><span class="den">5</span></span></span></p>
-                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">84,0954 − 84,0889</span><span class="den">5</span></span></span></p>
-                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> <span class="sqrt-sym"><span class="frac"><span class="num">0,0065</span><span class="den">5</span></span></span></p>
-                  <p class="line">= <span class="frac"><span class="num">1</span><span class="den">6</span></span> × √0,0013</p>
-                  <p class="line">≈ <strong>0,0060 cm</strong></p>
+                  <p class="line"><span class="xbar">x</span> = <span class="frac"><span class="num">Σ xᵢ</span><span class="den">N</span></span> = <span class="frac"><span class="num">9,17</span><span class="den">6</span></span> = <strong>1,5283 cm</strong></p>
+                  <p class="line">Δx = sₓ =
+                    <span class="frac"><span class="num">1</span><span class="den">N</span></span>
+                    <span class="sqrt-wrap">
+                      <span class="sqrt-symbol">√</span>
+                      <span class="sqrt-body">
+                        <span class="frac">
+                          <span class="num">N Σxᵢ² − (Σxᵢ)²</span>
+                          <span class="den">N − 1</span>
+                        </span>
+                      </span>
+                    </span>
+                  </p>
+                  <p class="line">=
+                    <span class="frac"><span class="num">1</span><span class="den">6</span></span>
+                    <span class="sqrt-wrap">
+                      <span class="sqrt-symbol">√</span>
+                      <span class="sqrt-body">
+                        <span class="frac">
+                          <span class="num">6 (14,0159) − (9,17)²</span>
+                          <span class="den">5</span>
+                        </span>
+                      </span>
+                    </span>
+                  </p>
+                  <p class="line">=
+                    <span class="frac"><span class="num">1</span><span class="den">6</span></span>
+                    <span class="sqrt-wrap">
+                      <span class="sqrt-symbol">√</span>
+                      <span class="sqrt-body">
+                        <span class="frac">
+                          <span class="num">84,0954 − 84,0889</span>
+                          <span class="den">5</span>
+                        </span>
+                      </span>
+                    </span>
+                  </p>
+                  <p class="line">=
+                    <span class="frac"><span class="num">1</span><span class="den">6</span></span>
+                    <span class="sqrt-wrap">
+                      <span class="sqrt-symbol">√</span>
+                      <span class="sqrt-body">
+                        <span class="frac">
+                          <span class="num">0,0065</span>
+                          <span class="den">5</span>
+                        </span>
+                      </span>
+                    </span>
+                    = <span class="frac"><span class="num">1</span><span class="den">6</span></span> × √0,0013
+                    ≈ <strong>0,0060 cm</strong>
+                  </p>
                 </div>
 
                 <div class="mt-5 grid gap-3 sm:grid-cols-3">
                   <div class="rounded-xl bg-[#e6f0ef] p-4">
-                    <p class="text-xs font-bold md:text-sm">Rata-rata (x̄)</p>
+                    <p class="text-xs font-bold md:text-sm">Rata-rata (<span class="xbar">x</span>)</p>
                     <p class="display-face mt-1 text-lg font-bold md:mt-2 md:text-xl">1,5283 cm</p>
                   </div>
                   <div class="rounded-xl bg-[#e6f0ef] p-4">
@@ -447,18 +558,47 @@
                   </div>
                 </div>
 
-                <p class="mt-4 rounded-xl border border-[#9ec8c6] bg-[#fffaf0] p-4 text-sm leading-6 text-[#102a43] md:text-base md:leading-7">
-                  <strong>Pelaporan:</strong> Karena ketidakpastian relatifnya sekitar 0,4% (berhak atas 3 angka penting), hasil pengukuran ketebalan kayu dapat dilaporkan sebagai
-                  <strong>x = (1,53 ± 0,01) cm</strong>.
-                </p>
+                <!-- Keterangan AP -->
+                <div class="ap-box mt-6">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="info" class="text-[#dd6b20]" width="20" height="20" aria-hidden="true"></i>
+                    <h4 class="display-face text-base font-bold md:text-lg">Aturan Angka Penting (AP) berdasarkan Ketidakpastian Relatif</h4>
+                  </div>
+                  <div class="mt-3">
+                    <div class="ap-item">
+                      <span class="ap-arrow">→</span>
+                      <p class="m-0 text-sm leading-6 md:text-base">
+                        <strong>Ketidakpastian Relatif sekitar 10%</strong> → Berhak atas <strong>2 AP</strong>
+                      </p>
+                    </div>
+                    <div class="ap-item">
+                      <span class="ap-arrow">→</span>
+                      <p class="m-0 text-sm leading-6 md:text-base">
+                        <strong>Ketidakpastian Relatif sekitar 1%</strong> → Berhak atas <strong>3 AP</strong>
+                      </p>
+                    </div>
+                    <div class="ap-item">
+                      <span class="ap-arrow">→</span>
+                      <p class="m-0 text-sm leading-6 md:text-base">
+                        <strong>Ketidakpastian Relatif sekitar 0,1%</strong> → Berhak atas <strong>4 AP</strong>
+                      </p>
+                    </div>
+                  </div>
+                  <p class="mt-3 rounded-xl bg-white p-3 text-xs leading-6 text-[#102a43] md:text-sm md:leading-7">
+                    <strong>Pelaporan:</strong> Karena ketidakpastian relatifnya sekitar 0,4% (berhak atas 3 angka penting), hasil pengukuran ketebalan kayu dapat dilaporkan sebagai
+                    <strong>x = (1,53 ± 0,01) cm</strong>.
+                  </p>
+                </div>
               </div>
             </article>
 
-            <!-- KALKULATOR -->
+            <!-- KALKULATOR DENGAN FITUR KR -->
             <div class="mt-8 grid gap-6 lg:grid-cols-[.85fr_1.15fr] md:mt-10">
               <div>
                 <h3 class="display-face text-lg font-bold text-[#f6f1e6] md:text-xl">Kalkulator ketidakpastian</h3>
-                <p class="mt-3 text-sm leading-6 text-[#f6f1e6]/90 md:mt-4 md:text-base md:leading-7">Masukkan data pengukuran Anda, pisahkan dengan koma atau spasi. Kalkulator akan menghitung rata-rata, simpangan baku, dan ketidakpastian pengukuran berulang menggunakan rumus yang sama dengan buku.</p>
+                <p class="mt-3 text-sm leading-6 text-[#f6f1e6]/90 md:mt-4 md:text-base md:leading-7">
+                  Masukkan data pengukuran Anda, pisahkan dengan koma atau spasi. Kalkulator akan menghitung rata-rata, simpangan baku, ketidakpastian, <strong>ketidakpastian relatif (KR)</strong>, dan <strong>hasil pengukuran yang disarankan</strong> sesuai aturan angka penting.
+                </p>
               </div>
               <form id="measurement-form" class="rounded-2xl bg-[#f6f1e6] p-5 md:p-8" novalidate>
                 <label class="block text-sm font-bold md:text-base" for="measurement-values">Data pengukuran</label>
@@ -473,7 +613,7 @@
                   <p class="text-sm font-bold md:text-base">Hasil perhitungan</p>
                   <dl class="mt-3 grid gap-3 sm:grid-cols-2 md:mt-4">
                     <div class="rounded-lg bg-white p-3">
-                      <dt class="text-xs font-semibold md:text-sm">Rata-rata (x̄)</dt>
+                      <dt class="text-xs font-semibold md:text-sm">Rata-rata (<span class="xbar">x</span>)</dt>
                       <dd id="average-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                     <div class="rounded-lg bg-white p-3">
@@ -489,9 +629,28 @@
                       <dd id="count-value" class="display-face mt-1 text-xl font-bold md:text-2xl"></dd>
                     </div>
                   </dl>
-                  <div class="mt-3 border-t border-[#9ec8c6] pt-3 md:mt-4 md:pt-4">
-                    <p class="text-xs font-semibold md:text-sm">Hasil pengukuran</p>
-                    <p id="final-value" class="display-face mt-1 text-base font-bold md:text-xl"></p>
+
+                  <!-- ==== HASIL TAMBAHAN: KR & AP & HASIL DISARANKAN ==== -->
+                  <div class="calc-extra">
+                    <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20] md:text-sm">Analisis Ketidakpastian Relatif &amp; Angka Penting</p>
+                    <dl class="mt-3 grid gap-2 sm:grid-cols-2">
+                      <div class="rounded-lg bg-white p-3">
+                        <dt class="text-xs font-semibold md:text-sm">Ketidakpastian Relatif (KR)</dt>
+                        <dd id="kr-value" class="display-face mt-1 text-lg font-bold md:text-xl"></dd>
+                      </div>
+                      <div class="rounded-lg bg-white p-3">
+                        <dt class="text-xs font-semibold md:text-sm">Ketelitian</dt>
+                        <dd id="accuracy-value" class="display-face mt-1 text-lg font-bold md:text-xl"></dd>
+                      </div>
+                      <div class="rounded-lg bg-white p-3">
+                        <dt class="text-xs font-semibold md:text-sm">Angka Penting yang Berhak</dt>
+                        <dd id="ap-value" class="display-face mt-1 text-lg font-bold md:text-xl"></dd>
+                      </div>
+                      <div class="rounded-lg bg-[#fffaf0] p-3">
+                        <dt class="text-xs font-semibold text-[#dd6b20] md:text-sm">Hasil Pengukuran Disarankan</dt>
+                        <dd id="recommended-value" class="display-face mt-1 text-lg font-bold md:text-xl"></dd>
+                      </div>
+                    </dl>
                   </div>
                 </div>
               </form>
@@ -542,8 +701,8 @@
                 <div class="mt-4 space-y-2.5">
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">Δx = ½ × skala terkecil</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">Δx = (1/N) √[ (N Σxᵢ² − (Σxᵢ)²) / (N−1) ]</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">Δx = (Δx / x̄) × 100%</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">Δx = x̄ × N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">Δx = (Δx / <span class="xbar">x</span>) × 100%</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">Δx = <span class="xbar">x</span> × N</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q2" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">Δx = Σ xᵢ / (N − 1)</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
@@ -555,10 +714,10 @@
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 3</p>
                 <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Hasil pengukuran yang baik dituliskan sebagai…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">x = x̄ × Δx</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">x = x̄ ± Δx</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">x = Δx / x̄</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">x = x̄ + N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">x = <span class="xbar">x</span> × Δx</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">x = <span class="xbar">x</span> ± Δx</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">x = Δx / <span class="xbar">x</span></span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">x = <span class="xbar">x</span> + N</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q3" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">x = Σ xᵢ</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
@@ -568,13 +727,13 @@
             <div class="quiz-slide" data-quiz="3">
               <div class="rounded-2xl border border-[#d8cdb9] bg-white p-5 md:p-7">
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 4</p>
-                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Semakin kecil nilai ketidakpastian relatif, berarti pengukuran semakin…</h3>
+                <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Jika ketidakpastian relatif sekitar 1%, hasil pengukuran berhak atas…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">Presisi</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">Tidak akurat</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">Bias</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">Kasar</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">Sistematis</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">2 angka penting</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">3 angka penting</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">4 angka penting</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">5 angka penting</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q4" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">1 angka penting</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
               </div>
@@ -630,10 +789,10 @@
                 <p class="text-xs font-bold uppercase tracking-wider text-[#dd6b20]">Soal 8</p>
                 <h3 class="mt-2 text-base font-bold leading-7 md:text-lg">Rumus simpangan baku (standar deviasi) untuk N data pada pengukuran berulang adalah…</h3>
                 <div class="mt-4 space-y-2.5">
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">sₓ = Σ (xᵢ − x̄) / N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="a" class="sr-only"><span class="quiz-letter">A</span><span class="text-sm leading-6 md:text-base">sₓ = Σ (xᵢ − <span class="xbar">x</span>) / N</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="b" class="sr-only"><span class="quiz-letter">B</span><span class="text-sm leading-6 md:text-base">sₓ = (1/N) √[ (N Σxᵢ² − (Σxᵢ)²) / (N−1) ]</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="c" class="sr-only"><span class="quiz-letter">C</span><span class="text-sm leading-6 md:text-base">sₓ = Σ xᵢ / N</span></label>
-                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">sₓ = (x̄ − xᵢ) × N</span></label>
+                  <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="d" class="sr-only"><span class="quiz-letter">D</span><span class="text-sm leading-6 md:text-base">sₓ = (<span class="xbar">x</span> − xᵢ) × N</span></label>
                   <label class="quiz-option flex items-center gap-3 rounded-xl border border-[#d8cdb9] p-3"><input type="radio" name="q8" value="e" class="sr-only"><span class="quiz-letter">E</span><span class="text-sm leading-6 md:text-base">sₓ = √N / Δx</span></label>
                 </div>
                 <p class="quiz-feedback mt-3 text-sm font-semibold" hidden></p>
@@ -708,7 +867,6 @@
       </div>
     </nav>
 
-    <!-- FOOTER -->
     <footer class="bg-[#0b1f33]">
       <div class="mx-auto flex w-full max-w-6xl flex-col justify-between gap-2 px-4 py-5 text-xs text-[#f6f1e6] md:flex-row md:px-8 md:py-6 md:text-sm">
         <p class="m-0">Materi Fisika — Kesalahan dan Ketidakpastian Pengukuran</p>
@@ -772,7 +930,7 @@
       previousButton.addEventListener("click", function () { setPage(activePage - 1); });
       nextButton.addEventListener("click", function () { setPage(activePage + 1); });
 
-      // ===== KALKULATOR =====
+      // ===== KALKULATOR DENGAN FITUR KR & AP =====
       const form = document.getElementById("measurement-form");
       const input = document.getElementById("measurement-values");
       const result = document.getElementById("calc-result");
@@ -781,7 +939,10 @@
       const stddevValue = document.getElementById("stddev-value");
       const uncertaintyValue = document.getElementById("uncertainty-value");
       const countValue = document.getElementById("count-value");
-      const finalValue = document.getElementById("final-value");
+      const krValue = document.getElementById("kr-value");
+      const accuracyValue = document.getElementById("accuracy-value");
+      const apValue = document.getElementById("ap-value");
+      const recommendedValue = document.getElementById("recommended-value");
       const resetButton = document.getElementById("reset-button");
 
       function showMessage(text, isError) {
@@ -796,6 +957,30 @@
       function getDecimalPlaces(value) {
         const text = String(value);
         return text.includes(".") ? text.split(".")[1].length : 0;
+      }
+
+      // Tentukan berapa angka penting yang berhak berdasarkan KR (%)
+      function getSignificantFigures(krPercent) {
+        if (krPercent >= 5) return 2;      // sekitar 10%
+        if (krPercent >= 0.5) return 3;    // sekitar 1%
+        if (krPercent >= 0.05) return 4;   // sekitar 0,1%
+        return 5;
+      }
+
+      // Bulatkan angka ke sejumlah angka penting tertentu
+      function roundToSigFigs(num, sigFigs) {
+        if (num === 0) return 0;
+        const magnitude = Math.floor(Math.log10(Math.abs(num)));
+        const factor = Math.pow(10, sigFigs - magnitude - 1);
+        return Math.round(num * factor) / factor;
+      }
+
+      // Hitung jumlah desimal yang sesuai untuk menampilkan bilangan dengan sejumlah AP
+      function decimalsForSigFigs(num, sigFigs) {
+        if (num === 0) return sigFigs - 1;
+        const magnitude = Math.floor(Math.log10(Math.abs(num)));
+        const decimals = sigFigs - magnitude - 1;
+        return Math.max(0, decimals);
       }
 
       form.addEventListener("submit", function (event) {
@@ -820,6 +1005,23 @@
         const varianceTerm = (N * sumX2 - sumX * sumX) / (N - 1);
         const stddev = (1 / N) * Math.sqrt(Math.max(0, varianceTerm));
 
+        // KR dan ketelitian
+        const krPercent = average !== 0 ? (stddev / Math.abs(average)) * 100 : 0;
+        const accuracyPercent = 100 - krPercent;
+
+        // Angka penting yang berhak
+        const sigFigs = getSignificantFigures(krPercent);
+
+        // Hasil pengukuran disarankan: bulatkan rata-rata & ketidakpastian sesuai AP
+        // Ketidakpastian dibulatkan ke 1 angka penting (kecuali jika angka pertama 1, boleh 2)
+        const uncertaintyRounded = roundToSigFigs(stddev, 1) || stddev;
+        // Rata-rata dibulatkan pada posisi desimal yang sama dengan ketidakpastian
+        const uncDecimals = decimalsForSigFigs(uncertaintyRounded, 1);
+        const averageRounded = Number(average.toFixed(Math.max(0, uncDecimals)));
+        // Batasi juga sesuai jumlah AP yang berhak
+        const averageSigFigRounded = roundToSigFigs(average, sigFigs);
+
+        // Tampilkan hasil utama (nilai penuh dari perhitungan)
         const sourceDecimals = Math.max.apply(null, values.map(getDecimalPlaces));
         const decimals = Math.min(4, Math.max(1, sourceDecimals));
 
@@ -827,7 +1029,21 @@
         stddevValue.textContent = stddev.toFixed(decimals + 1);
         uncertaintyValue.textContent = "± " + stddev.toFixed(decimals + 1);
         countValue.textContent = N;
-        finalValue.textContent = "x = (" + average.toFixed(decimals) + " ± " + stddev.toFixed(decimals + 1) + ") satuan";
+
+        // Tampilkan KR, ketelitian, AP, dan hasil disarankan
+        krValue.textContent = krPercent.toFixed(3) + " %";
+        accuracyValue.textContent = accuracyPercent.toFixed(3) + " %";
+        apValue.textContent = sigFigs + " angka penting";
+
+        // Format hasil disarankan
+        const uncDec = decimalsForSigFigs(uncertaintyRounded, 1);
+        const recommendedText = "x = (" +
+          averageRounded.toFixed(Math.max(0, uncDec)) +
+          " ± " +
+          uncertaintyRounded.toFixed(Math.max(0, uncDec)) +
+          ") satuan";
+        recommendedValue.textContent = recommendedText;
+
         message.hidden = true;
         result.hidden = false;
       });
@@ -852,7 +1068,7 @@
       const quizRestart = document.getElementById("quiz-restart");
 
       const answerKey = {
-        q1: "a", q2: "b", q3: "b", q4: "a", q5: "c",
+        q1: "a", q2: "b", q3: "b", q4: "b", q5: "c",
         q6: "b", q7: "b", q8: "b", q9: "b", q10: "c"
       };
 
