@@ -234,7 +234,7 @@
     .latihan-new-wrapper .symbol-button:focus-visible { outline: 3px solid #80c5d4; outline-offset: 2px; }
     .latihan-new-wrapper .symbol-button sub { font-size: 0.7em; vertical-align: -0.25em; line-height: 0; }
 
-    /* === INLINE FORMULA (satu baris untuk Langkah 3) === */
+    /* === INLINE FORMULA === */
     .latihan-new-wrapper .inline-formula {
       display: flex;
       flex-wrap: wrap;
@@ -263,7 +263,19 @@
     }
     .latihan-new-wrapper .inline-formula .eq { font-weight: 700; color: var(--ink); flex-shrink: 0; }
 
-    /* ===== RESPONSIF HP: Latihan Rumus (perbaikan) ===== */
+    /* Tombol pintasan di bawah tiap langkah (step-symbols) */
+    .latihan-new-wrapper .step-symbols {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.6rem;
+      border-radius: 0.6rem;
+      background: #f3f8fa;
+      border: 1px solid #dbe7ee;
+    }
+
+    /* ===== RESPONSIF HP: Latihan Rumus ===== */
     @media (max-width: 768px) {
       .latihan-new-wrapper header,
       .latihan-new-wrapper main {
@@ -317,13 +329,10 @@
         flex-shrink: 0;
       }
       .latihan-new-wrapper .inline-formula .eq { font-size: 0.95rem !important; flex-shrink: 0; }
-      .latihan-new-wrapper .mt-3.flex.flex-wrap.gap-2,
-      .latihan-new-wrapper .mb-5.rounded-xl .flex.flex-wrap.gap-2 {
-        display: flex !important;
+      .latihan-new-wrapper .step-symbols {
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
-        gap: 0.35rem !important;
-        padding-bottom: 0.3rem !important;
+        padding-bottom: 0.35rem !important;
         -webkit-overflow-scrolling: touch;
       }
       .latihan-new-wrapper .symbol-button {
@@ -992,15 +1001,15 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Gunakan definisi cosinus</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Cosinus sudut adalah perbandingan sisi samping dengan sisi miring.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+                        <div class="inline-formula mt-4">
                           <span class="flex flex-col items-center w-36">
                             <input id="ansx1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             <span class="fraction-line"></span>
                             <input id="ansx2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                           </span>
-                          <span>= cos α</span>
+                          <span class="eq">= cos α</span>
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="samping" data-group="v0x">samping</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="miring" data-group="v0x">miring</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="cos α" data-group="v0x">cos α</button>
@@ -1009,21 +1018,20 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 2: Substitusikan nilai vektor</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti sisi samping dengan V<sub>0x</sub> dan sisi miring dengan V<sub>0</sub>.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+                        <div class="inline-formula mt-4">
                           <span class="flex flex-col items-center w-36">
                             <input id="ansx3" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             <span class="fraction-line"></span>
                             <input id="ansx4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                           </span>
-                          <span>= cos α</span>
+                          <span class="eq">= cos α</span>
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="v0x">V₀x</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0x">V₀</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="cos α" data-group="v0x">cos α</button>
                         </div>
                       </li>
-                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0x</sub>.</p>
@@ -1034,7 +1042,7 @@
                           <input id="ansx7" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <input id="ansx8" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="v0x">V₀x</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0x">V₀</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="v0x">cos</button>
@@ -1097,15 +1105,15 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Gunakan definisi sinus</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Sinus sudut adalah perbandingan sisi depan dengan sisi miring.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+                        <div class="inline-formula mt-4">
                           <span class="flex flex-col items-center w-36">
                             <input id="ansy1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             <span class="fraction-line"></span>
                             <input id="ansy2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                           </span>
-                          <span>= sin α</span>
+                          <span class="eq">= sin α</span>
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="depan" data-group="v0y">depan</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="miring" data-group="v0y">miring</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="sin α" data-group="v0y">sin α</button>
@@ -1114,21 +1122,20 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 2: Substitusikan nilai vektor</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti sisi depan dengan V<sub>0y</sub> dan sisi miring dengan V<sub>0</sub>.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+                        <div class="inline-formula mt-4">
                           <span class="flex flex-col items-center w-36">
                             <input id="ansy3" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             <span class="fraction-line"></span>
                             <input id="ansy4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                           </span>
-                          <span>= sin α</span>
+                          <span class="eq">= sin α</span>
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="v0y">V₀y</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0y">V₀</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="sin α" data-group="v0y">sin α</button>
                         </div>
                       </li>
-                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0y</sub>.</p>
@@ -1139,7 +1146,7 @@
                           <input id="ansy7" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <input id="ansy8" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                         </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
+                        <div class="step-symbols">
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="v0y">V₀y</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0y">V₀</button>
                           <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="v0y">sin</button>
@@ -1202,13 +1209,18 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Tuliskan rumus dasar GLB</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Isi bagian atas dengan jarak (x), dan bagian bawah dengan waktu (t).</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+                        <div class="inline-formula mt-4">
                           <span class="flex flex-col items-center w-36">
                             <input id="ansj1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             <span class="fraction-line"></span>
                             <input id="ansj2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                           </span>
-                          <span>= V<sub>0x</sub></span>
+                          <span class="eq">= V<sub>0x</sub></span>
+                        </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="x" data-group="jarak">x</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="jarak">t</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="jarak">V₀x</button>
                         </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
@@ -1219,8 +1231,11 @@
                           <input id="ansj3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t</span>
                         </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="jarak">V₀x</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="jarak">t</button>
+                        </div>
                       </li>
-                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Substitusikan V<sub>0x</sub> = V<sub>0</sub> cos α</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0x</sub> dengan rumus komponen horizontalnya.</p>
@@ -1230,6 +1245,13 @@
                           <input id="ansj5" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <input id="ansj6" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t</span>
+                        </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="jarak">V₀</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="jarak">cos</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="jarak">α</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="jarak">t</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀ cos α" data-group="jarak">V₀ cos α</button>
                         </div>
                       </li>
                     </ol>
@@ -1294,6 +1316,11 @@
                           <input id="ansv2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t</span>
                         </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="vertikal">V₀</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="a" data-group="vertikal">a</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="vertikal">t</button>
+                        </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 2: Substitusi Simbol (V<sub>t</sub> menjadi V<sub>ty</sub>)</h3>
@@ -1305,8 +1332,12 @@
                           <input id="ansv4" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t</span>
                         </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="vertikal">V₀y</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="vertikal">g</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="vertikal">t</button>
+                        </div>
                       </li>
-                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Substitusi Nilai V<sub>0y</sub></h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0y</sub> dengan komponennya, yaitu V<sub>0</sub> sin α.</p>
@@ -1316,6 +1347,12 @@
                           <input id="ansv6" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <input id="ansv7" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">- g · t</span>
+                        </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="vertikal">V₀</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="vertikal">sin</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="vertikal">α</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀ sin α" data-group="vertikal">V₀ sin α</button>
                         </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
@@ -1328,6 +1365,12 @@
                           <input id="ansv9" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t²</span>
                         </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="vertikal">V₀</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="½" data-group="vertikal">½</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="a" data-group="vertikal">a</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="vertikal">t</button>
+                        </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 5: Substitusi Simbol Ketinggian</h3>
@@ -1337,8 +1380,13 @@
                           <input id="ansv10" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t - ½ g · t²</span>
                         </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="vertikal">V₀y</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="vertikal">g</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="vertikal">t</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="Δh" data-group="vertikal">Δh</button>
+                        </div>
                       </li>
-                      <!-- Langkah 6: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 6: Substitusi Akhir Ketinggian</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0y</sub> dengan V<sub>0</sub> sin α untuk mendapatkan rumus akhir Δh.</p>
@@ -1348,6 +1396,12 @@
                           <input id="ansv12" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <input id="ansv13" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           <span class="eq">· t - ½ g · t²</span>
+                        </div>
+                        <div class="step-symbols">
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="vertikal">V₀</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="vertikal">sin</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="vertikal">α</button>
+                          <button type="button" class="symbol-button focus-ring" data-symbol="V₀ sin α" data-group="vertikal">V₀ sin α</button>
                         </div>
                       </li>
                     </ol>
@@ -1401,6 +1455,7 @@
                     </div>
                   </div>
 
+                  <!-- t_max -->
                   <div class="mb-8 rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
                     <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
                       <i data-lucide="clock" class="h-5 w-5"></i> 1. Waktu Maksimum (t<sub>max</sub>)
@@ -1417,6 +1472,11 @@
                             <input id="anst2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                             <span class="eq">· t<sub>max</sub></span>
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="tmax">V₀y</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="tmax">g</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="tmax">t</button>
+                          </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 2: Susun ulang persamaan</h4>
@@ -1428,6 +1488,10 @@
                               <span class="fraction-line"></span>
                               <input id="anst4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             </span>
+                          </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="tmax">V₀y</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="tmax">g</button>
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
@@ -1444,6 +1508,12 @@
                               <input id="anst7" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
                             </span>
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="tmax">V₀</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="tmax">sin</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="tmax">α</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="tmax">g</button>
+                          </div>
                         </li>
                       </ol>
                       <div class="mt-4 flex flex-wrap items-center gap-3">
@@ -1458,6 +1528,7 @@
                     </form>
                   </div>
 
+                  <!-- h_max -->
                   <div class="mb-8 rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
                     <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
                       <i data-lucide="arrow-up" class="h-5 w-5"></i> 2. Ketinggian Maksimum (h<sub>max</sub>)
@@ -1475,6 +1546,11 @@
                             <span class="eq">·</span>
                             <input id="ansh3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="hmax">V₀y</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="hmax">g</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="h_max" data-group="hmax">h_max</button>
+                          </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 2: Susun ulang persamaan</h4>
@@ -1486,6 +1562,10 @@
                               <span class="fraction-line"></span>
                               <input id="ansh5" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
                             </span>
+                          </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀y²" data-group="hmax">V₀y²</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="2g" data-group="hmax">2g</button>
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
@@ -1502,6 +1582,12 @@
                               <input id="ansh8" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
                             </span>
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="hmax">V₀</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="hmax">sin</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="hmax">α</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="2g" data-group="hmax">2g</button>
+                          </div>
                         </li>
                       </ol>
                       <div class="mt-4 flex flex-wrap items-center gap-3">
@@ -1516,6 +1602,7 @@
                     </form>
                   </div>
 
+                  <!-- x_max -->
                   <div class="rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
                     <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
                       <i data-lucide="move-horizontal" class="h-5 w-5"></i> 3. Jarak Horizontal Maksimum (x<sub>max</sub>)
@@ -1530,6 +1617,10 @@
                             <input id="ansx1" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                             <span class="eq">· t<sub>max</sub></span>
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="2" data-group="xmax">2</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="t_max" data-group="xmax">t_max</button>
+                          </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 2: Gunakan rumus jarak horizontal</h4>
@@ -1539,6 +1630,10 @@
                             <input id="ansx2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                             <span class="eq">·</span>
                             <input id="ansx3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="xmax">V₀x</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="t_total" data-group="xmax">t_total</button>
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
@@ -1559,6 +1654,14 @@
                               <input id="ansx9" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
                             </span>
                           </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="xmax">V₀</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="xmax">cos</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="xmax">α</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="2" data-group="xmax">2</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="xmax">sin</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="xmax">g</button>
+                          </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 4: Sederhanakan bentuk akhir</h4>
@@ -1573,6 +1676,11 @@
                               <span class="fraction-line"></span>
                               <input id="ansx12" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
                             </span>
+                          </div>
+                          <div class="step-symbols">
+                            <button type="button" class="symbol-button focus-ring" data-symbol="V₀²" data-group="xmax">V₀²</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="sin 2α" data-group="xmax">sin 2α</button>
+                            <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="xmax">g</button>
                           </div>
                         </li>
                       </ol>
