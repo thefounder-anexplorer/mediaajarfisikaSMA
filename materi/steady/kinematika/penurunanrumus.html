@@ -3,20 +3,18 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latihan Penurunan Rumus Gerak Parabola</title>
+  <title>Latihan Penurunan Rumus Gerak Parabola Lengkap</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #153047;
-      --paper: #fffdf5;
-      --line: #dbe7ee;
-      --accent: #e8783c;
-      --muted: #5e7181;
-      --success: #167356;
-      --danger: #b9443e;
       --blue: #1e7593;
+      --cream: #fffdf6;
+      --paper-line: rgba(60, 115, 137, 0.12);
+      --correct: #16744a;
+      --incorrect: #b23b3b;
     }
 
     * { box-sizing: border-box; }
@@ -25,16 +23,1183 @@
       margin: 0;
       font-family: "DM Sans", sans-serif;
       color: var(--ink);
-      background-color: #eaf1f2;
+      background-color: #e8f0ed;
     }
 
-    .page-paper {
-      width: 100%;
-      min-height: 100vh;
-      background:
-        linear-gradient(90deg, transparent 0, transparent 8%, rgba(232, 120, 60, .16) 8%, rgba(232, 120, 60, .16) calc(8% + 1px), transparent calc(8% + 1px)),
-        repeating-linear-gradient(0deg, var(--paper) 0, var(--paper) 34px, var(--line) 35px, var(--paper) 36px);
+    .paper-surface {
+      background-image:
+        linear-gradient(90deg, transparent 0, transparent 42px, rgba(205, 89, 86, 0.22) 42px, rgba(205, 89, 86, 0.22) 44px, transparent 44px),
+        repeating-linear-gradient(to bottom, transparent 0, transparent 32px, var(--paper-line) 33px, transparent 34px);
     }
+
+    .formula-font {
+      font-family: "Source Serif 4", Georgia, serif;
+    }
+
+    .tab-button {
+      border: 1px solid #b8d0d2;
+      background: rgba(255, 255, 255, 0.72);
+      color: #376778;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      font-size: 0.9rem;
+    }
+
+    .tab-button:hover {
+      background: #eff8f7;
+      transform: translateY(-1px);
+    }
+
+    .tab-button.is-active {
+      background: #1e7593;
+      border-color: #1e7593;
+      color: #ffffff;
+      box-shadow: 0 7px 16px rgba(30, 117, 147, 0.2);
+    }
+
+    .exercise-view {
+      display: none;
+      animation: reveal 380ms ease both;
+    }
+
+    .exercise-view.is-active {
+      display: block;
+    }
+
+    .answer-input {
+      width: 100%;
+      min-width: 0;
+      border: none;
+      border-bottom: 2px dashed #527a89;
+      border-radius: 0;
+      padding: 0.35rem 0.2rem;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--ink);
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 1.12rem;
+      font-weight: 600;
+      text-align: center;
+      outline: none;
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .answer-input:focus {
+      border-bottom-style: solid;
+      border-color: var(--blue);
+      background: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(30, 117, 147, 0.12);
+    }
+
+    .answer-input.is-correct {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #ecf9f1;
+    }
+
+    .answer-input.is-incorrect {
+      border-color: var(--incorrect);
+      color: var(--incorrect);
+      background: #fff2f0;
+    }
+
+    .feedback-text {
+      display: block;
+      min-height: 1.25rem;
+      line-height: 1.25rem;
+      font-weight: 600;
+    }
+
+    .step-card {
+      border-left: 3px solid #9ec6c8;
+      animation: rise-in 500ms ease both;
+    }
+
+    .step-card:nth-child(2) { animation-delay: 90ms; }
+    .step-card:nth-child(3) { animation-delay: 180ms; }
+    .step-card:nth-child(4) { animation-delay: 270ms; }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .result-reveal {
+      animation: reveal 450ms ease both;
+    }
+
+    .focus-ring:focus-visible {
+      outline: 3px solid #80c5d4;
+      outline-offset: 3px;
+    }
+
+    .fraction-line {
+      width: 100%;
+      height: 2px;
+      background-color: #17395b;
+      margin: 4px 0;
+    }
+  </style>
+ </head>
+ <body data-template-id="__page-root" class="w-full min-h-screen">
+  
+  <header class="w-full px-4 pt-6 sm:px-8 sm:pt-10">
+   <div class="mx-auto max-w-4xl">
+    <div class="inline-flex items-center gap-2 rounded-full bg-[#e8783c]/10 px-3 py-1.5 text-sm font-semibold text-[#e8783c]">
+     <i data-lucide="orbit" class="h-4 w-4" aria-hidden="true"></i> <span>FISIKA - KINEMATIKA</span>
+    </div>
+    <h1 class="mt-5 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl">Latihan Interaktif Vektor & Gerak Parabola</h1>
+    <p class="mt-3 max-w-2xl leading-relaxed text-[#5e7181]">Pilih topik latihan di bawah ini untuk memulai. Lengkapi langkah-langkah penurunan rumus sesuai dengan konsep yang telah dipelajari.</p>
+    
+    <!-- NAVIGASI TAB -->
+    <nav class="mt-6 flex flex-wrap gap-2" aria-label="Pilih komponen gerak parabola">
+      <button id="tab-v0x" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold is-active" aria-controls="section-v0x" aria-selected="true">
+        <i data-lucide="arrow-right" class="h-3.5 w-3.5" aria-hidden="true"></i> V₀x
+      </button>
+      <button id="tab-v0y" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold" aria-controls="section-v0y" aria-selected="false">
+        <i data-lucide="arrow-up" class="h-3.5 w-3.5" aria-hidden="true"></i> V₀y
+      </button>
+      <button id="tab-jarak" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold" aria-controls="section-jarak" aria-selected="false">
+        <i data-lucide="move-horizontal" class="h-3.5 w-3.5" aria-hidden="true"></i> Jarak X
+      </button>
+      <button id="tab-vertikal" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold" aria-controls="section-vertikal" aria-selected="false">
+        <i data-lucide="move-vertical" class="h-3.5 w-3.5" aria-hidden="true"></i> Vertikal (Y)
+      </button>
+      <button id="tab-maksimum" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold" aria-controls="section-maksimum" aria-selected="false">
+        <i data-lucide="target" class="h-3.5 w-3.5" aria-hidden="true"></i> Nilai Maksimum
+      </button>
+    </nav>
+   </div>
+  </header>
+
+  <main class="w-full px-4 pb-10 pt-7 sm:px-8">
+   <div class="mx-auto max-w-4xl">
+    
+    <!-- SECTION V0X -->
+    <section id="section-v0x" class="exercise-view is-active" aria-labelledby="worksheet-title-x">
+      <div class="grid gap-6">
+       <aside class="rounded-2xl border border-[#c7dde0] bg-white/60 p-5 shadow-sm sm:p-6">
+        <div class="flex items-start gap-4">
+         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7eef0] text-[#1e7593]">
+          <i data-lucide="triangle" class="h-5 w-5" aria-hidden="true"></i>
+         </div>
+         <div>
+          <h2 class="font-bold text-lg">Konsep: Proyeksi Vektor pada Sumbu X</h2>
+          <p class="mt-1.5 leading-relaxed text-[#4a6572]">
+            Untuk mencari komponen horizontal (\(V_{0x}\)), kita menggunakan perbandingan trigonometri <strong>cosinus</strong> (sisi samping dibagi sisi miring).
+          </p>
+         </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <svg viewbox="0 0 340 240" class="w-full max-w-sm" role="img" aria-label="Diagram Vektor V0x">
+            <defs>
+              <marker id="arrow-blue-v0x" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
+              <marker id="arrow-orange-v0x" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
+            </defs>
+            <line x1="44" y1="190" x2="284" y2="190" stroke="#17395b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-blue-v0x)"></line>
+            <line x1="44" y1="190" x2="255" y2="68" stroke="#e8783c" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow-orange-v0x)"></line>
+            <line x1="255" y1="68" x2="255" y2="190" stroke="#9cb0bd" stroke-width="2.5" stroke-dasharray="7 7"></line>
+            <path d="M88 190 A44 44 0 0 0 81 168" fill="none" stroke="#17395b" stroke-width="2.5"></path>
+            <text x="93" y="176" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="26" font-weight="700">α</text>
+            <text x="147" y="215" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="24" font-weight="700">V₀x</text>
+            <text x="142" y="113" fill="#e8783c" font-family="Source Serif Pro, Georgia, serif" font-size="25" font-weight="700">V₀</text>
+            <circle cx="44" cy="190" r="5" fill="#17395b"></circle>
+          </svg>
+        </div>
+       </aside>
+       
+       <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-x">
+        <div class="mb-7 flex flex-wrap items-center justify-between gap-3">
+         <div>
+          <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#4a6572]">Lembar Kerja 1</p>
+          <h2 id="worksheet-title-x" class="mt-1 text-xl font-bold">Penurunan Rumus V₀x</h2>
+         </div>
+         <div class="formula-font rounded-lg border border-[#b8d0d2] bg-white/70 px-3 py-2 text-[#29677d]">
+          V₀x = V₀ cos α
+         </div>
+        </div>
+        
+        <form id="form-v0x" novalidate>
+         <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
+          <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="v0x">V₀</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀x" data-group="v0x">V₀x</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="cos" data-group="v0x">cos</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="v0x">α</button>
+          </div>
+         </div>
+         
+         <ol class="space-y-5">
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 1: Gunakan definisi cosinus</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Cosinus sudut adalah perbandingan sisi samping dengan sisi miring.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span class="flex flex-col items-center w-36">
+               <input id="ansx1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+               <span class="fraction-line"></span>
+               <input id="ansx2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+             </span>
+             <span>= cos α</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 2: Substitusikan nilai vektor</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti sisi samping dengan V₀x dan sisi miring dengan V₀.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span class="flex flex-col items-center w-36">
+               <input id="ansx3" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+               <span class="fraction-line"></span>
+               <input id="ansx4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+             </span>
+             <span>= cos α</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V₀ untuk mendapatkan rumus V₀x.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <input id="ansx5" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>=</span>
+             <input id="ansx6" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansx7" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansx8" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+            </div>
+          </li>
+         </ol>
+         
+         <div class="mt-7 flex flex-wrap items-center gap-3">
+          <button class="focus-ring inline-flex items-center gap-2 rounded-xl bg-[#1e7593] px-5 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:brightness-95" type="submit">
+            <i data-lucide="check-circle-2" class="h-5 w-5" aria-hidden="true"></i> Periksa Jawaban
+          </button>
+          <button id="reset-x" class="focus-ring inline-flex items-center gap-2 rounded-xl border border-[#b8d0d2] bg-white px-5 py-3 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" type="button">
+            <i data-lucide="rotate-ccw" class="h-5 w-5" aria-hidden="true"></i> Ulangi
+          </button>
+          <p id="feedback-x" class="feedback-text" aria-live="polite"></p>
+         </div>
+         
+         <section id="final-x" class="result-reveal mt-7 hidden rounded-xl border-2 border-[#4e9984] bg-[#edf9f2] p-5 text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.14em] text-[#16744a]">Rumus Akhir</p>
+          <h3 class="mt-1 font-bold text-[#16744a]">Komponen Horizontal</h3>
+          <p class="formula-font mt-3 font-bold text-lg text-[#16744a]">V₀x = V₀ cos α</p>
+         </section>
+        </form>
+       </section>
+      </div>
+    </section>
+
+    <!-- SECTION V0Y -->
+    <section id="section-v0y" class="exercise-view" aria-labelledby="worksheet-title-y">
+      <div class="grid gap-6">
+       <aside class="rounded-2xl border border-[#c7dde0] bg-white/60 p-5 shadow-sm sm:p-6">
+        <div class="flex items-start gap-4">
+         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7eef0] text-[#1e7593]">
+          <i data-lucide="triangle" class="h-5 w-5" aria-hidden="true"></i>
+         </div>
+         <div>
+          <h2 class="font-bold text-lg">Konsep: Proyeksi Vektor pada Sumbu Y</h2>
+          <p class="mt-1.5 leading-relaxed text-[#4a6572]">
+            Untuk mencari komponen vertikal (\(V_{0y}\)), kita menggunakan perbandingan trigonometri <strong>sinus</strong> (sisi depan dibagi sisi miring).
+          </p>
+         </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <svg viewbox="0 0 340 240" class="w-full max-w-sm" role="img" aria-label="Diagram Vektor V0y">
+            <defs>
+              <marker id="arrow-blue-v0y" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
+              <marker id="arrow-orange-v0y" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
+            </defs>
+            <line x1="44" y1="190" x2="284" y2="190" stroke="#9cb0bd" stroke-width="2" stroke-dasharray="7 7" />
+            <line x1="255" y1="190" x2="255" y2="68" stroke="#17395b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-blue-v0y)"></line>
+            <line x1="44" y1="190" x2="255" y2="68" stroke="#e8783c" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow-orange-v0y)"></line>
+            <path d="M88 190 A44 44 0 0 0 81 168" fill="none" stroke="#17395b" stroke-width="2.5"></path>
+            <text x="93" y="176" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="26" font-weight="700">α</text>
+            <text x="265" y="135" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="24" font-weight="700">V₀y</text>
+            <text x="142" y="113" fill="#e8783c" font-family="Source Serif Pro, Georgia, serif" font-size="25" font-weight="700">V₀</text>
+            <circle cx="44" cy="190" r="5" fill="#17395b"></circle>
+          </svg>
+        </div>
+       </aside>
+       
+       <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-y">
+        <div class="mb-7 flex flex-wrap items-center justify-between gap-3">
+         <div>
+          <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#4a6572]">Lembar Kerja 2</p>
+          <h2 id="worksheet-title-y" class="mt-1 text-xl font-bold">Penurunan Rumus V₀y</h2>
+         </div>
+         <div class="formula-font rounded-lg border border-[#b8d0d2] bg-white/70 px-3 py-2 text-[#29677d]">
+          V₀y = V₀ sin α
+         </div>
+        </div>
+        
+        <form id="form-v0y" novalidate>
+         <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
+          <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="v0y">V₀</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀y" data-group="v0y">V₀y</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="sin" data-group="v0y">sin</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="v0y">α</button>
+          </div>
+         </div>
+         
+         <ol class="space-y-5">
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 1: Gunakan definisi sinus</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Sinus sudut adalah perbandingan sisi depan dengan sisi miring.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span class="flex flex-col items-center w-36">
+               <input id="ansy1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+               <span class="fraction-line"></span>
+               <input id="ansy2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+             </span>
+             <span>= sin α</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 2: Substitusikan nilai vektor</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti sisi depan dengan V₀y dan sisi miring dengan V₀.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span class="flex flex-col items-center w-36">
+               <input id="ansy3" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+               <span class="fraction-line"></span>
+               <input id="ansy4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+             </span>
+             <span>= sin α</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V₀ untuk mendapatkan rumus V₀y.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <input id="ansy5" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>=</span>
+             <input id="ansy6" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansy7" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansy8" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+            </div>
+          </li>
+         </ol>
+         
+         <div class="mt-7 flex flex-wrap items-center gap-3">
+          <button class="focus-ring inline-flex items-center gap-2 rounded-xl bg-[#1e7593] px-5 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:brightness-95" type="submit">
+            <i data-lucide="check-circle-2" class="h-5 w-5" aria-hidden="true"></i> Periksa Jawaban
+          </button>
+          <button id="reset-y" class="focus-ring inline-flex items-center gap-2 rounded-xl border border-[#b8d0d2] bg-white px-5 py-3 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" type="button">
+            <i data-lucide="rotate-ccw" class="h-5 w-5" aria-hidden="true"></i> Ulangi
+          </button>
+          <p id="feedback-y" class="feedback-text" aria-live="polite"></p>
+         </div>
+         
+         <section id="final-y" class="result-reveal mt-7 hidden rounded-xl border-2 border-[#4e9984] bg-[#edf9f2] p-5 text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.14em] text-[#16744a]">Rumus Akhir</p>
+          <h3 class="mt-1 font-bold text-[#16744a]">Komponen Vertikal</h3>
+          <p class="formula-font mt-3 font-bold text-lg text-[#16744a]">V₀y = V₀ sin α</p>
+         </section>
+        </form>
+       </section>
+      </div>
+    </section>
+
+    <!-- SECTION JARAK X -->
+    <section id="section-jarak" class="exercise-view" aria-labelledby="worksheet-title-jarak">
+      <div class="grid gap-6">
+       <aside class="rounded-2xl border border-[#c7dde0] bg-white/60 p-5 shadow-sm sm:p-6">
+        <div class="flex items-start gap-4">
+         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7eef0] text-[#1e7593]">
+          <i data-lucide="move-horizontal" class="h-5 w-5" aria-hidden="true"></i>
+         </div>
+         <div>
+          <h2 class="font-bold text-lg">Konsep: Jarak Horizontal adalah GLB</h2>
+          <p class="mt-1.5 leading-relaxed text-[#4a6572]">
+            Kecepatan horizontal (\(V_{0x}\)) selalu tetap. Oleh karena itu, jarak horizontal (\(X\)) dapat dihitung menggunakan rumus GLB sederhana: \(X = V \cdot t\).
+          </p>
+         </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <svg viewbox="0 0 400 240" class="w-full max-w-sm" role="img" aria-label="Diagram Jarak Horizontal">
+            <defs>
+              <marker id="arrow-blue-jarak" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
+              <marker id="arrow-orange-jarak" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
+            </defs>
+            <line x1="20" y1="190" x2="380" y2="190" stroke="#9cb0bd" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 40 160 Q 200 20 360 160" fill="none" stroke="#e8783c" stroke-width="4" stroke-dasharray="8 8"/>
+            <line x1="40" y1="160" x2="100" y2="100" stroke="#e8783c" stroke-width="3" marker-end="url(#arrow-orange-jarak)"/>
+            <path d="M 70 160 A 30 30 0 0 0 60 140" fill="none" stroke="#17395b" stroke-width="2"/>
+            <text x="75" y="150" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="18" font-weight="700">α</text>
+            <line x1="40" y1="160" x2="80" y2="160" stroke="#17395b" stroke-width="3" marker-end="url(#arrow-blue-jarak)"/>
+            <text x="55" y="175" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="16" font-weight="700">V₀x</text>
+            <line x1="180" y1="60" x2="220" y2="60" stroke="#17395b" stroke-width="3" marker-end="url(#arrow-blue-jarak)"/>
+            <text x="185" y="50" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="16" font-weight="700">V₀x</text>
+            <line x1="340" y1="160" x2="380" y2="160" stroke="#17395b" stroke-width="3" marker-end="url(#arrow-blue-jarak)"/>
+            <text x="345" y="175" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="16" font-weight="700">V₀x</text>
+            <line x1="40" y1="210" x2="360" y2="210" stroke="#17395b" stroke-width="2" marker-start="url(#arrow-blue-jarak)" marker-end="url(#arrow-blue-jarak)"/>
+            <text x="200" y="230" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="20" text-anchor="middle" font-weight="700">X (Jarak Horizontal)</text>
+          </svg>
+        </div>
+       </aside>
+       
+       <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-jarak">
+        <div class="mb-7 flex flex-wrap items-center justify-between gap-3">
+         <div>
+          <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#4a6572]">Lembar Kerja 3</p>
+          <h2 id="worksheet-title-jarak" class="mt-1 text-xl font-bold">Penurunan Rumus Jarak X</h2>
+         </div>
+         <div class="formula-font rounded-lg border border-[#b8d0d2] bg-white/70 px-3 py-2 text-[#29677d]">
+          X = V₀ cos α · t
+         </div>
+        </div>
+        
+        <form id="form-jarak" novalidate>
+         <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
+          <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="jarak">V₀</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀x" data-group="jarak">V₀x</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="cos" data-group="jarak">cos</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="jarak">α</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="x" data-group="jarak">x</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="t" data-group="jarak">t</button>
+          </div>
+         </div>
+         
+         <ol class="space-y-5">
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 1: Tuliskan rumus dasar GLB</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Isi bagian atas dengan jarak (x), dan bagian bawah dengan waktu (t).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span class="flex flex-col items-center w-36">
+               <input id="ansj1" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+               <span class="fraction-line"></span>
+               <input id="ansj2" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+             </span>
+             <span>= V₀x</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 2: Susun ulang persamaan untuk X</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Pindah ruaskan V₀x untuk mendapatkan rumus X.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>X =</span>
+             <input id="ansj3" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>· t</span>
+            </div>
+          </li>
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 3: Substitusikan V₀x = V₀ cos α</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V₀x dengan rumus komponen horizontalnya.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>X =</span>
+             <input id="ansj4" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansj5" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansj6" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>· t</span>
+            </div>
+          </li>
+         </ol>
+         
+         <div class="mt-7 flex flex-wrap items-center gap-3">
+          <button class="focus-ring inline-flex items-center gap-2 rounded-xl bg-[#1e7593] px-5 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:brightness-95" type="submit">
+            <i data-lucide="check-circle-2" class="h-5 w-5" aria-hidden="true"></i> Periksa Jawaban
+          </button>
+          <button id="reset-jarak" class="focus-ring inline-flex items-center gap-2 rounded-xl border border-[#b8d0d2] bg-white px-5 py-3 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" type="button">
+            <i data-lucide="rotate-ccw" class="h-5 w-5" aria-hidden="true"></i> Ulangi
+          </button>
+          <p id="feedback-jarak" class="feedback-text" aria-live="polite"></p>
+         </div>
+         
+         <section id="final-jarak" class="result-reveal mt-7 hidden rounded-xl border-2 border-[#4e9984] bg-[#edf9f2] p-5 text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.14em] text-[#16744a]">Rumus Akhir</p>
+          <h3 class="mt-1 font-bold text-[#16744a]">Jarak Horizontal</h3>
+          <p class="formula-font mt-3 font-bold text-lg text-[#16744a]">X = V₀ cos α · t</p>
+         </section>
+        </form>
+       </section>
+      </div>
+    </section>
+
+    <!-- SECTION KOMPONEN VERTIKAL (SUMBU Y) -->
+    <section id="section-vertikal" class="exercise-view" aria-labelledby="worksheet-title-vertikal">
+      <div class="grid gap-6">
+       <aside class="rounded-2xl border border-[#c7dde0] bg-white/60 p-5 shadow-sm sm:p-6">
+        <div class="flex items-start gap-4">
+         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7eef0] text-[#1e7593]">
+          <i data-lucide="move-vertical" class="h-5 w-5" aria-hidden="true"></i>
+         </div>
+         <div>
+          <h2 class="font-bold text-lg">Konsep: Sumbu Vertikal adalah GLBB</h2>
+          <p class="mt-1.5 leading-relaxed text-[#4a6572]">
+            Pada arah vertikal, benda mengalami percepatan gravitasi \(g\) yang arahnya ke bawah. Karena itu, gerak vertikal mengikuti <strong>GLBB diperlambat</strong> saat benda naik. Kunci utama: <strong>cukup ganti simbol dan tanda</strong> pada rumus GLBB!
+          </p>
+         </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <svg viewbox="0 0 400 280" class="w-full max-w-sm" role="img" aria-label="Diagram Gerak Vertikal">
+            <defs>
+              <marker id="arrow-blue-vert" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
+              <marker id="arrow-orange-vert" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
+            </defs>
+            <line x1="20" y1="250" x2="380" y2="250" stroke="#9cb0bd" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 40 230 Q 200 20 360 230" fill="none" stroke="#e8783c" stroke-width="4" stroke-dasharray="8 8"/>
+            <line x1="40" y1="230" x2="100" y2="170" stroke="#e8783c" stroke-width="3" marker-end="url(#arrow-orange-vert)"/>
+            <text x="105" y="175" fill="#e8783c" font-family="Source Serif Pro, Georgia, serif" font-size="18" font-weight="700">V₀</text>
+            <path d="M 70 230 A 30 30 0 0 0 60 210" fill="none" stroke="#17395b" stroke-width="2"/>
+            <text x="75" y="220" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="18" font-weight="700">α</text>
+            <line x1="40" y1="230" x2="40" y2="170" stroke="#17395b" stroke-width="3" marker-end="url(#arrow-blue-vert)"/>
+            <text x="10" y="205" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="18" font-weight="700">V₀y</text>
+            <circle cx="200" cy="70" r="4" fill="#b23b3b" />
+            <text x="210" y="75" fill="#b23b3b" font-family="Source Serif Pro, Georgia, serif" font-size="16" font-weight="700">Titik Tertinggi</text>
+            <line x1="200" y1="70" x2="200" y2="250" stroke="#9cb0bd" stroke-width="2" stroke-dasharray="5 5" />
+            <line x1="190" y1="70" x2="210" y2="70" stroke="#b23b3b" stroke-width="2" />
+            <line x1="190" y1="250" x2="210" y2="250" stroke="#b23b3b" stroke-width="2" />
+            <text x="215" y="165" fill="#b23b3b" font-family="Source Serif Pro, Georgia, serif" font-size="18" font-weight="700">Δh</text>
+          </svg>
+        </div>
+       </aside>
+       
+       <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-vertikal">
+        <div class="mb-7 flex flex-wrap items-center justify-between gap-3">
+         <div>
+          <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#4a6572]">Lembar Kerja 4</p>
+          <h2 id="worksheet-title-vertikal" class="mt-1 text-xl font-bold">Peta Substitusi GLBB ke Gerak Vertikal</h2>
+         </div>
+         <div class="formula-font rounded-lg border border-[#b8d0d2] bg-white/70 px-3 py-2 text-[#29677d]">
+          V<sub>ty</sub> = V₀ sin α - g·t
+         </div>
+        </div>
+        
+        <form id="form-vertikal" novalidate>
+         <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
+          <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="vertikal">V₀</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀y" data-group="vertikal">V₀y</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="sin" data-group="vertikal">sin</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="vertikal">α</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="g" data-group="vertikal">g</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="t" data-group="vertikal">t</button>
+            <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="Δh" data-group="vertikal">Δh</button>
+          </div>
+         </div>
+         
+         <ol class="space-y-5">
+          <!-- Langkah 1: Identifikasi Rumus GLBB -->
+          <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 1: Identifikasi rumus dasar GLBB</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Rumus kecepatan pada GLBB adalah \(V_t = V_0 \pm a \cdot t\). Isi kolom dengan simbol umum dari GLBB.</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>V<sub>t</sub> =</span>
+             <input id="ansv1" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>-</span>
+             <input id="ansv2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>· t</span>
+            </div>
+           </li>
+           <!-- Langkah 2: Substitusi Simbol Kecepatan -->
+           <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 2: Substitusi Simbol (V<sub>t</sub> menjadi V<sub>ty</sub>)</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti \(V_t\) dengan \(V_{ty}\) (kecepatan vertikal) dan \(V_0\) dengan \(V_{0y}\) (kecepatan awal vertikal).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>V<sub>ty</sub> =</span>
+             <input id="ansv3" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>-</span>
+             <input id="ansv4" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>· t</span>
+            </div>
+           </li>
+           <!-- Langkah 3: Substitusi Nilai V0y -->
+           <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 3: Substitusi Nilai V<sub>0y</sub></h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti \(V_{0y}\) dengan komponennya, yaitu \(V_0 \sin \alpha\).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>V<sub>ty</sub> =</span>
+             <input id="ansv5" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansv6" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansv7" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>- g · t</span>
+            </div>
+           </li>
+           <!-- Langkah 4: Identifikasi Rumus Ketinggian GLBB -->
+           <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 4: Identifikasi rumus ketinggian GLBB</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Rumus jarak pada GLBB adalah \(\Delta x = V_0 \cdot t \pm \frac{1}{2}a \cdot t^2\).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>Δx =</span>
+             <input id="ansv8" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>· t - ½</span>
+             <input id="ansv9" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>· t²</span>
+            </div>
+           </li>
+           <!-- Langkah 5: Substitusi Simbol Ketinggian -->
+           <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 5: Substitusi Simbol Ketinggian</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti \(\Delta x\) dengan \(\Delta h\) (ketinggian) dan \(V_0\) dengan \(V_{0y}\).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>Δh =</span>
+             <input id="ansv10" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
+             <span>· t - ½ g · t²</span>
+            </div>
+           </li>
+           <!-- Langkah 6: Substitusi Akhir Ketinggian -->
+           <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
+            <h3 class="font-bold">Langkah 6: Substitusi Akhir Ketinggian</h3>
+            <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti \(V_{0y}\) dengan \(V_0 \sin \alpha\) untuk mendapatkan rumus akhir \(\Delta h\).</p>
+            <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
+             <span>Δh =</span>
+             <input id="ansv11" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansv12" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+             <input id="ansv13" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+             <span>· t - ½ g · t²</span>
+            </div>
+           </li>
+         </ol>
+         
+         <div class="mt-7 flex flex-wrap items-center gap-3">
+          <button class="focus-ring inline-flex items-center gap-2 rounded-xl bg-[#1e7593] px-5 py-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:brightness-95" type="submit">
+            <i data-lucide="check-circle-2" class="h-5 w-5" aria-hidden="true"></i> Periksa Jawaban
+          </button>
+          <button id="reset-vertikal" class="focus-ring inline-flex items-center gap-2 rounded-xl border border-[#b8d0d2] bg-white px-5 py-3 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" type="button">
+            <i data-lucide="rotate-ccw" class="h-5 w-5" aria-hidden="true"></i> Ulangi
+          </button>
+          <p id="feedback-vertikal" class="feedback-text" aria-live="polite"></p>
+         </div>
+         
+         <section id="final-vertikal" class="result-reveal mt-7 hidden rounded-xl border-2 border-[#4e9984] bg-[#edf9f2] p-5 text-center">
+          <p class="text-sm font-bold uppercase tracking-[0.14em] text-[#16744a]">Rumus Akhir</p>
+          <h3 class="mt-1 font-bold text-[#16744a]">Komponen Vertikal (Sumbu Y)</h3>
+          <p class="formula-font mt-3 font-bold text-lg text-[#16744a]">V<sub>ty</sub> = V₀ sin α - g · t</p>
+          <p class="formula-font mt-1 font-bold text-lg text-[#16744a]">Δh = V₀ sin α · t - ½ g · t²</p>
+         </section>
+        </form>
+       </section>
+      </div>
+    </section>
+
+    <!-- SECTION NILAI MAKSIMUM (tmax, hmax, xmax) - HALAMAN 5 -->
+    <section id="section-maksimum" class="exercise-view" aria-labelledby="worksheet-title-maks">
+      <div class="grid gap-6">
+       <aside class="rounded-2xl border border-[#c7dde0] bg-white/60 p-5 shadow-sm sm:p-6">
+        <div class="flex items-start gap-4">
+         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#d7eef0] text-[#1e7593]">
+          <i data-lucide="target" class="h-5 w-5" aria-hidden="true"></i>
+         </div>
+         <div>
+          <h2 class="font-bold text-lg">Konsep: Nilai Maksimum</h2>
+          <p class="mt-1.5 leading-relaxed text-[#4a6572]">
+            Nilai maksimum (waktu puncak, ketinggian puncak, dan jarak terjauh) dapat dicari dengan menerapkan <strong>kondisi khusus</strong> pada rumus yang sudah kita pelajari.
+          </p>
+          <ul class="mt-3 list-disc list-inside text-sm text-[#4a6572] space-y-1">
+            <li>Di titik tertinggi, kecepatan vertikal \(V_{ty} = 0\).</li>
+            <li>Waktu untuk mencapai titik tertinggi disebut \(t_{max}\).</li>
+            <li>Waktu total untuk kembali ke tanah adalah \(2 \times t_{max}\).</li>
+          </ul>
+         </div>
+        </div>
+       </aside>
+       
+       <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-maks">
+        <div class="mb-7 flex flex-wrap items-center justify-between gap-3">
+         <div>
+          <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#4a6572]">Lembar Kerja 5</p>
+          <h2 id="worksheet-title-maks" class="mt-1 text-xl font-bold">Penurunan Rumus Nilai Maksimum</h2>
+         </div>
+         <div class="formula-font rounded-lg border border-[#b8d0d2] bg-white/70 px-3 py-2 text-[#29677d] text-sm">
+          t<sub>max</sub>, h<sub>max</sub>, x<sub>max</sub>
+         </div>
+        </div>
+        
+        <!-- Sub-bagian 1: tmax -->
+        <div class="mb-8 rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
+          <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
+            <i data-lucide="clock" class="h-5 w-5"></i> 1. Waktu Maksimum (\(t_{max}\))
+          </h3>
+          <form id="form-tmax" novalidate>
+            <ol class="space-y-4">
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 1: Gunakan syarat titik tertinggi</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Di titik tertinggi, kecepatan vertikal sama dengan nol (\(V_{ty} = 0\)). Substitusikan ke rumus kecepatan vertikal.</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>0 =</span>
+                  <input id="anst1" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+                  <span>-</span>
+                  <input id="anst2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  <span>· t<sub>max</sub></span>
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 2: Susun ulang persamaan</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Pindah ruaskan \(g \cdot t_{max}\) ke ruas kiri, lalu bagi dengan \(g\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>t<sub>max</sub> =</span>
+                  <span class="flex flex-col items-center w-28">
+                    <input id="anst3" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+                    <span class="fraction-line"></span>
+                    <input id="anst4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 3: Substitusi nilai \(V_{0y}\)</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Ganti \(V_{0y}\) dengan \(V_0 \sin \alpha\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>t<sub>max</sub> =</span>
+                  <span class="flex flex-col items-center w-36">
+                    <span class="flex gap-1">
+                      <input id="anst5" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                      <input id="anst6" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                    </span>
+                    <span class="fraction-line"></span>
+                    <input id="anst7" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+            </ol>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button class="focus-ring inline-flex items-center gap-1.5 rounded-lg bg-[#1e7593] px-4 py-2 font-bold text-white text-sm transition hover:-translate-y-0.5" type="submit">Periksa</button>
+              <button id="reset-tmax" class="focus-ring inline-flex items-center gap-1.5 rounded-lg border border-[#b8d0d2] bg-white px-4 py-2 font-semibold text-[#275f70] text-sm transition hover:bg-[#e8f3f3]" type="button">Ulangi</button>
+              <p id="feedback-tmax" class="feedback-text text-sm" aria-live="polite"></p>
+            </div>
+            <div id="final-tmax" class="result-reveal mt-4 hidden rounded-lg border-2 border-[#4e9984] bg-[#edf9f2] p-3 text-center">
+              <p class="text-xs font-bold uppercase tracking-wider text-[#16744a]">Rumus Akhir</p>
+              <p class="formula-font font-bold text-lg text-[#16744a]">t<sub>max</sub> = V₀ sin α / g</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sub-bagian 2: hmax -->
+        <div class="mb-8 rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
+          <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
+            <i data-lucide="arrow-up" class="h-5 w-5"></i> 2. Ketinggian Maksimum (\(h_{max}\))
+          </h3>
+          <form id="form-hmax" novalidate>
+            <ol class="space-y-4">
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 1: Gunakan rumus GLBB tanpa waktu</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Rumus \(V_t^2 = V_0^2 - 2g\Delta h\). Di titik tertinggi, \(V_t = 0\) dan \(\Delta h = h_{max}\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>0 =</span>
+                  <input id="ansh1" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+                  <span>² - 2 ·</span>
+                  <input id="ansh2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  <span>·</span>
+                  <input id="ansh3" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 2: Susun ulang persamaan</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Pindah ruaskan dan bagi dengan \(2g\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>h<sub>max</sub> =</span>
+                  <span class="flex flex-col items-center w-28">
+                    <input id="ansh4" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+                    <span class="fraction-line"></span>
+                    <input id="ansh5" class="answer-input focus-ring" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 3: Substitusi nilai \(V_{0y}\)</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Ganti \(V_{0y}\) dengan \(V_0 \sin \alpha\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>h<sub>max</sub> =</span>
+                  <span class="flex flex-col items-center w-36">
+                    <span class="flex gap-1">
+                      <input id="ansh6" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                      <input id="ansh7" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                    </span>
+                    <span class="fraction-line"></span>
+                    <input id="ansh8" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+            </ol>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button class="focus-ring inline-flex items-center gap-1.5 rounded-lg bg-[#1e7593] px-4 py-2 font-bold text-white text-sm transition hover:-translate-y-0.5" type="submit">Periksa</button>
+              <button id="reset-hmax" class="focus-ring inline-flex items-center gap-1.5 rounded-lg border border-[#b8d0d2] bg-white px-4 py-2 font-semibold text-[#275f70] text-sm transition hover:bg-[#e8f3f3]" type="button">Ulangi</button>
+              <p id="feedback-hmax" class="feedback-text text-sm" aria-live="polite"></p>
+            </div>
+            <div id="final-hmax" class="result-reveal mt-4 hidden rounded-lg border-2 border-[#4e9984] bg-[#edf9f2] p-3 text-center">
+              <p class="text-xs font-bold uppercase tracking-wider text-[#16744a]">Rumus Akhir</p>
+              <p class="formula-font font-bold text-lg text-[#16744a]">h<sub>max</sub> = (V₀ sin α)² / 2g</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sub-bagian 3: xmax -->
+        <div class="rounded-xl border border-[#c7dde0] bg-white/50 p-4 sm:p-5">
+          <h3 class="text-lg font-bold text-[#1e7593] mb-3 flex items-center gap-2">
+            <i data-lucide="move-horizontal" class="h-5 w-5"></i> 3. Jarak Horizontal Maksimum (\(x_{max}\))
+          </h3>
+          <form id="form-xmax" novalidate>
+            <ol class="space-y-4">
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 1: Tentukan waktu total di udara</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Waktu total adalah dua kali waktu puncak (\(t_{total} = 2 \times t_{max}\)).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>t<sub>total</sub> =</span>
+                  <input id="ansx1" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  <span>· t<sub>max</sub></span>
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 2: Gunakan rumus jarak horizontal</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Substitusikan \(t_{total}\) ke rumus \(x = V_{0x} \cdot t_{total}\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>x<sub>max</sub> =</span>
+                  <input id="ansx2" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+                  <span>·</span>
+                  <input id="ansx3" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 3: Substitusi nilai \(V_{0x}\) dan \(t_{total}\)</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Ganti \(V_{0x} = V_0 \cos \alpha\) dan \(t_{total} = \frac{2 V_0 \sin \alpha}{g}\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>x<sub>max</sub> =</span>
+                  <input id="ansx4" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+                  <input id="ansx5" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  <span>·</span>
+                  <span class="flex flex-col items-center w-32">
+                    <span class="flex gap-1">
+                      <input id="ansx6" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
+                      <input id="ansx7" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
+                      <input id="ansx8" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
+                    </span>
+                    <span class="fraction-line"></span>
+                    <input id="ansx9" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+              <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
+                <h4 class="font-bold text-md">Langkah 4: Sederhanakan bentuk akhir</h4>
+                <p class="mt-1 text-sm text-[#4a6572]">Gunakan identitas trigonometri \(2 \sin \alpha \cos \alpha = \sin 2\alpha\).</p>
+                <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
+                  <span>x<sub>max</sub> =</span>
+                  <span class="flex flex-col items-center w-36">
+                    <span class="flex gap-1">
+                      <input id="ansx10" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                      <input id="ansx11" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+                    </span>
+                    <span class="fraction-line"></span>
+                    <input id="ansx12" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
+                  </span>
+                </div>
+              </li>
+            </ol>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button class="focus-ring inline-flex items-center gap-1.5 rounded-lg bg-[#1e7593] px-4 py-2 font-bold text-white text-sm transition hover:-translate-y-0.5" type="submit">Periksa</button>
+              <button id="reset-xmax" class="focus-ring inline-flex items-center gap-1.5 rounded-lg border border-[#b8d0d2] bg-white px-4 py-2 font-semibold text-[#275f70] text-sm transition hover:bg-[#e8f3f3]" type="button">Ulangi</button>
+              <p id="feedback-xmax" class="feedback-text text-sm" aria-live="polite"></p>
+            </div>
+            <div id="final-xmax" class="result-reveal mt-4 hidden rounded-lg border-2 border-[#4e9984] bg-[#edf9f2] p-3 text-center">
+              <p class="text-xs font-bold uppercase tracking-wider text-[#16744a]">Rumus Akhir</p>
+              <p class="formula-font font-bold text-lg text-[#16744a]">x<sub>max</sub> = V₀² sin 2α / g</p>
+            </div>
+          </form>
+        </div>
+
+       </section>
+      </div>
+    </section>
+
+    <footer class="pt-7 text-center">
+     <p class="text-sm text-[#4a6572]">
+       Gerak parabola = GLB (horizontal) + GLBB (vertikal). Pahami konsepnya, bukan hafal rumusnya.
+     </p>
+    </footer>
+   </div>
+  </main>
+  
+  <script>
+    function normalize(value) {
+      return value
+        .toLowerCase()
+        .replaceAll(" ", "")
+        .replaceAll("×", "x")
+        .replaceAll("*", ".")
+        .replaceAll("₀", "0")
+        .replaceAll("ᵧ", "y")
+        .replaceAll("α", "a")
+        .replaceAll("−", "-")
+        .replaceAll("½", "1/2")
+        .replaceAll("·", ".")
+        .replaceAll("∆", "delta")
+        .replaceAll("δ", "delta")
+        .replaceAll("²", "^2")
+        .replaceAll("^", "^"); // Keep ^ as is
+    }
+
+    function setupExercise(options) {
+      const form = document.getElementById(options.formId);
+      const resetButton = document.getElementById(options.resetId);
+      const feedback = document.getElementById(options.feedbackId);
+      const finalFormula = document.getElementById(options.finalId);
+      
+      const answers = options.answers.map((item) => ({
+        input: document.getElementById(item.id),
+        valid: item.valid
+      }));
+
+      let activeInput = answers[0] ? answers[0].input : null;
+
+      function clearState() {
+        answers.forEach(({ input }) => {
+          if(input) {
+            input.value = "";
+            input.classList.remove("is-correct", "is-incorrect");
+            input.removeAttribute("aria-invalid");
+          }
+        });
+        feedback.textContent = "";
+        feedback.style.color = "";
+        finalFormula.classList.add("hidden");
+      }
+
+      function checkAnswers(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        let correctCount = 0;
+
+        answers.forEach(({ input, valid }) => {
+          if(!input) return;
+          const isCorrect = valid.map(normalize).includes(normalize(input.value));
+          input.classList.toggle("is-correct", isCorrect);
+          input.classList.toggle("is-incorrect", !isCorrect);
+          input.setAttribute("aria-invalid", String(!isCorrect));
+          if (isCorrect) correctCount += 1;
+        });
+
+        if (correctCount === answers.length) {
+          feedback.textContent = "✓ Hebat! Semua langkah sudah tepat.";
+          feedback.style.color = "#16744a";
+          finalFormula.classList.remove("hidden");
+        } else {
+          feedback.textContent = "✗ " + correctCount + " dari " + answers.length + " jawaban tepat. Periksa kembali langkah yang ditandai merah.";
+          feedback.style.color = "#b23b3b";
+          finalFormula.classList.add("hidden");
+        }
+        return false;
+      }
+
+      form.addEventListener("submit", checkAnswers);
+      const checkBtn = document.getElementById(options.formId.replace("-form", "-check"));
+      if (checkBtn) {
+        checkBtn.addEventListener("click", checkAnswers);
+      }
+
+      resetButton.addEventListener("click", clearState);
+
+      answers.forEach(({ input }) => {
+        if(!input) return;
+        input.addEventListener("focus", () => { activeInput = input; });
+        input.addEventListener("input", () => {
+          input.classList.remove("is-correct", "is-incorrect");
+          input.removeAttribute("aria-invalid");
+          finalFormula.classList.add("hidden");
+        });
+      });
+
+      document.querySelectorAll('[data-group="' + options.group + '"]').forEach((button) => {
+        button.addEventListener("click", () => {
+          if (!activeInput) return;
+          const symbol = button.dataset.symbol;
+          const start = activeInput.selectionStart ?? activeInput.value.length;
+          const end = activeInput.selectionEnd ?? activeInput.value.length;
+          activeInput.value = activeInput.value.slice(0, start) + symbol + activeInput.value.slice(end);
+          activeInput.focus();
+          activeInput.setSelectionRange(start + symbol.length, start + symbol.length);
+          activeInput.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+      });
+    }
+
+    // ========== KONFIGURASI JAWABAN V0X ==========
+    setupExercise({
+      formId: "form-v0x",
+      resetId: "reset-x",
+      feedbackId: "feedback-x",
+      finalId: "final-x",
+      group: "v0x",
+      answers: [
+        { id: "ansx1", valid: ["samping", "sisisamping", "sisi samping"] },
+        { id: "ansx2", valid: ["miring", "sisimiring", "sisi miring"] },
+        { id: "ansx3", valid: ["v0x", "vox", "v0_x", "v0x"] },
+        { id: "ansx4", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansx5", valid: ["v0x", "vox", "v0_x", "v0x"] },
+        { id: "ansx6", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansx7", valid: ["cos", "cosinus"] },
+        { id: "ansx8", valid: ["a", "alpha", "α"] }
+      ]
+    });
+
+    // ========== KONFIGURASI JAWABAN V0Y ==========
+    setupExercise({
+      formId: "form-v0y",
+      resetId: "reset-y",
+      feedbackId: "feedback-y",
+      finalId: "final-y",
+      group: "v0y",
+      answers: [
+        { id: "ansy1", valid: ["depan", "sisidepan", "sisi depan"] },
+        { id: "ansy2", valid: ["miring", "sisimiring", "sisi miring"] },
+        { id: "ansy3", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "ansy4", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansy5", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "ansy6", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansy7", valid: ["sin", "sinus"] },
+        { id: "ansy8", valid: ["a", "alpha", "α"] }
+      ]
+    });
+
+    // ========== KONFIGURASI JAWABAN JARAK X ==========
+    setupExercise({
+      formId: "form-jarak",
+      resetId: "reset-jarak",
+      feedbackId: "feedback-jarak",
+      finalId: "final-jarak",
+      group: "jarak",
+      answers: [
+        { id: "ansj1", valid: ["x", "jarak"] },
+        { id: "ansj2", valid: ["t", "waktu"] },
+        { id: "ansj3", valid: ["v0x", "vox", "v0_x", "v0x"] },
+        { id: "ansj4", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansj5", valid: ["cos", "cosinus"] },
+        { id: "ansj6", valid: ["a", "alpha", "α"] }
+      ]
+    });
+
+    // ========== KONFIGURASI JAWABAN KOMPONEN VERTIKAL ==========
+    setupExercise({
+      formId: "form-vertikal",
+      resetId: "reset-vertikal",
+      feedbackId: "feedback-vertikal",
+      finalId: "final-vertikal",
+      group: "vertikal",
+      answers: [
+        { id: "ansv1", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansv2", valid: ["a", "percepatan"] },
+        { id: "ansv3", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "ansv4", valid: ["g", "gravitasi"] },
+        { id: "ansv5", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansv6", valid: ["sin", "sinus"] },
+        { id: "ansv7", valid: ["a", "alpha", "α"] },
+        { id: "ansv8", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansv9", valid: ["g", "gravitasi"] },
+        { id: "ansv10", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "ansv11", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansv12", valid: ["sin", "sinus"] },
+        { id: "ansv13", valid: ["a", "alpha", "α"] }
+      ]
+    });
+
+    // ========== KONFIGURASI JAWABAN NILAI MAKSIMUM ==========
+    
+    // 1. tmax
+    setupExercise({
+      formId: "form-tmax",
+      resetId: "reset-tmax",
+      feedbackId: "feedback-tmax",
+      finalId: "final-tmax",
+      group: "tmax",
+      answers: [
+        { id: "anst1", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "anst2", valid: ["g", "gravitasi"] },
+        { id: "anst3", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "anst4", valid: ["g", "gravitasi"] },
+        { id: "anst5", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "anst6", valid: ["sin", "sinus"] },
+        { id: "anst7", valid: ["a", "alpha", "α"] }
+      ]
+    });
+
+    // 2. hmax
+    setupExercise({
+      formId: "form-hmax",
+      resetId: "reset-hmax",
+      feedbackId: "feedback-hmax",
+      finalId: "final-hmax",
+      group: "hmax",
+      answers: [
+        { id: "ansh1", valid: ["v0y", "voy", "v0_y", "v0y"] },
+        { id: "ansh2", valid: ["g", "gravitasi"] },
+        { id: "ansh3", valid: ["hmax", "h_max", "hmax"] },
+        { id: "ansh4", valid: ["v0y^2", "v0y²", "v0y2", "v0y^2"] },
+        { id: "ansh5", valid: ["2g", "2.g", "2 g"] },
+        { id: "ansh6", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansh7", valid: ["sin", "sinus"] },
+        { id: "ansh8", valid: ["2g", "2.g", "2 g"] } 
+      ]
+    });
+
+    // 3. xmax
+    setupExercise({
+      formId: "form-xmax",
+      resetId: "reset-xmax",
+      feedbackId: "feedback-xmax",
+      finalId: "final-xmax",
+      group: "xmax",
+      answers: [
+        { id: "ansx1", valid: ["2"] },
+        { id: "ansx2", valid: ["v0x", "vox", "v0_x", "v0x"] },
+        { id: "ansx3", valid: ["ttotal", "t_total", "ttotal"] },
+        { id: "ansx4", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansx5", valid: ["cos", "cosinus"] },
+        { id: "ansx6", valid: ["2"] },
+        { id: "ansx7", valid: ["v0", "vo", "v_0", "v0"] },
+        { id: "ansx8", valid: ["sin", "sinus"] },
+        { id: "ansx9", valid: ["g", "gravitasi"] },
+        { id: "ansx10", valid: ["v0^2", "v0²", "v02", "v0^2"] },
+        { id: "ansx11", valid: ["sin2a", "sin2α", "sin2alpha", "sin2a"] },
+        { id: "ansx12", valid: ["g", "gravitasi"] }
+      ]
+    });
+
+    // ========== LOGIKA TAB NAVIGASI ==========
+    const allTabs = [
+      document.getElementById("tab-v0x"),
+      document.getElementById("tab-v0y"),
+      document.getElementById("tab-jarak"),
+      document.getElementById("tab-vertikal"),
+      document.getElementById("tab-maksimum")
+    ];
+
+    const allSections = [
+      document.getElementById("section-v0x"),
+      document.getElementById("section-v0y"),
+      document.getElementById("section-jarak"),
+      document.getElementById("section-vertikal"),
+      document.getElementById("section-maksimum")
+    ];
+
+    function switchTab(activeIndex) {
+      allTabs.forEach((tab, index) => {
+        if (index === activeIndex) {
+          tab.classList.add("is-active");
+          tab.setAttribute("aria-selected", "true");
+          allSections[index].classList.add("is-active");
+        } else {
+          tab.classList.remove("is-active");
+          tab.setAttribute("aria-selected", "false");
+          allSections[index].classList.remove("is-active");
+        }
+      });
+    }
+
+    allTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => switchTab(index));
+    });
+
+    lucide.createIcons();
+  </script>
+ </body>
+</html>    }
 
     .paper-surface {
       background-image:
