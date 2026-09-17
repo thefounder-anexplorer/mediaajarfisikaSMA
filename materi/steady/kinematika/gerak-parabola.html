@@ -155,9 +155,7 @@
         linear-gradient(90deg, transparent 0, transparent 42px, rgba(205, 89, 86, 0.22) 42px, rgba(205, 89, 86, 0.22) 44px, transparent 44px),
         repeating-linear-gradient(to bottom, transparent 0, transparent 32px, var(--paper-line) 33px, transparent 34px);
     }
-    .latihan-new-wrapper .formula-font {
-      font-family: "Source Serif 4", Georgia, serif;
-    }
+    .latihan-new-wrapper .formula-font { font-family: "Source Serif 4", Georgia, serif; }
     .latihan-new-wrapper .tab-button {
       border: 1px solid #b8d0d2;
       background: rgba(255, 255, 255, 0.72);
@@ -172,24 +170,16 @@
       color: #ffffff;
       box-shadow: 0 7px 16px rgba(30, 117, 147, 0.2);
     }
-    .latihan-new-wrapper .exercise-view {
-      display: none;
-      animation: reveal 380ms ease both;
-    }
+    .latihan-new-wrapper .exercise-view { display: none; animation: reveal 380ms ease both; }
     .latihan-new-wrapper .exercise-view.is-active { display: block; }
     .latihan-new-wrapper .answer-input {
-      width: 100%;
-      min-width: 0;
-      border: none;
+      width: 100%; min-width: 0; border: none;
       border-bottom: 2px dashed #527a89;
-      border-radius: 0;
-      padding: 0.35rem 0.2rem;
+      border-radius: 0; padding: 0.35rem 0.2rem;
       background: rgba(255, 255, 255, 0.68);
       color: var(--ink);
       font-family: "Source Serif 4", Georgia, serif;
-      font-size: 1.12rem;
-      font-weight: 600;
-      text-align: center;
+      font-size: 1.12rem; font-weight: 600; text-align: center;
       outline: none;
       transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
     }
@@ -216,7 +206,7 @@
     .latihan-new-wrapper .focus-ring:focus-visible { outline: 3px solid #80c5d4; outline-offset: 3px; }
     .latihan-new-wrapper .fraction-line { width: 100%; height: 2px; background-color: #17395b; margin: 4px 0; }
 
-    /* === TOMBOL PINTASAN SIMBOL (symbol-button) === */
+    /* === TOMBOL PINTASAN SIMBOL === */
     .latihan-new-wrapper .symbol-button {
       font-family: "Source Serif 4", Georgia, serif;
       font-weight: 700;
@@ -244,7 +234,7 @@
     .latihan-new-wrapper .symbol-button:focus-visible { outline: 3px solid #80c5d4; outline-offset: 2px; }
     .latihan-new-wrapper .symbol-button sub { font-size: 0.7em; vertical-align: -0.25em; line-height: 0; }
 
-    /* === INLINE FORMULA === */
+    /* === INLINE FORMULA (satu baris untuk Langkah 3) === */
     .latihan-new-wrapper .inline-formula {
       display: flex;
       flex-wrap: wrap;
@@ -261,8 +251,8 @@
     .latihan-new-wrapper .inline-formula .answer-input {
       display: inline-block;
       width: auto;
-      min-width: 3.5rem;
-      max-width: 9rem;
+      min-width: 3rem;
+      max-width: 8rem;
       padding: 0.2rem 0.5rem;
       border-bottom: 2px dashed #527a89;
       background: rgba(255, 255, 255, 0.6);
@@ -273,31 +263,103 @@
     }
     .latihan-new-wrapper .inline-formula .eq { font-weight: 700; color: var(--ink); flex-shrink: 0; }
 
-    /* ===== RESPONSIF HP: Latihan Rumus ===== */
+    /* ===== RESPONSIF HP: Latihan Rumus (perbaikan) ===== */
     @media (max-width: 768px) {
-      .latihan-new-wrapper .tab-button { font-size: 0.78rem; padding: 0.45rem 0.6rem; }
-      .latihan-new-wrapper .step-card { padding: 0.75rem 0.85rem !important; }
+      .latihan-new-wrapper header,
+      .latihan-new-wrapper main {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      .latihan-new-wrapper .paper-surface {
+        padding: 0.9rem 0.75rem !important;
+        border-radius: 1rem !important;
+      }
+      .latihan-new-wrapper nav[aria-label="Pilih komponen gerak parabola"] {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        padding-bottom: 0.35rem;
+        gap: 0.4rem !important;
+      }
+      .latihan-new-wrapper .tab-button {
+        font-size: 0.75rem !important;
+        padding: 0.45rem 0.6rem !important;
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .latihan-new-wrapper .tab-button i { width: 12px; height: 12px; }
+      .latihan-new-wrapper .step-card { padding: 0.7rem 0.75rem !important; }
       .latihan-new-wrapper .step-card h3,
-      .latihan-new-wrapper .step-card h4 { font-size: 0.92rem; }
-      .latihan-new-wrapper .step-card p { font-size: 0.82rem; }
-      .latihan-new-wrapper .formula-font { font-size: 1rem !important; }
-      .latihan-new-wrapper .answer-input { font-size: 1rem; padding: 0.3rem 0.25rem; }
-      .latihan-new-wrapper .inline-formula { padding: 0.6rem 0.7rem; gap: 0.35rem; font-size: 1rem; }
-      .latihan-new-wrapper .inline-formula .answer-input { font-size: 1rem; min-width: 2.8rem; max-width: 6rem; }
-      .latihan-new-wrapper .symbol-button { min-height: 2rem; padding: 0.35rem 0.55rem; font-size: 0.82rem; }
-      .latihan-new-wrapper .paper-surface { padding-left: 0.85rem !important; padding-right: 0.85rem !important; }
-      .latihan-new-wrapper .fraction-line { margin: 3px 0; }
+      .latihan-new-wrapper .step-card h4 { font-size: 0.9rem !important; line-height: 1.3; }
+      .latihan-new-wrapper .step-card p { font-size: 0.78rem !important; line-height: 1.4; }
+      .latihan-new-wrapper .formula-font {
+        font-size: 0.95rem !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 0.35rem !important;
+      }
+      .latihan-new-wrapper .answer-input { font-size: 0.95rem !important; padding: 0.25rem 0.2rem !important; min-height: 2rem !important; }
+      .latihan-new-wrapper .formula-font > span[class*="flex-col"] { width: 5rem !important; min-width: 5rem !important; }
+      .latihan-new-wrapper .inline-formula {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        padding: 0.5rem 0.6rem !important;
+        gap: 0.3rem !important;
+        font-size: 0.95rem !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      .latihan-new-wrapper .inline-formula .answer-input {
+        font-size: 0.95rem !important;
+        min-width: 2.5rem !important;
+        max-width: 5rem !important;
+        padding: 0.2rem 0.35rem !important;
+        flex-shrink: 0;
+      }
+      .latihan-new-wrapper .inline-formula .eq { font-size: 0.95rem !important; flex-shrink: 0; }
+      .latihan-new-wrapper .mt-3.flex.flex-wrap.gap-2,
+      .latihan-new-wrapper .mb-5.rounded-xl .flex.flex-wrap.gap-2 {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 0.35rem !important;
+        padding-bottom: 0.3rem !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      .latihan-new-wrapper .symbol-button {
+        min-height: 1.9rem !important;
+        padding: 0.3rem 0.5rem !important;
+        font-size: 0.78rem !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap;
+      }
+      .latihan-new-wrapper section[aria-labelledby^="worksheet-title"] > div:first-child {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+      }
+      .latihan-new-wrapper h1 { font-size: 1.35rem !important; line-height: 1.25 !important; }
+      .latihan-new-wrapper aside { padding: 0.9rem !important; }
+      .latihan-new-wrapper aside h2 { font-size: 0.95rem !important; }
+      .latihan-new-wrapper aside p { font-size: 0.8rem !important; }
+      .latihan-new-wrapper .grid { gap: 1rem !important; }
+      .latihan-new-wrapper footer p { font-size: 0.78rem !important; }
+      .latihan-new-wrapper .rounded-xl.border.border-\[\#c7dde0\] { padding: 0.75rem !important; }
+      .latihan-new-wrapper .feedback-text { font-size: 0.78rem !important; }
+      .latihan-new-wrapper button[type="submit"],
+      .latihan-new-wrapper button[id^="reset"] { font-size: 0.82rem !important; padding: 0.5rem 0.9rem !important; }
+      .latihan-new-wrapper svg[role="img"] { max-width: 100% !important; height: auto !important; }
     }
-    @media (max-width: 480px) {
-      .latihan-new-wrapper .tab-button { font-size: 0.7rem; padding: 0.4rem 0.5rem; }
-      .latihan-new-wrapper .formula-font { font-size: 0.92rem !important; }
-      .latihan-new-wrapper .answer-input { font-size: 0.92rem; }
-      .latihan-new-wrapper .inline-formula .answer-input { font-size: 0.92rem; min-width: 2.4rem; max-width: 5rem; }
-      .latihan-new-wrapper .symbol-button { min-height: 1.85rem; padding: 0.3rem 0.5rem; font-size: 0.76rem; }
-      .latihan-new-wrapper .step-card { padding: 0.6rem 0.65rem !important; }
+    @media (max-width: 400px) {
+      .latihan-new-wrapper .tab-button { font-size: 0.68rem !important; padding: 0.4rem 0.5rem !important; }
+      .latihan-new-wrapper .symbol-button { font-size: 0.72rem !important; padding: 0.28rem 0.42rem !important; min-height: 1.75rem !important; }
+      .latihan-new-wrapper .formula-font { font-size: 0.88rem !important; }
+      .latihan-new-wrapper .answer-input { font-size: 0.88rem !important; }
+      .latihan-new-wrapper .inline-formula .answer-input { font-size: 0.88rem !important; min-width: 2.2rem !important; max-width: 4.5rem !important; }
+      .latihan-new-wrapper h1 { font-size: 1.2rem !important; }
       .latihan-new-wrapper .step-card h3,
-      .latihan-new-wrapper .step-card h4 { font-size: 0.85rem; }
-      .latihan-new-wrapper .step-card p { font-size: 0.76rem; }
+      .latihan-new-wrapper .step-card h4 { font-size: 0.85rem !important; }
+      .latihan-new-wrapper .step-card p { font-size: 0.74rem !important; }
     }
 
     /* Quiz navigation buttons */
@@ -402,7 +464,6 @@
           <p class="mt-3 leading-relaxed max-w-3xl text-slate-600">Kumpulan konsep, persamaan, dan langkah penurunan rumus penting dalam gerak parabola.</p>
         </div>
 
-        <!-- SECTION 1 -->
         <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-7 items-stretch mb-8">
           <article class="formula-card rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Pengantar</span>
@@ -434,7 +495,6 @@
           </div>
         </div>
 
-        <!-- SECTION 2 -->
         <div class="formula-card blue rounded-2xl p-6 md:p-8 bg-white shadow-sm mb-8">
           <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 1</span>
           <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Menguraikan Kecepatan Awal dengan Trigonometri</h3>
@@ -499,7 +559,6 @@
           </div>
         </div>
 
-        <!-- SECTION 3 & 4 -->
         <div class="grid lg:grid-cols-2 gap-7 mb-8">
           <article class="formula-card blue rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 2</span>
@@ -602,7 +661,6 @@
           </article>
         </div>
 
-        <!-- SECTION 5 -->
         <div class="mb-8">
           <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700">Langkah 4</span>
           <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Penurunan Rumus Praktis (R dan h<sub>max</sub>)</h3>
@@ -710,7 +768,6 @@
           </div>
         </div>
 
-        <!-- RINGKASAN -->
         <div class="rounded-2xl p-6 md:p-8 bg-white/95 border border-amber-200 shadow-sm">
           <div class="flex flex-wrap gap-4 justify-between items-start mb-5">
             <div>
@@ -917,22 +974,6 @@
                       </p>
                     </div>
                   </div>
-                  <div class="mt-4 flex justify-center">
-                    <svg viewbox="0 0 340 240" class="w-full max-w-sm" role="img" aria-label="Diagram Vektor V0x">
-                      <defs>
-                        <marker id="arrow-blue-v0x" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
-                        <marker id="arrow-orange-v0x" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
-                      </defs>
-                      <line x1="44" y1="190" x2="284" y2="190" stroke="#17395b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-blue-v0x)"></line>
-                      <line x1="44" y1="190" x2="255" y2="68" stroke="#e8783c" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow-orange-v0x)"></line>
-                      <line x1="255" y1="68" x2="255" y2="190" stroke="#9cb0bd" stroke-width="2.5" stroke-dasharray="7 7"></line>
-                      <path d="M88 190 A44 44 0 0 0 81 168" fill="none" stroke="#17395b" stroke-width="2.5"></path>
-                      <text x="93" y="176" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="26" font-weight="700">α</text>
-                      <text x="140" y="215" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="24" font-weight="700">V₀x</text>
-                      <text x="142" y="113" fill="#e8783c" font-family="Source Serif Pro, Georgia, serif" font-size="25" font-weight="700">V₀</text>
-                      <circle cx="44" cy="190" r="5" fill="#17395b"></circle>
-                    </svg>
-                  </div>
                 </aside>
 
                 <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-x">
@@ -947,18 +988,6 @@
                   </div>
 
                   <form id="form-v0x" novalidate>
-                    <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
-                      <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
-                      <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0x">V₀</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="v0x">V₀x</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="v0x">cos</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="v0x">α</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="samping" data-group="v0x">samping</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="miring" data-group="v0x">miring</button>
-                      </div>
-                    </div>
-
                     <ol class="space-y-5">
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Gunakan definisi cosinus</h3>
@@ -994,6 +1023,7 @@
                           <button type="button" class="symbol-button focus-ring" data-symbol="cos α" data-group="v0x">cos α</button>
                         </div>
                       </li>
+                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0x</sub>.</p>
@@ -1049,22 +1079,6 @@
                       </p>
                     </div>
                   </div>
-                  <div class="mt-4 flex justify-center">
-                    <svg viewbox="0 0 340 240" class="w-full max-w-sm" role="img" aria-label="Diagram Vektor V0y">
-                      <defs>
-                        <marker id="arrow-blue-v0y" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#17395b"></path></marker>
-                        <marker id="arrow-orange-v0y" markerwidth="9" markerheight="9" refx="7.5" refy="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#e8783c"></path></marker>
-                      </defs>
-                      <line x1="44" y1="190" x2="284" y2="190" stroke="#9cb0bd" stroke-width="2" stroke-dasharray="7 7" />
-                      <line x1="255" y1="190" x2="255" y2="68" stroke="#17395b" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-blue-v0y)"></line>
-                      <line x1="44" y1="190" x2="255" y2="68" stroke="#e8783c" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow-orange-v0y)"></line>
-                      <path d="M88 190 A44 44 0 0 0 81 168" fill="none" stroke="#17395b" stroke-width="2.5"></path>
-                      <text x="93" y="176" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="26" font-weight="700">α</text>
-                      <text x="260" y="135" fill="#17395b" font-family="Source Serif Pro, Georgia, serif" font-size="24" font-weight="700">V₀y</text>
-                      <text x="142" y="113" fill="#e8783c" font-family="Source Serif Pro, Georgia, serif" font-size="25" font-weight="700">V₀</text>
-                      <circle cx="44" cy="190" r="5" fill="#17395b"></circle>
-                    </svg>
-                  </div>
                 </aside>
 
                 <section class="paper-surface rounded-2xl border border-[#d7dfd7] px-5 py-6 shadow-[0_14px_45px_rgba(31,58,65,0.10)] sm:px-10 sm:py-9" aria-labelledby="worksheet-title-y">
@@ -1079,18 +1093,6 @@
                   </div>
 
                   <form id="form-v0y" novalidate>
-                    <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
-                      <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
-                      <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0y">V₀</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="v0y">V₀y</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="v0y">sin</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="v0y">α</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="depan" data-group="v0y">depan</button>
-                        <button type="button" class="symbol-button focus-ring" data-symbol="miring" data-group="v0y">miring</button>
-                      </div>
-                    </div>
-
                     <ol class="space-y-5">
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Gunakan definisi sinus</h3>
@@ -1126,6 +1128,7 @@
                           <button type="button" class="symbol-button focus-ring" data-symbol="sin α" data-group="v0y">sin α</button>
                         </div>
                       </li>
+                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0y</sub>.</p>
@@ -1211,21 +1214,22 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 2: Susun ulang persamaan untuk X</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Pindah ruaskan V<sub>0x</sub> untuk mendapatkan rumus X.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>X =</span>
-                          <input id="ansj3" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">X =</span>
+                          <input id="ansj3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t</span>
                         </div>
                       </li>
+                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Substitusikan V<sub>0x</sub> = V<sub>0</sub> cos α</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0x</sub> dengan rumus komponen horizontalnya.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>X =</span>
-                          <input id="ansj4" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansj5" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansj6" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">X =</span>
+                          <input id="ansj4" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansj5" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansj6" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t</span>
                         </div>
                       </li>
                     </ol>
@@ -1283,65 +1287,67 @@
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 1: Identifikasi rumus dasar GLBB</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Rumus kecepatan pada GLBB adalah V<sub>t</sub> = V<sub>0</sub> ± a · t.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>V<sub>t</sub> =</span>
-                          <input id="ansv1" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
-                          <span>-</span>
-                          <input id="ansv2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">V<sub>t</sub> =</span>
+                          <input id="ansv1" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">-</span>
+                          <input id="ansv2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t</span>
                         </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 2: Substitusi Simbol (V<sub>t</sub> menjadi V<sub>ty</sub>)</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>t</sub> dengan V<sub>ty</sub> dan V<sub>0</sub> dengan V<sub>0y</sub>.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>V<sub>ty</sub> =</span>
-                          <input id="ansv3" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
-                          <span>-</span>
-                          <input id="ansv4" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">V<sub>ty</sub> =</span>
+                          <input id="ansv3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">-</span>
+                          <input id="ansv4" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t</span>
                         </div>
                       </li>
+                      <!-- Langkah 3: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Substitusi Nilai V<sub>0y</sub></h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0y</sub> dengan komponennya, yaitu V<sub>0</sub> sin α.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>V<sub>ty</sub> =</span>
-                          <input id="ansv5" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansv6" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansv7" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>- g · t</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">V<sub>ty</sub> =</span>
+                          <input id="ansv5" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansv6" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansv7" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">- g · t</span>
                         </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 4: Identifikasi rumus ketinggian GLBB</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Rumus jarak pada GLBB adalah Δx = V<sub>0</sub> · t ± ½ a · t².</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>Δx =</span>
-                          <input id="ansv8" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t - ½</span>
-                          <input id="ansv9" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t²</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">Δx =</span>
+                          <input id="ansv8" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t - ½</span>
+                          <input id="ansv9" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t²</span>
                         </div>
                       </li>
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 5: Substitusi Simbol Ketinggian</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti Δx dengan Δh dan V<sub>0</sub> dengan V<sub>0y</sub>.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>Δh =</span>
-                          <input id="ansv10" class="answer-input focus-ring w-32" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t - ½ g · t²</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">Δh =</span>
+                          <input id="ansv10" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t - ½ g · t²</span>
                         </div>
                       </li>
+                      <!-- Langkah 6: satu baris inline -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 6: Substitusi Akhir Ketinggian</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Ganti V<sub>0y</sub> dengan V<sub>0</sub> sin α untuk mendapatkan rumus akhir Δh.</p>
-                        <div class="formula-font mt-4 flex flex-wrap items-center gap-2 text-xl">
-                          <span>Δh =</span>
-                          <input id="ansv11" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansv12" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
-                          <input id="ansv13" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                          <span>· t - ½ g · t²</span>
+                        <div class="inline-formula mt-4">
+                          <span class="eq">Δh =</span>
+                          <input id="ansv11" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansv12" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <input id="ansv13" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                          <span class="eq">· t - ½ g · t²</span>
                         </div>
                       </li>
                     </ol>
@@ -1404,12 +1410,12 @@
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 1: Gunakan syarat titik tertinggi</h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Di titik tertinggi, kecepatan vertikal sama dengan nol (V<sub>ty</sub> = 0).</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>0 =</span>
-                            <input id="anst1" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
-                            <span>-</span>
-                            <input id="anst2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                            <span>· t<sub>max</sub></span>
+                          <div class="inline-formula mt-3">
+                            <span class="eq">0 =</span>
+                            <input id="anst1" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">-</span>
+                            <input id="anst2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">· t<sub>max</sub></span>
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
@@ -1461,13 +1467,13 @@
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 1: Gunakan rumus GLBB tanpa waktu</h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Rumus V<sub>t</sub>² = V<sub>0</sub>² - 2gΔh. Di titik tertinggi, V<sub>t</sub> = 0 dan Δh = h<sub>max</sub>.</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>0 =</span>
-                            <input id="ansh1" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
-                            <span>² - 2 ·</span>
-                            <input id="ansh2" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                            <span>·</span>
-                            <input id="ansh3" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
+                          <div class="inline-formula mt-3">
+                            <span class="eq">0 =</span>
+                            <input id="ansh1" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">² - 2 ·</span>
+                            <input id="ansh2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">·</span>
+                            <input id="ansh3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
@@ -1519,31 +1525,31 @@
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 1: Tentukan waktu total di udara</h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Waktu total adalah dua kali waktu puncak (t<sub>total</sub> = 2 × t<sub>max</sub>).</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>t<sub>total</sub> =</span>
-                            <input id="ansx1" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                            <span>· t<sub>max</sub></span>
+                          <div class="inline-formula mt-3">
+                            <span class="eq">t<sub>total</sub> =</span>
+                            <input id="ansx1" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">· t<sub>max</sub></span>
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 2: Gunakan rumus jarak horizontal</h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Substitusikan t<sub>total</sub> ke rumus x = V<sub>0x</sub> · t<sub>total</sub>.</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>x<sub>max</sub> =</span>
-                            <input id="ansx2" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
-                            <span>·</span>
-                            <input id="ansx3" class="answer-input focus-ring w-24" type="text" autocomplete="off" placeholder="..." />
+                          <div class="inline-formula mt-3">
+                            <span class="eq">x<sub>max</sub> =</span>
+                            <input id="ansx2" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">·</span>
+                            <input id="ansx3" class="answer-input" type="text" autocomplete="off" placeholder="..." />
                           </div>
                         </li>
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 3: Substitusi nilai V<sub>0x</sub> dan t<sub>total</sub></h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Ganti V<sub>0x</sub> = V<sub>0</sub> cos α dan t<sub>total</sub> = (2 V<sub>0</sub> sin α) / g.</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>x<sub>max</sub> =</span>
-                            <input id="ansx4" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
-                            <input id="ansx5" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
-                            <span>·</span>
-                            <span class="flex flex-col items-center w-32">
+                          <div class="inline-formula mt-3">
+                            <span class="eq">x<sub>max</sub> =</span>
+                            <input id="ansx4" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <input id="ansx5" class="answer-input" type="text" autocomplete="off" placeholder="..." />
+                            <span class="eq">·</span>
+                            <span class="flex flex-col items-center w-32" style="display:inline-flex;">
                               <span class="flex gap-1">
                                 <input id="ansx6" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
                                 <input id="ansx7" class="answer-input focus-ring w-12" type="text" autocomplete="off" placeholder="..." />
@@ -1557,9 +1563,9 @@
                         <li class="step-card rounded-r-xl bg-white/55 px-4 py-3">
                           <h4 class="font-bold text-md">Langkah 4: Sederhanakan bentuk akhir</h4>
                           <p class="mt-1 text-sm text-[#4a6572]">Gunakan identitas trigonometri 2 sin α cos α = sin 2α.</p>
-                          <div class="formula-font mt-3 flex flex-wrap items-center gap-2 text-lg">
-                            <span>x<sub>max</sub> =</span>
-                            <span class="flex flex-col items-center w-36">
+                          <div class="inline-formula mt-3">
+                            <span class="eq">x<sub>max</sub> =</span>
+                            <span class="flex flex-col items-center w-36" style="display:inline-flex;">
                               <span class="flex gap-1">
                                 <input id="ansx10" class="answer-input focus-ring w-16" type="text" autocomplete="off" placeholder="..." />
                                 <input id="ansx11" class="answer-input focus-ring w-20" type="text" autocomplete="off" placeholder="..." />
@@ -1751,7 +1757,7 @@
     lucide.createIcons();
     updateReadout();
 
-    // QUIZ (versi singkat karena keterbatasan ruang — sama seperti sebelumnya)
+    // QUIZ
     const quizData = [
       { q: "Mengapa kecepatan horizontal (V<sub>x</sub>) pada gerak parabola selalu konstan?", options: ["Karena gravitasi hanya bekerja pada arah vertikal","Karena massa benda tidak berpengaruh","Karena kecepatan awal selalu positif","Karena sudut elevasi tetap","Karena benda bergerak lurus"], correct: 0, explanation: "Gravitasi hanya bekerja pada arah vertikal (sumbu Y). Pada arah horizontal tidak ada gaya yang bekerja, sehingga V<sub>x</sub> konstan." },
       { q: "Mengapa lintasan gerak parabola berbentuk kurva (parabola)?", options: ["Karena kecepatan horizontal berubah-ubah","Karena perpaduan GLB pada sumbu X dan GLBB pada sumbu Y","Karena gravitasi bekerja pada kedua sumbu","Karena sudut elevasi terus berubah","Karena massa benda berubah selama gerak"], correct: 1, explanation: "Gerak parabola adalah hasil perpaduan GLB pada sumbu X dan GLBB pada sumbu Y." },
