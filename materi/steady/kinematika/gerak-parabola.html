@@ -250,6 +250,43 @@
       margin: 4px 0;
     }
 
+    /* === TOMBOL PINTASAN SIMBOL (symbol-button) — WAJIB ADA === */
+    .latihan-new-wrapper .symbol-button {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-weight: 700;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.2rem;
+      cursor: pointer;
+      border: 1px solid #b8d0d2;
+      background: #ffffff;
+      color: #275f70;
+      padding: 0.4rem 0.65rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 120ms ease;
+    }
+    .latihan-new-wrapper .symbol-button:hover {
+      background: #e8f3f3;
+      border-color: #1e7593;
+      color: #1e7593;
+      transform: translateY(-1px);
+    }
+    .latihan-new-wrapper .symbol-button:active {
+      transform: translateY(0);
+    }
+    .latihan-new-wrapper .symbol-button:focus-visible {
+      outline: 3px solid #80c5d4;
+      outline-offset: 2px;
+    }
+    .latihan-new-wrapper .symbol-button sub {
+      font-size: 0.7em;
+      vertical-align: -0.25em;
+      line-height: 0;
+    }
+
     /* === INLINE FORMULA: satu baris untuk langkah 3 === */
     .latihan-new-wrapper .inline-formula {
       display: flex;
@@ -317,8 +354,9 @@
         max-width: 6rem;
       }
       .latihan-new-wrapper .symbol-button {
-        padding: 0.4rem 0.55rem !important;
-        font-size: 0.85rem;
+        min-height: 2rem;
+        padding: 0.35rem 0.55rem;
+        font-size: 0.82rem;
       }
       .latihan-new-wrapper .paper-surface {
         padding-left: 0.85rem !important;
@@ -343,6 +381,11 @@
         font-size: 0.92rem;
         min-width: 2.4rem;
         max-width: 5rem;
+      }
+      .latihan-new-wrapper .symbol-button {
+        min-height: 1.85rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 0.76rem;
       }
       .latihan-new-wrapper .step-card {
         padding: 0.6rem 0.65rem !important;
@@ -499,7 +542,6 @@
           </p>
 
           <div class="grid lg:grid-cols-2 gap-7 mt-6 items-center">
-            <!-- Kiri: Penurunan V0x -->
             <div class="rounded-2xl border border-sky-200 bg-sky-50/50 p-5">
               <p class="text-xs font-bold uppercase tracking-wider text-sky-700 mb-3">Komponen Horizontal (V₀ₓ)</p>
               <div class="flex items-start gap-4">
@@ -527,7 +569,6 @@
               </div>
             </div>
 
-            <!-- Kanan: Penurunan V0y -->
             <div class="rounded-2xl border border-rose-200 bg-rose-50/50 p-5">
               <p class="text-xs font-bold uppercase tracking-wider text-rose-700 mb-3">Komponen Vertikal (V₀ᵧ)</p>
               <div class="flex items-start gap-4">
@@ -559,7 +600,6 @@
 
         <!-- SECTION 3 & 4: Horizontal & Vertikal -->
         <div class="grid lg:grid-cols-2 gap-7 mb-8">
-          <!-- Horizontal -->
           <article class="formula-card blue rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-sky-100 text-sky-700">Langkah 2</span>
             <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Komponen Horizontal (Sumbu X)</h3>
@@ -578,7 +618,6 @@
             </div>
           </article>
 
-          <!-- Vertikal (SIDE-BY-SIDE) -->
           <article class="formula-card coral rounded-2xl p-6 md:p-8 bg-white shadow-sm">
             <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-rose-100 text-rose-700">Langkah 3</span>
             <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Komponen Vertikal (Sumbu Y)</h3>
@@ -662,7 +701,7 @@
           </article>
         </div>
 
-        <!-- SECTION 5: Penurunan Rumus Praktis (SIDE-BY-SIDE) -->
+        <!-- SECTION 5: Penurunan Rumus Praktis -->
         <div class="mb-8">
           <span class="inline-block rounded-full px-3 py-1 text-xs font-bold bg-amber-100 text-amber-700">Langkah 4</span>
           <h3 class="formula-script font-bold text-2xl mt-4 text-slate-800">Penurunan Rumus Praktis (R dan h<sub>max</sub>)</h3>
@@ -671,14 +710,11 @@
           </p>
 
           <div class="grid lg:grid-cols-2 gap-6 mt-6">
-
-            <!-- JARAK TERJAUH -->
             <div class="formula-card blue rounded-2xl p-6 bg-white shadow-sm">
               <h4 class="formula-script font-bold text-xl mb-4 text-sky-700">Jarak Terjauh (R)</h4>
 
-             <!-- ===== ILUSTRASI LINTASAN: t=0 → t_p → t=2t_p ===== -->
 <div class="rounded-xl bg-slate-900 p-3 mb-4">
-  <svg viewBox="0 0 400 180" class="w-full h-auto" aria-label="Ilustrasi lintasan parabola: t=0, t_p di puncak, t=2t_p di titik terjauh">
+  <svg viewBox="0 0 400 180" class="w-full h-auto" aria-label="Ilustrasi lintasan parabola">
     <path d="M 40 140 Q 200 20 360 140" fill="none" stroke="#93d8ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="6,4"/>
     <line x1="20" y1="140" x2="380" y2="140" stroke="#f8f4e7" stroke-width="1.5" opacity="0.5"/>
     <line x1="200" y1="80" x2="200" y2="140" stroke="#f8f4e7" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.45"/>
@@ -744,7 +780,6 @@
               </div>
             </div>
 
-            <!-- TINGGI MAKSIMUM -->
             <div class="formula-card coral rounded-2xl p-6 bg-white shadow-sm">
               <h4 class="formula-script font-bold text-xl mb-4 text-rose-600">Tinggi Maksimum (\(h_{max}\))</h4>
 
@@ -791,7 +826,6 @@
                 <p class="font-bold text-center text-lg text-rose-600 formula-script">\[ \boxed{h_{max} = \frac{v_0^2 \sin^2\alpha}{2g}} \]</p>
               </div>
             </div>
-
           </div>
 
           <div class="mt-6 rounded-xl p-4 bg-amber-50 border border-dashed border-amber-300">
@@ -970,7 +1004,6 @@
             <h1 id="latihan-title" class="mt-5 max-w-3xl text-3xl font-bold leading-tight sm:text-4xl">Latihan Interaktif Vektor & Gerak Parabola</h1>
             <p class="mt-3 max-w-2xl leading-relaxed text-[#5e7181]">Pilih topik latihan di bawah ini untuk memulai. Lengkapi langkah-langkah penurunan rumus sesuai dengan konsep yang telah dipelajari.</p>
 
-            <!-- NAVIGASI TAB -->
             <nav class="mt-6 flex flex-wrap gap-2" aria-label="Pilih komponen gerak parabola">
               <button id="tab-v0x" class="tab-button focus-ring inline-flex items-center gap-1.5 rounded-xl px-3 py-2.5 font-bold is-active" aria-controls="section-v0x" aria-selected="true">
                 <i data-lucide="arrow-right" class="h-3.5 w-3.5" aria-hidden="true"></i> V<sub>0x</sub>
@@ -1042,10 +1075,10 @@
                     <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
                       <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
                       <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="v0x">V₀</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀x" data-group="v0x">V₀x</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="cos" data-group="v0x">cos</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="v0x">α</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0x">V₀</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="v0x">V₀x</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="v0x">cos</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="v0x">α</button>
                       </div>
                     </div>
 
@@ -1074,7 +1107,6 @@
                           <span>= cos α</span>
                         </div>
                       </li>
-                      <!-- Langkah 3 - DIUBAH JADI SATU BARIS INLINE -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0x</sub>.</p>
@@ -1156,10 +1188,10 @@
                     <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
                       <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
                       <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="v0y">V₀</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀y" data-group="v0y">V₀y</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="sin" data-group="v0y">sin</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="v0y">α</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="v0y">V₀</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="v0y">V₀y</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="v0y">sin</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="v0y">α</button>
                       </div>
                     </div>
 
@@ -1188,7 +1220,6 @@
                           <span>= sin α</span>
                         </div>
                       </li>
-                      <!-- Langkah 3 - DIUBAH JADI SATU BARIS INLINE -->
                       <li class="step-card rounded-r-xl bg-white/55 px-4 py-4 sm:px-5">
                         <h3 class="font-bold">Langkah 3: Susun ulang persamaan</h3>
                         <p class="mt-1 leading-relaxed text-[#4a6572] text-sm">Kalikan kedua ruas dengan V<sub>0</sub> untuk mendapatkan rumus V<sub>0y</sub>.</p>
@@ -1275,12 +1306,12 @@
                     <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
                       <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
                       <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="jarak">V₀</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀x" data-group="jarak">V₀x</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="cos" data-group="jarak">cos</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="jarak">α</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="x" data-group="jarak">x</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="t" data-group="jarak">t</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="jarak">V₀</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀x" data-group="jarak">V₀x</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="cos" data-group="jarak">cos</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="jarak">α</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="x" data-group="jarak">x</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="jarak">t</button>
                       </div>
                     </div>
 
@@ -1393,13 +1424,13 @@
                     <div class="mb-5 rounded-xl border border-[#c7dde0] bg-white/60 p-3" aria-label="Simbol matematika">
                       <p class="mb-2 text-sm font-semibold text-[#4a6572]">Klik simbol untuk menyisipkan ke kolom jawaban:</p>
                       <div class="flex flex-wrap gap-2">
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀" data-group="vertikal">V₀</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="V₀y" data-group="vertikal">V₀y</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="sin" data-group="vertikal">sin</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="α" data-group="vertikal">α</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="g" data-group="vertikal">g</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="t" data-group="vertikal">t</button>
-                        <button type="button" class="symbol-button focus-ring rounded-lg border border-[#b8d0d2] bg-white px-3 py-2 font-semibold text-[#275f70] transition hover:bg-[#e8f3f3]" data-symbol="Δh" data-group="vertikal">Δh</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀" data-group="vertikal">V₀</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="V₀y" data-group="vertikal">V₀y</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="sin" data-group="vertikal">sin</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="α" data-group="vertikal">α</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="g" data-group="vertikal">g</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="t" data-group="vertikal">t</button>
+                        <button type="button" class="symbol-button focus-ring" data-symbol="Δh" data-group="vertikal">Δh</button>
                       </div>
                     </div>
 
@@ -2094,7 +2125,6 @@
       });
     }
 
-    // ========== KONFIGURASI JAWABAN V0X ==========
     setupExercise({
       formId: "form-v0x",
       resetId: "reset-x",
@@ -2113,7 +2143,6 @@
       ]
     });
 
-    // ========== KONFIGURASI JAWABAN V0Y ==========
     setupExercise({
       formId: "form-v0y",
       resetId: "reset-y",
@@ -2132,7 +2161,6 @@
       ]
     });
 
-    // ========== KONFIGURASI JAWABAN JARAK X ==========
     setupExercise({
       formId: "form-jarak",
       resetId: "reset-jarak",
@@ -2149,7 +2177,6 @@
       ]
     });
 
-    // ========== KONFIGURASI JAWABAN KOMPONEN VERTIKAL ==========
     setupExercise({
       formId: "form-vertikal",
       resetId: "reset-vertikal",
@@ -2173,9 +2200,6 @@
       ]
     });
 
-    // ========== KONFIGURASI JAWABAN NILAI MAKSIMUM ==========
-
-    // 1. tmax
     setupExercise({
       formId: "form-tmax",
       resetId: "reset-tmax",
@@ -2193,7 +2217,6 @@
       ]
     });
 
-    // 2. hmax
     setupExercise({
       formId: "form-hmax",
       resetId: "reset-hmax",
@@ -2212,7 +2235,6 @@
       ]
     });
 
-    // 3. xmax
     setupExercise({
       formId: "form-xmax",
       resetId: "reset-xmax",
