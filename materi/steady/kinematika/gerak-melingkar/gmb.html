@@ -96,14 +96,28 @@
       background: var(--sun);
       transform: translate(-50%, -50%);
       box-shadow: 0 0 14px var(--sun);
+      z-index: 3;
     }
 
+    /* ===== Garis radius ===== */
     .radius-line {
       position: absolute;
       top: 50%; left: 50%;
-      width: 50%; height: 2px;
+      height: 2px;
       transform-origin: left center;
-      background: rgba(248,190,75,.8);
+      z-index: 1;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .radius-line.is-hidden { opacity: 0; }
+
+    .radius-line-one {
+      background: linear-gradient(90deg, rgba(242,106,61,.15), rgba(242,106,61,.95));
+      box-shadow: 0 0 8px rgba(242,106,61,.5);
+    }
+    .radius-line-two {
+      background: linear-gradient(90deg, rgba(83,184,212,.15), rgba(83,184,212,.95));
+      box-shadow: 0 0 8px rgba(83,184,212,.5);
     }
 
     .moving-dot {
@@ -112,13 +126,18 @@
       width: 28px; height: 22px;
       border-radius: 48% 52% 45% 55%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 3px rgba(248,190,75,.2);
-      z-index: 2;
+      z-index: 4;
       will-change: transform;
     }
 
-    .beetle-one { background: #d94335; }
-    .beetle-two { background: #3b82c4; }
+    .beetle-one {
+      background: #d94335;
+      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 3px rgba(242,106,61,.35);
+    }
+    .beetle-two {
+      background: #3b82c4;
+      box-shadow: 0 3px 8px rgba(0,0,0,.45), 0 0 0 3px rgba(83,184,212,.35);
+    }
 
     .moving-dot::before {
       content: "";
@@ -194,15 +213,57 @@
       padding: 1rem;
     }
 
+    /* Wrapper lintasan */
     .orbit-wrapper {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: .75rem;
+      border-radius: 1.25rem;
+    }
+
+    .orbit-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: .5rem;
-      padding: .75rem;
-      border-radius: 1.25rem;
+      width: 100%;
     }
+
+    /* Toggle garis radius */
+    .toggle-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      padding: .35rem .75rem;
+      font-size: .75rem;
+      font-weight: 600;
+      color: #d7e7ef;
+      cursor: pointer;
+      user-select: none;
+      transition: background .2s ease;
+    }
+    .toggle-wrap:hover { background: rgba(255,255,255,.14); }
+    .toggle-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--sun);
+      cursor: pointer;
+    }
+    .toggle-wrap .dot-ind {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: .15rem;
+    }
+    .dot-ind-one { background: #f26a3d; }
+    .dot-ind-two { background: #53b8d4; }
 
     .side-btn {
       display: flex;
@@ -319,20 +380,6 @@
       color: #fce5df;
     }
 
-    .btn-apply {
-      width: 100%;
-      border-radius: .5rem;
-      background: rgba(248,190,75,.9);
-      color: #10213e;
-      font-weight: 700;
-      font-size: .85rem;
-      padding: .65rem .75rem;
-      margin-top: .6rem;
-      transition: filter .2s ease;
-      min-height: var(--touch);
-    }
-    .btn-apply:active { filter: brightness(1.1); }
-
     .btn-play {
       width: 100%;
       border-radius: 999px;
@@ -346,7 +393,6 @@
     .btn-play-one { background: #f26a3d; }
     .btn-play-two { background: #3b82c4; }
 
-    /* Tombol utama "Jalankan Bersama" */
     .btn-both {
       width: 100%;
       border-radius: 999px;
@@ -369,11 +415,6 @@
       filter: brightness(1.05);
     }
     .btn-both:active { transform: scale(.98); }
-    .btn-both:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-      transform: none;
-    }
 
     .action-btn {
       width: 100%;
@@ -569,7 +610,7 @@
             <p class="text-xs font-bold uppercase tracking-[.16em] text-[#f8be4b] sm:text-sm">Laboratorium Virtual</p>
             <h1 class="display-font mt-2 text-2xl font-bold sm:text-3xl lg:text-4xl">Simulasi Gerak Melingkar</h1>
             <p class="mt-2 text-sm leading-6 text-[#d7e7ef] sm:mt-3 sm:text-base sm:leading-7">
-              Masukkan <strong>jari-jari (r)</strong>, <strong>jarak (s)</strong>, dan <strong>waktu (t)</strong> untuk kedua kumbang, lalu tekan <strong>▶ Jalankan Bersama</strong>. Semua besaran lain (T, ω, v, n) dihitung otomatis.
+              Masukkan <strong>jari-jari (r)</strong>, <strong>jarak (s)</strong>, dan <strong>waktu (t)</strong> untuk kedua kumbang, lalu tekan <strong>▶ Jalankan Bersama</strong>.
             </p>
           </div>
 
@@ -628,24 +669,36 @@
               </button>
             </aside>
 
-            <!-- ===== Lintasan ===== -->
+            <!-- ===== Lintasan dengan toggle & tombol samping ===== -->
             <div class="orbit-stage orbit-wrapper rounded-2xl sm:rounded-3xl">
-              <button id="playButtonOneMobile" type="button" class="side-btn side-btn-one focus-ring" aria-label="Jeda/Mulai Kumbang 1" aria-pressed="false">
-                <span class="icon">▶</span>
-                <span class="label">K1</span>
-              </button>
 
-              <div id="orbit" class="orbit" aria-label="Simulasi dua kumbang di atas piringan hitam yang berputar">
-                <div class="center-dot"></div>
-                <div id="radiusLine" class="radius-line"></div>
-                <div id="movingDotOne" class="moving-dot beetle-one"></div>
-                <div id="movingDotTwo" class="moving-dot beetle-two"></div>
+              <!-- Toggle garis radius -->
+              <label class="toggle-wrap" for="toggleRadiusLines" title="Tampilkan / sembunyikan garis radius">
+                <input id="toggleRadiusLines" type="checkbox" checked>
+                <span>Tampilkan garis radius</span>
+                <span class="dot-ind dot-ind-one" aria-hidden="true"></span>
+                <span class="dot-ind dot-ind-two" aria-hidden="true"></span>
+              </label>
+
+              <div class="orbit-row">
+                <button id="playButtonOneMobile" type="button" class="side-btn side-btn-one focus-ring" aria-label="Jeda/Mulai Kumbang 1" aria-pressed="false">
+                  <span class="icon">▶</span>
+                  <span class="label">K1</span>
+                </button>
+
+                <div id="orbit" class="orbit" aria-label="Simulasi dua kumbang di atas piringan hitam yang berputar">
+                  <div class="center-dot"></div>
+                  <div id="radiusLineOne" class="radius-line radius-line-one"></div>
+                  <div id="radiusLineTwo" class="radius-line radius-line-two"></div>
+                  <div id="movingDotOne" class="moving-dot beetle-one"></div>
+                  <div id="movingDotTwo" class="moving-dot beetle-two"></div>
+                </div>
+
+                <button id="playButtonTwoMobile" type="button" class="side-btn side-btn-two focus-ring" aria-label="Jeda/Mulai Kumbang 2" aria-pressed="false">
+                  <span class="icon">▶</span>
+                  <span class="label">K2</span>
+                </button>
               </div>
-
-              <button id="playButtonTwoMobile" type="button" class="side-btn side-btn-two focus-ring" aria-label="Jeda/Mulai Kumbang 2" aria-pressed="false">
-                <span class="icon">▶</span>
-                <span class="label">K2</span>
-              </button>
             </div>
 
             <!-- ===== Panel Kumbang 2 ===== -->
@@ -703,7 +756,7 @@
             </aside>
           </div>
 
-          <!-- ===== Tombol Aksi Utama ===== -->
+          <!-- ===== Tombol Aksi ===== -->
           <div class="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <button id="runBothButton" type="button" class="btn-both focus-ring">
               ▶ Jalankan Bersama
@@ -717,9 +770,9 @@
             <p class="mb-1 font-bold text-[#f8be4b]">ℹ️ Cara pakai:</p>
             <ul class="ml-4 list-disc space-y-1">
               <li>Isi <strong>r</strong>, <strong>s</strong>, dan <strong>t</strong> untuk Kumbang 1 dan Kumbang 2.</li>
-              <li>Tekan <strong>▶ Jalankan Bersama</strong> — kedua kumbang mulai dari titik yang sama dan bergerak bersamaan.</li>
+              <li>Tekan <strong>▶ Jalankan Bersama</strong> — kedua kumbang mulai dari titik yang sama.</li>
+              <li>Garis radius: <span style="color:#f26a3d;font-weight:700;">oranye</span> untuk K1, <span style="color:#53b8d4;font-weight:700;">biru</span> untuk K2 — bisa disembunyikan dengan toggle.</li>
               <li>Dari ketiga nilai itu dihitung: <strong>v = s/t</strong>, <strong>ω = v/r</strong>, <strong>T = 2π/ω</strong>, <strong>n = s/(2πr)</strong>.</li>
-              <li>Di HP: gunakan tombol bulat <strong>K1</strong> dan <strong>K2</strong> di samping lintasan untuk jeda/mulai masing-masing kumbang.</li>
             </ul>
           </div>
         </div>
@@ -844,7 +897,9 @@
       const orbit = document.getElementById("orbit");
       const dotOne = document.getElementById("movingDotOne");
       const dotTwo = document.getElementById("movingDotTwo");
-      const line = document.getElementById("radiusLine");
+      const lineOne = document.getElementById("radiusLineOne");
+      const lineTwo = document.getElementById("radiusLineTwo");
+      const toggleRadiusLines = document.getElementById("toggleRadiusLines");
 
       const inputR1 = document.getElementById("inputR1");
       const inputS1 = document.getElementById("inputS1");
@@ -876,7 +931,6 @@
 
       const START_ANGLE = -Math.PI / 2;
 
-      // State kumbang
       const beetle1 = {
         r: 2, s: 12, t: 4,
         v: 0, omega: 0, T: 0, n: 0,
@@ -913,7 +967,6 @@
         if (cls === "error") el.classList.add("error");
       }
 
-      // Baca input & hitung besaran turunan
       function readAndCompute(beetle, rInput, sInput, tInput) {
         const r = Number(rInput.value);
         const s = Number(sInput.value);
@@ -961,12 +1014,10 @@
       }
 
       function syncPlayButtons() {
-        // Desktop
         playButtonOne.textContent = beetle1.playing ? "⏸ Jeda Kumbang 1" : "▶ Mulai Kumbang 1";
         playButtonTwo.textContent = beetle2.playing ? "⏸ Jeda Kumbang 2" : "▶ Mulai Kumbang 2";
         playButtonOne.setAttribute("aria-pressed", String(beetle1.playing));
         playButtonTwo.setAttribute("aria-pressed", String(beetle2.playing));
-        // Mobile
         playButtonOneMobile.querySelector(".icon").textContent = beetle1.playing ? "⏸" : "▶";
         playButtonTwoMobile.querySelector(".icon").textContent = beetle2.playing ? "⏸" : "▶";
         playButtonOneMobile.setAttribute("aria-pressed", String(beetle1.playing));
@@ -980,15 +1031,20 @@
         dot.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
       }
 
+      // Atur satu garis radius: panjang & rotasi
+      function positionRadiusLine(lineEl, angle, meterRadius) {
+        const r = visualRadius(meterRadius);
+        lineEl.style.width = r + "px";
+        lineEl.style.transform = "rotate(" + angle + "rad)";
+      }
+
       function drawOrbit() {
         positionDot(dotOne, beetle1.angle, beetle1.r);
         positionDot(dotTwo, beetle2.angle, beetle2.r);
-        const r = visualRadius(beetle1.r);
-        line.style.width = r + "px";
-        line.style.transform = "rotate(" + beetle1.angle + "rad)";
+        positionRadiusLine(lineOne, beetle1.angle, beetle1.r);
+        positionRadiusLine(lineTwo, beetle2.angle, beetle2.r);
       }
 
-      // Reset posisi satu kumbang (tanpa mengubah r, s, t)
       function resetBeetlePosition(beetle) {
         beetle.angle = START_ANGLE;
         beetle.distance = 0;
@@ -996,14 +1052,21 @@
         beetle.finished = false;
       }
 
-      // ===== TOMBOL UTAMA: JALANKAN BERSAMA =====
+      // Toggle on/off garis radius
+      function applyRadiusToggle() {
+        const show = toggleRadiusLines.checked;
+        lineOne.classList.toggle("is-hidden", !show);
+        lineTwo.classList.toggle("is-hidden", !show);
+      }
+      toggleRadiusLines.addEventListener("change", applyRadiusToggle);
+
+      // ===== Tombol Jalankan Bersama =====
       runBothButton.addEventListener("click", () => {
         const res1 = readAndCompute(beetle1, inputR1, inputS1, inputT1);
         const res2 = readAndCompute(beetle2, inputR2, inputS2, inputT2);
 
         updateComputedDisplay();
 
-        // Tangani error
         let anyError = false;
         if (!res1.ok) {
           setStatus(statusOne, res1.msg, "error");
@@ -1022,15 +1085,12 @@
           return;
         }
 
-        // Reset posisi kedua kumbang ke titik yang sama
         resetBeetlePosition(beetle1);
         resetBeetlePosition(beetle2);
 
-        // Jalankan keduanya (jika s > 0)
         beetle1.playing = beetle1.s > 0;
         beetle2.playing = beetle2.s > 0;
 
-        // Update status
         if (beetle1.playing) {
           setStatus(statusOne,
             "▶ Berjalan: r=" + formatNumber(beetle1.r, 1) + " m · s=" +
@@ -1054,7 +1114,7 @@
       });
 
       // ===== Toggle play/pause individu =====
-      function toggleBeetle(beetle, statusEl, label) {
+      function toggleBeetle(beetle, statusEl) {
         if (!beetle.valid) {
           setStatus(statusEl, "⚠ Isi input & tekan Jalankan Bersama dulu", "error");
           return;
@@ -1071,12 +1131,12 @@
         syncPlayButtons();
       }
 
-      playButtonOne.addEventListener("click", () => toggleBeetle(beetle1, statusOne, "K1"));
-      playButtonOneMobile.addEventListener("click", () => toggleBeetle(beetle1, statusOne, "K1"));
-      playButtonTwo.addEventListener("click", () => toggleBeetle(beetle2, statusTwo, "K2"));
-      playButtonTwoMobile.addEventListener("click", () => toggleBeetle(beetle2, statusTwo, "K2"));
+      playButtonOne.addEventListener("click", () => toggleBeetle(beetle1, statusOne));
+      playButtonOneMobile.addEventListener("click", () => toggleBeetle(beetle1, statusOne));
+      playButtonTwo.addEventListener("click", () => toggleBeetle(beetle2, statusTwo));
+      playButtonTwoMobile.addEventListener("click", () => toggleBeetle(beetle2, statusTwo));
 
-      // ===== Reset total =====
+      // ===== Reset =====
       resetButton.addEventListener("click", () => {
         [beetle1, beetle2].forEach((b) => {
           resetBeetlePosition(b);
@@ -1166,8 +1226,7 @@
           '</div>';
       });
 
-      // ===== KUIS =====
-      const quizButtons = document.querySelectorAll(".quiz-option");
+      // ===== KUIS =====      const quizButtons = document.querySelectorAll(".quiz-option");
       const scoreOutput = document.getElementById("scoreOutput");
       const progressOutput = document.getElementById("progressOutput");
       const progressFill = document.getElementById("progressFill");
@@ -1217,11 +1276,11 @@
       });
 
       // ===== INISIALISASI =====
-      // Hitung nilai awal dari input default agar tampilan tidak kosong
       const init1 = readAndCompute(beetle1, inputR1, inputS1, inputT1);
       const init2 = readAndCompute(beetle2, inputR2, inputS2, inputT2);
       if (init1.ok) setStatus(statusOne, "Siap — tekan ▶ Jalankan Bersama", null);
       if (init2.ok) setStatus(statusTwo, "Siap — tekan ▶ Jalankan Bersama", null);
+      applyRadiusToggle();
       updateComputedDisplay();
       updateRunningDisplay();
       syncPlayButtons();
