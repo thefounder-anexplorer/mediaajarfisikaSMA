@@ -99,7 +99,6 @@
       z-index: 3;
     }
 
-    /* ===== Garis radius ===== */
     .radius-line {
       position: absolute;
       top: 50%; left: 50%;
@@ -199,7 +198,6 @@
 
     .progress-fill { width: 0%; transition: width .35s ease; }
 
-    /* ====== LAYOUT SIMULASI ====== */
     .sim-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -213,7 +211,6 @@
       padding: 1rem;
     }
 
-    /* Wrapper lintasan */
     .orbit-wrapper {
       position: relative;
       display: flex;
@@ -233,7 +230,6 @@
       width: 100%;
     }
 
-    /* Toggle garis radius */
     .toggle-wrap {
       display: inline-flex;
       align-items: center;
@@ -427,7 +423,6 @@
     }
     .action-btn:active { transform: scale(.98); }
 
-    /* ====== MEDIA QUERIES ====== */
     @media (min-width: 768px) {
       .sim-layout {
         grid-template-columns: minmax(220px, 1fr) minmax(320px, 1.4fr) minmax(220px, 1fr);
@@ -615,7 +610,6 @@
           </div>
 
           <div class="sim-layout">
-            <!-- ===== Panel Kumbang 1 ===== -->
             <aside class="control-panel" aria-label="Panel kendali Kumbang 1">
               <div class="mb-3 flex items-center gap-2">
                 <span class="inline-block h-3 w-3 rounded-full bg-[#d94335]"></span>
@@ -669,10 +663,7 @@
               </button>
             </aside>
 
-            <!-- ===== Lintasan dengan toggle & tombol samping ===== -->
             <div class="orbit-stage orbit-wrapper rounded-2xl sm:rounded-3xl">
-
-              <!-- Toggle garis radius -->
               <label class="toggle-wrap" for="toggleRadiusLines" title="Tampilkan / sembunyikan garis radius">
                 <input id="toggleRadiusLines" type="checkbox" checked>
                 <span>Tampilkan garis radius</span>
@@ -701,7 +692,6 @@
               </div>
             </div>
 
-            <!-- ===== Panel Kumbang 2 ===== -->
             <aside class="control-panel" aria-label="Panel kendali Kumbang 2">
               <div class="mb-3 flex items-center gap-2">
                 <span class="inline-block h-3 w-3 rounded-full bg-[#3b82c4]"></span>
@@ -756,7 +746,6 @@
             </aside>
           </div>
 
-          <!-- ===== Tombol Aksi ===== -->
           <div class="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <button id="runBothButton" type="button" class="btn-both focus-ring">
               ▶ Jalankan Bersama
@@ -882,6 +871,11 @@
           button.classList.toggle("is-active", active);
           button.setAttribute("aria-selected", String(active));
         });
+        // Setelah tab simulasi tampil, ukuran orbit sudah terhitung
+        // -> gambar ulang agar visual radius benar
+        if (name === "simulasi") {
+          requestAnimationFrame(() => drawOrbit());
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -957,6 +951,7 @@
       function visualRadius(meterRadius) {
         const stageRadius = orbit.clientWidth / 2;
         const clamped = Math.max(0.1, Math.min(10, meterRadius));
+        if (!stageRadius) return 0;
         return stageRadius * (0.25 + ((clamped - 0.1) / 9.9) * 0.68);
       }
 
@@ -1031,7 +1026,6 @@
         dot.style.transform = "translate(calc(-50% + " + x + "px), calc(-50% + " + y + "px))";
       }
 
-      // Atur satu garis radius: panjang & rotasi
       function positionRadiusLine(lineEl, angle, meterRadius) {
         const r = visualRadius(meterRadius);
         lineEl.style.width = r + "px";
@@ -1052,7 +1046,6 @@
         beetle.finished = false;
       }
 
-      // Toggle on/off garis radius
       function applyRadiusToggle() {
         const show = toggleRadiusLines.checked;
         lineOne.classList.toggle("is-hidden", !show);
@@ -1060,7 +1053,7 @@
       }
       toggleRadiusLines.addEventListener("change", applyRadiusToggle);
 
-      // ===== Tombol Jalankan Bersama =====
+      // ===== Jalankan Bersama =====
       runBothButton.addEventListener("click", () => {
         const res1 = readAndCompute(beetle1, inputR1, inputS1, inputT1);
         const res2 = readAndCompute(beetle2, inputR2, inputS2, inputT2);
@@ -1226,7 +1219,8 @@
           '</div>';
       });
 
-      // ===== KUIS =====      const quizButtons = document.querySelectorAll(".quiz-option");
+      // ===== KUIS =====
+      const quizButtons = document.querySelectorAll(".quiz-option");
       const scoreOutput = document.getElementById("scoreOutput");
       const progressOutput = document.getElementById("progressOutput");
       const progressFill = document.getElementById("progressFill");
@@ -1284,8 +1278,13 @@
       updateComputedDisplay();
       updateRunningDisplay();
       syncPlayButtons();
-      drawOrbit();
+      // drawOrbit pertama kali — mungkin 0 karena tab simulasi belum aktif,
+      // tapi akan dipanggil ulang saat tab simulasi dibuka.
+      requestAnimationFrame(() => {
+        drawOrbit();
+      });
       updateQuizSummary();
+      lastTime = performance.now();
       requestAnimationFrame(animate);
 
       window.addEventListener("resize", drawOrbit);
