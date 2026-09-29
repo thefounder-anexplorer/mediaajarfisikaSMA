@@ -7,8 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
-  <script src="/_sdk/data_sdk.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
   <style>
     :root {
       --ink: #16251f;
@@ -243,6 +241,7 @@
     }
     .data-panel .data-block .row .lbl { color: var(--muted); }
     .data-panel .data-block .row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; }
+    .data-panel .data-block .row .val.highlight { color: var(--orange); }
 
     /* Panel ringkasan hasil simulasi */
     .summary-panel {
@@ -614,15 +613,19 @@
                 </svg>
               </div>
 
-              <!-- Tombol Play/Stop simulasi -->
-              <div class="flex gap-3">
-                <button id="play-simulation-button" onclick="startSimulation()" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#116466] px-5 py-3 font-bold text-white transition hover:brightness-110">
+              <!-- Tombol Play/Stop/Reset simulasi -->
+              <div class="flex flex-wrap gap-3">
+                <button id="play-simulation-button" onclick="startSimulation()" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#116466] px-5 py-3 font-bold text-white transition hover:brightness-110">
                   <i data-lucide="play" width="18" height="18"></i>
-                  <span>Mulai Simulasi</span>
+                  <span>Mulai / Lanjut</span>
                 </button>
-                <button id="stop-simulation-button" onclick="stopSimulation()" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110">
+                <button id="stop-simulation-button" onclick="stopSimulation()" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110">
                   <i data-lucide="square" width="18" height="18"></i>
-                  <span>Stop Simulasi</span>
+                  <span>Stop</span>
+                </button>
+                <button id="reset-simulation-button" onclick="resetSimulation(true)" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#16251f] px-5 py-3 font-bold text-white transition hover:brightness-110">
+                  <i data-lucide="rotate-ccw" width="18" height="18"></i>
+                  <span>Reset</span>
                 </button>
               </div>
 
@@ -640,8 +643,8 @@
                     <div class="big-value" style="color:#1E40AF;">
                       <span id="summary-theta1-rot">0.00</span> putaran
                     </div>
-                    <div class="row"><span class="lbl">Sudut tempuh (θ₁)</span><span id="summary-theta1-rad" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut tempuh (°)</span><span id="summary-theta1-deg" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Sudut total (θ₁)</span><span id="summary-theta1-rad" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut total (°)</span><span id="summary-theta1-deg" class="val">0°</span></div>
                     <div class="row"><span class="lbl">Jarak busur (s₁)</span><span id="summary-s1" class="val">0.00 m</span></div>
                     <div class="row"><span class="lbl">Jari-jari (R₁)</span><span id="summary-r1" class="val">0.40 m</span></div>
                     <div class="row"><span class="lbl">ω₁</span><span id="summary-omega1" class="val">5.00 rad/s</span></div>
@@ -653,8 +656,8 @@
                     <div class="big-value" style="color:#DC2626;">
                       <span id="summary-theta2-rot">0.00</span> putaran
                     </div>
-                    <div class="row"><span class="lbl">Sudut tempuh (θ₂)</span><span id="summary-theta2-rad" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut tempuh (°)</span><span id="summary-theta2-deg" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Sudut total (θ₂)</span><span id="summary-theta2-rad" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut total (°)</span><span id="summary-theta2-deg" class="val">0°</span></div>
                     <div class="row"><span class="lbl">Jarak busur (s₂)</span><span id="summary-s2" class="val">0.00 m</span></div>
                     <div class="row"><span class="lbl">Jari-jari (R₂)</span><span id="summary-r2" class="val">0.60 m</span></div>
                     <div class="row"><span class="lbl">ω₂</span><span id="summary-omega2" class="val">5.00 rad/s</span></div>
@@ -678,8 +681,9 @@
                 <div class="data-grid">
                   <div class="data-block" style="border-left: 4px solid #1E40AF;">
                     <div class="block-title" style="color:#1E40AF;">🔵 Roda 1</div>
-                    <div class="row"><span class="lbl">Sudut (θ₁)</span><span id="theta1-display" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut (°)</span><span id="theta1-deg-display" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Putaran total</span><span id="theta1-rot-display" class="val highlight">0.00 put</span></div>
+                    <div class="row"><span class="lbl">Sudut total (θ₁)</span><span id="theta1-display" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Posisi sudut (0–360°)</span><span id="theta1-deg-display" class="val">0°</span></div>
                     <div class="row"><span class="lbl">Jarak (s₁)</span><span id="s1-display" class="val">0.00 m</span></div>
                     <div class="row"><span class="lbl">ω₁</span><span id="omega1-data-display" class="val">5.00 rad/s</span></div>
                     <div class="row"><span class="lbl">v₁</span><span id="v1-data-display" class="val">2.00 m/s</span></div>
@@ -689,8 +693,9 @@
 
                   <div class="data-block" style="border-left: 4px solid #DC2626;">
                     <div class="block-title" style="color:#DC2626;">🔴 Roda 2</div>
-                    <div class="row"><span class="lbl">Sudut (θ₂)</span><span id="theta2-display" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut (°)</span><span id="theta2-deg-display" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Putaran total</span><span id="theta2-rot-display" class="val highlight">0.00 put</span></div>
+                    <div class="row"><span class="lbl">Sudut total (θ₂)</span><span id="theta2-display" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Posisi sudut (0–360°)</span><span id="theta2-deg-display" class="val">0°</span></div>
                     <div class="row"><span class="lbl">Jarak (s₂)</span><span id="s2-display" class="val">0.00 m</span></div>
                     <div class="row"><span class="lbl">ω₂</span><span id="omega2-data-display" class="val">5.00 rad/s</span></div>
                     <div class="row"><span class="lbl">v₂</span><span id="v2-data-display" class="val">2.00 m/s</span></div>
@@ -819,7 +824,7 @@
   </div>
 
   <script>
-    // ==================== CONFIG & SDK ====================
+    // ==================== CONFIG ====================
     const defaultConfig = {
       lesson_title: "Hubungan Antar Roda",
       teacher_name: "Guru: Uswatun H",
@@ -835,11 +840,13 @@
     let simulationInterval = null;
     let currentSimulationType = 'seporos';
 
+    // Nilai akumulasi sudut (TIDAK di-reset saat Play, hanya saat Reset)
     let theta1 = 0;
     let theta2 = 0;
     let elapsedTime = 0;
     let hasRunSimulation = false;
 
+    // ==================== DATA SDK ====================
     const dataHandler = {
       onDataChanged(data) {
         currentData = data;
@@ -898,7 +905,7 @@
     // ==================== SIMULATION ====================
     function showSimulationType(type) {
       currentSimulationType = type;
-      resetSimulation();
+      resetSimulation(false);   // reset visual tanpa hapus theta? → kita reset penuh di sini karena ganti tipe
 
       document.querySelectorAll('.simulation-svg').forEach(svg => svg.classList.add('hidden'));
       document.getElementById('simulation-' + type).classList.remove('hidden');
@@ -917,7 +924,6 @@
     // Hitung omega2 berdasarkan tipe hubungan agar tidak slip
     function calcOmega2(omega1, r1, r2) {
       if (currentSimulationType === 'seporos') return omega1;
-      // bersinggungan atau sabuk: ω₂ = ω₁ × R₁ / R₂
       return (omega1 * r1) / r2;
     }
 
@@ -930,7 +936,6 @@
       document.getElementById('radius1-value').textContent = r1 + ' cm';
       document.getElementById('radius2-value').textContent = r2 + ' cm';
 
-      // Info ω₂ otomatis
       let autoInfoText;
       if (currentSimulationType === 'seporos') {
         autoInfoText = `ω₂ otomatis = ω₁ = ${omega2.toFixed(2)} rad/s (roda seporos)`;
@@ -939,11 +944,9 @@
       }
       document.getElementById('omega2-auto-info').textContent = autoInfoText;
 
-      // Kecepatan linear
       const v1 = omega1 * (r1 / 100);
       const v2 = omega2 * (r2 / 100);
 
-      // Rumus & status (tidak akan slip)
       let formula, statusText, statusClass;
       if (currentSimulationType === 'seporos') {
         formula = 'ω₁ = ω₂';
@@ -976,6 +979,7 @@
       }
 
       updateDataPanel();
+      updateParticlesPosition();
     }
 
     function updateSeporosWheels(r1, r2) {
@@ -1095,16 +1099,25 @@
 
       document.getElementById('time-display').textContent = elapsedTime.toFixed(1) + ' s';
 
+      // ===== Roda 1 =====
+      const rot1 = Math.abs(theta1) / (2 * Math.PI);
+      document.getElementById('theta1-rot-display').textContent = rot1.toFixed(2) + ' put';
       document.getElementById('theta1-display').textContent = theta1.toFixed(2) + ' rad';
-      document.getElementById('theta1-deg-display').textContent = ((theta1 * 180 / Math.PI) % 360).toFixed(0) + '°';
+      // Posisi sudut 0-360° (untuk visualisasi saja)
+      const deg1 = ((theta1 * 180 / Math.PI) % 360 + 360) % 360;
+      document.getElementById('theta1-deg-display').textContent = deg1.toFixed(0) + '°';
       document.getElementById('s1-display').textContent = (Math.abs(theta1) * r1m).toFixed(2) + ' m';
       document.getElementById('omega1-data-display').textContent = omega1.toFixed(2) + ' rad/s';
       document.getElementById('v1-data-display').textContent = v1.toFixed(2) + ' m/s';
       document.getElementById('T1-display').textContent = (2 * Math.PI / omega1).toFixed(2) + ' s';
       document.getElementById('f1-display').textContent = (omega1 / (2 * Math.PI)).toFixed(2) + ' Hz';
 
+      // ===== Roda 2 =====
+      const rot2 = Math.abs(theta2) / (2 * Math.PI);
+      document.getElementById('theta2-rot-display').textContent = rot2.toFixed(2) + ' put';
       document.getElementById('theta2-display').textContent = theta2.toFixed(2) + ' rad';
-      document.getElementById('theta2-deg-display').textContent = ((theta2 * 180 / Math.PI) % 360).toFixed(0) + '°';
+      const deg2 = ((theta2 * 180 / Math.PI) % 360 + 360) % 360;
+      document.getElementById('theta2-deg-display').textContent = deg2.toFixed(0) + '°';
       document.getElementById('s2-display').textContent = (Math.abs(theta2) * r2m).toFixed(2) + ' m';
       document.getElementById('omega2-data-display').textContent = omega2.toFixed(2) + ' rad/s';
       document.getElementById('v2-data-display').textContent = v2.toFixed(2) + ' m/s';
@@ -1165,22 +1178,32 @@
       document.getElementById('summary-panel').classList.remove('is-visible');
     }
 
-    // ==================== PLAY / STOP ====================
+    // ==================== PLAY / STOP / RESET ====================
     function startSimulation() {
       if (simulationInterval) clearInterval(simulationInterval);
 
       hideSummary();
 
-      theta1 = 0;
-      theta2 = 0;
-      elapsedTime = 0;
-      updateDataPanel();
-      updateParticlesPosition();
+      // ⚠️ PENTING: theta1, theta2, elapsedTime TIDAK di-reset di sini.
+      // Nilai akan melanjutkan dari putaran sebelumnya.
+      // Untuk memulai dari 0, gunakan tombol Reset.
 
+      // Pastikan transform roda tetap pada posisi terakhir
       const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
       const wheel2 = document.querySelector(`#wheel2-${currentSimulationType}`);
-      if (wheel1) wheel1.style.transform = 'rotate(0rad)';
-      if (wheel2) wheel2.style.transform = 'rotate(0rad)';
+      if (wheel1) {
+        wheel1.style.transformOrigin = currentSimulationType === 'seporos' ? '200px 150px' : '120px 150px';
+        wheel1.style.transform = `rotate(${theta1}rad)`;
+      }
+      if (wheel2) {
+        if (currentSimulationType === 'seporos') wheel2.style.transformOrigin = '200px 150px';
+        else if (currentSimulationType === 'bersinggungan') {
+          const r1c = parseFloat(document.getElementById('radius1').value);
+          const r2c = parseFloat(document.getElementById('radius2').value);
+          wheel2.style.transformOrigin = `${120 + r1c + r2c}px 150px`;
+        } else wheel2.style.transformOrigin = '320px 150px';
+        wheel2.style.transform = `rotate(${theta2}rad)`;
+      }
 
       const r1 = parseFloat(document.getElementById('radius1').value);
       const r2 = parseFloat(document.getElementById('radius2').value);
@@ -1197,24 +1220,13 @@
         if (currentSimulationType === 'seporos') {
           theta2 += omega2 * dt;
         } else if (currentSimulationType === 'bersinggungan') {
-          theta2 -= omega2 * dt;
+          theta2 -= omega2 * dt;   // berlawanan arah
         } else {
           theta2 += omega2 * dt;
         }
 
-        if (wheel1) {
-          wheel1.style.transformOrigin = currentSimulationType === 'seporos' ? '200px 150px' : '120px 150px';
-          wheel1.style.transform = `rotate(${theta1}rad)`;
-        }
-        if (wheel2) {
-          if (currentSimulationType === 'seporos') wheel2.style.transformOrigin = '200px 150px';
-          else if (currentSimulationType === 'bersinggungan') {
-            const r1c = parseFloat(document.getElementById('radius1').value);
-            const r2c = parseFloat(document.getElementById('radius2').value);
-            wheel2.style.transformOrigin = `${120 + r1c + r2c}px 150px`;
-          } else wheel2.style.transformOrigin = '320px 150px';
-          wheel2.style.transform = `rotate(${theta2}rad)`;
-        }
+        if (wheel1) wheel1.style.transform = `rotate(${theta1}rad)`;
+        if (wheel2) wheel2.style.transform = `rotate(${theta2}rad)`;
 
         updateParticlesPosition();
         updateDataPanel();
@@ -1248,17 +1260,25 @@
         clearInterval(simulationInterval);
         simulationInterval = null;
       }
+      // ✅ Refresh nilai final setelah stop
+      updateDataPanel();
+      updateParticlesPosition();
       if (hasRunSimulation && elapsedTime > 0) {
         showSummary();
       }
     }
 
-    function resetSimulation() {
+    function resetSimulation(fromButton) {
       if (simulationInterval) { clearInterval(simulationInterval); simulationInterval = null; }
-      theta1 = 0;
-      theta2 = 0;
-      elapsedTime = 0;
-      hasRunSimulation = false;
+
+      // Hanya reset nilai sudut & waktu jika diminta (tombol Reset atau ganti tipe)
+      if (fromButton === true || fromButton === undefined) {
+        theta1 = 0;
+        theta2 = 0;
+        elapsedTime = 0;
+        hasRunSimulation = false;
+      }
+
       hideSummary();
 
       const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
