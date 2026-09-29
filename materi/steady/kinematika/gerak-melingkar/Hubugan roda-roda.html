@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Hubungan Antar Roda — Fisika SMA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root {
+      --ink: #16251f;
+      --cream: #f7f1e4;
+      --paper: #fffdf7;
+      --orange: #e86d32;
+      --teal: #116466;
+      --yellow: #f6be3b;
+      --line: #d9d0bd;
+      --muted: #526258;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      font-family: "Work Sans", sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    .physics-app {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background:
+        linear-gradient(90deg, rgba(22, 37, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(22, 37, 31, 0.035) 1px, transparent 1px),
+        var(--cream);
+      background-size: 28px 28px;
+    }
+
+    .display-font { font-family: "Fraunces", serif; }
+
+    .app-page { display: none; animation: pageIn 0.45s ease both; }
+    .app-page.is-active { display: block; }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .topbar {
+      background: rgba(255, 253, 247, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-link {
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      transition: color .2s ease, border-color .2s ease;
+    }
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: var(--teal);
+      border-bottom-color: var(--orange);
+    }
+
+    .hero-frame {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .hero-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(15,30,25,.96) 0%, rgba(15,30,25,.80) 48%, rgba(15,30,25,.28) 100%);
+      z-index: -1;
+    }
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .72;
+      filter: grayscale(100%) contrast(1.15);
+    }
+
+    .tiny-rule {
+      width: 74px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--yellow);
+    }
+
+    .concept-card {
+      border: 1px solid var(--line);
+      box-shadow: 7px 7px 0 rgba(22,37,31,.09);
+    }
+
+    .formula {
+      font-family: "Fraunces", serif;
+      letter-spacing: -.03em;
+    }
+
+    input[type="range"] { accent-color: var(--yellow); cursor: pointer; }
+
+    .icon-box {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      flex: 0 0 auto;
+    }
+
+    .quiz-card { border: 1px solid var(--line); box-shadow: 8px 8px 0 rgba(22,37,31,.09); }
+
+    .option-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: .8rem;
+      padding: .9rem 1rem;
+      text-align: left;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .option-button:hover:not(:disabled) { transform: translateX(4px); border-color: var(--teal); }
+    .option-button:disabled { cursor: default; }
+    .option-button.is-correct { border-color: #277b57; background: #ddf4e7; color: #165238; }
+    .option-button.is-wrong { border-color: #cb6243; background: #fde7df; color: #8e351d; }
+    .option-letter {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: #e8e0cf;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 1rem;
+      border-radius: .65rem;
+      padding: .8rem 1rem;
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+    .feedback.is-visible { display: block; }
+    .feedback.correct { background: #ddf4e7; color: #165238; }
+    .feedback.wrong { background: #fde7df; color: #8e351d; }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 3px;
+    }
+
+    /* ===== SIMULATION ===== */
+    .sim-svg {
+      width: 100%;
+      height: auto;
+      max-height: 340px;
+      display: block;
+    }
+    .sim-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      padding: 12px;
+    }
+
+    .wheel-sim { will-change: transform; }
+
+    .sim-tab { white-space: nowrap; flex: 0 0 auto; }
+    .sim-tabs-wrapper {
+      display: flex;
+      gap: .5rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-bottom: 1px solid var(--line);
+    }
+    .sim-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+    /* Panel data */
+    .data-panel {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+    .data-panel h4 {
+      font-family: "Fraunces", serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 0.6rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .data-panel .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .data-panel .data-block {
+      border: 1px solid var(--line);
+      border-radius: 0.6rem;
+      padding: 0.6rem 0.7rem;
+      background: #fbf8f0;
+    }
+    .data-panel .data-block .block-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .data-panel .data-block .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.72rem;
+      padding: 0.12rem 0;
+    }
+    .data-panel .data-block .row .lbl { color: var(--muted); }
+    .data-panel .data-block .row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; }
+
+    /* Panel ringkasan hasil simulasi */
+    .summary-panel {
+      border: 2px solid var(--teal);
+      background: linear-gradient(135deg, #f0faf9 0%, #fffdf7 100%);
+      border-radius: 1rem;
+      padding: 1rem;
+      display: none;
+      animation: summaryIn 0.4s ease both;
+    }
+    .summary-panel.is-visible { display: block; }
+    @keyframes summaryIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .summary-panel .summary-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px dashed var(--teal);
+    }
+    .summary-panel .summary-header h4 {
+      font-family: "Fraunces", serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+      color: var(--teal);
+    }
+    .summary-panel .summary-header .duration-badge {
+      margin-left: auto;
+      background: var(--teal);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-family: ui-monospace, monospace;
+    }
+    .summary-panel .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .summary-panel .summary-block {
+      border: 1px solid var(--line);
+      border-radius: 0.6rem;
+      padding: 0.7rem 0.8rem;
+      background: white;
+    }
+    .summary-panel .summary-block .block-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .summary-panel .summary-block .big-value {
+      font-family: "Fraunces", serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.15rem;
+    }
+    .summary-panel .summary-block .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.72rem;
+      padding: 0.14rem 0;
+      border-top: 1px dashed rgba(217, 208, 189, 0.7);
+    }
+    .summary-panel .summary-block .row:first-of-type { border-top: 0; }
+    .summary-panel .summary-block .row .lbl { color: var(--muted); }
+    .summary-panel .summary-block .row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; }
+    .summary-panel .summary-note {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.7rem;
+      background: #fff8e1;
+      border-left: 3px solid var(--yellow);
+      border-radius: 0.4rem;
+      font-size: 0.72rem;
+      color: #7a5a00;
+      line-height: 1.5;
+    }
+
+    /* Tampilan input manual ω */
+    .omega-input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .omega-input-group input[type="number"] {
+      width: 70px;
+      border: 1px solid var(--line);
+      border-radius: 0.5rem;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      background: white;
+      text-align: center;
+    }
+
+    /* Info box ω₂ otomatis */
+    .auto-info {
+      margin-top: 0.4rem;
+      padding: 0.5rem 0.7rem;
+      background: #eef6f5;
+      border-left: 3px solid var(--teal);
+      border-radius: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .nav-label { display: none; }
+      .sim-svg { max-height: 240px; }
+      .sim-container { min-height: 220px; padding: 8px; }
+      .hero-frame .max-w-6xl { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+      .data-panel .data-grid { grid-template-columns: 1fr; }
+      .summary-panel .summary-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 400px) {
+      .sim-svg { max-height: 200px; }
+    }
+
+    @media (hover: none) {
+      .option-button { padding: 1rem; }
+      button { min-height: 44px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="physics-app">
+    <!-- Header -->
+    <header class="topbar sticky top-0 z-30 w-full">
+      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 sm:px-8 lg:px-10" aria-label="Navigasi pembelajaran">
+        <button id="brand-button" type="button" class="flex items-center gap-2 py-3 sm:py-4 text-left" aria-label="Kembali ke halaman muka">
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-[#116466] text-white">
+            <i data-lucide="orbit" width="18" height="18"></i>
+          </span>
+          <span id="brand-text" class="canva-text display-font font-bold text-sm sm:text-base">Hubungan Antar Roda</span>
+        </button>
+        <div class="flex h-full items-center gap-0 sm:gap-5">
+          <button id="nav-home" type="button" class="nav-link is-active inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
+            <i data-lucide="house" width="16" height="16"></i>
+            <span class="nav-label">Materi</span>
+          </button>
+          <button id="nav-simulation" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
+            <i data-lucide="settings-2" width="16" height="16"></i>
+            <span class="nav-label">Simulasi</span>
+          </button>
+          <button id="nav-quiz" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
+            <i data-lucide="circle-help" width="16" height="16"></i>
+            <span class="nav-label">Kuis</span>
+          </button>
+          <button id="nav-results" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
+            <i data-lucide="bar-chart-3" width="16" height="16"></i>
+            <span class="nav-label">Hasil</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Home / Materi Page -->
+      <section id="home-page" class="app-page is-active" aria-labelledby="hero-title">
+        <div class="hero-frame w-full">
+          <div class="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8 sm:py-24 lg:px-10">
+            <div class="max-w-2xl">
+              <div class="tiny-rule mb-4 sm:mb-5"></div>
+              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-[#f6be3b]">Fisika SMA — Gerak Rotasi</p>
+              <h1 id="hero-title" class="display-font mt-3 text-3xl font-bold leading-[1.1] text-white sm:text-5xl">
+                Hubungan Antar Roda
+              </h1>
+              <p class="mt-4 sm:mt-5 max-w-xl text-sm sm:text-base leading-7 text-white/80">
+                Pelajari bagaimana roda-roda yang terhubung bergerak bersama—seporos, bersinggungan, dan dihubungkan sabuk—melalui materi, simulasi interaktif, dan kuis.
+              </p>
+              <button id="start-learning-button" class="mt-7 sm:mt-8 inline-flex items-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 text-sm sm:text-base font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" type="button">
+                Mulai Belajar
+                <i data-lucide="arrow-right" width="18" height="18"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-12 lg:px-10">
+          <section aria-labelledby="concept-title">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Konsep Dasar</p>
+                <h2 id="concept-title" class="display-font mt-2 text-xl sm:text-2xl font-bold text-[#16251f]">Tiga Besaran Penting</h2>
+              </div>
+              <p class="max-w-md text-sm leading-6 text-[#526258]">
+                Pahami hubungan antara jari-jari, kecepatan sudut, dan kecepatan linear pada sistem roda.
+              </p>
+            </div>
+            <div class="mt-6 sm:mt-7 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              <article class="concept-card rounded-2xl bg-white p-5">
+                <div class="icon-box mb-4 bg-[#f6be3b] text-[#16251f]"><i data-lucide="ruler"></i></div>
+                <h3 class="font-bold text-[#16251f]">Jari-jari (R)</h3>
+                <p class="mt-2 text-sm leading-6 text-[#526258]">Jarak dari pusat roda ke tepi. Menentukan kecepatan linear jika kecepatan sudut diketahui.</p>
+              </article>
+              <article class="concept-card rounded-2xl bg-white p-5">
+                <div class="icon-box mb-4 bg-[#116466] text-white"><i data-lucide="rotate-cw"></i></div>
+                <h3 class="font-bold text-[#16251f]">Kecepatan Sudut (ω)</h3>
+                <p class="mt-2 text-sm leading-6 text-[#526258]">Seberapa cepat roda berputar. Pada roda seporos, ω₁ = ω₂. Pada roda bersinggungan/sabuk, ω₁R₁ = ω₂R₂.</p>
+              </article>
+              <article class="concept-card rounded-2xl bg-white p-5 sm:col-span-2 md:col-span-1">
+                <div class="icon-box mb-4 bg-[#e86d32] text-white"><i data-lucide="gauge"></i></div>
+                <h3 class="font-bold text-[#16251f]">Kecepatan Linear (v)</h3>
+                <p class="mt-2 text-sm leading-6 text-[#526258]">v = ω × R. Pada roda bersinggungan atau bersabuk, kecepatan linear di titik kontak/sabuk sama.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="mt-10 sm:mt-12 rounded-2xl bg-[#116466] p-6 text-white sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
+            <div>
+              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#f6be3b]">Uji Pemahaman</p>
+              <h2 class="display-font mt-2 text-xl sm:text-2xl font-bold">Sudah siap menguji pemahaman?</h2>
+              <p class="mt-2 max-w-2xl text-sm sm:text-base leading-6 text-white/80">Kerjakan kuis singkat untuk mengukur seberapa jauh kamu memahami hubungan antar roda.</p>
+            </div>
+            <button id="home-to-quiz-button" class="mt-5 inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-[#f6be3b] px-5 py-3 font-bold text-[#16251f] sm:mt-0 sm:w-auto" type="button">
+              Mulai Kuis <i data-lucide="arrow-right" width="18" height="18"></i>
+            </button>
+          </section>
+        </div>
+      </section>
+
+      <!-- Simulation Page -->
+      <section id="simulation-page" class="app-page" aria-labelledby="simulation-page-title">
+        <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
+          <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Laboratorium Virtual</p>
+          <h1 id="simulation-page-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Simulasi Interaktif</h1>
+          <p class="mt-3 max-w-3xl text-sm sm:text-base leading-7 text-[#526258]">Atur jari-jari dan kecepatan sudut roda 1. Kecepatan sudut roda 2 dihitung otomatis sesuai jenis hubungan, sehingga roda tidak akan slip.</p>
+
+          <div class="sim-tabs-wrapper mt-6 sm:mt-8">
+            <button onclick="showSimulationType('seporos')" id="tab-seporos" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#116466] border-b-2 border-[#e86d32] bg-white/50">🔗 Seporos</button>
+            <button onclick="showSimulationType('bersinggungan')" id="tab-bersinggungan" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#526258] border-b-2 border-transparent hover:text-[#116466]">⚪ Bersinggungan</button>
+            <button onclick="showSimulationType('sabuk')" id="tab-sabuk" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#526258] border-b-2 border-transparent hover:text-[#116466]">🔗 Bersabuk</button>
+          </div>
+
+          <div class="mt-6 sm:mt-8 grid gap-6 lg:grid-cols-2">
+            <div class="space-y-6">
+              <!-- Pengaturan Roda -->
+              <div class="rounded-2xl border border-[#d9d0bd] bg-white p-5 sm:p-6">
+                <h3 class="display-font text-base sm:text-lg font-bold text-[#16251f]">Pengaturan Roda</h3>
+                <div class="mt-5 space-y-5">
+                  <div>
+                    <label class="mb-2 block text-sm font-medium text-[#526258]">Jari-jari Roda 1 — R₁ (cm)</label>
+                    <input type="range" id="radius1" min="20" max="80" value="40" class="w-full">
+                    <span id="radius1-value" class="text-sm text-[#526258]">40 cm</span>
+                  </div>
+                  <div>
+                    <label class="mb-2 block text-sm font-medium text-[#526258]">Jari-jari Roda 2 — R₂ (cm)</label>
+                    <input type="range" id="radius2" min="20" max="80" value="60" class="w-full">
+                    <span id="radius2-value" class="text-sm text-[#526258]">60 cm</span>
+                  </div>
+                  <div>
+                    <label class="mb-2 block text-sm font-medium text-[#526258]">Kecepatan Sudut Roda 1 — ω₁ (rad/s)</label>
+                    <div class="omega-input-group">
+                      <input type="range" id="omega1" min="0.5" max="10" step="0.5" value="5" class="flex-1">
+                      <input type="number" id="omega1-number" min="0.5" max="10" step="0.5" value="5">
+                    </div>
+                  </div>
+                  <div class="auto-info">
+                    <span id="omega2-auto-info">ω₂ otomatis = ω₁ = 5.00 rad/s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hasil Perhitungan -->
+              <div class="rounded-2xl border border-[#d9d0bd] bg-[#fffdf7] p-5 sm:p-6">
+                <h3 class="display-font text-base sm:text-lg font-bold text-[#16251f]">Hasil Perhitungan</h3>
+                <div class="mt-4 space-y-3 text-xs sm:text-sm">
+                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Sudut Roda 1 (ω₁):</span><span id="omega1-display" class="font-mono font-bold text-[#16251f] whitespace-nowrap">5.00 rad/s</span></div>
+                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Sudut Roda 2 (ω₂):</span><span id="omega2-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">5.00 rad/s</span></div>
+                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Linear Roda 1 (v₁):</span><span id="v1-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">2.00 m/s</span></div>
+                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Linear Roda 2 (v₂):</span><span id="v2-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">2.00 m/s</span></div>
+                  <p id="velocity-status" class="text-xs font-semibold text-green-600">✓ Kecepatan Linear Sama (v₁ = v₂)</p>
+                </div>
+                <div class="mt-4 rounded-lg border-l-4 border-[#116466] bg-white p-3">
+                  <p class="text-xs text-[#526258]">Rumus yang berlaku:</p>
+                  <p id="formula-display" class="formula text-sm font-bold text-[#16251f]">ω₁ = ω₂</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Area simulasi -->
+              <div class="sim-container rounded-2xl border border-[#d9d0bd] bg-[#f9f4e9]">
+                <!-- Simulasi Seporos -->
+                <svg id="simulation-seporos" class="simulation-svg sim-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                  <g id="wheel2-seporos" class="wheel-sim">
+                    <circle cx="200" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" fill-opacity="0.6" />
+                    <circle cx="200" cy="150" r="8" fill="#DC2626" />
+                    <line id="marker2-seporos" x1="200" y1="150" x2="200" y2="90" stroke="#DC2626" stroke-width="4" stroke-linecap="round" />
+                    <circle id="particle2-seporos" cx="200" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                  <g id="wheel1-seporos" class="wheel-sim">
+                    <circle cx="200" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" fill-opacity="0.9" />
+                    <circle cx="200" cy="150" r="6" fill="#1E40AF" />
+                    <line id="marker1-seporos" x1="200" y1="150" x2="200" y2="110" stroke="#1E40AF" stroke-width="4" stroke-linecap="round" />
+                    <circle id="particle1-seporos" cx="200" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                  <circle cx="200" cy="150" r="10" fill="#374151" stroke="#1F2937" stroke-width="2" />
+                </svg>
+
+                <!-- Simulasi Bersinggungan -->
+                <svg id="simulation-bersinggungan" class="simulation-svg sim-svg hidden" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                  <g id="wheel1-bersinggungan" class="wheel-sim">
+                    <circle cx="120" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" />
+                    <circle cx="120" cy="150" r="5" fill="#1E40AF" />
+                    <line x1="120" y1="110" x2="120" y2="190" stroke="#1E40AF" stroke-width="2.5" />
+                    <line x1="80" y1="150" x2="160" y2="150" stroke="#1E40AF" stroke-width="2.5" />
+                    <line x1="91.7" y1="121.7" x2="148.3" y2="178.3" stroke="#1E40AF" stroke-width="2" opacity="0.7" />
+                    <line x1="148.3" y1="121.7" x2="91.7" y2="178.3" stroke="#1E40AF" stroke-width="2" opacity="0.7" />
+                    <circle id="particle1-bersinggungan" cx="120" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                  <g id="wheel2-bersinggungan" class="wheel-sim">
+                    <circle cx="280" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" />
+                    <line x1="280" y1="90" x2="280" y2="210" stroke="#DC2626" stroke-width="2.5" />
+                    <line x1="220" y1="150" x2="340" y2="150" stroke="#DC2626" stroke-width="2.5" />
+                    <line x1="237.6" y1="107.6" x2="322.4" y2="192.4" stroke="#DC2626" stroke-width="2" opacity="0.7" />
+                    <line x1="322.4" y1="107.6" x2="237.6" y2="192.4" stroke="#DC2626" stroke-width="2" opacity="0.7" />
+                    <circle id="particle2-bersinggungan" cx="280" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                </svg>
+
+                <!-- Simulasi Sabuk -->
+                <svg id="simulation-sabuk" class="simulation-svg sim-svg hidden" viewBox="0 0 420 320" preserveAspectRatio="xMidYMid meet">
+                  <g id="belt-system">
+                    <line id="belt-top" x1="120" y1="110" x2="320" y2="90" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" />
+                    <line id="belt-bottom" x1="120" y1="190" x2="320" y2="210" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" />
+                    <g id="belt-motion-dots">
+                      <circle id="dot1" r="3" fill="#A855F7" cx="120" cy="110" />
+                      <circle id="dot2" r="3" fill="#A855F7" cx="170" cy="105" />
+                      <circle id="dot3" r="3" fill="#A855F7" cx="220" cy="100" />
+                      <circle id="dot4" r="3" fill="#A855F7" cx="270" cy="95" />
+                      <circle id="dot5" r="3" fill="#A855F7" cx="320" cy="90" />
+                      <circle id="dot6" r="3" fill="#A855F7" cx="320" cy="210" />
+                      <circle id="dot7" r="3" fill="#A855F7" cx="270" cy="205" />
+                      <circle id="dot8" r="3" fill="#A855F7" cx="220" cy="200" />
+                      <circle id="dot9" r="3" fill="#A855F7" cx="170" cy="195" />
+                      <circle id="dot10" r="3" fill="#A855F7" cx="120" cy="190" />
+                    </g>
+                  </g>
+                  <g id="wheel1-sabuk" class="wheel-sim">
+                    <circle cx="120" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" fill-opacity="0.9" />
+                    <circle cx="120" cy="150" r="5" fill="#1E40AF" />
+                    <line x1="120" y1="110" x2="120" y2="190" stroke="#1E40AF" stroke-width="2" />
+                    <line x1="80" y1="150" x2="160" y2="150" stroke="#1E40AF" stroke-width="2" />
+                    <circle id="particle1-sabuk" cx="120" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                  <g id="wheel2-sabuk" class="wheel-sim">
+                    <circle cx="320" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" fill-opacity="0.9" />
+                    <circle cx="320" cy="150" r="5" fill="#DC2626" />
+                    <line x1="320" y1="90" x2="320" y2="210" stroke="#DC2626" stroke-width="2" />
+                    <line x1="260" y1="150" x2="380" y2="150" stroke="#DC2626" stroke-width="2" />
+                    <circle id="particle2-sabuk" cx="320" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
+                  </g>
+                </svg>
+              </div>
+
+              <!-- Tombol Play/Stop simulasi -->
+              <div class="flex gap-3">
+                <button id="play-simulation-button" onclick="startSimulation()" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#116466] px-5 py-3 font-bold text-white transition hover:brightness-110">
+                  <i data-lucide="play" width="18" height="18"></i>
+                  <span>Mulai Simulasi</span>
+                </button>
+                <button id="stop-simulation-button" onclick="stopSimulation()" class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110">
+                  <i data-lucide="square" width="18" height="18"></i>
+                  <span>Stop Simulasi</span>
+                </button>
+              </div>
+
+              <!-- Panel ringkasan hasil (muncul setelah Stop) -->
+              <div id="summary-panel" class="summary-panel">
+                <div class="summary-header">
+                  <i data-lucide="flag" width="18" height="18" class="text-[#116466]"></i>
+                  <h4>Ringkasan Hasil Simulasi</h4>
+                  <span class="duration-badge">t = <span id="summary-time">0.0 s</span></span>
+                </div>
+
+                <div class="summary-grid">
+                  <div class="summary-block" style="border-left: 4px solid #1E40AF;">
+                    <div class="block-title" style="color:#1E40AF;">🔵 Roda 1</div>
+                    <div class="big-value" style="color:#1E40AF;">
+                      <span id="summary-theta1-rot">0.00</span> putaran
+                    </div>
+                    <div class="row"><span class="lbl">Sudut tempuh (θ₁)</span><span id="summary-theta1-rad" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut tempuh (°)</span><span id="summary-theta1-deg" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Jarak busur (s₁)</span><span id="summary-s1" class="val">0.00 m</span></div>
+                    <div class="row"><span class="lbl">Jari-jari (R₁)</span><span id="summary-r1" class="val">0.40 m</span></div>
+                    <div class="row"><span class="lbl">ω₁</span><span id="summary-omega1" class="val">5.00 rad/s</span></div>
+                    <div class="row"><span class="lbl">v₁</span><span id="summary-v1" class="val">2.00 m/s</span></div>
+                  </div>
+
+                  <div class="summary-block" style="border-left: 4px solid #DC2626;">
+                    <div class="block-title" style="color:#DC2626;">🔴 Roda 2</div>
+                    <div class="big-value" style="color:#DC2626;">
+                      <span id="summary-theta2-rot">0.00</span> putaran
+                    </div>
+                    <div class="row"><span class="lbl">Sudut tempuh (θ₂)</span><span id="summary-theta2-rad" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut tempuh (°)</span><span id="summary-theta2-deg" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Jarak busur (s₂)</span><span id="summary-s2" class="val">0.00 m</span></div>
+                    <div class="row"><span class="lbl">Jari-jari (R₂)</span><span id="summary-r2" class="val">0.60 m</span></div>
+                    <div class="row"><span class="lbl">ω₂</span><span id="summary-omega2" class="val">5.00 rad/s</span></div>
+                    <div class="row"><span class="lbl">v₂</span><span id="summary-v2" class="val">2.00 m/s</span></div>
+                  </div>
+                </div>
+
+                <div id="summary-note" class="summary-note">
+                  <strong>💡 Bandingkan:</strong> Perhatikan bagaimana sudut tempuh dan jarak busur kedua roda berbeda (atau sama) tergantung pada hubungan antar roda.
+                </div>
+              </div>
+
+              <!-- Panel data partikel real-time -->
+              <div class="data-panel">
+                <h4>
+                  <i data-lucide="activity" width="16" height="16" class="text-[#e86d32]"></i>
+                  Data Partikel (real-time)
+                  <span class="ml-auto text-xs font-normal text-[#526258]">t = <span id="time-display" class="font-mono font-bold">0.0 s</span></span>
+                </h4>
+
+                <div class="data-grid">
+                  <div class="data-block" style="border-left: 4px solid #1E40AF;">
+                    <div class="block-title" style="color:#1E40AF;">🔵 Roda 1</div>
+                    <div class="row"><span class="lbl">Sudut (θ₁)</span><span id="theta1-display" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut (°)</span><span id="theta1-deg-display" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Jarak (s₁)</span><span id="s1-display" class="val">0.00 m</span></div>
+                    <div class="row"><span class="lbl">ω₁</span><span id="omega1-data-display" class="val">5.00 rad/s</span></div>
+                    <div class="row"><span class="lbl">v₁</span><span id="v1-data-display" class="val">2.00 m/s</span></div>
+                    <div class="row"><span class="lbl">T₁</span><span id="T1-display" class="val">1.26 s</span></div>
+                    <div class="row"><span class="lbl">f₁</span><span id="f1-display" class="val">0.80 Hz</span></div>
+                  </div>
+
+                  <div class="data-block" style="border-left: 4px solid #DC2626;">
+                    <div class="block-title" style="color:#DC2626;">🔴 Roda 2</div>
+                    <div class="row"><span class="lbl">Sudut (θ₂)</span><span id="theta2-display" class="val">0.00 rad</span></div>
+                    <div class="row"><span class="lbl">Sudut (°)</span><span id="theta2-deg-display" class="val">0°</span></div>
+                    <div class="row"><span class="lbl">Jarak (s₂)</span><span id="s2-display" class="val">0.00 m</span></div>
+                    <div class="row"><span class="lbl">ω₂</span><span id="omega2-data-display" class="val">5.00 rad/s</span></div>
+                    <div class="row"><span class="lbl">v₂</span><span id="v2-data-display" class="val">2.00 m/s</span></div>
+                    <div class="row"><span class="lbl">T₂</span><span id="T2-display" class="val">1.26 s</span></div>
+                    <div class="row"><span class="lbl">f₂</span><span id="f2-display" class="val">0.80 Hz</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quiz Page -->
+      <section id="quiz-page" class="app-page" aria-labelledby="quiz-title">
+        <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
+          <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Evaluasi</p>
+              <h1 id="quiz-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Kuis Pemahaman</h1>
+              <p class="mt-3 max-w-2xl text-sm sm:text-base leading-7 text-[#526258]">Jawab pertanyaan berikut untuk mengukur pemahamanmu. Setiap jawaban benar bernilai 2 poin.</p>
+            </div>
+            <div class="rounded-xl border border-[#d9d0bd] bg-[#fffdf7] px-5 py-4 text-center self-start sm:self-auto">
+              <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#526258]">Skor</p>
+              <p id="score-value" class="display-font mt-1 text-2xl font-bold text-[#116466]" aria-live="polite">0 / 10</p>
+            </div>
+          </div>
+
+          <form id="quiz-form" class="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#526258]">Nama Siswa</label>
+              <input type="text" id="student-name" required class="w-full rounded-lg border border-[#d9d0bd] bg-white p-3 text-[#16251f] focus:border-[#116466] focus:ring-2 focus:ring-[#116466]/30" placeholder="Masukkan nama Anda">
+            </div>
+
+            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
+              <p class="text-sm font-bold text-[#e86d32]">Soal 1</p>
+              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Dua roda bersinggungan dengan jari-jari 20 cm dan 30 cm. Jika roda pertama berputar dengan kecepatan sudut 6 rad/s, berapakah kecepatan sudut roda kedua?</h2>
+              <div class="mt-4 sm:mt-5 grid gap-3">
+                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="a" class="mr-2"><span class="option-letter">A</span> 4 rad/s</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="b" class="mr-2"><span class="option-letter">B</span> 6 rad/s</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="c" class="mr-2"><span class="option-letter">C</span> 9 rad/s</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="d" class="mr-2"><span class="option-letter">D</span> 12 rad/s</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="e" class="mr-2"><span class="option-letter">E</span> 3 rad/s</label>
+              </div>
+            </article>
+
+            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
+              <p class="text-sm font-bold text-[#e86d32]">Soal 2</p>
+              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Pada sistem roda seporos, jika roda A memiliki jari-jari 15 cm dan roda B memiliki jari-jari 25 cm, maka perbandingan kecepatan linear roda A dan B adalah...</h2>
+              <div class="mt-4 sm:mt-5 grid gap-3">
+                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="a" class="mr-2"><span class="option-letter">A</span> 3 : 5</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="b" class="mr-2"><span class="option-letter">B</span> 5 : 3</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="c" class="mr-2"><span class="option-letter">C</span> 1 : 1</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="d" class="mr-2"><span class="option-letter">D</span> 25 : 15</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="e" class="mr-2"><span class="option-letter">E</span> 15 : 25</label>
+              </div>
+            </article>
+
+            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
+              <p class="text-sm font-bold text-[#e86d32]">Soal 3</p>
+              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Rumus yang tepat untuk hubungan roda bersinggungan adalah...</h2>
+              <div class="mt-4 sm:mt-5 grid gap-3">
+                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="a" class="mr-2"><span class="option-letter">A</span> ω₁ = ω₂</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="b" class="mr-2"><span class="option-letter">B</span> ω₁ × R₁ = ω₂ × R₂</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="c" class="mr-2"><span class="option-letter">C</span> R₁ = R₂</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="d" class="mr-2"><span class="option-letter">D</span> v₁ × v₂ = konstan</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="e" class="mr-2"><span class="option-letter">E</span> ω₁ + ω₂ = konstan</label>
+              </div>
+            </article>
+
+            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
+              <p class="text-sm font-bold text-[#e86d32]">Soal 4</p>
+              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Contoh penerapan hubungan antar roda dalam kehidupan sehari-hari adalah...</h2>
+              <div class="mt-4 sm:mt-5 grid gap-3">
+                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="a" class="mr-2"><span class="option-letter">A</span> Sistem rem mobil</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="b" class="mr-2"><span class="option-letter">B</span> Roda gigi sepeda</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="c" class="mr-2"><span class="option-letter">C</span> Lampu mobil</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="d" class="mr-2"><span class="option-letter">D</span> Klakson motor</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="e" class="mr-2"><span class="option-letter">E</span> Sistem transmisi mobil</label>
+              </div>
+            </article>
+
+            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
+              <p class="text-sm font-bold text-[#e86d32]">Soal 5</p>
+              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Jika dua roda seporos memiliki kecepatan sudut yang sama, maka roda dengan jari-jari lebih besar akan memiliki...</h2>
+              <div class="mt-4 sm:mt-5 grid gap-3">
+                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="a" class="mr-2"><span class="option-letter">A</span> Kecepatan linear lebih kecil</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="b" class="mr-2"><span class="option-letter">B</span> Kecepatan linear lebih besar</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="c" class="mr-2"><span class="option-letter">C</span> Kecepatan linear sama</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="d" class="mr-2"><span class="option-letter">D</span> Tidak ada hubungan</label>
+                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="e" class="mr-2"><span class="option-letter">E</span> Kecepatan sudut lebih kecil</label>
+              </div>
+            </article>
+
+            <button type="submit" class="w-full rounded-lg bg-[#116466] px-6 py-3 font-bold text-white transition hover:brightness-110">📝 Kirim Jawaban</button>
+          </form>
+
+          <div id="quiz-result" class="mt-6 hidden rounded-2xl p-5 sm:p-6"></div>
+
+          <div class="mt-6 sm:mt-8 flex flex-col items-stretch sm:items-center justify-between gap-4 rounded-2xl border border-[#d9d0bd] bg-[#fffdf7] p-5 sm:p-6 sm:flex-row">
+            <p class="text-sm text-[#526258] text-center sm:text-left">Ingin mencoba lagi? Klik tombol di samping.</p>
+            <button id="retry-quiz-button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110" type="button">
+              <i data-lucide="rotate-ccw" width="18" height="18"></i> Ulangi Kuis
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hasil Page -->
+      <section id="hasil-page" class="app-page" aria-labelledby="hasil-title">
+        <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
+          <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Rekap Nilai</p>
+          <h1 id="hasil-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Hasil Kuis Siswa</h1>
+          <div id="results-container" class="mt-6 sm:mt-8 space-y-4">
+            <p class="py-8 text-center text-[#526258]">Belum ada hasil kuis yang tersimpan.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="w-full border-t border-[#d9d0bd] bg-[#fffdf7]">
+      <div class="mx-auto w-full max-w-6xl px-5 py-6 text-center sm:px-8 lg:px-10">
+        <p class="text-xs sm:text-sm text-[#526258]">© 2025 — Fisika SMA | Hubungan Antar Roda</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ==================== CONFIG & SDK ====================
+    const defaultConfig = {
+      lesson_title: "Hubungan Antar Roda",
+      teacher_name: "Guru: Uswatun H",
+      school_name: "SMAN Dlasta",
+      primary_color: "#116466",
+      secondary_color: "#e86d32",
+      background_color: "#f7f1e4",
+      text_color: "#16251f",
+      accent_color: "#f6be3b"
+    };
+
+    let currentData = [];
+    let simulationInterval = null;
+    let currentSimulationType = 'seporos';
+
+    let theta1 = 0;
+    let theta2 = 0;
+    let elapsedTime = 0;
+    let hasRunSimulation = false;
+
+    const dataHandler = {
+      onDataChanged(data) {
+        currentData = data;
+        updateResultsDisplay();
+      }
+    };
+
+    async function onConfigChange(config) {
+      document.getElementById('brand-text').textContent = config.lesson_title || defaultConfig.lesson_title;
+    }
+
+    function mapToCapabilities(config) {
+      return { recolorables: [], borderables: [], fontEditable: undefined, fontSizeable: undefined };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["lesson_title", config.lesson_title || defaultConfig.lesson_title],
+        ["teacher_name", config.teacher_name || defaultConfig.teacher_name],
+        ["school_name", config.school_name || defaultConfig.school_name]
+      ]);
+    }
+
+    async function initializeApp() {
+      try {
+        if (window.dataSdk) {
+          const initResult = await window.dataSdk.init(dataHandler);
+          if (!initResult.isOk) console.error("Failed to initialize data SDK");
+        }
+        if (window.elementSdk) {
+          await window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+        }
+      } catch (error) {
+        console.error("Initialization error:", error);
+      }
+    }
+
+    // ==================== NAVIGATION ====================
+    function showPage(pageName) {
+      document.querySelectorAll('.app-page').forEach(p => p.classList.remove('is-active'));
+      document.getElementById(pageName + '-page').classList.add('is-active');
+      document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('is-active'));
+      const navBtn = document.getElementById('nav-' + (pageName === 'hasil' ? 'results' : pageName));
+      if (navBtn) navBtn.classList.add('is-active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('nav-home').addEventListener('click', () => showPage('home'));
+    document.getElementById('nav-simulation').addEventListener('click', () => showPage('simulation'));
+    document.getElementById('nav-quiz').addEventListener('click', () => showPage('quiz'));
+    document.getElementById('nav-results').addEventListener('click', () => showPage('hasil'));
+    document.getElementById('brand-button').addEventListener('click', () => showPage('home'));
+    document.getElementById('start-learning-button').addEventListener('click', () => showPage('simulation'));
+    document.getElementById('home-to-quiz-button').addEventListener('click', () => showPage('quiz'));
+
+    // ==================== SIMULATION ====================
+    function showSimulationType(type) {
+      currentSimulationType = type;
+      resetSimulation();
+
+      document.querySelectorAll('.simulation-svg').forEach(svg => svg.classList.add('hidden'));
+      document.getElementById('simulation-' + type).classList.remove('hidden');
+
+      document.querySelectorAll('.sim-tab').forEach(tab => {
+        tab.classList.remove('border-[#e86d32]', 'text-[#116466]', 'bg-white/50');
+        tab.classList.add('border-transparent', 'text-[#526258]');
+      });
+      const activeTab = document.getElementById('tab-' + type);
+      activeTab.classList.remove('border-transparent', 'text-[#526258]');
+      activeTab.classList.add('border-[#e86d32]', 'text-[#116466]', 'bg-white/50');
+
+      updateSimulationValues();
+    }
+
+    // Hitung omega2 berdasarkan tipe hubungan agar tidak slip
+    function calcOmega2(omega1, r1, r2) {
+      if (currentSimulationType === 'seporos') return omega1;
+      // bersinggungan atau sabuk: ω₂ = ω₁ × R₁ / R₂
+      return (omega1 * r1) / r2;
+    }
+
+    function updateSimulationValues() {
+      const r1 = parseFloat(document.getElementById('radius1').value);
+      const r2 = parseFloat(document.getElementById('radius2').value);
+      const omega1 = parseFloat(document.getElementById('omega1').value);
+      const omega2 = calcOmega2(omega1, r1, r2);
+
+      document.getElementById('radius1-value').textContent = r1 + ' cm';
+      document.getElementById('radius2-value').textContent = r2 + ' cm';
+
+      // Info ω₂ otomatis
+      let autoInfoText;
+      if (currentSimulationType === 'seporos') {
+        autoInfoText = `ω₂ otomatis = ω₁ = ${omega2.toFixed(2)} rad/s (roda seporos)`;
+      } else {
+        autoInfoText = `ω₂ otomatis = ω₁ × R₁ / R₂ = ${omega1.toFixed(2)} × ${r1} / ${r2} = ${omega2.toFixed(2)} rad/s`;
+      }
+      document.getElementById('omega2-auto-info').textContent = autoInfoText;
+
+      // Kecepatan linear
+      const v1 = omega1 * (r1 / 100);
+      const v2 = omega2 * (r2 / 100);
+
+      // Rumus & status (tidak akan slip)
+      let formula, statusText, statusClass;
+      if (currentSimulationType === 'seporos') {
+        formula = 'ω₁ = ω₂';
+        statusText = '✓ Kecepatan Sudut Sama (ω₁ = ω₂)';
+        statusClass = 'text-xs font-semibold text-green-600';
+      } else if (currentSimulationType === 'bersinggungan') {
+        formula = 'ω₁ × R₁ = ω₂ × R₂';
+        statusText = '✓ Kecepatan Linear Sama (v₁ = v₂) — tidak slip';
+        statusClass = 'text-xs font-semibold text-green-600';
+      } else {
+        formula = 'ω₁ × R₁ = ω₂ × R₂';
+        statusText = '✓ Kecepatan Linear Sabuk Sama (v₁ = v₂) — tidak slip';
+        statusClass = 'text-xs font-semibold text-green-600';
+      }
+
+      document.getElementById('omega1-display').textContent = omega1.toFixed(2) + ' rad/s';
+      document.getElementById('omega2-result').textContent = omega2.toFixed(2) + ' rad/s';
+      document.getElementById('v1-result').textContent = v1.toFixed(2) + ' m/s';
+      document.getElementById('v2-result').textContent = v2.toFixed(2) + ' m/s';
+      document.getElementById('formula-display').textContent = formula;
+
+      const velocityStatus = document.getElementById('velocity-status');
+      velocityStatus.textContent = statusText;
+      velocityStatus.className = statusClass;
+
+      switch(currentSimulationType) {
+        case 'seporos': updateSeporosWheels(r1, r2); break;
+        case 'bersinggungan': updateBersinggunganWheels(r1, r2); break;
+        case 'sabuk': updateSabukWheels(r1, r2); break;
+      }
+
+      updateDataPanel();
+    }
+
+    function updateSeporosWheels(r1, r2) {
+      document.querySelector('#wheel1-seporos circle:first-child').setAttribute('r', r1);
+      document.querySelector('#wheel2-seporos circle:first-child').setAttribute('r', r2);
+      document.getElementById('marker1-seporos').setAttribute('y2', 150 - r1);
+      document.getElementById('marker2-seporos').setAttribute('y2', 150 - r2);
+      document.getElementById('particle1-seporos').setAttribute('cy', 150 - r1);
+      document.getElementById('particle2-seporos').setAttribute('cy', 150 - r2);
+    }
+
+    function updateBersinggunganWheels(r1, r2) {
+      const wheel1X = 120, wheel1Y = 150;
+      const wheel2X = wheel1X + r1 + r2, wheel2Y = 150;
+
+      const wheel1Group = document.querySelector('#wheel1-bersinggungan');
+      wheel1Group.querySelector('circle:first-child').setAttribute('r', r1);
+      const lines1 = wheel1Group.querySelectorAll('line');
+      lines1[0].setAttribute('x1', wheel1X); lines1[0].setAttribute('x2', wheel1X);
+      lines1[0].setAttribute('y1', wheel1Y - r1); lines1[0].setAttribute('y2', wheel1Y + r1);
+      lines1[1].setAttribute('x1', wheel1X - r1); lines1[1].setAttribute('x2', wheel1X + r1);
+      lines1[1].setAttribute('y1', wheel1Y); lines1[1].setAttribute('y2', wheel1Y);
+      const o1 = r1 * 0.707;
+      lines1[2].setAttribute('x1', wheel1X - o1); lines1[2].setAttribute('y1', wheel1Y - o1);
+      lines1[2].setAttribute('x2', wheel1X + o1); lines1[2].setAttribute('y2', wheel1Y + o1);
+      lines1[3].setAttribute('x1', wheel1X + o1); lines1[3].setAttribute('y1', wheel1Y - o1);
+      lines1[3].setAttribute('x2', wheel1X - o1); lines1[3].setAttribute('y2', wheel1Y + o1);
+      document.getElementById('particle1-bersinggungan').setAttribute('cx', wheel1X);
+      document.getElementById('particle1-bersinggungan').setAttribute('cy', wheel1Y - r1);
+
+      const wheel2Group = document.querySelector('#wheel2-bersinggungan');
+      wheel2Group.querySelector('circle:first-child').setAttribute('cx', wheel2X);
+      wheel2Group.querySelector('circle:first-child').setAttribute('r', r2);
+
+      const lines2 = wheel2Group.querySelectorAll('line');
+      lines2[0].setAttribute('x1', wheel2X); lines2[0].setAttribute('x2', wheel2X);
+      lines2[0].setAttribute('y1', wheel2Y - r2); lines2[0].setAttribute('y2', wheel2Y + r2);
+      lines2[1].setAttribute('x1', wheel2X - r2); lines2[1].setAttribute('x2', wheel2X + r2);
+      lines2[1].setAttribute('y1', wheel2Y); lines2[1].setAttribute('y2', wheel2Y);
+      const o2 = r2 * 0.707;
+      lines2[2].setAttribute('x1', wheel2X - o2); lines2[2].setAttribute('y1', wheel2Y - o2);
+      lines2[2].setAttribute('x2', wheel2X + o2); lines2[2].setAttribute('y2', wheel2Y + o2);
+      lines2[3].setAttribute('x1', wheel2X + o2); lines2[3].setAttribute('y1', wheel2Y - o2);
+      lines2[3].setAttribute('x2', wheel2X - o2); lines2[3].setAttribute('y2', wheel2Y + o2);
+      document.getElementById('particle2-bersinggungan').setAttribute('cx', wheel2X);
+      document.getElementById('particle2-bersinggungan').setAttribute('cy', wheel2Y - r2);
+    }
+
+    function updateSabukWheels(r1, r2) {
+      document.querySelector('#wheel1-sabuk circle:first-child').setAttribute('r', r1);
+      document.querySelector('#wheel2-sabuk circle:first-child').setAttribute('r', r2);
+
+      const spokes1 = document.querySelectorAll('#wheel1-sabuk line');
+      spokes1[0].setAttribute('y1', 150 - r1); spokes1[0].setAttribute('y2', 150 + r1);
+      spokes1[1].setAttribute('x1', 120 - r1); spokes1[1].setAttribute('x2', 120 + r1);
+
+      const spokes2 = document.querySelectorAll('#wheel2-sabuk line');
+      spokes2[0].setAttribute('y1', 150 - r2); spokes2[0].setAttribute('y2', 150 + r2);
+      spokes2[1].setAttribute('x1', 320 - r2); spokes2[1].setAttribute('x2', 320 + r2);
+
+      document.getElementById('belt-top').setAttribute('y1', 150 - r1);
+      document.getElementById('belt-top').setAttribute('y2', 150 - r2);
+      document.getElementById('belt-bottom').setAttribute('y1', 150 + r1);
+      document.getElementById('belt-bottom').setAttribute('y2', 150 + r2);
+
+      document.getElementById('particle1-sabuk').setAttribute('cx', 120);
+      document.getElementById('particle1-sabuk').setAttribute('cy', 150 - r1);
+      document.getElementById('particle2-sabuk').setAttribute('cx', 320);
+      document.getElementById('particle2-sabuk').setAttribute('cy', 150 - r2);
+
+      const dots = document.querySelectorAll('#belt-motion-dots circle');
+      for (let i = 0; i < 5; i++) {
+        const progress = i / 4;
+        const x = 120 + progress * (320 - 120);
+        const y = (150 - r1) + progress * ((150 - r2) - (150 - r1));
+        dots[i].setAttribute('cx', x); dots[i].setAttribute('cy', y);
+      }
+      for (let i = 5; i < 10; i++) {
+        const progress = (i - 5) / 4;
+        const x = 320 - progress * (320 - 120);
+        const y = (150 + r2) - progress * ((150 + r2) - (150 + r1));
+        dots[i].setAttribute('cx', x); dots[i].setAttribute('cy', y);
+      }
+    }
+
+    function updateParticlesPosition() {
+      const r1 = parseFloat(document.getElementById('radius1').value);
+      const r2 = parseFloat(document.getElementById('radius2').value);
+
+      const p1 = document.getElementById(`particle1-${currentSimulationType}`);
+      if (p1) {
+        let cx1, cy1;
+        if (currentSimulationType === 'seporos') { cx1 = 200; cy1 = 150; }
+        else { cx1 = 120; cy1 = 150; }
+        p1.setAttribute('cx', cx1 + r1 * Math.sin(theta1));
+        p1.setAttribute('cy', cy1 - r1 * Math.cos(theta1));
+      }
+
+      const p2 = document.getElementById(`particle2-${currentSimulationType}`);
+      if (p2) {
+        let cx2, cy2;
+        if (currentSimulationType === 'seporos') { cx2 = 200; cy2 = 150; }
+        else if (currentSimulationType === 'bersinggungan') { cx2 = 120 + r1 + r2; cy2 = 150; }
+        else { cx2 = 320; cy2 = 150; }
+        p2.setAttribute('cx', cx2 + r2 * Math.sin(theta2));
+        p2.setAttribute('cy', cy2 - r2 * Math.cos(theta2));
+      }
+    }
+
+    function updateDataPanel() {
+      const r1m = parseFloat(document.getElementById('radius1').value) / 100;
+      const r2m = parseFloat(document.getElementById('radius2').value) / 100;
+      const omega1 = parseFloat(document.getElementById('omega1').value);
+      const omega2 = calcOmega2(omega1, r1m * 100, r2m * 100);
+      const v1 = omega1 * r1m;
+      const v2 = omega2 * r2m;
+
+      document.getElementById('time-display').textContent = elapsedTime.toFixed(1) + ' s';
+
+      document.getElementById('theta1-display').textContent = theta1.toFixed(2) + ' rad';
+      document.getElementById('theta1-deg-display').textContent = ((theta1 * 180 / Math.PI) % 360).toFixed(0) + '°';
+      document.getElementById('s1-display').textContent = (Math.abs(theta1) * r1m).toFixed(2) + ' m';
+      document.getElementById('omega1-data-display').textContent = omega1.toFixed(2) + ' rad/s';
+      document.getElementById('v1-data-display').textContent = v1.toFixed(2) + ' m/s';
+      document.getElementById('T1-display').textContent = (2 * Math.PI / omega1).toFixed(2) + ' s';
+      document.getElementById('f1-display').textContent = (omega1 / (2 * Math.PI)).toFixed(2) + ' Hz';
+
+      document.getElementById('theta2-display').textContent = theta2.toFixed(2) + ' rad';
+      document.getElementById('theta2-deg-display').textContent = ((theta2 * 180 / Math.PI) % 360).toFixed(0) + '°';
+      document.getElementById('s2-display').textContent = (Math.abs(theta2) * r2m).toFixed(2) + ' m';
+      document.getElementById('omega2-data-display').textContent = omega2.toFixed(2) + ' rad/s';
+      document.getElementById('v2-data-display').textContent = v2.toFixed(2) + ' m/s';
+      document.getElementById('T2-display').textContent = (2 * Math.PI / omega2).toFixed(2) + ' s';
+      document.getElementById('f2-display').textContent = (omega2 / (2 * Math.PI)).toFixed(2) + ' Hz';
+    }
+
+    // ==================== RINGKASAN HASIL ====================
+    function showSummary() {
+      const r1m = parseFloat(document.getElementById('radius1').value) / 100;
+      const r2m = parseFloat(document.getElementById('radius2').value) / 100;
+      const omega1 = parseFloat(document.getElementById('omega1').value);
+      const omega2 = calcOmega2(omega1, r1m * 100, r2m * 100);
+      const v1 = omega1 * r1m;
+      const v2 = omega2 * r2m;
+
+      document.getElementById('summary-time').textContent = elapsedTime.toFixed(1) + ' s';
+
+      const theta1Abs = Math.abs(theta1);
+      const rot1 = theta1Abs / (2 * Math.PI);
+      document.getElementById('summary-theta1-rot').textContent = rot1.toFixed(2);
+      document.getElementById('summary-theta1-rad').textContent = theta1.toFixed(2) + ' rad';
+      document.getElementById('summary-theta1-deg').textContent = (theta1 * 180 / Math.PI).toFixed(1) + '°';
+      document.getElementById('summary-s1').textContent = (theta1Abs * r1m).toFixed(2) + ' m';
+      document.getElementById('summary-r1').textContent = r1m.toFixed(2) + ' m';
+      document.getElementById('summary-omega1').textContent = omega1.toFixed(2) + ' rad/s';
+      document.getElementById('summary-v1').textContent = v1.toFixed(2) + ' m/s';
+
+      const theta2Abs = Math.abs(theta2);
+      const rot2 = theta2Abs / (2 * Math.PI);
+      document.getElementById('summary-theta2-rot').textContent = rot2.toFixed(2);
+      document.getElementById('summary-theta2-rad').textContent = theta2.toFixed(2) + ' rad';
+      document.getElementById('summary-theta2-deg').textContent = (theta2 * 180 / Math.PI).toFixed(1) + '°';
+      document.getElementById('summary-s2').textContent = (theta2Abs * r2m).toFixed(2) + ' m';
+      document.getElementById('summary-r2').textContent = r2m.toFixed(2) + ' m';
+      document.getElementById('summary-omega2').textContent = omega2.toFixed(2) + ' rad/s';
+      document.getElementById('summary-v2').textContent = v2.toFixed(2) + ' m/s';
+
+      const s1 = theta1Abs * r1m;
+      const s2 = theta2Abs * r2m;
+      let note = '';
+      if (currentSimulationType === 'seporos') {
+        note = '<strong>💡 Pada roda seporos:</strong> θ₁ = θ₂ (sudut tempuh sama), tetapi jarak busur s₁ ≠ s₂ karena jari-jari berbeda. Bandingkan: s₁ = ' + s1.toFixed(2) + ' m dan s₂ = ' + s2.toFixed(2) + ' m.';
+      } else {
+        const diff = Math.abs(s1 - s2);
+        if (diff < 0.01) {
+          note = '<strong>✓ Pada hubungan ini:</strong> jarak busur partikel kedua roda sama (s₁ = s₂ = ' + s1.toFixed(2) + ' m), membuktikan kecepatan linear sama (v₁ = v₂). Namun sudut tempuhnya berbeda (θ₁ ≠ θ₂).';
+        } else {
+          note = '<strong>Ringkasan:</strong> s₁ = ' + s1.toFixed(2) + ' m, s₂ = ' + s2.toFixed(2) + ' m, θ₁ = ' + theta1.toFixed(2) + ' rad, θ₂ = ' + theta2.toFixed(2) + ' rad.';
+        }
+      }
+      document.getElementById('summary-note').innerHTML = note;
+
+      document.getElementById('summary-panel').classList.add('is-visible');
+    }
+
+    function hideSummary() {
+      document.getElementById('summary-panel').classList.remove('is-visible');
+    }
+
+    // ==================== PLAY / STOP ====================
+    function startSimulation() {
+      if (simulationInterval) clearInterval(simulationInterval);
+
+      hideSummary();
+
+      theta1 = 0;
+      theta2 = 0;
+      elapsedTime = 0;
+      updateDataPanel();
+      updateParticlesPosition();
+
+      const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
+      const wheel2 = document.querySelector(`#wheel2-${currentSimulationType}`);
+      if (wheel1) wheel1.style.transform = 'rotate(0rad)';
+      if (wheel2) wheel2.style.transform = 'rotate(0rad)';
+
+      const r1 = parseFloat(document.getElementById('radius1').value);
+      const r2 = parseFloat(document.getElementById('radius2').value);
+      const omega1 = parseFloat(document.getElementById('omega1').value);
+      const omega2 = calcOmega2(omega1, r1, r2);
+
+      hasRunSimulation = true;
+
+      simulationInterval = setInterval(() => {
+        const dt = 0.1;
+        elapsedTime += dt;
+        theta1 += omega1 * dt;
+
+        if (currentSimulationType === 'seporos') {
+          theta2 += omega2 * dt;
+        } else if (currentSimulationType === 'bersinggungan') {
+          theta2 -= omega2 * dt;
+        } else {
+          theta2 += omega2 * dt;
+        }
+
+        if (wheel1) {
+          wheel1.style.transformOrigin = currentSimulationType === 'seporos' ? '200px 150px' : '120px 150px';
+          wheel1.style.transform = `rotate(${theta1}rad)`;
+        }
+        if (wheel2) {
+          if (currentSimulationType === 'seporos') wheel2.style.transformOrigin = '200px 150px';
+          else if (currentSimulationType === 'bersinggungan') {
+            const r1c = parseFloat(document.getElementById('radius1').value);
+            const r2c = parseFloat(document.getElementById('radius2').value);
+            wheel2.style.transformOrigin = `${120 + r1c + r2c}px 150px`;
+          } else wheel2.style.transformOrigin = '320px 150px';
+          wheel2.style.transform = `rotate(${theta2}rad)`;
+        }
+
+        updateParticlesPosition();
+        updateDataPanel();
+
+        if (currentSimulationType === 'sabuk') {
+          const dots = document.querySelectorAll('#belt-motion-dots circle');
+          const r1c = parseFloat(document.getElementById('radius1').value);
+          const r2c = parseFloat(document.getElementById('radius2').value);
+          const speed = omega1 * 1.5;
+          dots.forEach((dot, index) => {
+            if (index < 5) {
+              let newX = parseFloat(dot.getAttribute('cx')) + speed;
+              if (newX > 320) newX = 120;
+              const progress = (newX - 120) / (320 - 120);
+              const newY = (150 - r1c) + progress * ((150 - r2c) - (150 - r1c));
+              dot.setAttribute('cx', newX); dot.setAttribute('cy', newY);
+            } else {
+              let newX = parseFloat(dot.getAttribute('cx')) - speed;
+              if (newX < 120) newX = 320;
+              const progress = (320 - newX) / (320 - 120);
+              const newY = (150 + r2c) - progress * ((150 + r2c) - (150 + r1c));
+              dot.setAttribute('cx', newX); dot.setAttribute('cy', newY);
+            }
+          });
+        }
+      }, 100);
+    }
+
+    function stopSimulation() {
+      if (simulationInterval) {
+        clearInterval(simulationInterval);
+        simulationInterval = null;
+      }
+      if (hasRunSimulation && elapsedTime > 0) {
+        showSummary();
+      }
+    }
+
+    function resetSimulation() {
+      if (simulationInterval) { clearInterval(simulationInterval); simulationInterval = null; }
+      theta1 = 0;
+      theta2 = 0;
+      elapsedTime = 0;
+      hasRunSimulation = false;
+      hideSummary();
+
+      const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
+      const wheel2 = document.querySelector(`#wheel2-${currentSimulationType}`);
+      if (wheel1) wheel1.style.transform = 'rotate(0rad)';
+      if (wheel2) wheel2.style.transform = 'rotate(0rad)';
+
+      updateParticlesPosition();
+      updateDataPanel();
+    }
+
+    // ==================== QUIZ ====================
+    let score = 0;
+    const answeredQuestions = new Set();
+    const scoreValue = document.getElementById('score-value');
+
+    function updateScore() {
+      scoreValue.textContent = score + ' / 10';
+    }
+
+    async function handleQuizSubmit(event) {
+      event.preventDefault();
+      const studentName = document.getElementById('student-name').value;
+      if (!studentName.trim()) { showMessage('Mohon masukkan nama siswa!', 'error'); return; }
+
+      const answers = {
+        q1: document.querySelector('input[name="q1"]:checked')?.value,
+        q2: document.querySelector('input[name="q2"]:checked')?.value,
+        q3: document.querySelector('input[name="q3"]:checked')?.value,
+        q4: document.querySelector('input[name="q4"]:checked')?.value,
+        q5: document.querySelector('input[name="q5"]:checked')?.value
+      };
+      if (Object.values(answers).some(a => !a)) { showMessage('Mohon jawab semua pertanyaan!', 'error'); return; }
+
+      const correctAnswers = { q1: 'a', q2: 'a', q3: 'b', q4: 'b', q5: 'b' };
+      const explanations = {
+        q1: { correct: 'a) 4 rad/s', explanation: 'ω₂ = (ω₁ × R₁) / R₂ = (6 × 20) / 30 = 4 rad/s.' },
+        q2: { correct: 'a) 3 : 5', explanation: 'v = ω × R, maka v₁ : v₂ = R₁ : R₂ = 15 : 25 = 3 : 5.' },
+        q3: { correct: 'b) ω₁ × R₁ = ω₂ × R₂', explanation: 'Kecepatan linear di titik kontak harus sama, sehingga ω₁ × R₁ = ω₂ × R₂.' },
+        q4: { correct: 'b) Roda gigi sepeda', explanation: 'Roda gigi sepeda menggunakan rantai sebagai penghubung, mirip sistem roda bersabuk.' },
+        q5: { correct: 'b) Kecepatan linear lebih besar', explanation: 'v = ω × R, dengan ω sama, R lebih besar menghasilkan v lebih besar.' }
+      };
+
+      let newScore = 0;
+      Object.keys(answers).forEach(key => {
+        if (answers[key] === correctAnswers[key]) newScore += 2;
+      });
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '⏳ Menyimpan...';
+      submitBtn.disabled = true;
+
+      try {
+        if (window.dataSdk && currentData.length < 999) {
+          const result = await window.dataSdk.create({
+            student_name: studentName,
+            quiz_score: newScore,
+            answers: JSON.stringify(answers),
+            completed_at: new Date().toISOString()
+          });
+          if (result.isOk) {
+            showQuizResult(newScore, answers, correctAnswers, explanations);
+            document.getElementById('quiz-form').reset();
+            showMessage('Hasil kuis berhasil disimpan!', 'success');
+          } else {
+            showMessage('Gagal menyimpan hasil kuis.', 'error');
+          }
+        } else {
+          showQuizResult(newScore, answers, correctAnswers, explanations);
+          showMessage('Kuis selesai! (Data tidak tersimpan)', 'info');
+        }
+      } catch (error) {
+        showMessage('Terjadi kesalahan.', 'error');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+
+    function showQuizResult(score, answers, correctAnswers, explanations) {
+      const resultDiv = document.getElementById('quiz-result');
+      let grade = score >= 8 ? 'Sangat Baik' : score >= 6 ? 'Baik' : score >= 4 ? 'Cukup' : 'Perlu Belajar Lagi';
+      let colorClass = score >= 8 ? 'bg-green-100 border-green-500 text-green-800' :
+                       score >= 6 ? 'bg-blue-100 border-blue-500 text-blue-800' :
+                       score >= 4 ? 'bg-yellow-100 border-yellow-500 text-yellow-800' : 'bg-red-100 border-red-500 text-red-800';
+
+      let detailHtml = '';
+      Object.keys(answers).forEach((key, index) => {
+        const isCorrect = answers[key] === correctAnswers[key];
+        const icon = isCorrect ? '✅' : '❌';
+        const statusColor = isCorrect ? 'text-green-700' : 'text-red-700';
+        const bgColor = isCorrect ? 'bg-green-50' : 'bg-red-50';
+        const borderColor = isCorrect ? 'border-green-200' : 'border-red-200';
+
+        const answerOptions = {
+          q1: { a: '4 rad/s', b: '6 rad/s', c: '9 rad/s', d: '12 rad/s', e: '3 rad/s' },
+          q2: { a: '3 : 5', b: '5 : 3', c: '1 : 1', d: '25 : 15', e: '15 : 25' },
+          q3: { a: 'ω₁ = ω₂', b: 'ω₁ × R₁ = ω₂ × R₂', c: 'R₁ = R₂', d: 'v₁ × v₂ = konstan', e: 'ω₁ + ω₂ = konstan' },
+          q4: { a: 'Sistem rem mobil', b: 'Roda gigi sepeda', c: 'Lampu mobil', d: 'Klakson motor', e: 'Sistem transmisi mobil' },
+          q5: { a: 'Kecepatan linear lebih kecil', b: 'Kecepatan linear lebih besar', c: 'Kecepatan linear sama', d: 'Tidak ada hubungan', e: 'Kecepatan sudut lebih kecil' }
+        };
+
+        detailHtml += `
+          <div class="mb-4 rounded-lg border p-3 sm:p-4 ${borderColor} ${bgColor}">
+            <div class="flex items-start mb-2">
+              <span class="mr-2 text-lg">${icon}</span>
+              <div class="flex-1">
+                <p class="font-semibold ${statusColor} text-sm sm:text-base">Soal ${index + 1}: ${isCorrect ? 'Benar' : 'Salah'}</p>
+                <p class="mt-1 text-xs sm:text-sm text-gray-700"><strong>Jawaban Anda:</strong> ${answers[key].toUpperCase()}) ${answerOptions[key][answers[key]]}</p>
+                ${!isCorrect ? `<p class="mt-1 text-xs sm:text-sm text-gray-700"><strong>Jawaban Benar:</strong> ${explanations[key].correct}</p>` : ''}
+              </div>
+            </div>
+            <div class="mt-3 rounded border-l-4 border-blue-400 bg-blue-50 p-3">
+              <p class="text-xs sm:text-sm text-blue-800"><strong>💡 Penjelasan:</strong> ${explanations[key].explanation}</p>
+            </div>
+          </div>`;
+      });
+
+      resultDiv.innerHTML = `
+        <div class="rounded-lg border-l-4 p-5 sm:p-6 ${colorClass}">
+          <h3 class="mb-3 text-lg sm:text-xl font-bold">📊 Hasil Kuis</h3>
+          <p class="mb-4 text-xl sm:text-2xl font-bold">Skor: ${score}/10 (${grade})</p>
+          <div class="mt-6">
+            <h4 class="mb-4 text-base sm:text-lg font-semibold text-gray-800">📝 Pembahasan Soal:</h4>
+            ${detailHtml}
+          </div>
+          <div class="mt-6 rounded-lg bg-gray-50 p-4">
+            <p class="text-xs sm:text-sm text-gray-600"><strong>💡 Tips:</strong> Pelajari kembali materi yang masih salah dan coba simulasi interaktif untuk memahami konsep lebih baik!</p>
+          </div>
+        </div>`;
+      resultDiv.classList.remove('hidden');
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateResultsDisplay() {
+      const container = document.getElementById('results-container');
+      if (currentData.length === 0) {
+        container.innerHTML = '<p class="py-8 text-center text-[#526258]">Belum ada hasil kuis yang tersimpan.</p>';
+        return;
+      }
+      const sortedData = [...currentData].sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at));
+      container.innerHTML = sortedData.map(result => {
+        const date = new Date(result.completed_at).toLocaleString('id-ID');
+        const grade = result.quiz_score >= 8 ? 'Sangat Baik' : result.quiz_score >= 6 ? 'Baik' : result.quiz_score >= 4 ? 'Cukup' : 'Perlu Belajar Lagi';
+        const colorClass = result.quiz_score >= 8 ? 'text-green-600' : result.quiz_score >= 6 ? 'text-blue-600' : result.quiz_score >= 4 ? 'text-yellow-600' : 'text-red-600';
+        return `
+          <div class="rounded-lg border bg-gray-50 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h3 class="text-base sm:text-lg font-semibold truncate">${result.student_name}</h3>
+                <p class="text-xs sm:text-sm text-gray-600">${date}</p>
+              </div>
+              <div class="text-right flex-shrink-0">
+                <p class="text-lg sm:text-xl font-bold ${colorClass}">${result.quiz_score}/10</p>
+                <p class="text-xs sm:text-sm ${colorClass}">${grade}</p>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function showMessage(message, type) {
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+      toast.className = `fixed right-4 top-4 z-50 max-w-[calc(100vw-2rem)] rounded-lg ${bgColor} px-4 sm:px-6 py-3 text-sm text-white shadow-lg transition-all duration-300`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+
+      document.getElementById('radius1').addEventListener('input', () => {
+        updateSimulationValues();
+        updateParticlesPosition();
+      });
+      document.getElementById('radius2').addEventListener('input', () => {
+        updateSimulationValues();
+        updateParticlesPosition();
+      });
+
+      document.getElementById('omega1').addEventListener('input', (e) => {
+        document.getElementById('omega1-number').value = e.target.value;
+        updateSimulationValues();
+      });
+      document.getElementById('omega1-number').addEventListener('input', (e) => {
+        let v = parseFloat(e.target.value);
+        if (isNaN(v)) v = 0.5;
+        v = Math.max(0.5, Math.min(10, v));
+        document.getElementById('omega1').value = v;
+        updateSimulationValues();
+      });
+
+      document.getElementById('quiz-form').addEventListener('submit', handleQuizSubmit);
+      document.getElementById('retry-quiz-button').addEventListener('click', function() {
+        score = 0;
+        answeredQuestions.clear();
+        updateScore();
+        document.querySelectorAll('.option-button').forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('is-correct', 'is-wrong');
+        });
+        document.querySelectorAll('.feedback').forEach(f => f.classList.remove('is-visible'));
+        document.getElementById('quiz-result').classList.add('hidden');
+      });
+
+      updateSimulationValues();
+      updateScore();
+      updateDataPanel();
+    });
+  </script>
+</body>
+</html>
