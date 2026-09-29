@@ -359,13 +359,11 @@
     .stat-period { color: #c7a3f0; }
     .stat-laps-live { color: #ff8fd0; }
 
-    /* Kartu n real-time — highlight */
     .stat-laps-card {
       background: rgba(240,163,200,.12);
       border: 1px solid rgba(240,163,200,.3);
     }
 
-    /* Badge putaran */
     .laps-badge {
       display: inline-flex;
       align-items: center;
@@ -401,14 +399,6 @@
       gap: .35rem;
       margin-top: .35rem;
     }
-
-    .stat-detail {
-      display: none;
-      grid-template-columns: 1fr 1fr;
-      gap: .35rem;
-      margin-top: .35rem;
-    }
-    .stat-detail.is-open { display: grid; }
 
     .btn-detail {
       width: 100%;
@@ -516,7 +506,7 @@
       color: #10213e;
       background: linear-gradient(135deg, #f8be4b, #f5a623);
       box-shadow: 0 6px 16px rgba(248,190,75,.35);
-      transition: transform .15s ease;
+      transition: transform .15s ease, background .25s ease, box-shadow .25s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -524,6 +514,24 @@
       min-height: 48px;
     }
     .sticky-actions .btn-both:active { transform: scale(.97); }
+    /* State: pause (oranye) */
+    .btn-both.is-pause {
+      background: linear-gradient(135deg, #f26a3d, #d94f22) !important;
+      color: #fff !important;
+      box-shadow: 0 6px 16px rgba(242,106,61,.4) !important;
+    }
+    /* State: resume (hijau/kuning) */
+    .btn-both.is-resume {
+      background: linear-gradient(135deg, #f8be4b, #f5a623) !important;
+      color: #10213e !important;
+    }
+    /* State: restart (biru) */
+    .btn-both.is-restart {
+      background: linear-gradient(135deg, #53b8d4, #3a99b5) !important;
+      color: #10213e !important;
+      box-shadow: 0 6px 16px rgba(83,184,212,.4) !important;
+    }
+
     .sticky-actions .btn-reset {
       width: 48px;
       height: 48px;
@@ -554,7 +562,7 @@
       color: #10213e;
       background: linear-gradient(135deg, #f8be4b, #f5a623);
       box-shadow: 0 8px 20px rgba(248,190,75,.35);
-      transition: transform .2s ease, box-shadow .2s ease;
+      transition: transform .2s ease, box-shadow .2s ease, background .25s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -566,6 +574,19 @@
     .btn-both-inline:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px rgba(248,190,75,.45);
+    }
+    .btn-both-inline.is-pause {
+      background: linear-gradient(135deg, #f26a3d, #d94f22) !important;
+      color: #fff !important;
+      box-shadow: 0 8px 20px rgba(242,106,61,.4) !important;
+    }
+    .btn-both-inline.is-resume {
+      background: linear-gradient(135deg, #f8be4b, #f5a623) !important;
+      color: #10213e !important;
+    }
+    .btn-both-inline.is-restart {
+      background: linear-gradient(135deg, #53b8d4, #3a99b5) !important;
+      color: #10213e !important;
     }
 
     .angle-panel {
@@ -923,7 +944,7 @@
             <p class="text-xs font-bold uppercase tracking-[.16em] text-[#f8be4b] sm:text-sm">Laboratorium Virtual</p>
             <h1 class="display-font mt-1.5 text-xl font-bold sm:text-3xl lg:text-4xl">Simulasi Gerak Melingkar</h1>
             <p class="mt-1.5 text-xs leading-5 text-[#d7e7ef] sm:mt-3 sm:text-base sm:leading-7">
-              Masukkan <strong>r</strong>, <strong>s</strong>, <strong>t</strong>, lalu tekan <strong>▶ Jalankan</strong>.
+              Masukkan <strong>r</strong>, <strong>s</strong>, <strong>t</strong>, lalu tekan <strong>▶ Jalankan</strong>. Tombol akan berubah menjadi <strong>⏸ Jeda</strong> — bisa jeda &amp; lanjut bersama.
             </p>
           </div>
 
@@ -961,7 +982,6 @@
                   <div id="statusOne" class="status-pill">Siap</div>
                 </div>
 
-                <!-- Stat ringkas: θ, v, T -->
                 <div class="stat-quick">
                   <div class="stat-card">
                     <p>θ (rad)</p>
@@ -977,7 +997,6 @@
                   </div>
                 </div>
 
-                <!-- n real-time: kartu lebar -->
                 <div class="stat-quick-four">
                   <div class="stat-card stat-laps-card">
                     <p>n putaran (berjalan / total)</p>
@@ -1460,7 +1479,6 @@
       }
 
       function updateComputedDisplay() {
-        // Kumbang 1
         if (beetle1.valid) {
           quickThetaOne.textContent = formatNumber(beetle1.theta, 2);
           quickVOne.textContent = formatNumber(beetle1.v, 2);
@@ -1474,7 +1492,6 @@
           quickNOne.textContent = "— / —";
           outOmega1.textContent = "—";
         }
-        // Kumbang 2
         if (beetle2.valid) {
           quickThetaTwo.textContent = formatNumber(beetle2.theta, 2);
           quickVTwo.textContent = formatNumber(beetle2.v, 2);
@@ -1524,8 +1541,8 @@
       }
 
       function syncPlayButtons() {
-        playButtonOne.textContent = beetle1.playing ? "⏸ Jeda Kumbang 1" : "▶ Mulai Kumbang 1";
-        playButtonTwo.textContent = beetle2.playing ? "⏸ Jeda Kumbang 2" : "▶ Mulai Kumbang 2";
+        playButtonOne.textContent = beetle1.playing ? "⏸ Jeda Kumbang 1" : (beetle1.finished ? "▶ Ulang Kumbang 1" : "▶ Mulai Kumbang 1");
+        playButtonTwo.textContent = beetle2.playing ? "⏸ Jeda Kumbang 2" : (beetle2.finished ? "▶ Ulang Kumbang 2" : "▶ Mulai Kumbang 2");
         playButtonOne.setAttribute("aria-pressed", String(beetle1.playing));
         playButtonTwo.setAttribute("aria-pressed", String(beetle2.playing));
         playButtonOneMobile.querySelector(".icon").textContent = beetle1.playing ? "⏸" : "▶";
@@ -1577,16 +1594,12 @@
         applyRadiusToggle();
       });
 
-      // Update badge putaran (mis. 1×, 2×, ...) dengan animasi pop
       function updateLapsBadge(badgeEl, angleBadgeEl, beetle) {
         const laps = Math.floor(beetle.n + 1e-9);
-        // Bandingkan dengan badge saat ini
-        const currentText = badgeEl.textContent;
         const newText = laps + "×";
-        if (currentText !== newText) {
+        if (badgeEl.textContent !== newText) {
           badgeEl.textContent = newText;
           if (angleBadgeEl) angleBadgeEl.textContent = newText;
-          // Sembunyikan badge kalau 0 putaran, tampilkan kalau ≥ 1
           if (laps === 0) {
             badgeEl.style.display = "none";
             if (angleBadgeEl) angleBadgeEl.style.display = "none";
@@ -1595,13 +1608,116 @@
             if (angleBadgeEl) angleBadgeEl.style.display = "inline-flex";
             badgeEl.classList.remove("pop");
             if (angleBadgeEl) angleBadgeEl.classList.remove("pop");
-            // Trigger reflow untuk restart animasi
             void badgeEl.offsetWidth;
             badgeEl.classList.add("pop");
             if (angleBadgeEl) angleBadgeEl.classList.add("pop");
           }
         }
       }
+
+      // ====== STATE TOMBOL JALANKAN BERSAMA ======
+      // Update label & warna tombol "Jalankan Bersama" (sticky + inline)
+      function updateRunBothButton() {
+        const b1 = beetle1, b2 = beetle2;
+        const anyPlaying = b1.playing || b2.playing;
+        const anyValid = b1.valid || b2.valid;
+        const allFinished = b1.valid && b2.valid && b1.finished && b2.finished;
+
+        let label, cls;
+        if (anyPlaying) {
+          label = "⏸ Jeda Bersama";
+          cls = "is-pause";
+        } else if (allFinished) {
+          label = "▶ Jalankan Ulang";
+          cls = "is-restart";
+        } else if (anyValid && (b1.n > 0 || b2.n > 0 || b1.finished || b2.finished)) {
+          // pernah mulai, tapi dijeda di tengah
+          label = "▶ Lanjutkan Bersama";
+          cls = "is-resume";
+        } else {
+          label = "▶ Jalankan Bersama";
+          cls = "is-resume"; // default kuning
+        }
+
+        [runBothButton, runBothButtonInline].forEach((btn) => {
+          if (!btn) return;
+          btn.textContent = label;
+          btn.classList.remove("is-pause", "is-resume", "is-restart");
+          btn.classList.add(cls);
+        });
+      }
+
+      // Aksi tombol Jalankan Bersama — toggle
+      function runBothAction() {
+        const b1 = beetle1, b2 = beetle2;
+        const anyPlaying = b1.playing || b2.playing;
+        const allFinished = b1.valid && b2.valid && b1.finished && b2.finished;
+
+        if (anyPlaying) {
+          // JEDA BERSAMA: hentikan keduanya
+          b1.playing = false;
+          b2.playing = false;
+          if (b1.valid) setStatus(statusOne, "⏸ Dijeda pada " + formatNumber(b1.n, 2) + " putaran", null);
+          if (b2.valid) setStatus(statusTwo, "⏸ Dijeda pada " + formatNumber(b2.n, 2) + " putaran", null);
+          showToast("Kedua kumbang dijeda");
+          syncPlayButtons();
+          updateRunBothButton();
+          return;
+        }
+
+        if (allFinished) {
+          // JALANKAN ULANG: reset posisi & mulai
+          resetBeetlePosition(b1);
+          resetBeetlePosition(b2);
+          // validasi ulang input (jika user sudah ubah input tanpa apply)
+          readAndCompute(b1, inputR1, inputS1, inputT1);
+          readAndCompute(b2, inputR2, inputS2, inputT2);
+          updateComputedDisplay();
+          updateAngleDisplay();
+          b1.playing = b1.s > 0;
+          b2.playing = b2.s > 0;
+          if (b1.playing) setStatus(statusOne, "▶ n_total = " + formatNumber(b1.nTotal, 2) + " putaran", "done");
+          if (b2.playing) setStatus(statusTwo, "▶ n_total = " + formatNumber(b2.nTotal, 2) + " putaran", "done");
+          updateLapsBadge(lapsBadgeOne, angleBadgeOne, b1);
+          updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, b2);
+          showToast("Kedua kumbang dijalankan ulang");
+          syncPlayButtons();
+          updateRunBothButton();
+          drawOrbit();
+          return;
+        }
+
+        // LANJUTKAN / MULAI BARU
+        // Jika kedua valid dan belum jalan, mungkin user baru apply input
+        const res1 = readAndCompute(b1, inputR1, inputS1, inputT1);
+        const res2 = readAndCompute(b2, inputR2, inputS2, inputT2);
+
+        updateComputedDisplay();
+        updateAngleDisplay();
+
+        let anyError = false;
+        if (!res1.ok) { setStatus(statusOne, res1.msg, "error"); b1.playing = false; anyError = true; }
+        if (!res2.ok) { setStatus(statusTwo, res2.msg, "error"); b2.playing = false; anyError = true; }
+        if (anyError) { syncPlayButtons(); updateRunBothButton(); drawOrbit(); return; }
+
+        // Jika belum ada progress (n=0 & tidak finished), reset posisi dulu
+        if (!b1.finished && b1.n === 0) resetBeetlePosition(b1);
+        if (!b2.finished && b2.n === 0) resetBeetlePosition(b2);
+
+        b1.playing = b1.s > 0 && !b1.finished;
+        b2.playing = b2.s > 0 && !b2.finished;
+
+        if (b1.playing) setStatus(statusOne, "▶ Berjalan…", "done");
+        if (b2.playing) setStatus(statusTwo, "▶ Berjalan…", "done");
+
+        showToast("Kedua kumbang berjalan bersama");
+        syncPlayButtons();
+        updateRunBothButton();
+        drawOrbit();
+      }
+
+      runBothButton.addEventListener("click", runBothAction);
+      if (runBothButtonInline) runBothButtonInline.addEventListener("click", runBothAction);
 
       applyOne.addEventListener("click", () => {
         const res = readAndCompute(beetle1, inputR1, inputS1, inputT1);
@@ -1614,6 +1730,7 @@
           "▶ n_total = " + formatNumber(beetle1.nTotal, 2) + " putaran", "done");
         updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
         syncPlayButtons();
+        updateRunBothButton();
         drawOrbit();
         showToast("Kumbang 1 diterapkan");
       });
@@ -1629,45 +1746,10 @@
           "▶ n_total = " + formatNumber(beetle2.nTotal, 2) + " putaran", "done");
         updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
         syncPlayButtons();
+        updateRunBothButton();
         drawOrbit();
         showToast("Kumbang 2 diterapkan");
       });
-
-      function runBoth() {
-        const res1 = readAndCompute(beetle1, inputR1, inputS1, inputT1);
-        const res2 = readAndCompute(beetle2, inputR2, inputS2, inputT2);
-        updateComputedDisplay();
-        updateAngleDisplay();
-
-        let anyError = false;
-        if (!res1.ok) { setStatus(statusOne, res1.msg, "error"); beetle1.playing = false; anyError = true; }
-        if (!res2.ok) { setStatus(statusTwo, res2.msg, "error"); beetle2.playing = false; anyError = true; }
-        if (anyError) { syncPlayButtons(); drawOrbit(); return; }
-
-        resetBeetlePosition(beetle1);
-        resetBeetlePosition(beetle2);
-        beetle1.playing = beetle1.s > 0;
-        beetle2.playing = beetle2.s > 0;
-
-        if (beetle1.playing) {
-          setStatus(statusOne, "▶ n_total = " + formatNumber(beetle1.nTotal, 2) + " putaran", "done");
-        } else {
-          setStatus(statusOne, "Jarak 0", null);
-        }
-        if (beetle2.playing) {
-          setStatus(statusTwo, "▶ n_total = " + formatNumber(beetle2.nTotal, 2) + " putaran", "done");
-        } else {
-          setStatus(statusTwo, "Jarak 0", null);
-        }
-        updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
-        updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
-        syncPlayButtons();
-        drawOrbit();
-        showToast("Kedua kumbang berjalan bersama");
-      }
-
-      runBothButton.addEventListener("click", runBoth);
-      if (runBothButtonInline) runBothButtonInline.addEventListener("click", runBoth);
 
       function toggleBeetle(beetle, statusEl) {
         if (!beetle.valid) { setStatus(statusEl, "⚠ Isi input dulu", "error"); return; }
@@ -1675,6 +1757,7 @@
         beetle.playing = !beetle.playing;
         setStatus(statusEl, beetle.playing ? "▶ Berjalan…" : "⏸ Dijeda", beetle.playing ? "done" : null);
         syncPlayButtons();
+        updateRunBothButton();
       }
       playButtonOne.addEventListener("click", () => toggleBeetle(beetle1, statusOne));
       playButtonOneMobile.addEventListener("click", () => toggleBeetle(beetle1, statusOne));
@@ -1688,6 +1771,7 @@
         updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
         updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
         syncPlayButtons();
+        updateRunBothButton();
         drawOrbit();
         updateComputedDisplay();
         updateAngleDisplay();
@@ -1713,6 +1797,7 @@
             setStatus(statusEl,
               "✔ Selesai: n = " + formatNumber(b.nTotal, 2) + " putaran", "done");
             syncPlayButtons();
+            updateRunBothButton();
             updateLapsBadge(
               (b === beetle1) ? lapsBadgeOne : lapsBadgeTwo,
               (b === beetle1) ? angleBadgeOne : angleBadgeTwo,
@@ -1731,7 +1816,6 @@
           b.distance += ds;
           b.timeElapsed += dtReal;
           b.theta += dTheta;
-          // n berjalan = θ / 2π
           b.n = b.theta / TWO_PI;
 
           if (b.distance >= b.s - 1e-9 || b.timeElapsed >= b.t - 1e-9) {
@@ -1741,16 +1825,17 @@
             setStatus(statusEl,
               "✔ Selesai: n = " + formatNumber(b.nTotal, 2) + " putaran", "done");
             syncPlayButtons();
+            updateRunBothButton();
           }
         });
 
-        // Update semua display
         updateComputedDisplay();
         updateAngleDisplay();
         updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
         updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
-
         drawOrbit();
+        // Update tombol Jalankan tiap frame (agar label sinkron saat auto-selesai)
+        updateRunBothButton();
         requestAnimationFrame(animate);
       }
 
@@ -1775,7 +1860,6 @@
 
         const omega = TWO_PI / period;
         const speed = omega * radius;
-        const n = (speed * period) / (TWO_PI * radius); // = 1 putaran selalu
 
         result.innerHTML =
           '<p class="text-xs font-semibold uppercase tracking-wider text-[#f26a3d] sm:text-sm">Hasil</p>' +
@@ -1844,6 +1928,7 @@
       updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
       updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
       syncPlayButtons();
+      updateRunBothButton();
       requestAnimationFrame(() => drawOrbit());
       updateQuizSummary();
       lastTime = performance.now();
