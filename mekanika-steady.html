@@ -166,7 +166,7 @@
         }
 
         .materi-utama-content.expanded {
-            max-height: 4000px;
+            max-height: 6000px; /* dinaikkan agar konten panjang tidak terpotong */
         }
 
         /* ===== SUB MATERI LEVEL 1 ===== */
@@ -212,7 +212,7 @@
         }
 
         .submateri-content.expanded {
-            max-height: 3000px;
+            max-height: 5000px; /* dinaikkan agar sub-materi panjang tidak terpotong */
             padding: 20px;
             background: #fdfdfd;
         }
@@ -512,7 +512,7 @@
                             </div>
                         </div>
 
-                        <!-- ---- Gerak Melingkar ---- -->
+                        <!-- ---- Gerak Melingkar (SUDAH DIPERBAIKI) ---- -->
                         <div class="submateri-level1">
                             <div class="submateri-header" onclick="toggleSubMateri('gerak-melingkar')">
                                 <div class="submateri-title">
@@ -523,6 +523,8 @@
                                 </div>
                             </div>
                             <div class="submateri-content" id="gerak-melingkar-content">
+
+                                <!-- GMB -->
                                 <div class="submateri-level2">
                                     <div class="submateri-level2-title">
                                         <i class="fas fa-caret-right"></i> Gerak Melingkar Beraturan (GMB)
@@ -541,14 +543,15 @@
                                     </div>
                                     <div class="path-info">/materi/steady/kinematika/gerak-melingkar/gmb.html</div>
                                 </div>
-                                  <div class="submateri-content" id="gerak-melingkar-content">
+
+                                <!-- Hubungan Roda-Roda (BARU, sejajar dengan GMB) -->
                                 <div class="submateri-level2">
                                     <div class="submateri-level2-title">
-                                        <i class="fas fa-caret-right"></i> Hubungan roda-roda
+                                        <i class="fas fa-caret-right"></i> Hubungan Roda-Roda
                                     </div>
                                     <p class="materi-description">
-                                        Gerak melingkar dengan kecepatan sudut konstan. <br />
-                                        <strong>ω = konstan</strong> &nbsp;·&nbsp; <strong>v = ω · R</strong>
+                                        Hubungan antar roda pada gerak melingkar: sepusat, bersinggungan, atau dihubungkan sabuk. <br />
+                                        <strong>v = ω · R</strong>
                                     </p>
                                     <div class="materi-links">
                                         <a href="#" class="youtube-link" target="_blank">
@@ -558,9 +561,10 @@
                                             <i class="fas fa-external-link-alt"></i> Materi Lengkap
                                         </a>
                                     </div>
-                                    <div class="path-info">/materi/steady/kinematika/gerak-melingkar/gmb.html</div>
+                                    <div class="path-info">/materi/steady/kinematika/gerak-melingkar/hubungan-roda-roda.html</div>
                                 </div>
 
+                                <!-- GMBB -->
                                 <div class="submateri-level2">
                                     <div class="submateri-level2-title">
                                         <i class="fas fa-caret-right"></i> Gerak Melingkar Berubah Beraturan (GMBB)
@@ -579,11 +583,12 @@
                                     </div>
                                     <div class="path-info">/materi/kelas10/steady/kinematika/gerak-melingkar/gmbb.html</div>
                                 </div>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
+                            </div> <!-- penutup gerak-melingkar-content -->
+                        </div> <!-- penutup submateri-level1 gerak melingkar -->
+
+                    </div> <!-- penutup kinematika-content -->
+                </div> <!-- penutup materi-utama kinematika -->
 
                 <!-- ============================================================ -->
                 <!-- 2. DINAMIKA                                               -->
