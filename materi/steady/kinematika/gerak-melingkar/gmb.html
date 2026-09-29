@@ -29,7 +29,7 @@
       color: var(--ink);
       font-family: "Work Sans", sans-serif;
       overflow-x: hidden;
-      padding-bottom: 88px; /* ruang untuk sticky bar di mobile */
+      padding-bottom: 88px;
     }
     @media (min-width: 768px) {
       body { padding-bottom: 0; }
@@ -202,7 +202,6 @@
 
     .progress-fill { width: 0%; transition: width .35s ease; }
 
-    /* ============ LAYOUT SIMULASI ============ */
     .sim-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -216,7 +215,6 @@
       overflow: hidden;
     }
 
-    /* Header panel — selalu terlihat, klik untuk buka/tutup */
     .panel-header {
       display: flex;
       align-items: center;
@@ -255,7 +253,6 @@
     }
     .panel-body.is-open { display: block; }
 
-    /* Di desktop, panel selalu terbuka */
     @media (min-width: 768px) {
       .panel-header { cursor: default; }
       .panel-header .chev { display: none; }
@@ -281,7 +278,6 @@
       width: 100%;
     }
 
-    /* Tombol toggle garis radius — ikon kecil di pojok orbit */
     .icon-toggle {
       position: absolute;
       top: .6rem;
@@ -335,7 +331,6 @@
 
     .play-in-panel { display: none; }
 
-    /* Stat card ringkas */
     .stat-card {
       border-radius: .55rem;
       background: rgba(255,255,255,.1);
@@ -362,16 +357,51 @@
     .stat-theta { color: #ffd88a; }
     .stat-laps { color: #f0a3c8; }
     .stat-period { color: #c7a3f0; }
+    .stat-laps-live { color: #ff8fd0; }
 
-    /* Stat ringkas (mobile): 3 kolom utama */
+    /* Kartu n real-time — highlight */
+    .stat-laps-card {
+      background: rgba(240,163,200,.12);
+      border: 1px solid rgba(240,163,200,.3);
+    }
+
+    /* Badge putaran */
+    .laps-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: linear-gradient(135deg, #f0a3c8, #e070b0);
+      color: #2a0a1a;
+      font-size: .7rem;
+      font-weight: 800;
+      padding: .2rem .5rem;
+      border-radius: 999px;
+      margin-left: .35rem;
+      box-shadow: 0 2px 6px rgba(224,112,176,.35);
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .laps-badge.pop {
+      animation: badge-pop .5s ease;
+    }
+    @keyframes badge-pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+
     .stat-quick {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: .35rem;
       margin-top: .5rem;
     }
+    .stat-quick-four {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .35rem;
+      margin-top: .35rem;
+    }
 
-    /* Detail stat — disembunyikan, bisa dibuka */
     .stat-detail {
       display: none;
       grid-template-columns: 1fr 1fr;
@@ -396,7 +426,6 @@
     }
     .btn-detail:hover { background: rgba(255,255,255,.14); }
 
-    /* Input panel */
     .input-panel {
       border-radius: .65rem;
       border: 1px solid rgba(255,255,255,.15);
@@ -465,7 +494,6 @@
     .btn-play-one { background: #f26a3d; }
     .btn-play-two { background: #3b82c4; }
 
-    /* Sticky action bar (mobile) */
     .sticky-actions {
       position: fixed;
       bottom: 0;
@@ -512,7 +540,6 @@
     }
     .sticky-actions .btn-reset:active { transform: scale(.92); }
 
-    /* Desktop: sembunyikan sticky, tampilkan tombol inline */
     @media (min-width: 768px) {
       .sticky-actions { display: none; }
       .inline-actions { display: flex !important; }
@@ -541,7 +568,6 @@
       box-shadow: 0 12px 24px rgba(248,190,75,.45);
     }
 
-    /* ===== Panel Sudut & Radian ===== */
     .angle-panel {
       margin-top: .8rem;
       border-radius: 1rem;
@@ -612,6 +638,10 @@
       color: #fff;
       text-transform: uppercase;
       letter-spacing: .05em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .35rem;
     }
 
     .angle-quick {
@@ -638,14 +668,6 @@
       font-size: .85rem;
       font-weight: 700;
     }
-
-    .angle-detail {
-      display: none;
-      margin-top: .35rem;
-      grid-template-columns: 1fr 1fr;
-      gap: .35rem;
-    }
-    .angle-detail.is-open { display: grid; }
 
     .formula-inline {
       margin-top: .4rem;
@@ -739,7 +761,6 @@
       .input-grid { grid-template-columns: 1fr; }
     }
 
-    /* Notifikasi toast */
     .toast {
       position: fixed;
       bottom: 100px;
@@ -865,8 +886,8 @@
               <p class="mt-1.5 text-xs leading-5 sm:mt-2 sm:text-sm sm:leading-6">Definisi radian: sudut = panjang busur dibagi jari-jari.</p>
             </div>
             <div>
-              <div class="formula-mark">s = r · θ</div>
-              <p class="mt-1.5 text-xs leading-5 sm:mt-2 sm:text-sm sm:leading-6">Panjang busur = jari-jari × sudut (radian).</p>
+              <div class="formula-mark">n = θ / 2π</div>
+              <p class="mt-1.5 text-xs leading-5 sm:mt-2 sm:text-sm sm:leading-6">Jumlah putaran = sudut total dibagi 2π.</p>
             </div>
           </div>
         </aside>
@@ -907,12 +928,13 @@
           </div>
 
           <div class="sim-layout">
-            <!-- ===== Panel Kumbang 1 (collapsible) ===== -->
+            <!-- ===== Panel Kumbang 1 ===== -->
             <aside class="control-panel" aria-label="Panel kendali Kumbang 1">
               <div class="panel-header" data-panel-toggle="one" role="button" tabindex="0" aria-expanded="false" aria-controls="panelBodyOne">
                 <div class="title">
                   <span class="dot" style="background:#d94335"></span>
                   Kumbang 1
+                  <span id="lapsBadgeOne" class="laps-badge" style="display:none">0×</span>
                 </div>
                 <span class="chev">▼</span>
               </div>
@@ -926,11 +948,11 @@
                     </div>
                     <div>
                       <label class="input-label" for="inputS1">s (m)</label>
-                      <input id="inputS1" class="input-field" type="number" min="0" step="0.5" value="12" inputmode="decimal">
+                      <input id="inputS1" class="input-field" type="number" min="0" step="0.5" value="30" inputmode="decimal">
                     </div>
                     <div>
                       <label class="input-label" for="inputT1">t (s)</label>
-                      <input id="inputT1" class="input-field" type="number" min="0.1" step="0.5" value="4" inputmode="decimal">
+                      <input id="inputT1" class="input-field" type="number" min="0.1" step="0.5" value="6" inputmode="decimal">
                     </div>
                     <div class="flex items-end">
                       <button id="applyOne" type="button" class="focus-ring w-full rounded-lg bg-[#f8be4b] px-3 py-2 text-xs font-bold text-[#10213e]" style="min-height:44px">Terapkan</button>
@@ -955,18 +977,15 @@
                   </div>
                 </div>
 
-                <!-- Tombol Detail -->
-                <button class="btn-detail" type="button" data-detail-toggle="one">▼ Lihat detail (ω, n)</button>
-
-                <!-- Detail stat (tersembunyi) -->
-                <div id="statDetailOne" class="stat-detail">
+                <!-- n real-time: kartu lebar -->
+                <div class="stat-quick-four">
+                  <div class="stat-card stat-laps-card">
+                    <p>n putaran (berjalan / total)</p>
+                    <output id="quickNOne" class="stat-laps-live" aria-live="polite">0,00 / 0,00</output>
+                  </div>
                   <div class="stat-card">
                     <p>ω (rad/s)</p>
                     <output id="outOmega1" class="stat-omega" aria-live="polite">—</output>
-                  </div>
-                  <div class="stat-card">
-                    <p>n (putaran)</p>
-                    <output id="outN1" class="stat-laps" aria-live="polite">—</output>
                   </div>
                 </div>
 
@@ -1001,12 +1020,13 @@
               </div>
             </div>
 
-            <!-- ===== Panel Kumbang 2 (collapsible) ===== -->
+            <!-- ===== Panel Kumbang 2 ===== -->
             <aside class="control-panel" aria-label="Panel kendali Kumbang 2">
               <div class="panel-header" data-panel-toggle="two" role="button" tabindex="0" aria-expanded="false" aria-controls="panelBodyTwo">
                 <div class="title">
                   <span class="dot" style="background:#3b82c4"></span>
                   Kumbang 2
+                  <span id="lapsBadgeTwo" class="laps-badge" style="display:none">0×</span>
                 </div>
                 <span class="chev">▼</span>
               </div>
@@ -1020,11 +1040,11 @@
                     </div>
                     <div>
                       <label class="input-label" for="inputS2">s (m)</label>
-                      <input id="inputS2" class="input-field" type="number" min="0" step="0.5" value="20" inputmode="decimal">
+                      <input id="inputS2" class="input-field" type="number" min="0" step="0.5" value="40" inputmode="decimal">
                     </div>
                     <div>
                       <label class="input-label" for="inputT2">t (s)</label>
-                      <input id="inputT2" class="input-field" type="number" min="0.1" step="0.5" value="6" inputmode="decimal">
+                      <input id="inputT2" class="input-field" type="number" min="0.1" step="0.5" value="8" inputmode="decimal">
                     </div>
                     <div class="flex items-end">
                       <button id="applyTwo" type="button" class="focus-ring w-full rounded-lg bg-[#f8be4b] px-3 py-2 text-xs font-bold text-[#10213e]" style="min-height:44px">Terapkan</button>
@@ -1048,16 +1068,14 @@
                   </div>
                 </div>
 
-                <button class="btn-detail" type="button" data-detail-toggle="two">▼ Lihat detail (ω, n)</button>
-
-                <div id="statDetailTwo" class="stat-detail">
+                <div class="stat-quick-four">
+                  <div class="stat-card stat-laps-card">
+                    <p>n putaran (berjalan / total)</p>
+                    <output id="quickNTwo" class="stat-laps-live" aria-live="polite">0,00 / 0,00</output>
+                  </div>
                   <div class="stat-card">
                     <p>ω (rad/s)</p>
                     <output id="outOmega2" class="stat-omega" aria-live="polite">—</output>
-                  </div>
-                  <div class="stat-card">
-                    <p>n (putaran)</p>
-                    <output id="outN2" class="stat-laps" aria-live="polite">—</output>
                   </div>
                 </div>
 
@@ -1078,7 +1096,7 @@
             </button>
           </div>
 
-          <!-- ===== Panel Sudut & Radian (collapsible) ===== -->
+          <!-- ===== Panel Sudut & Radian ===== -->
           <div class="angle-panel">
             <div class="angle-panel-header" data-angle-toggle role="button" tabindex="0" aria-expanded="false" aria-controls="angleBody">
               <h3>📐 Sudut &amp; Radian</h3>
@@ -1095,7 +1113,10 @@
 
               <div class="angle-grid">
                 <div class="angle-beetle-card one">
-                  <p class="angle-beetle-title">Kumbang 1</p>
+                  <p class="angle-beetle-title">
+                    <span>Kumbang 1</span>
+                    <span id="angleBadgeOne" class="laps-badge" style="display:none">0×</span>
+                  </p>
                   <div class="angle-quick">
                     <div class="angle-cell">
                       <p class="lbl">θ (rad)</p>
@@ -1106,6 +1127,16 @@
                       <output id="thetaDegOne" class="stat-theta" aria-live="polite">0,0</output>
                     </div>
                   </div>
+                  <div class="angle-quick" style="margin-top:.35rem">
+                    <div class="angle-cell">
+                      <p class="lbl">n berjalan</p>
+                      <output id="thetaNOne" class="stat-laps-live" aria-live="polite">0,00</output>
+                    </div>
+                    <div class="angle-cell">
+                      <p class="lbl">n total</p>
+                      <output id="thetaNTotalOne" class="stat-laps" aria-live="polite">—</output>
+                    </div>
+                  </div>
                   <div class="formula-inline">
                     <span>θ = s / r = <span id="thetaFormulaOne">—</span></span>
                     <span class="result">= <span id="thetaResultOne">—</span> rad</span>
@@ -1113,7 +1144,10 @@
                 </div>
 
                 <div class="angle-beetle-card two">
-                  <p class="angle-beetle-title">Kumbang 2</p>
+                  <p class="angle-beetle-title">
+                    <span>Kumbang 2</span>
+                    <span id="angleBadgeTwo" class="laps-badge" style="display:none">0×</span>
+                  </p>
                   <div class="angle-quick">
                     <div class="angle-cell">
                       <p class="lbl">θ (rad)</p>
@@ -1122,6 +1156,16 @@
                     <div class="angle-cell">
                       <p class="lbl">θ (°)</p>
                       <output id="thetaDegTwo" class="stat-theta" aria-live="polite">0,0</output>
+                    </div>
+                  </div>
+                  <div class="angle-quick" style="margin-top:.35rem">
+                    <div class="angle-cell">
+                      <p class="lbl">n berjalan</p>
+                      <output id="thetaNTwo" class="stat-laps-live" aria-live="polite">0,00</output>
+                    </div>
+                    <div class="angle-cell">
+                      <p class="lbl">n total</p>
+                      <output id="thetaNTotalTwo" class="stat-laps" aria-live="polite">—</output>
                     </div>
                   </div>
                   <div class="formula-inline">
@@ -1191,14 +1235,14 @@
 
           <article class="rounded-2xl border border-[#10213e]/10 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-8">
             <p class="text-xs font-bold uppercase tracking-wider text-[#f26a3d] sm:text-sm">Pertanyaan 3</p>
-            <h2 class="display-font mt-1.5 text-base font-bold sm:text-2xl">Jika s = 3 m dan r = 1,5 m, berapa sudut θ dalam radian?</h2>
+            <h2 class="display-font mt-1.5 text-base font-bold sm:text-2xl">Jika r = 2 m dan s = 12 m, berapa jumlah putaran n yang ditempuh kumbang?</h2>
             <div class="mt-3 grid gap-2 sm:mt-6 sm:gap-3" role="group">
-              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="false">0,5 rad</button>
-              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="true">2 rad</button>
-              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="false">4,5 rad</button>
+              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="false">0,50 putaran</button>
+              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="true">0,95 putaran</button>
+              <button class="quiz-option focus-ring rounded-xl px-4 py-3 text-left text-sm font-semibold sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base" type="button" data-question="3" data-correct="false">6,00 putaran</button>
             </div>
-            <div id="feedback3Correct" class="feedback mt-3 rounded-xl bg-[#dff4e9] p-3 text-sm text-[#144c35] sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-base">Benar! θ = s/r = 3/1,5 = 2 rad.</div>
-            <div id="feedback3Wrong" class="feedback mt-3 rounded-xl bg-[#fce5df] p-3 text-sm text-[#8b2a1c] sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-base">Belum tepat. Gunakan θ = s/r.</div>
+            <div id="feedback3Correct" class="feedback mt-3 rounded-xl bg-[#dff4e9] p-3 text-sm text-[#144c35] sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-base">Benar! n = s / (2πr) = 12 / (2π × 2) ≈ 0,95 putaran.</div>
+            <div id="feedback3Wrong" class="feedback mt-3 rounded-xl bg-[#fce5df] p-3 text-sm text-[#8b2a1c] sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-base">Belum tepat. Gunakan n = s / (2πr).</div>
           </article>
         </div>
 
@@ -1218,7 +1262,6 @@
     <p class="text-xs text-[#d7e7ef] sm:text-sm">Modul Interaktif Gerak Melingkar · Dibuat untuk pembelajaran fisika yang menyenangkan.</p>
   </footer>
 
-  <!-- ====== STICKY ACTION BAR (mobile) ====== -->
   <div id="stickyActions" class="sticky-actions" style="display:none">
     <button id="runBothButton" type="button" class="btn-both focus-ring">
       ▶ Jalankan Bersama
@@ -1226,14 +1269,12 @@
     <button id="resetButton" type="button" class="btn-reset focus-ring" aria-label="Reset">🔄</button>
   </div>
 
-  <!-- Toast notifikasi -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
 
-      // ===== Toast helper =====
       const toastEl = document.getElementById("toast");
       let toastTimer = null;
       function showToast(msg) {
@@ -1261,11 +1302,8 @@
           button.classList.toggle("is-active", active);
           button.setAttribute("aria-selected", String(active));
         });
-        // Tampilkan sticky action bar HANYA di tab Simulasi
         stickyActions.style.display = (name === "simulasi") ? "flex" : "none";
-        if (name === "simulasi") {
-          requestAnimationFrame(() => drawOrbit());
-        }
+        if (name === "simulasi") requestAnimationFrame(() => drawOrbit());
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -1273,48 +1311,27 @@
         button.addEventListener("click", () => showPage(button.dataset.pageTarget));
       });
 
-      document.getElementById("openSimulationButton").addEventListener("click", () => {
-        showPage("simulasi");
-      });
+      document.getElementById("openSimulationButton").addEventListener("click", () => showPage("simulasi"));
 
-      // ===== Collapsible panels =====
+      // ===== Collapsible =====
       document.querySelectorAll("[data-panel-toggle]").forEach((header) => {
         header.addEventListener("click", () => {
-          const bodyId = header.getAttribute("aria-controls");
-          const body = document.getElementById(bodyId);
+          const body = document.getElementById(header.getAttribute("aria-controls"));
           const isOpen = body.classList.toggle("is-open");
           header.setAttribute("aria-expanded", String(isOpen));
         });
         header.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            header.click();
-          }
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); header.click(); }
         });
       });
-
       document.querySelectorAll("[data-angle-toggle]").forEach((header) => {
         header.addEventListener("click", () => {
-          const bodyId = header.getAttribute("aria-controls");
-          const body = document.getElementById(bodyId);
+          const body = document.getElementById(header.getAttribute("aria-controls"));
           const isOpen = body.classList.toggle("is-open");
           header.setAttribute("aria-expanded", String(isOpen));
         });
         header.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            header.click();
-          }
-        });
-      });
-
-      // Detail stat toggle
-      document.querySelectorAll("[data-detail-toggle]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const which = btn.dataset.detailToggle;
-          const el = document.getElementById("statDetail" + (which === "one" ? "One" : "Two"));
-          const open = el.classList.toggle("is-open");
-          btn.textContent = open ? "▲ Sembunyikan detail" : "▼ Lihat detail (ω, n)";
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); header.click(); }
         });
       });
 
@@ -1335,24 +1352,33 @@
       const quickThetaOne = document.getElementById("quickThetaOne");
       const quickVOne = document.getElementById("quickVOne");
       const quickTOne = document.getElementById("quickTOne");
+      const quickNOne = document.getElementById("quickNOne");
       const outOmega1 = document.getElementById("outOmega1");
-      const outN1 = document.getElementById("outN1");
 
       const quickThetaTwo = document.getElementById("quickThetaTwo");
       const quickVTwo = document.getElementById("quickVTwo");
       const quickTTwo = document.getElementById("quickTTwo");
+      const quickNTwo = document.getElementById("quickNTwo");
       const outOmega2 = document.getElementById("outOmega2");
-      const outN2 = document.getElementById("outN2");
 
       const thetaRadOne = document.getElementById("thetaRadOne");
       const thetaDegOne = document.getElementById("thetaDegOne");
       const thetaFormulaOne = document.getElementById("thetaFormulaOne");
       const thetaResultOne = document.getElementById("thetaResultOne");
+      const thetaNOne = document.getElementById("thetaNOne");
+      const thetaNTotalOne = document.getElementById("thetaNTotalOne");
 
       const thetaRadTwo = document.getElementById("thetaRadTwo");
       const thetaDegTwo = document.getElementById("thetaDegTwo");
       const thetaFormulaTwo = document.getElementById("thetaFormulaTwo");
       const thetaResultTwo = document.getElementById("thetaResultTwo");
+      const thetaNTwo = document.getElementById("thetaNTwo");
+      const thetaNTotalTwo = document.getElementById("thetaNTotalTwo");
+
+      const lapsBadgeOne = document.getElementById("lapsBadgeOne");
+      const lapsBadgeTwo = document.getElementById("lapsBadgeTwo");
+      const angleBadgeOne = document.getElementById("angleBadgeOne");
+      const angleBadgeTwo = document.getElementById("angleBadgeTwo");
 
       const playButtonOne = document.getElementById("playButtonOne");
       const playButtonTwo = document.getElementById("playButtonTwo");
@@ -1372,15 +1398,17 @@
       const TWO_PI = 2 * Math.PI;
 
       const beetle1 = {
-        r: 2, s: 12, t: 4,
-        v: 0, omega: 0, T: 0, n: 0,
+        r: 2, s: 30, t: 6,
+        v: 0, omega: 0, T: 0, n: 0, nTotal: 0,
         angle: START_ANGLE, distance: 0, timeElapsed: 0, theta: 0, thetaTotal: 0,
+        lapsCompleted: 0,
         playing: false, finished: false, valid: false
       };
       const beetle2 = {
-        r: 3.5, s: 20, t: 6,
-        v: 0, omega: 0, T: 0, n: 0,
+        r: 3.5, s: 40, t: 8,
+        v: 0, omega: 0, T: 0, n: 0, nTotal: 0,
         angle: START_ANGLE, distance: 0, timeElapsed: 0, theta: 0, thetaTotal: 0,
+        lapsCompleted: 0,
         playing: false, finished: false, valid: false
       };
 
@@ -1425,59 +1453,60 @@
         beetle.v = s / t;
         beetle.omega = beetle.v / r;
         beetle.T = beetle.omega > 0 ? TWO_PI / beetle.omega : 0;
-        beetle.n = s / (TWO_PI * r);
+        beetle.nTotal = s / (TWO_PI * r);
         beetle.thetaTotal = s / r;
         beetle.valid = true;
         return { ok: true };
       }
 
       function updateComputedDisplay() {
-        // Kumbang 1 — quick
+        // Kumbang 1
         if (beetle1.valid) {
-          quickThetaOne.textContent = formatNumber(beetle1.thetaTotal, 2);
+          quickThetaOne.textContent = formatNumber(beetle1.theta, 2);
           quickVOne.textContent = formatNumber(beetle1.v, 2);
           quickTOne.textContent = formatNumber(beetle1.T, 2);
-          outOmega1.textContent = formatNumber(beetle1.omega, 2) + " rad/s";
-          outN1.textContent = formatNumber(beetle1.n, 2);
+          quickNOne.textContent = formatNumber(beetle1.n, 2) + " / " + formatNumber(beetle1.nTotal, 2);
+          outOmega1.textContent = formatNumber(beetle1.omega, 2);
         } else {
           quickThetaOne.textContent = "—";
           quickVOne.textContent = "—";
           quickTOne.textContent = "—";
+          quickNOne.textContent = "— / —";
           outOmega1.textContent = "—";
-          outN1.textContent = "—";
         }
-        // Kumbang 2 — quick
+        // Kumbang 2
         if (beetle2.valid) {
-          quickThetaTwo.textContent = formatNumber(beetle2.thetaTotal, 2);
+          quickThetaTwo.textContent = formatNumber(beetle2.theta, 2);
           quickVTwo.textContent = formatNumber(beetle2.v, 2);
           quickTTwo.textContent = formatNumber(beetle2.T, 2);
-          outOmega2.textContent = formatNumber(beetle2.omega, 2) + " rad/s";
-          outN2.textContent = formatNumber(beetle2.n, 2);
+          quickNTwo.textContent = formatNumber(beetle2.n, 2) + " / " + formatNumber(beetle2.nTotal, 2);
+          outOmega2.textContent = formatNumber(beetle2.omega, 2);
         } else {
           quickThetaTwo.textContent = "—";
           quickVTwo.textContent = "—";
           quickTTwo.textContent = "—";
+          quickNTwo.textContent = "— / —";
           outOmega2.textContent = "—";
-          outN2.textContent = "—";
         }
       }
 
       function updateAngleDisplay() {
-        updateAngleCard(beetle1, thetaRadOne, thetaDegOne, thetaFormulaOne, thetaResultOne);
-        updateAngleCard(beetle2, thetaRadTwo, thetaDegTwo, thetaFormulaTwo, thetaResultTwo);
+        updateAngleCard(beetle1, thetaRadOne, thetaDegOne, thetaFormulaOne, thetaResultOne, thetaNOne, thetaNTotalOne);
+        updateAngleCard(beetle2, thetaRadTwo, thetaDegTwo, thetaFormulaTwo, thetaResultTwo, thetaNTwo, thetaNTotalTwo);
       }
 
-      function updateAngleCard(b, elRad, elDeg, elFormula, elResult) {
+      function updateAngleCard(b, elRad, elDeg, elFormula, elResult, elN, elNTotal) {
         if (!b.valid) {
           elRad.textContent = "—";
           elDeg.textContent = "—";
           elFormula.textContent = "—";
           elResult.textContent = "—";
+          elN.textContent = "—";
+          elNTotal.textContent = "—";
           return;
         }
         const rad = b.theta;
         const deg = rad * 180 / Math.PI;
-        const finalRad = b.thetaTotal;
         if (angleUnit === "rad") {
           elRad.textContent = formatNumber(rad, 2);
           elDeg.textContent = "—";
@@ -1489,7 +1518,9 @@
           elDeg.textContent = formatNumber(deg, 1);
         }
         elFormula.textContent = formatNumber(b.s, 1) + " / " + formatNumber(b.r, 2);
-        elResult.textContent = formatNumber(finalRad, 3);
+        elResult.textContent = formatNumber(b.thetaTotal, 3);
+        elN.textContent = formatNumber(b.n, 2);
+        elNTotal.textContent = formatNumber(b.nTotal, 2);
       }
 
       function syncPlayButtons() {
@@ -1528,10 +1559,11 @@
         beetle.distance = 0;
         beetle.timeElapsed = 0;
         beetle.theta = 0;
+        beetle.n = 0;
+        beetle.lapsCompleted = 0;
         beetle.finished = false;
       }
 
-      // Toggle garis radius (ikon)
       function applyRadiusToggle() {
         lineOne.classList.toggle("is-hidden", !showRadiusLines);
         lineTwo.classList.toggle("is-hidden", !showRadiusLines);
@@ -1545,41 +1577,71 @@
         applyRadiusToggle();
       });
 
-      // ===== Terapkan input individual =====
-      function applyBeetle(beetle, rInput, sInput, tInput, statusEl, label) {
-        const res = readAndCompute(beetle, rInput, sInput, tInput);
-        updateComputedDisplay();
-        updateAngleDisplay();
-        if (!res.ok) {
-          setStatus(statusEl, res.msg, "error");
-          return false;
+      // Update badge putaran (mis. 1×, 2×, ...) dengan animasi pop
+      function updateLapsBadge(badgeEl, angleBadgeEl, beetle) {
+        const laps = Math.floor(beetle.n + 1e-9);
+        // Bandingkan dengan badge saat ini
+        const currentText = badgeEl.textContent;
+        const newText = laps + "×";
+        if (currentText !== newText) {
+          badgeEl.textContent = newText;
+          if (angleBadgeEl) angleBadgeEl.textContent = newText;
+          // Sembunyikan badge kalau 0 putaran, tampilkan kalau ≥ 1
+          if (laps === 0) {
+            badgeEl.style.display = "none";
+            if (angleBadgeEl) angleBadgeEl.style.display = "none";
+          } else {
+            badgeEl.style.display = "inline-flex";
+            if (angleBadgeEl) angleBadgeEl.style.display = "inline-flex";
+            badgeEl.classList.remove("pop");
+            if (angleBadgeEl) angleBadgeEl.classList.remove("pop");
+            // Trigger reflow untuk restart animasi
+            void badgeEl.offsetWidth;
+            badgeEl.classList.add("pop");
+            if (angleBadgeEl) angleBadgeEl.classList.add("pop");
+          }
         }
-        resetBeetlePosition(beetle);
-        beetle.playing = beetle.s > 0;
-        setStatus(statusEl,
-          "▶ θ_total = " + formatNumber(beetle.thetaTotal, 2) + " rad (" +
-          formatNumber(beetle.thetaTotal * 180 / Math.PI, 1) + "°)", "done");
-        syncPlayButtons();
-        drawOrbit();
-        showToast(label + " diterapkan");
-        return true;
       }
 
-      applyOne.addEventListener("click", () => applyBeetle(beetle1, inputR1, inputS1, inputT1, statusOne, "Kumbang 1"));
-      applyTwo.addEventListener("click", () => applyBeetle(beetle2, inputR2, inputS2, inputT2, statusTwo, "Kumbang 2"));
+      applyOne.addEventListener("click", () => {
+        const res = readAndCompute(beetle1, inputR1, inputS1, inputT1);
+        updateComputedDisplay();
+        updateAngleDisplay();
+        if (!res.ok) { setStatus(statusOne, res.msg, "error"); return; }
+        resetBeetlePosition(beetle1);
+        beetle1.playing = beetle1.s > 0;
+        setStatus(statusOne,
+          "▶ n_total = " + formatNumber(beetle1.nTotal, 2) + " putaran", "done");
+        updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
+        syncPlayButtons();
+        drawOrbit();
+        showToast("Kumbang 1 diterapkan");
+      });
 
-      // ===== Jalankan Bersama =====
+      applyTwo.addEventListener("click", () => {
+        const res = readAndCompute(beetle2, inputR2, inputS2, inputT2);
+        updateComputedDisplay();
+        updateAngleDisplay();
+        if (!res.ok) { setStatus(statusTwo, res.msg, "error"); return; }
+        resetBeetlePosition(beetle2);
+        beetle2.playing = beetle2.s > 0;
+        setStatus(statusTwo,
+          "▶ n_total = " + formatNumber(beetle2.nTotal, 2) + " putaran", "done");
+        updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
+        syncPlayButtons();
+        drawOrbit();
+        showToast("Kumbang 2 diterapkan");
+      });
+
       function runBoth() {
         const res1 = readAndCompute(beetle1, inputR1, inputS1, inputT1);
         const res2 = readAndCompute(beetle2, inputR2, inputS2, inputT2);
-
         updateComputedDisplay();
         updateAngleDisplay();
 
         let anyError = false;
         if (!res1.ok) { setStatus(statusOne, res1.msg, "error"); beetle1.playing = false; anyError = true; }
         if (!res2.ok) { setStatus(statusTwo, res2.msg, "error"); beetle2.playing = false; anyError = true; }
-
         if (anyError) { syncPlayButtons(); drawOrbit(); return; }
 
         resetBeetlePosition(beetle1);
@@ -1588,16 +1650,17 @@
         beetle2.playing = beetle2.s > 0;
 
         if (beetle1.playing) {
-          setStatus(statusOne, "▶ θ_total = " + formatNumber(beetle1.thetaTotal, 2) + " rad", "done");
+          setStatus(statusOne, "▶ n_total = " + formatNumber(beetle1.nTotal, 2) + " putaran", "done");
         } else {
           setStatus(statusOne, "Jarak 0", null);
         }
         if (beetle2.playing) {
-          setStatus(statusTwo, "▶ θ_total = " + formatNumber(beetle2.thetaTotal, 2) + " rad", "done");
+          setStatus(statusTwo, "▶ n_total = " + formatNumber(beetle2.nTotal, 2) + " putaran", "done");
         } else {
           setStatus(statusTwo, "Jarak 0", null);
         }
-
+        updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
+        updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
         syncPlayButtons();
         drawOrbit();
         showToast("Kedua kumbang berjalan bersama");
@@ -1606,12 +1669,8 @@
       runBothButton.addEventListener("click", runBoth);
       if (runBothButtonInline) runBothButtonInline.addEventListener("click", runBoth);
 
-      // ===== Toggle play/pause =====
       function toggleBeetle(beetle, statusEl) {
-        if (!beetle.valid) {
-          setStatus(statusEl, "⚠ Isi input dulu", "error");
-          return;
-        }
+        if (!beetle.valid) { setStatus(statusEl, "⚠ Isi input dulu", "error"); return; }
         if (beetle.finished) resetBeetlePosition(beetle);
         beetle.playing = !beetle.playing;
         setStatus(statusEl, beetle.playing ? "▶ Berjalan…" : "⏸ Dijeda", beetle.playing ? "done" : null);
@@ -1622,20 +1681,21 @@
       playButtonTwo.addEventListener("click", () => toggleBeetle(beetle2, statusTwo));
       playButtonTwoMobile.addEventListener("click", () => toggleBeetle(beetle2, statusTwo));
 
-      // ===== Reset =====
       function doReset() {
         [beetle1, beetle2].forEach((b) => { resetBeetlePosition(b); b.playing = false; });
         setStatus(statusOne, "Siap", null);
         setStatus(statusTwo, "Siap", null);
+        updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
+        updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
         syncPlayButtons();
         drawOrbit();
+        updateComputedDisplay();
         updateAngleDisplay();
         showToast("Direset");
       }
       resetButton.addEventListener("click", doReset);
       if (resetButtonInline) resetButtonInline.addEventListener("click", doReset);
 
-      // ===== ANIMASI =====
       function animate(now) {
         const elapsed = Math.min((now - lastTime) / 1000, 0.1);
         lastTime = now;
@@ -1648,10 +1708,16 @@
           const timeLeft = b.t - b.timeElapsed;
           if (distLeft <= 1e-9 || timeLeft <= 1e-9) {
             b.playing = false; b.finished = true;
-            b.distance = b.s; b.timeElapsed = b.t; b.theta = b.thetaTotal;
+            b.distance = b.s; b.timeElapsed = b.t; b.theta = b.thetaTotal; b.n = b.nTotal;
             const statusEl = (b === beetle1) ? statusOne : statusTwo;
-            setStatus(statusEl, "✔ Selesai: θ = " + formatNumber(b.thetaTotal, 2) + " rad", "done");
+            setStatus(statusEl,
+              "✔ Selesai: n = " + formatNumber(b.nTotal, 2) + " putaran", "done");
             syncPlayButtons();
+            updateLapsBadge(
+              (b === beetle1) ? lapsBadgeOne : lapsBadgeTwo,
+              (b === beetle1) ? angleBadgeOne : angleBadgeTwo,
+              b
+            );
             return;
           }
 
@@ -1665,22 +1731,29 @@
           b.distance += ds;
           b.timeElapsed += dtReal;
           b.theta += dTheta;
+          // n berjalan = θ / 2π
+          b.n = b.theta / TWO_PI;
 
           if (b.distance >= b.s - 1e-9 || b.timeElapsed >= b.t - 1e-9) {
             b.playing = false; b.finished = true;
-            b.distance = b.s; b.timeElapsed = b.t; b.theta = b.thetaTotal;
+            b.distance = b.s; b.timeElapsed = b.t; b.theta = b.thetaTotal; b.n = b.nTotal;
             const statusEl = (b === beetle1) ? statusOne : statusTwo;
-            setStatus(statusEl, "✔ Selesai: θ = " + formatNumber(b.thetaTotal, 2) + " rad", "done");
+            setStatus(statusEl,
+              "✔ Selesai: n = " + formatNumber(b.nTotal, 2) + " putaran", "done");
             syncPlayButtons();
           }
         });
 
-        drawOrbit();
+        // Update semua display
+        updateComputedDisplay();
         updateAngleDisplay();
+        updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
+        updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
+
+        drawOrbit();
         requestAnimationFrame(animate);
       }
 
-      // ===== Satuan sudut =====
       document.querySelectorAll('input[name="angleUnit"]').forEach((radio) => {
         radio.addEventListener("change", (e) => {
           angleUnit = e.target.value;
@@ -1702,6 +1775,7 @@
 
         const omega = TWO_PI / period;
         const speed = omega * radius;
+        const n = (speed * period) / (TWO_PI * radius); // = 1 putaran selalu
 
         result.innerHTML =
           '<p class="text-xs font-semibold uppercase tracking-wider text-[#f26a3d] sm:text-sm">Hasil</p>' +
@@ -1767,6 +1841,8 @@
       applyRadiusToggle();
       updateComputedDisplay();
       updateAngleDisplay();
+      updateLapsBadge(lapsBadgeOne, angleBadgeOne, beetle1);
+      updateLapsBadge(lapsBadgeTwo, angleBadgeTwo, beetle2);
       syncPlayButtons();
       requestAnimationFrame(() => drawOrbit());
       updateQuizSummary();
