@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Gerak Melingkar Berubah Beraturan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #112c45;
+      --navy: #09233d;
+      --paper: #f4f0e7;
+      --line: #d8d0c0;
+      --orange: #f25c2a;
+      --aqua: #4ec5c1;
+      --yellow: #f6c84c;
+      --cream: #fffdf8;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      color: var(--ink);
+      font-family: "Work Sans", sans-serif;
+      overflow-x: hidden;
+    }
+
+    button, input { font: inherit; }
+
+    .page-shell {
+      width: 100%;
+      min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+      background:
+        linear-gradient(90deg, rgba(9, 35, 61, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(9, 35, 61, 0.035) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .display-font { font-family: "Fraunces", serif; }
+
+    .top-rule {
+      height: 7px;
+      background: linear-gradient(90deg, #f25c2a 0 28%, #f6c84c 28% 58%, #4ec5c1 58% 100%);
+    }
+
+    /* ====== HEADER ====== */
+    .canva-header {
+      background: #09233d;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav-tab {
+      border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.85);
+      background: transparent;
+      transition: color .2s ease, background .2s ease, transform .2s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-tab:hover { 
+      color: white; 
+      background: rgba(255,255,255,.12);
+      transform: translateY(-1px); 
+    }
+
+    .nav-tab.is-active {
+      color: #09233d;
+      background: #f6c84c;
+      border-color: #f6c84c;
+    }
+
+    .nav-home-portal {
+      border: 1px solid rgba(255,255,255,.4);
+      color: rgba(255,255,255,.9);
+      background: transparent;
+      transition: all .2s ease;
+    }
+    .nav-home-portal:hover {
+      background: rgba(255,255,255,.15);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .page-view { display: none; }
+    .page-view.is-active { display: block; animation: reveal .45s ease both; }
+
+    .hero-photo-wrap {
+      position: relative;
+      min-height: 285px;
+      overflow: hidden;
+      border-radius: 26px;
+      background: var(--navy);
+    }
+
+    .hero-photo-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(9, 35, 61, .74), rgba(9, 35, 61, .06));
+      pointer-events: none;
+    }
+
+    .hero-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      min-height: 285px;
+      object-fit: cover;
+      filter: saturate(.8) contrast(1.08);
+    }
+
+    .formula-card {
+      min-height: 164px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--aqua);
+      background: var(--cream);
+    }
+
+    .formula-card:nth-child(2) { border-top-color: var(--orange); }
+    .formula-card:nth-child(3) { border-top-color: var(--yellow); }
+    .formula-card:nth-child(4) { border-top-color: var(--ink); }
+
+    .equation {
+      font-family: "Fraunces", serif;
+      letter-spacing: -.03em;
+      font-size: 1.55rem;
+      font-weight: 700;
+    }
+
+    .simulation-board {
+      position: relative;
+      min-height: 370px;
+      overflow: hidden;
+      border: 1px solid #c8beac;
+      background: radial-gradient(circle at 50% 43%, #f4f0e7 0 36%, #e6dfd1 37% 100%);
+      touch-action: none;
+    }
+
+    .orbit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 258px;
+      height: 258px;
+      border: 2px dashed rgba(17,44,69,.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .axis-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 100%;
+      background: rgba(17,44,69,.18);
+    }
+
+    .axis-line.horizontal {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+    }
+
+    .center-hub {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      border: 5px solid var(--cream);
+      border-radius: 50%;
+      background: var(--ink);
+      box-shadow: 0 0 0 2px var(--ink);
+      transform: translate(-50%, -50%);
+    }
+
+    .radius-arm {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 2px;
+      background: rgba(17,44,69,.75);
+      transform-origin: left center;
+    }
+
+    .moving-ball {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 31px;
+      height: 31px;
+      border: 5px solid var(--cream);
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 5px 0 rgba(17,44,69,.18), 0 0 0 2px var(--orange);
+      transition: box-shadow .2s ease;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+    }
+
+    .moving-ball.running {
+      box-shadow: 0 5px 0 rgba(17,44,69,.18), 0 0 0 5px rgba(242,92,42,.17);
+    }
+
+    .readout {
+      border-left: 3px solid var(--aqua);
+      background: rgba(255,253,248,.76);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+      accent-color: var(--orange);
+      height: 32px;
+    }
+
+    .quiz-option {
+      width: 100%;
+      border: 1px solid #d8d0c0;
+      background: #fffdf8;
+      color: #112c45;
+      text-align: left;
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: #f25c2a;
+      transform: translateX(3px);
+    }
+
+    .quiz-option:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    .quiz-option:disabled { cursor: default; }
+
+    .quiz-option.is-correct {
+      border-color: #21826e;
+      background: #d9f1ef;
+      color: #0d4e43;
+    }
+
+    .quiz-option.is-wrong {
+      border-color: #d1512a;
+      background: #fff0e9;
+      color: #8e2f14;
+    }
+
+    .quiz-feedback { display: none; }
+    .quiz-feedback.is-visible { display: flex; }
+
+    .fade-in { animation: reveal .6s ease both; }
+    .fade-delay-1 { animation-delay: .1s; }
+    .fade-delay-2 { animation-delay: .2s; }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 3px;
+    }
+
+    /* ====== DATA PANEL STYLES ====== */
+    .data-panel {
+      background: #fffdf8;
+      border: 1px solid #d8d0c0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .data-panel-header {
+      background: var(--navy);
+      color: white;
+      padding: 10px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 16px;
+      border-bottom: 1px solid #eee6d8;
+      font-size: 0.85rem;
+      gap: 10px;
+    }
+    .data-row:last-child { border-bottom: none; }
+
+    .data-label {
+      color: #5a6a7a;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .data-value {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .time-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fffdf8;
+      border: 1px solid #d8d0c0;
+      border-radius: 12px;
+      padding: 8px 12px;
+    }
+
+    .time-input-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5a6a7a;
+      white-space: nowrap;
+    }
+
+    .time-input-group input[type="number"] {
+      width: 70px;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 0.9rem;
+      outline: none;
+      text-align: right;
+      -moz-appearance: textfield;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .time-input-group input[type="number"]::-webkit-outer-spin-button,
+    .time-input-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .btn-jump {
+      background: var(--aqua);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .btn-jump:hover { background: #3bb0ac; }
+    .btn-jump:active { transform: scale(0.96); }
+
+    /* ====== MOBILE OPTIMIZATION ====== */
+    @media (max-width: 640px) {
+      .orbit { width: 200px; height: 200px; }
+      .simulation-board { min-height: 280px; }
+      .moving-ball { width: 26px; height: 26px; border-width: 4px; }
+      .center-hub { width: 18px; height: 18px; border-width: 4px; }
+      .equation { font-size: 1.25rem; }
+      .hero-photo-wrap { min-height: 200px; }
+      .hero-photo-wrap img { min-height: 200px; }
+      .readout { padding: 10px; }
+      .readout output { font-size: 1rem; }
+      .data-row { padding: 7px 12px; font-size: 0.78rem; }
+      .data-panel-header { padding: 8px 12px; font-size: 0.72rem; }
+      .time-input-group { padding: 6px 10px; }
+      .time-input-group input[type="number"] { width: 55px; font-size: 0.82rem; }
+      .btn-jump { padding: 5px 10px; font-size: 0.72rem; }
+    }
+
+    @media (max-width: 380px) {
+      .orbit { width: 170px; height: 170px; }
+      .simulation-board { min-height: 240px; }
+      .moving-ball { width: 22px; height: 22px; border-width: 3px; }
+    }
+
+    .simulation-board, .moving-ball, .radius-arm {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html { scroll-behavior: smooth; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="page-shell">
+   <div class="top-rule"></div>
+
+   <!-- ==================== HEADER (background navy gelap) ==================== -->
+   <header data-template-id="lesson-header" class="canva-header w-full">
+    <div class="max-w-6xl mx-auto px-4 sm:px-5 py-4 sm:py-5">
+     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0" style="background:#f25c2a"><i data-lucide="atom" aria-hidden="true" class="w-5 h-5"></i>
+       </div>
+       <div>
+        <p data-template-id="subject-label" class="canva-text m-0 text-xs tracking-[0.18em] uppercase font-semibold" style="color:#f6c84c">Fisika</p>
+        <h1 data-template-id="lesson-label" class="canva-text m-0 mt-1 font-semibold text-base sm:text-lg" style="color:#fffdf8">Gerak Melingkar</h1>
+       </div>
+      </div>
+      <nav aria-label="Navigasi materi" class="flex flex-wrap items-center gap-2">
+        <a href="#" onclick="window.open('https://portal-fisika.example.com', '_blank'); return false;" class="nav-home-portal rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold inline-flex items-center gap-1.5" title="Kembali ke Portal Fisika">
+          <i data-lucide="home" aria-hidden="true" class="w-4 h-4"></i>
+          <span>Home</span>
+        </a>
+        <button id="nav-home" data-view="home" data-template-id="nav-home" class="canva-button nav-tab is-active rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold" type="button"> <i data-lucide="book-open" aria-hidden="true" class="inline-block w-4 h-4 mr-1"></i><span data-template-id="nav-home-text" class="canva-text">Materi</span> </button>
+        <button id="nav-simulation" data-view="simulation" data-template-id="nav-simulation" class="canva-button nav-tab rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold" type="button"> <i data-lucide="orbit" aria-hidden="true" class="inline-block w-4 h-4 mr-1"></i><span data-template-id="nav-simulation-text" class="canva-text">Simulasi</span> </button>
+        <button id="nav-quiz" data-view="quiz" data-template-id="nav-quiz" class="canva-button nav-tab rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold" type="button"> <i data-lucide="circle-help" aria-hidden="true" class="inline-block w-4 h-4 mr-1"></i><span data-template-id="nav-quiz-text" class="canva-text">Kuis</span> </button>
+      </nav>
+     </div>
+    </div>
+   </header>
+
+   <main class="w-full max-w-6xl mx-auto px-4 sm:px-5 py-8 lg:py-14">
+
+    <!-- ==================== HOME VIEW ==================== -->
+    <section id="home-view" class="page-view is-active" aria-labelledby="main-title">
+     <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-8 items-stretch">
+      <div class="flex flex-col justify-center fade-in">
+       <p data-template-id="eyebrow" class="canva-tag inline-flex w-fit rounded-full px-3 py-1 text-xs tracking-[.14em] uppercase font-bold" style="background:#f6c84c;color:#09233d">Mekanika</p>
+       <h2 id="main-title" data-template-id="main-title" class="canva-text display-font mt-5 mb-4 leading-[1.06] text-3xl sm:text-4xl">Gerak Melingkar Berubah Beraturan</h2>
+       <p data-template-id="main-description" class="canva-text max-w-xl text-base sm:text-lg leading-relaxed">Pelajari bagaimana kecepatan sudut berubah secara teratur ketika sebuah partikel bergerak melingkar dengan percepatan sudut konstan.</p>
+       <div data-template-id="key-idea-panel" class="canva-panel mt-7 rounded-2xl p-5" style="background:rgba(255,253,248,.6);border:1px solid #d8d0c0">
+        <div class="flex gap-3"><i data-lucide="lightbulb" aria-hidden="true" class="w-6 h-6 shrink-0 mt-0.5" style="color:#f25c2a"></i>
+         <div>
+          <h3 data-template-id="key-idea-title" class="canva-text font-bold m-0">Ide Kunci</h3>
+          <p data-template-id="key-idea-text" class="canva-text mt-1 mb-0 leading-relaxed">Pada GMBB, percepatan sudut (α) bernilai konstan. Kecepatan sudut berubah secara linear terhadap waktu, sedangkan posisi sudut berubah secara kuadratik.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <figure class="hero-photo-wrap fade-in fade-delay-1 m-0 shadow-xl"><img data-template-id="hero-image" class="canva-image" loading="lazy" src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&q=80" alt="Ilustrasi gerak melingkar">
+       <figcaption class="absolute z-10 left-6 bottom-5 right-6">
+        <p data-template-id="image-caption" class="canva-text text-white m-0 text-sm font-medium">Partikel bergerak melingkar dengan percepatan sudut konstan.</p>
+       </figcaption>
+      </figure>
+     </div>
+     <section class="mt-14 fade-in fade-delay-2" aria-labelledby="formula-title">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+       <div>
+        <p data-template-id="formula-kicker" class="canva-text text-xs font-bold tracking-[.14em] uppercase m-0" style="color:#f25c2a">Rumus Penting</p>
+        <h2 id="formula-title" data-template-id="formula-title" class="canva-text display-font mt-2 mb-0 text-2xl sm:text-3xl">Persamaan GMBB</h2>
+       </div>
+       <p data-template-id="formula-note" class="canva-text text-sm max-w-md sm:text-right m-0">Gunakan rumus ini untuk menyelesaikan soal gerak melingkar berubah beraturan.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+       <article data-template-id="formula-card-1" class="canva-card formula-card rounded-2xl p-5 shadow-sm">
+        <p data-template-id="formula-1-name" class="canva-text text-sm font-semibold m-0">Kecepatan Sudut</p>
+        <p data-template-id="formula-1-equation" class="canva-text equation mt-4 mb-2">ω = ω₀ + αt</p>
+        <p data-template-id="formula-1-detail" class="canva-text text-sm leading-relaxed m-0">Kecepatan sudut akhir setelah waktu t.</p>
+       </article>
+       <article data-template-id="formula-card-2" class="canva-card formula-card rounded-2xl p-5 shadow-sm">
+        <p data-template-id="formula-2-name" class="canva-text text-sm font-semibold m-0">Posisi Sudut</p>
+        <p data-template-id="formula-2-equation" class="canva-text equation mt-4 mb-2">θ = ω₀t + ½αt²</p>
+        <p data-template-id="formula-2-detail" class="canva-text text-sm leading-relaxed m-0">Sudut yang ditempuh selama waktu t.</p>
+       </article>
+       <article data-template-id="formula-card-3" class="canva-card formula-card rounded-2xl p-5 shadow-sm">
+        <p data-template-id="formula-3-name" class="canva-text text-sm font-semibold m-0">Tanpa Waktu</p>
+        <p data-template-id="formula-3-equation" class="canva-text equation mt-4 mb-2">ω² = ω₀² + 2αθ</p>
+        <p data-template-id="formula-3-detail" class="canva-text text-sm leading-relaxed m-0">Hubungan kecepatan sudut dan posisi sudut.</p>
+       </article>
+       <article data-template-id="formula-card-4" class="canva-card formula-card rounded-2xl p-5 shadow-sm">
+        <p data-template-id="formula-4-name" class="canva-text text-sm font-semibold m-0">Periode &amp; Frekuensi</p>
+        <p data-template-id="formula-4-equation" class="canva-text equation mt-4 mb-2">T = 2π/ω &nbsp; f = 1/T</p>
+        <p data-template-id="formula-4-detail" class="canva-text text-sm leading-relaxed m-0">Waktu satu putaran penuh dan banyaknya putaran per detik.</p>
+       </article>
+      </div>
+     </section>
+    </section>
+
+    <!-- ==================== SIMULATION VIEW ==================== -->
+    <section id="simulation-view" class="page-view" aria-labelledby="simulation-title">
+     <section data-template-id="simulation-section" class="canva-section rounded-[28px] p-4 sm:p-6 lg:p-10 shadow-lg" style="background:#fffdf8;border:1px solid #d8d0c0">
+      <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-6">
+       <div>
+        <p data-template-id="simulation-kicker" class="canva-text text-xs tracking-[.14em] uppercase font-bold m-0" style="color:#f25c2a">Laboratorium Virtual</p>
+        <h2 id="simulation-title" data-template-id="simulation-title" class="canva-text display-font mt-2 mb-2 text-2xl sm:text-3xl">Simulasi GMBB</h2>
+        <p data-template-id="simulation-description" class="canva-text max-w-2xl leading-relaxed m-0 text-sm sm:text-base">Atur kecepatan sudut awal dan percepatan sudut, lalu amati bagaimana partikel bergerak. Masukkan waktu untuk melompat ke kondisi tertentu.</p>
+       </div>
+       <div data-template-id="direction-badge" class="canva-tag shrink-0 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold" style="background:#e6f7f6;color:#0d4e43;border:1px solid #4ec5c1"><i data-lucide="rotate-cw" aria-hidden="true" class="w-4 h-4"></i> <span data-template-id="direction-text" class="canva-text">Berlawanan arah jarum jam</span>
+       </div>
+      </div>
+      <div class="grid lg:grid-cols-[1fr_.9fr] gap-5 lg:gap-7 items-stretch">
+       <div id="simulation-board" class="simulation-board rounded-3xl">
+        <div class="axis-line"></div>
+        <div class="axis-line horizontal"></div>
+        <div class="orbit"></div>
+        <div id="radius-arm" class="radius-arm"></div>
+        <div class="center-hub" aria-hidden="true"></div>
+        <div id="moving-ball" class="moving-ball" aria-label="Bola simulasi pada lintasan melingkar"></div>
+        <div class="absolute left-3 sm:left-5 top-3 sm:top-5 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold" style="background:rgba(255,253,248,.9);color:#112c45">
+         r = 1,5 m
+        </div>
+        <div class="absolute right-3 sm:right-5 bottom-3 sm:bottom-5 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold" style="background:rgba(255,253,248,.9);color:#112c45">
+         <span id="board-angle">θ = 0,00 rad</span>
+        </div>
+       </div>
+       <aside class="flex flex-col gap-4" aria-label="Panel kontrol simulasi">
+        <div class="rounded-2xl p-4 sm:p-5" style="background:#fffdf8;border:1px solid #d8d0c0">
+         <div class="flex justify-between gap-4 items-end"><label data-template-id="omega-label" class="canva-text font-semibold text-sm" for="omega-slider">Kecepatan Sudut Awal (ω₀)</label> <output id="omega-input-value" class="text-sm font-bold" style="color:#f25c2a">2,0 rad/s</output>
+         </div><input id="omega-slider" type="range" min="-5" max="5" value="2" step="0.1" class="mt-3" aria-describedby="omega-help">
+         <p id="omega-help" data-template-id="omega-help-text" class="canva-text text-xs mt-1.5 mb-0 text-gray-500">Kecepatan sudut pada saat t = 0.</p>
+        </div>
+        <div class="rounded-2xl p-4 sm:p-5" style="background:#fffdf8;border:1px solid #d8d0c0">
+         <div class="flex justify-between gap-4 items-end"><label data-template-id="alpha-label" class="canva-text font-semibold text-sm" for="alpha-slider">Percepatan Sudut (α)</label> <output id="alpha-input-value" class="text-sm font-bold" style="color:#4a938f">0,8 rad/s²</output>
+         </div><input id="alpha-slider" type="range" min="-2" max="2" value="0.8" step="0.1" class="mt-3" aria-describedby="alpha-help">
+         <p id="alpha-help" data-template-id="alpha-help-text" class="canva-text text-xs mt-1.5 mb-0 text-gray-500">Laju perubahan kecepatan sudut.</p>
+        </div>
+
+        <!-- TIME INPUT -->
+        <div class="time-input-group">
+          <i data-lucide="timer" class="w-4 h-4 text-gray-500 shrink-0"></i>
+          <label for="time-input">Waktu (s)</label>
+          <input id="time-input" type="number" min="0" max="999" step="0.1" value="0" placeholder="0">
+          <button id="jump-time-btn" class="btn-jump" type="button">Lompat</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button id="toggle-button" data-template-id="start-button" type="button" class="canva-button rounded-xl px-3 py-3 flex items-center justify-center gap-2 font-bold transition-transform hover:-translate-y-0.5 text-sm" style="background:#f25c2a;color:white"> <i id="toggle-icon" data-lucide="play" aria-hidden="true" class="w-4 h-4"></i> <span data-template-id="start-button-text" class="canva-text">Mulai</span> </button>
+          <button id="reset-button" data-template-id="reset-button" type="button" class="canva-button rounded-xl px-3 py-3 flex items-center justify-center gap-2 font-bold text-sm" style="background:#e6dfd1;color:#112c45"> <i data-lucide="rotate-ccw" aria-hidden="true" class="w-4 h-4"></i> <span data-template-id="reset-button-text" class="canva-text">Reset</span> </button>
+        </div>
+
+        <!-- LIVE READOUTS -->
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
+         <div class="readout rounded-xl p-3 sm:p-4">
+          <p data-template-id="readout-time-label" class="canva-text text-xs font-semibold uppercase tracking-wider m-0 text-gray-500">Waktu</p><output id="time-value" class="block mt-1 text-lg sm:text-xl font-bold">0,00 s</output>
+         </div>
+         <div class="readout rounded-xl p-3 sm:p-4">
+          <p data-template-id="readout-angle-label" class="canva-text text-xs font-semibold uppercase tracking-wider m-0 text-gray-500">Sudut</p><output id="angle-value" class="block mt-1 text-lg sm:text-xl font-bold">0,00 rad</output>
+         </div>
+         <div class="readout rounded-xl p-3 sm:p-4">
+          <p data-template-id="readout-omega-label" class="canva-text text-xs font-semibold uppercase tracking-wider m-0 text-gray-500">ω</p><output id="omega-value" class="block mt-1 text-lg sm:text-xl font-bold">2,00 rad/s</output>
+         </div>
+         <div class="readout rounded-xl p-3 sm:p-4">
+          <p data-template-id="readout-tangent-label" class="canva-text text-xs font-semibold uppercase tracking-wider m-0 text-gray-500">a<sub>t</sub></p><output id="tangent-value" class="block mt-1 text-lg sm:text-xl font-bold">1,20 m/s²</output>
+         </div>
+        </div>
+
+        <!-- EXTENDED DATA PANEL -->
+        <div class="data-panel">
+          <div class="data-panel-header">
+            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+            Data Gerak Partikel
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="route" class="w-3.5 h-3.5"></i> Jarak Tempuh (s)</span>
+            <span class="data-value" id="distance-value">0,00 m</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="circle-dot" class="w-3.5 h-3.5"></i> Sudut (θ)</span>
+            <span class="data-value" id="theta-value">0,00 rad</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="repeat" class="w-3.5 h-3.5"></i> Putaran</span>
+            <span class="data-value" id="revolution-value">0,00 putaran</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Periode (T)</span>
+            <span class="data-value" id="period-value">∞ s</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="activity" class="w-3.5 h-3.5"></i> Frekuensi (f)</span>
+            <span class="data-value" id="frequency-value">0,00 Hz</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label"><i data-lucide="gauge" class="w-3.5 h-3.5"></i> Percepatan Sentripetal</span>
+            <span class="data-value" id="centripetal-value">0,00 m/s²</span>
+          </div>
+        </div>
+       </aside>
+      </div>
+      <div data-template-id="interpretation-panel" class="canva-panel mt-6 rounded-2xl p-4 sm:p-5 flex gap-3" style="background:rgba(246,200,76,.12);border:1px solid #f6c84c">
+       <i data-lucide="graduation-cap" aria-hidden="true" class="w-5 h-5 sm:w-6 sm:h-6 shrink-0" style="color:#f25c2a"></i>
+       <div>
+        <h3 data-template-id="interpretation-title" class="canva-text font-bold m-0 text-sm sm:text-base">Interpretasi</h3>
+        <p id="interpretation-value" class="mt-1 mb-0 leading-relaxed text-sm sm:text-base">Percepatan sudut bernilai positif, sehingga kecepatan sudut bertambah setiap detik. Bola bergerak makin cepat.</p>
+       </div>
+      </div>
+     </section>
+    </section>
+
+    <!-- ==================== QUIZ VIEW ==================== -->
+    <section id="quiz-view" class="page-view" aria-labelledby="quiz-title">
+     <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+       <p data-template-id="quiz-kicker" class="canva-text text-xs tracking-[.14em] uppercase font-bold" style="color:#f25c2a">Uji Pemahaman</p>
+       <h2 id="quiz-title" data-template-id="quiz-title" class="canva-text display-font mt-2 mb-3 text-2xl sm:text-3xl">Kuis GMBB</h2>
+       <p data-template-id="quiz-description" class="canva-text max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">Jawab ketiga pertanyaan berikut untuk menguji pemahamanmu tentang gerak melingkar berubah beraturan.</p>
+      </div>
+      <div data-template-id="score-panel" class="canva-panel rounded-2xl px-4 sm:px-5 py-4 mb-6 flex flex-wrap items-center justify-between gap-3" style="background:#fffdf8;border:1px solid #d8d0c0">
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:#f6c84c;color:#09233d"><i data-lucide="award" aria-hidden="true" class="w-5 h-5"></i>
+        </div>
+        <div>
+         <p data-template-id="score-label" class="canva-text m-0 text-sm font-bold">Skor Kamu</p><output id="score-value" class="block text-xl font-bold">0 / 3</output>
+        </div>
+       </div><button id="retry-quiz-button" data-template-id="retry-quiz-button" type="button" class="canva-button rounded-xl px-4 py-2.5 font-bold flex items-center gap-2 text-sm" style="background:#e6dfd1;color:#112c45"> <i data-lucide="rotate-ccw" aria-hidden="true" class="w-4 h-4"></i> <span data-template-id="retry-quiz-text" class="canva-text">Ulangi</span> </button>
+      </div>
+      <div class="space-y-5">
+       <article data-template-id="quiz-card-1" class="canva-card rounded-2xl p-4 sm:p-6 shadow-sm" style="background:#fffdf8;border:1px solid #d8d0c0">
+        <p data-template-id="question-1-number" class="canva-tag inline-flex rounded-full px-3 py-1 text-xs font-bold" style="background:#f25c2a;color:white">Soal 1</p>
+        <h3 data-template-id="question-1-text" class="canva-text mt-4 mb-5 font-bold text-base sm:text-lg">Sebuah roda berputar dengan kecepatan sudut awal 4 rad/s dan percepatan sudut 2 rad/s². Berapakah kecepatan sudutnya setelah 3 detik?</h3>
+        <div class="grid gap-3" data-question="1"><button data-template-id="q1-option-a" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">6 rad/s</button> <button data-template-id="q1-option-b" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="true">10 rad/s</button> <button data-template-id="q1-option-c" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">12 rad/s</button>
+        </div>
+        <div id="q1-correct" data-template-id="q1-correct-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#d9f1ef;color:#0d4e43"><i data-lucide="check-circle-2" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q1-correct-text" class="canva-text m-0 text-sm">Tepat! ω = ω₀ + αt = 4 + (2)(3) = 10 rad/s.</p>
+        </div>
+        <div id="q1-wrong" data-template-id="q1-wrong-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#fff0e9;color:#8e2f14"><i data-lucide="circle-x" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q1-wrong-text" class="canva-text m-0 text-sm">Belum tepat. Gunakan rumus ω = ω₀ + αt. Hasilnya 4 + 6 = 10 rad/s.</p>
+        </div>
+       </article>
+       <article data-template-id="quiz-card-2" class="canva-card rounded-2xl p-4 sm:p-6 shadow-sm" style="background:#fffdf8;border:1px solid #d8d0c0">
+        <p data-template-id="question-2-number" class="canva-tag inline-flex rounded-full px-3 py-1 text-xs font-bold" style="background:#4ec5c1;color:#09233d">Soal 2</p>
+        <h3 data-template-id="question-2-text" class="canva-text mt-4 mb-5 font-bold text-base sm:text-lg">Jika percepatan sudut bernilai negatif, maka gerak benda adalah…</h3>
+        <div class="grid gap-3" data-question="2"><button data-template-id="q2-option-a" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="true">Diperlambat</button> <button data-template-id="q2-option-b" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">Dipercepat</button> <button data-template-id="q2-option-c" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">Kecepatan sudut tetap</button>
+        </div>
+        <div id="q2-correct" data-template-id="q2-correct-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#d9f1ef;color:#0d4e43"><i data-lucide="check-circle-2" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q2-correct-text" class="canva-text m-0 text-sm">Benar! α negatif berarti kecepatan sudut berkurang setiap detik, sehingga benda diperlambat.</p>
+        </div>
+        <div id="q2-wrong" data-template-id="q2-wrong-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#fff0e9;color:#8e2f14"><i data-lucide="circle-x" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q2-wrong-text" class="canva-text m-0 text-sm">Kurang tepat. Jika α negatif, kecepatan sudut berkurang, artinya benda diperlambat.</p>
+        </div>
+       </article>
+       <article data-template-id="quiz-card-3" class="canva-card rounded-2xl p-4 sm:p-6 shadow-sm" style="background:#fffdf8;border:1px solid #d8d0c0">
+        <p data-template-id="question-3-number" class="canva-tag inline-flex rounded-full px-3 py-1 text-xs font-bold" style="background:#f6c84c;color:#09233d">Soal 3</p>
+        <h3 data-template-id="question-3-text" class="canva-text mt-4 mb-5 font-bold text-base sm:text-lg">Rumus untuk mencari sudut yang ditempuh pada GMBB adalah…</h3>
+        <div class="grid gap-3" data-question="3"><button data-template-id="q3-option-a" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">θ = ωt</button> <button data-template-id="q3-option-b" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="false">θ = ω₀t − ½αt²</button> <button data-template-id="q3-option-c" class="canva-button quiz-option rounded-xl p-4 font-medium text-sm" type="button" data-correct="true">θ = ω₀t + ½αt²</button>
+        </div>
+        <div id="q3-correct" data-template-id="q3-correct-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#d9f1ef;color:#0d4e43"><i data-lucide="check-circle-2" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q3-correct-text" class="canva-text m-0 text-sm">Tepat! θ = ω₀t + ½αt².</p>
+        </div>
+        <div id="q3-wrong" data-template-id="q3-wrong-feedback" class="quiz-feedback mt-4 gap-2 items-start rounded-xl p-4" style="background:#fff0e9;color:#8e2f14"><i data-lucide="circle-x" aria-hidden="true" class="w-5 h-5 shrink-0"></i>
+         <p data-template-id="q3-wrong-text" class="canva-text m-0 text-sm">Belum tepat. Rumus yang benar adalah θ = ω₀t + ½αt².</p>
+        </div>
+       </article>
+      </div>
+     </div>
+    </section>
+   </main>
+   <footer class="w-full border-t" style="border-color:#d8d0c0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-5 py-6 flex flex-col sm:flex-row justify-between gap-2 text-sm">
+     <p data-template-id="footer-text" class="canva-text m-0">© 2026 Portal Fisika — Materi Gerak Melingkar</p>
+     <p data-template-id="footer-unit-note" class="canva-text m-0">Satuan SI: rad, rad/s, rad/s², m, s</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+
+      const views = document.querySelectorAll(".page-view");
+      const navButtons = document.querySelectorAll(".nav-tab");
+
+      function showView(viewName) {
+        views.forEach((view) => view.classList.toggle("is-active", view.id === `${viewName}-view`));
+        navButtons.forEach((button) => {
+          const active = button.dataset.view === viewName;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-current", active ? "page" : "false");
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => showView(button.dataset.view));
+      });
+
+      const omegaSlider = document.getElementById("omega-slider");
+      const alphaSlider = document.getElementById("alpha-slider");
+      const toggleButton = document.getElementById("toggle-button");
+      const resetButton = document.getElementById("reset-button");
+      const movingBall = document.getElementById("moving-ball");
+      const radiusArm = document.getElementById("radius-arm");
+      const simulationBoard = document.getElementById("simulation-board");
+
+      const omegaInputValue = document.getElementById("omega-input-value");
+      const alphaInputValue = document.getElementById("alpha-input-value");
+      const timeValue = document.getElementById("time-value");
+      const angleValue = document.getElementById("angle-value");
+      const omegaValue = document.getElementById("omega-value");
+      const tangentValue = document.getElementById("tangent-value");
+      const interpretationValue = document.getElementById("interpretation-value");
+
+      // Extended data elements
+      const distanceValue = document.getElementById("distance-value");
+      const thetaValueEl = document.getElementById("theta-value");
+      const revolutionValue = document.getElementById("revolution-value");
+      const periodValue = document.getElementById("period-value");
+      const frequencyValue = document.getElementById("frequency-value");
+      const centripetalValue = document.getElementById("centripetal-value");
+      const boardAngle = document.getElementById("board-angle");
+
+      // Time input elements
+      const timeInput = document.getElementById("time-input");
+      const jumpTimeBtn = document.getElementById("jump-time-btn");
+
+      const radius = 1.5;
+      let omegaInitial = Number(omegaSlider.value);
+      let alpha = Number(alphaSlider.value);
+      let theta = 0;
+      let elapsed = 0;
+      let running = false;
+      let previousTimestamp = null;
+      let animationFrame;
+
+      function formatNumber(number, digits = 2) {
+        if (!isFinite(number)) return "∞";
+        return number.toLocaleString("id-ID", {
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits
+        });
+      }
+
+      function updateScene() {
+        const omegaNow = omegaInitial + alpha * elapsed;
+        const boardMin = Math.min(simulationBoard.clientWidth, simulationBoard.clientHeight);
+        const orbitRadius = boardMin < 310 ? (boardMin < 260 ? 85 : 100) : 129;
+        const x = Math.cos(theta - Math.PI / 2) * orbitRadius;
+        const y = Math.sin(theta - Math.PI / 2) * orbitRadius;
+
+        movingBall.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        radiusArm.style.width = `${orbitRadius}px`;
+        radiusArm.style.transform = `rotate(${theta - Math.PI / 2}rad)`;
+
+        // Basic readouts
+        timeValue.textContent = `${formatNumber(elapsed)} s`;
+        angleValue.textContent = `${formatNumber(theta)} rad`;
+        omegaValue.textContent = `${formatNumber(omegaNow)} rad/s`;
+        tangentValue.textContent = `${formatNumber(alpha * radius)} m/s²`;
+
+        // Extended data
+        const distance = radius * Math.abs(theta);
+        const revolutions = theta / (2 * Math.PI);
+        const currentOmega = omegaNow;
+        const period = Math.abs(currentOmega) > 0.001 ? (2 * Math.PI) / Math.abs(currentOmega) : Infinity;
+        const frequency = Math.abs(currentOmega) > 0.001 ? Math.abs(currentOmega) / (2 * Math.PI) : 0;
+        const centripetal = radius * currentOmega * currentOmega;
+
+        distanceValue.textContent = `${formatNumber(distance)} m`;
+        thetaValueEl.textContent = `${formatNumber(theta)} rad`;
+        revolutionValue.textContent = `${formatNumber(revolutions)} putaran`;
+        periodValue.textContent = isFinite(period) ? `${formatNumber(period)} s` : "∞";
+        frequencyValue.textContent = `${formatNumber(frequency)} Hz`;
+        centripetalValue.textContent = `${formatNumber(centripetal)} m/s²`;
+        boardAngle.textContent = `θ = ${formatNumber(theta)} rad`;
+
+        movingBall.classList.toggle("running", running);
+
+        if (alpha > 0) {
+          interpretationValue.textContent = "Percepatan sudut bernilai positif, sehingga kecepatan sudut bertambah setiap detik. Bola bergerak makin cepat.";
+        } else if (alpha < 0) {
+          interpretationValue.textContent = "Percepatan sudut bernilai negatif, sehingga kecepatan sudut berkurang setiap detik. Bola perlahan mengalami perlambatan.";
+        } else {
+          interpretationValue.textContent = "Percepatan sudut nol. Kecepatan sudut tetap, sehingga gerak yang terjadi adalah gerak melingkar beraturan.";
+        }
+      }
+
+      function updateControlValues() {
+        omegaInitial = Number(omegaSlider.value);
+        alpha = Number(alphaSlider.value);
+        omegaInputValue.textContent = `${formatNumber(omegaInitial, 1)} rad/s`;
+        alphaInputValue.textContent = `${formatNumber(alpha, 1)} rad/s²`;
+        updateScene();
+      }
+
+      function animate(timestamp) {
+        if (!running) return;
+        if (previousTimestamp === null) previousTimestamp = timestamp;
+
+        const deltaTime = Math.min((timestamp - previousTimestamp) / 1000, 0.05);
+        previousTimestamp = timestamp;
+        const omegaBefore = omegaInitial + alpha * elapsed;
+
+        theta += omegaBefore * deltaTime + .5 * alpha * deltaTime * deltaTime;
+        elapsed += deltaTime;
+
+        // Update time input to reflect current time
+        timeInput.value = elapsed.toFixed(1);
+
+        updateScene();
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      function setRunning(nextState) {
+        running = nextState;
+        previousTimestamp = null;
+        const currentIcon = toggleButton.querySelector("svg, i");
+        if (currentIcon) currentIcon.remove();
+
+        const icon = document.createElement("i");
+        icon.setAttribute("data-lucide", running ? "pause" : "play");
+        icon.setAttribute("aria-hidden", "true");
+        icon.className = "w-4 h-4";
+        toggleButton.insertBefore(icon, toggleButton.firstChild);
+
+        const btnText = toggleButton.querySelector("[data-template-id='start-button-text']");
+        if (btnText) btnText.textContent = running ? "Jeda" : "Mulai";
+
+        lucide.createIcons();
+
+        if (running) {
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrame);
+        }
+        updateScene();
+      }
+
+      // Jump to specific time
+      function jumpToTime(targetTime) {
+        targetTime = Math.max(0, Number(targetTime) || 0);
+        const wasRunning = running;
+        if (wasRunning) setRunning(false);
+
+        elapsed = targetTime;
+        // θ = ω₀t + ½αt²
+        theta = omegaInitial * elapsed + 0.5 * alpha * elapsed * elapsed;
+
+        timeInput.value = elapsed.toFixed(1);
+        updateScene();
+      }
+
+      omegaSlider.addEventListener("input", updateControlValues);
+      alphaSlider.addEventListener("input", updateControlValues);
+      toggleButton.addEventListener("click", () => setRunning(!running));
+      resetButton.addEventListener("click", () => {
+        setRunning(false);
+        elapsed = 0;
+        theta = 0;
+        timeInput.value = "0";
+        updateScene();
+      });
+
+      jumpTimeBtn.addEventListener("click", () => {
+        jumpToTime(timeInput.value);
+      });
+
+      timeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          jumpToTime(timeInput.value);
+        }
+      });
+
+      window.addEventListener("resize", updateScene);
+
+      // Prevent page scroll while touching the simulation board on mobile
+      simulationBoard.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+      }, { passive: false });
+
+      let score = 0;
+      const answeredQuestions = new Set();
+      const scoreValue = document.getElementById("score-value");
+
+      document.querySelectorAll(".quiz-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          const group = option.closest("[data-question]");
+          const questionNumber = group.dataset.question;
+          if (answeredQuestions.has(questionNumber)) return;
+
+          answeredQuestions.add(questionNumber);
+          const correct = option.dataset.correct === "true";
+          option.classList.add(correct ? "is-correct" : "is-wrong");
+
+          group.querySelectorAll(".quiz-option").forEach((button) => {
+            button.disabled = true;
+            if (button.dataset.correct === "true") button.classList.add("is-correct");
+          });
+
+          document.getElementById(`q${questionNumber}-${correct ? "correct" : "wrong"}`).classList.add("is-visible");
+          if (correct) score += 1;
+          scoreValue.textContent = `${score} / 3`;
+        });
+      });
+
+      document.getElementById("retry-quiz-button").addEventListener("click", () => {
+        score = 0;
+        answeredQuestions.clear();
+        scoreValue.textContent = "0 / 3";
+
+        document.querySelectorAll(".quiz-option").forEach((option) => {
+          option.disabled = false;
+          option.classList.remove("is-correct", "is-wrong");
+        });
+
+        document.querySelectorAll(".quiz-feedback").forEach((feedback) => {
+          feedback.classList.remove("is-visible");
+        });
+      });
+
+      updateScene();
+    });
+  </script>
+ </body>
+</html>
