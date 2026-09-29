@@ -62,10 +62,10 @@
       align-items: center;
     }
 
-    .nav-tab:hover { 
-      color: white; 
+    .nav-tab:hover {
+      color: white;
       background: rgba(255,255,255,.12);
-      transform: translateY(-1px); 
+      transform: translateY(-1px);
     }
 
     .nav-tab.is-active {
@@ -206,6 +206,17 @@
 
     .moving-ball.running {
       box-shadow: 0 5px 0 rgba(17,44,69,.18), 0 0 0 5px rgba(242,92,42,.17);
+    }
+
+    /* Speed indicator badge on the ball */
+    .speed-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
+      z-index: 20;
+      transform: translate(-50%, -50%);
+      transition: transform .05s linear;
     }
 
     .readout {
@@ -408,7 +419,7 @@
   <div class="page-shell">
    <div class="top-rule"></div>
 
-   <!-- ==================== HEADER (background navy gelap) ==================== -->
+   <!-- ==================== HEADER ==================== -->
    <header data-template-id="lesson-header" class="canva-header w-full">
     <div class="max-w-6xl mx-auto px-4 sm:px-5 py-4 sm:py-5">
      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -497,7 +508,7 @@
        <div>
         <p data-template-id="simulation-kicker" class="canva-text text-xs tracking-[.14em] uppercase font-bold m-0" style="color:#f25c2a">Laboratorium Virtual</p>
         <h2 id="simulation-title" data-template-id="simulation-title" class="canva-text display-font mt-2 mb-2 text-2xl sm:text-3xl">Simulasi GMBB</h2>
-        <p data-template-id="simulation-description" class="canva-text max-w-2xl leading-relaxed m-0 text-sm sm:text-base">Atur kecepatan sudut awal dan percepatan sudut, lalu amati bagaimana partikel bergerak. Masukkan waktu untuk melompat ke kondisi tertentu.</p>
+        <p data-template-id="simulation-description" class="canva-text max-w-2xl leading-relaxed m-0 text-sm sm:text-base">Atur kecepatan sudut awal dan percepatan sudut, lalu amati bagaimana partikel bergerak makin cepat. Masukkan waktu untuk melompat ke kondisi tertentu.</p>
        </div>
        <div data-template-id="direction-badge" class="canva-tag shrink-0 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold" style="background:#e6f7f6;color:#0d4e43;border:1px solid #4ec5c1"><i data-lucide="rotate-cw" aria-hidden="true" class="w-4 h-4"></i> <span data-template-id="direction-text" class="canva-text">Berlawanan arah jarum jam</span>
        </div>
@@ -513,6 +524,11 @@
         <div class="absolute left-3 sm:left-5 top-3 sm:top-5 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold" style="background:rgba(255,253,248,.9);color:#112c45">
          r = 1,5 m
         </div>
+        <!-- ω sesaat di board -->
+        <div class="absolute left-3 sm:left-5 bottom-3 sm:bottom-5 rounded-lg px-3 py-2 text-xs font-bold" style="background:rgba(242,92,42,.92);color:white">
+         ω = <span id="board-omega">2,00</span> rad/s
+        </div>
+        <!-- θ sesaat di board -->
         <div class="absolute right-3 sm:right-5 bottom-3 sm:bottom-5 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold" style="background:rgba(255,253,248,.9);color:#112c45">
          <span id="board-angle">θ = 0,00 rad</span>
         </div>
@@ -711,12 +727,14 @@
       const frequencyValue = document.getElementById("frequency-value");
       const centripetalValue = document.getElementById("centripetal-value");
       const boardAngle = document.getElementById("board-angle");
+      const boardOmega = document.getElementById("board-omega");
 
       // Time input elements
       const timeInput = document.getElementById("time-input");
       const jumpTimeBtn = document.getElementById("jump-time-btn");
 
       const radius = 1.5;
+      const SPEED_MULTIPLIER = 2; // agar efek percepatan lebih terasa
       let omegaInitial = Number(omegaSlider.value);
       let alpha = Number(alphaSlider.value);
       let theta = 0;
@@ -734,7 +752,10 @@
       }
 
       function updateScene() {
+        // ω dan θ dihitung dari rumus analitik — selalu akurat
         const omegaNow = omegaInitial + alpha * elapsed;
+        // theta sudah dihitung di animate / jump / reset
+
         const boardMin = Math.min(simulationBoard.clientWidth, simulationBoard.clientHeight);
         const orbitRadius = boardMin < 310 ? (boardMin < 260 ? 85 : 100) : 129;
         const x = Math.cos(theta - Math.PI / 2) * orbitRadius;
@@ -753,10 +774,9 @@
         // Extended data
         const distance = radius * Math.abs(theta);
         const revolutions = theta / (2 * Math.PI);
-        const currentOmega = omegaNow;
-        const period = Math.abs(currentOmega) > 0.001 ? (2 * Math.PI) / Math.abs(currentOmega) : Infinity;
-        const frequency = Math.abs(currentOmega) > 0.001 ? Math.abs(currentOmega) / (2 * Math.PI) : 0;
-        const centripetal = radius * currentOmega * currentOmega;
+        const period = Math.abs(omegaNow) > 0.001 ? (2 * Math.PI) / Math.abs(omegaNow) : Infinity;
+        const frequency = Math.abs(omegaNow) > 0.001 ? Math.abs(omegaNow) / (2 * Math.PI) : 0;
+        const centripetal = radius * omegaNow * omegaNow;
 
         distanceValue.textContent = `${formatNumber(distance)} m`;
         thetaValueEl.textContent = `${formatNumber(theta)} rad`;
@@ -765,6 +785,7 @@
         frequencyValue.textContent = `${formatNumber(frequency)} Hz`;
         centripetalValue.textContent = `${formatNumber(centripetal)} m/s²`;
         boardAngle.textContent = `θ = ${formatNumber(theta)} rad`;
+        boardOmega.textContent = formatNumber(omegaNow);
 
         movingBall.classList.toggle("running", running);
 
@@ -777,11 +798,17 @@
         }
       }
 
+      // Setiap kali slider diubah, reset ke kondisi awal agar θ konsisten dengan rumus
       function updateControlValues() {
         omegaInitial = Number(omegaSlider.value);
         alpha = Number(alphaSlider.value);
         omegaInputValue.textContent = `${formatNumber(omegaInitial, 1)} rad/s`;
         alphaInputValue.textContent = `${formatNumber(alpha, 1)} rad/s²`;
+        // Reset kondisi awal
+        elapsed = 0;
+        theta = 0;
+        timeInput.value = "0";
+        if (running) setRunning(false);
         updateScene();
       }
 
@@ -789,16 +816,18 @@
         if (!running) return;
         if (previousTimestamp === null) previousTimestamp = timestamp;
 
-        const deltaTime = Math.min((timestamp - previousTimestamp) / 1000, 0.05);
+        // deltaTime: cap 0.1s + multiplier, supaya percepatan terasa jelas
+        const deltaTime = Math.min((timestamp - previousTimestamp) / 1000, 0.1) * SPEED_MULTIPLIER;
         previousTimestamp = timestamp;
-        const omegaBefore = omegaInitial + alpha * elapsed;
 
-        theta += omegaBefore * deltaTime + .5 * alpha * deltaTime * deltaTime;
+        // Tambah waktu
         elapsed += deltaTime;
 
-        // Update time input to reflect current time
-        timeInput.value = elapsed.toFixed(1);
+        // Hitung ulang theta dari rumus analitik: θ = ω₀t + ½αt²
+        // Ini menjamin gerakan benar-benar sesuai rumus GMBB (makin cepat jika α > 0)
+        theta = omegaInitial * elapsed + 0.5 * alpha * elapsed * elapsed;
 
+        timeInput.value = elapsed.toFixed(1);
         updateScene();
         animationFrame = requestAnimationFrame(animate);
       }
@@ -828,14 +857,13 @@
         updateScene();
       }
 
-      // Jump to specific time
+      // Melompat ke waktu tertentu
       function jumpToTime(targetTime) {
         targetTime = Math.max(0, Number(targetTime) || 0);
-        const wasRunning = running;
-        if (wasRunning) setRunning(false);
+        if (running) setRunning(false);
 
         elapsed = targetTime;
-        // θ = ω₀t + ½αt²
+        // Hitung theta dengan rumus: θ = ω₀t + ½αt²
         theta = omegaInitial * elapsed + 0.5 * alpha * elapsed * elapsed;
 
         timeInput.value = elapsed.toFixed(1);
@@ -865,7 +893,7 @@
 
       window.addEventListener("resize", updateScene);
 
-      // Prevent page scroll while touching the simulation board on mobile
+      // Cegah scroll saat menyentuh board di mobile
       simulationBoard.addEventListener("touchstart", (e) => {
         e.preventDefault();
       }, { passive: false });
