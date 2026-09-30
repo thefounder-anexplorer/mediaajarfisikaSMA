@@ -59,7 +59,6 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Mobile responsive adjustments */
         @media (max-width: 640px) {
             .tab-btn span {
                 font-size: 10px;
@@ -77,7 +76,6 @@
                 height: 8px;
             }
         }
-        /* Better range input styling for mobile */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -105,7 +103,6 @@
             border: 3px solid #0f172a;
             box-shadow: 0 0 0 2px #14b8a6;
         }
-        /* Prevent text selection on buttons */
         button {
             -webkit-user-select: none;
             user-select: none;
@@ -115,7 +112,6 @@
 <body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
 
     <div>
-        <!-- Header -->
         <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-3">
@@ -134,7 +130,6 @@
                         </div>
                     </div>
 
-                    <!-- Navigation Tabs -->
                     <nav class="flex flex-wrap justify-center gap-1 p-1 bg-slate-950/80 rounded-xl border border-slate-800 text-xs sm:text-sm font-medium w-full md:w-auto">
                         <button onclick="switchTab('caliper')" id="tab-btn-caliper" class="tab-btn tab-active flex-1 md:flex-initial px-2 sm:px-3.5 py-2 rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-ruler-combined"></i> <span>Jangka Sorong</span>
@@ -159,7 +154,6 @@
             <section id="tab-caliper" class="tab-content space-y-4 sm:space-y-6">
                 <div class="glass-card rounded-2xl p-3 sm:p-6 shadow-xl">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
-                        <!-- Precision Selector -->
                         <div class="md:col-span-4 space-y-1.5">
                             <label class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-teal-400 flex items-center gap-1.5">
                                 <i class="fa-solid fa-sliders"></i> Ketelitian
@@ -171,7 +165,6 @@
                             </div>
                         </div>
 
-                        <!-- Object Presets -->
                         <div class="md:col-span-4 space-y-1.5">
                             <label class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
                                 <i class="fa-solid fa-cube"></i> Contoh Objek
@@ -186,7 +179,6 @@
                             </select>
                         </div>
 
-                        <!-- View Toggles -->
                         <div class="md:col-span-4 flex flex-wrap gap-1.5 sm:gap-2 justify-start md:justify-end">
                             <label class="inline-flex items-center gap-1.5 bg-slate-900 px-2.5 py-2 rounded-lg border border-slate-800 text-[11px] sm:text-xs cursor-pointer hover:bg-slate-800">
                                 <input type="checkbox" id="cal-toggle-solution" checked onchange="toggleCaliperSolution()" class="rounded text-teal-500 focus:ring-0">
@@ -203,7 +195,6 @@
                         </div>
                     </div>
 
-                    <!-- Slider Bar -->
                     <div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-800/80 space-y-3">
                         <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400">
                             <span>Geser Rahang (0-120 mm):</span>
@@ -232,7 +223,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
-                        <!-- Magnifier -->
                         <div class="lg:col-span-5 glass-card rounded-2xl p-3 sm:p-4 flex flex-col justify-between">
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-teal-400 flex items-center gap-1.5">
@@ -248,7 +238,6 @@
                             </p>
                         </div>
 
-                        <!-- Breakdown -->
                         <div class="lg:col-span-7 glass-card rounded-2xl p-3 sm:p-5 flex flex-col justify-between space-y-3 sm:space-y-4">
                             <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                                 <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
@@ -506,14 +495,14 @@
                             </div>
 
                             <div class="canvas-container shadow-inner">
-                                <canvas id="quiz-main-canvas" class="w-full h-[180px] sm:h-[240px]"></canvas>
+                                <canvas id="quiz-main-canvas" class="w-full h-[220px] sm:h-[300px]"></canvas>
                             </div>
 
                             <div class="bg-slate-900/80 p-2 sm:p-2.5 rounded-xl border border-slate-800 space-y-1">
                                 <div class="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                                    <i class="fa-solid fa-magnifying-glass text-teal-400"></i> Zoom Pembesar:
+                                    <i class="fa-solid fa-magnifying-glass text-teal-400"></i> Zoom Pembesar Skala:
                                 </div>
-                                <div class="canvas-container h-[120px] sm:h-[140px]">
+                                <div class="canvas-container h-[160px] sm:h-[200px]">
                                     <canvas id="quiz-zoom-canvas" class="w-full h-full"></canvas>
                                 </div>
                             </div>
@@ -832,23 +821,17 @@
             return 50;
         }
 
-        // ============ PERBAIKAN: calculateCaliper ============
-        // Membulatkan nilai ke kelipatan precision sehingga garis nonius
-        // SELALU berhimpit tepat di atas garis skala utama
         function calculateCaliper(val, precision) {
             const numDivs = getCaliperDivisions(precision);
             
-            // Bulatkan nilai ke kelipatan precision terdekat
             let roundedVal = Math.round(val / precision) * precision;
             roundedVal = parseFloat(roundedVal.toFixed(4));
 
-            // SU = bilangan bulat <= roundedVal
             const su = Math.floor(roundedVal + 1e-9);
             
-            // SN
             const remainder = parseFloat((roundedVal - su).toFixed(4));
             let snLine = Math.round(remainder / precision);
-            if (snLine >= numDivs) snLine = 0; // wrap-around safety
+            if (snLine >= numDivs) snLine = 0;
             const snVal = parseFloat((snLine * precision).toFixed(4));
             const total = parseFloat((su + snVal).toFixed(4));
 
@@ -957,7 +940,6 @@
 
             ctx.clearRect(0, 0, width, height);
 
-            // Responsive scale factor based on canvas width
             const baseWidth = 700;
             const scaleFactor = Math.min(1, width / baseWidth);
             const pxPerMM = 4.2 * scaleFactor; 
@@ -967,7 +949,6 @@
             const jawTopY = beamY - 40 * scaleFactor;
             const jawBottomY = height - 30;
 
-            // 1. Depth Rod
             const rodX = startX + (120 * pxPerMM);
             const rodLength = val * pxPerMM;
             ctx.fillStyle = '#94a3b8';
@@ -975,7 +956,6 @@
             ctx.strokeStyle = '#64748b';
             ctx.strokeRect(rodX, beamY + beamH/2 - 2, rodLength, 5);
 
-            // 2. Main Scale Body
             const beamGrad = ctx.createLinearGradient(0, beamY, 0, beamY + beamH);
             beamGrad.addColorStop(0, '#cbd5e1');
             beamGrad.addColorStop(0.5, '#f8fafc');
@@ -989,7 +969,6 @@
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
-            // Fixed Lower Jaw
             ctx.beginPath();
             ctx.moveTo(startX, beamY + beamH);
             ctx.lineTo(startX, jawBottomY - 15);
@@ -1001,7 +980,6 @@
             ctx.fill();
             ctx.stroke();
 
-            // Fixed Upper Jaw
             ctx.beginPath();
             ctx.moveTo(startX, beamY);
             ctx.lineTo(startX, jawTopY + 15);
@@ -1013,7 +991,6 @@
             ctx.fill();
             ctx.stroke();
 
-            // 3. Clamped Object
             if (val > 0.05) {
                 const objX1 = startX;
                 const objW = val * pxPerMM;
@@ -1041,7 +1018,6 @@
                 ctx.restore();
             }
 
-            // 4. Main Scale Markings
             ctx.fillStyle = '#0f172a';
             ctx.strokeStyle = '#334155';
             ctx.lineWidth = 1;
@@ -1066,7 +1042,6 @@
                 ctx.stroke();
             }
 
-            // 5. Sliding Vernier Assembly
             const sliderX = startX + val * pxPerMM;
             const sliderGrad = ctx.createLinearGradient(0, beamY - 15, 0, beamY + beamH + 40);
             sliderGrad.addColorStop(0, '#e2e8f0');
@@ -1081,7 +1056,6 @@
             const vernierSpanMM = calc.numDivs === 10 ? 12 : (calc.numDivs === 20 ? 22 : 52);
             const sliderW = Math.max(70 * scaleFactor, (vernierSpanMM + 4) * pxPerMM);
 
-            // Movable Lower Jaw
             ctx.beginPath();
             ctx.moveTo(sliderX, beamY + beamH);
             ctx.lineTo(sliderX, jawBottomY - 15);
@@ -1092,7 +1066,6 @@
             ctx.fill();
             ctx.stroke();
 
-            // Movable Upper Jaw
             ctx.beginPath();
             ctx.moveTo(sliderX, beamY);
             ctx.lineTo(sliderX, jawTopY + 15);
@@ -1103,19 +1076,16 @@
             ctx.fill();
             ctx.stroke();
 
-            // Central Window Frame
             ctx.fillStyle = sliderGrad;
             ctx.beginPath();
             ctx.roundRect(sliderX - 5, beamY - 10, sliderW + 10, beamH + 30, 6);
             ctx.fill();
             ctx.stroke();
 
-            // Window Cutout
             ctx.clearRect(sliderX + 5, beamY + 5, sliderW - 15, beamH - 20);
             ctx.strokeStyle = '#475569';
             ctx.strokeRect(sliderX + 5, beamY + 5, sliderW - 15, beamH - 20);
 
-            // Vernier Scale Markings
             const vY = beamY + beamH - 12;
             ctx.fillStyle = '#0f172a';
             ctx.font = `${Math.round(9 * scaleFactor)}px JetBrains Mono`;
@@ -1172,8 +1142,6 @@
             ctx.restore();
         }
 
-        // ============ PERBAIKAN UTAMA: renderCaliperZoom ============
-        // Garis berhimpit selalu jatuh tepat di atas garis skala utama
         function renderCaliperZoom() {
             const cvs = document.getElementById('caliper-zoom-canvas');
             if (!cvs) return;
@@ -1184,7 +1152,6 @@
 
             ctx.clearRect(0, 0, width, height);
 
-            // Responsive zoom scale
             const baseWidth = 500;
             const scaleFactor = Math.min(1, Math.max(0.7, width / baseWidth));
             const zoomPxPerMM = 26.0 * scaleFactor;
@@ -1194,37 +1161,26 @@
 
             const divSpanMM = calc.numDivs === 10 ? 9 : (calc.numDivs === 20 ? 19 : 49);
             const divStepMM = divSpanMM / calc.numDivs;
-            const matchOffsetMM = calc.snLine * divStepMM;
+            const matchAbsPos = calc.su + calc.snLine;
 
-            // Background
             ctx.fillStyle = '#0f172a';
             ctx.fillRect(0, 0, width, height);
 
-            // === POSISI PENTING ===
-            // Posisi absolut garis berhimpit pada skala utama (dalam mm) = su + snLine
-            // Kita tempatkan garis ini tepat di centerX
-            const matchAbsPos = calc.su + calc.snLine;
-
-            // === SKALA UTAMA (Atas) ===
             const mainY = centerY - 12 * scaleFactor;
             ctx.fillStyle = '#f8fafc';
             ctx.font = `bold ${Math.round(13 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'center';
 
-            // Rentang skala utama yang digambar
             const startMM = matchAbsPos - Math.ceil(width / zoomPxPerMM / 2) - 2;
             const endMM = matchAbsPos + Math.ceil(width / zoomPxPerMM / 2) + 2;
 
             for (let m = startMM; m <= endMM; m++) {
                 if (m < 0) continue;
-                // Posisi x untuk skala utama mm ke-m
                 const x = centerX + (m - matchAbsPos) * zoomPxPerMM;
                 if (x < -20 || x > width + 20) continue;
 
-                // Cek apakah garis ini yang berhimpit
                 const isMainMatch = (m === matchAbsPos);
 
-                // Panjang garis
                 let tH = 18 * scaleFactor;
                 if (m % 10 === 0) tH = 34 * scaleFactor;
                 else if (m % 5 === 0) tH = 26 * scaleFactor;
@@ -1238,14 +1194,12 @@
                 ctx.lineTo(x, mainY - tH);
                 ctx.stroke();
 
-                // Label angka
                 if (m % 5 === 0 || isMainMatch) {
                     ctx.fillStyle = isMainMatch && state.caliper.highlightLine && !state.caliper.hideValues ? '#fb7185' : '#f8fafc';
                     ctx.fillText(`${m}`, x, mainY - tH - 6 * scaleFactor);
                 }
             }
 
-            // === GARIS PEMISAH ===
             ctx.strokeStyle = '#475569';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -1253,9 +1207,6 @@
             ctx.lineTo(width, centerY);
             ctx.stroke();
 
-            // === SKALA NONIUS (Bawah) ===
-            // Garis 0 nonius ada di posisi absolut `val` (mm)
-            // Garis ke-i nonius ada di posisi `val + i * divStepMM`
             const vernierY = centerY + 12 * scaleFactor;
             ctx.font = `bold ${Math.round(13 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'center';
@@ -1280,7 +1231,6 @@
                 ctx.lineTo(x, vernierY + tH);
                 ctx.stroke();
 
-                // Label angka nonius
                 let lbl = `${i}`;
                 if (calc.numDivs === 20 && i % 2 === 0) lbl = `${i/2}`;
                 if (calc.numDivs === 50 && i % 5 === 0) lbl = `${i/5}`;
@@ -1291,9 +1241,7 @@
                 }
             }
 
-            // === HIGHLIGHT TENGAH ===
             if (state.caliper.highlightLine && !state.caliper.hideValues) {
-                // Glow
                 ctx.strokeStyle = 'rgba(244, 63, 94, 0.25)';
                 ctx.lineWidth = 8;
                 ctx.beginPath();
@@ -1301,7 +1249,6 @@
                 ctx.lineTo(centerX, height - 8);
                 ctx.stroke();
 
-                // Thin line
                 ctx.strokeStyle = '#f43f5e';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
@@ -1309,7 +1256,6 @@
                 ctx.lineTo(centerX, height - 8);
                 ctx.stroke();
 
-                // Arrow top
                 ctx.fillStyle = '#f43f5e';
                 ctx.beginPath();
                 ctx.moveTo(centerX, 4);
@@ -1318,7 +1264,6 @@
                 ctx.closePath();
                 ctx.fill();
 
-                // Arrow bottom
                 ctx.beginPath();
                 ctx.moveTo(centerX, height - 4);
                 ctx.lineTo(centerX - 5, height - 11);
@@ -1445,7 +1390,6 @@
             const frameCenterX = width * 0.22;
             const centerY = height / 2;
 
-            // U-Frame
             const frameGrad = ctx.createRadialGradient(frameCenterX, centerY, 40, frameCenterX, centerY, 160);
             frameGrad.addColorStop(0, '#334155');
             frameGrad.addColorStop(0.7, '#1e293b');
@@ -1474,7 +1418,6 @@
             ctx.fillText('0-25 mm  0.01 mm', frameCenterX - 20 * scaleFactor, centerY + 15 * scaleFactor);
             ctx.restore();
 
-            // Anvil
             const anvilX = frameCenterX + 20 * scaleFactor;
             const anvilW = 25 * scaleFactor;
             const anvilH = 40 * scaleFactor;
@@ -1483,7 +1426,6 @@
             ctx.strokeStyle = '#475569';
             ctx.strokeRect(anvilX, centerY - anvilH/2, anvilW, anvilH);
 
-            // Spindle
             const maxGap = 25 * pxPerMM;
             const currentGap = val * pxPerMM;
             const sleeveStartX = anvilX + anvilW + maxGap;
@@ -1493,7 +1435,6 @@
             ctx.fillRect(spindleX, centerY - anvilH/2, sleeveStartX - spindleX + 10, anvilH);
             ctx.strokeRect(spindleX, centerY - anvilH/2, sleeveStartX - spindleX + 10, anvilH);
 
-            // Clamped Object
             if (val > 0.02) {
                 const objW = currentGap;
                 const objX = anvilX + anvilW;
@@ -1521,7 +1462,6 @@
                 ctx.restore();
             }
 
-            // Sleeve
             const sleeveW = 140 * scaleFactor;
             const sleeveH = 46 * scaleFactor;
             ctx.save();
@@ -1571,7 +1511,6 @@
             }
             ctx.restore();
 
-            // Thimble
             const thimbleX = sleeveStartX + 10 * scaleFactor + (val * pxPerMM);
             const thimbleW = 120 * scaleFactor;
             const thimbleH = 58 * scaleFactor;
@@ -1628,7 +1567,6 @@
                 }
             }
 
-            // Ratchet
             const ratchetX = thimbleX + thimbleW;
             const rW = 35 * scaleFactor;
             const rH = 38 * scaleFactor;
@@ -1667,7 +1605,6 @@
             ctx.fillStyle = '#0f172a';
             ctx.fillRect(0, 0, width, height);
 
-            // Datum line
             ctx.strokeStyle = '#38bdf8';
             ctx.lineWidth = 2.5;
             ctx.beginPath();
@@ -1675,7 +1612,6 @@
             ctx.lineTo(centerX, centerY);
             ctx.stroke();
 
-            // Sleeve ticks
             ctx.fillStyle = '#f8fafc';
             ctx.font = `bold ${Math.round(12 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'center';
@@ -1708,7 +1644,6 @@
                 }
             }
 
-            // Thimble line
             ctx.strokeStyle = '#cbd5e1';
             ctx.lineWidth = 4;
             ctx.beginPath();
@@ -1716,7 +1651,6 @@
             ctx.lineTo(centerX, height - 10);
             ctx.stroke();
 
-            // Thimble ticks
             ctx.font = `bold ${Math.round(12 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'left';
 
@@ -1834,6 +1768,7 @@
             }
         }
 
+        // ==================== RENDER KUIS: JANGKA SORONG ====================
         function renderCaliperMainToCanvas(cvs) {
             const { ctx, width, height } = setupDPI(cvs);
             const calc = calculateCaliper(state.quiz.targetVal, state.quiz.precision);
@@ -1841,73 +1776,159 @@
 
             ctx.clearRect(0, 0, width, height);
 
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, width, height);
+
             const baseWidth = 700;
-            const scaleFactor = Math.min(1, width / baseWidth);
-            const pxPerMM = 3.8 * scaleFactor; 
-            const startX = 50 * scaleFactor;
-            const beamY = height * 0.25;
-            const beamH = 45 * scaleFactor;
+            const scaleFactor = Math.min(1, Math.max(0.55, width / baseWidth));
+            const pxPerMM = 4.5 * scaleFactor;
+            const startX = 40 * scaleFactor;
+            const beamY = height * 0.35;
+            const beamH = 55 * scaleFactor;
 
             const beamGrad = ctx.createLinearGradient(0, beamY, 0, beamY + beamH);
             beamGrad.addColorStop(0, '#cbd5e1');
+            beamGrad.addColorStop(0.5, '#f8fafc');
             beamGrad.addColorStop(1, '#94a3b8');
 
             ctx.fillStyle = beamGrad;
             ctx.beginPath();
-            ctx.roundRect(startX - 30, beamY, (120 * pxPerMM) + 30, beamH, [0, 6, 6, 0]);
+            ctx.roundRect(startX - 25, beamY, (125 * pxPerMM) + 25, beamH, [0, 6, 6, 0]);
             ctx.fill();
             ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(startX, beamY + beamH);
+            ctx.lineTo(startX, beamY + beamH + 45 * scaleFactor);
+            ctx.lineTo(startX - 25 * scaleFactor, beamY + beamH + 45 * scaleFactor);
+            ctx.lineTo(startX - 25 * scaleFactor, beamY + beamH);
+            ctx.closePath();
+            ctx.fillStyle = beamGrad;
+            ctx.fill();
             ctx.stroke();
 
             ctx.fillStyle = '#0f172a';
-            ctx.strokeStyle = '#334155';
-            ctx.font = `${Math.round(9 * scaleFactor)}px Inter`;
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1.2;
+            ctx.font = `bold ${Math.round(10 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'center';
 
-            for (let i = 0; i <= 110; i++) {
+            for (let i = 0; i <= 125; i++) {
                 const x = startX + i * pxPerMM;
-                if (x > width - 10) break;
-                let tickH = (i % 10 === 0) ? 16 * scaleFactor : ((i % 5 === 0) ? 11 * scaleFactor : 7 * scaleFactor);
+                if (x > width - 8) break;
+
+                let tickH = 8 * scaleFactor;
+                if (i % 10 === 0) tickH = 20 * scaleFactor;
+                else if (i % 5 === 0) tickH = 14 * scaleFactor;
+
                 ctx.beginPath();
                 ctx.moveTo(x, beamY + beamH);
                 ctx.lineTo(x, beamY + beamH - tickH);
                 ctx.stroke();
 
                 if (i % 10 === 0) {
-                    ctx.fillText(`${i/10}`, x, beamY + 18 * scaleFactor);
+                    ctx.fillStyle = '#0f172a';
+                    ctx.fillText(`${i}`, x, beamY + 18 * scaleFactor);
+                } else if (i % 5 === 0 && scaleFactor > 0.7) {
+                    ctx.fillStyle = '#475569';
+                    ctx.font = `bold ${Math.round(8 * scaleFactor)}px JetBrains Mono`;
+                    ctx.fillText(`${i}`, x, beamY + 16 * scaleFactor);
+                    ctx.font = `bold ${Math.round(10 * scaleFactor)}px JetBrains Mono`;
                 }
             }
 
+            ctx.fillStyle = '#0f172a';
+            ctx.font = `bold ${Math.round(11 * scaleFactor)}px Inter`;
+            ctx.textAlign = 'left';
+            ctx.fillText('mm', startX - 20 * scaleFactor, beamY + 20 * scaleFactor);
+
             const sliderX = startX + val * pxPerMM;
             const divSpanMM = calc.numDivs === 10 ? 9 : (calc.numDivs === 20 ? 19 : 49);
-            const sliderW = Math.max(60 * scaleFactor, (divSpanMM + 4) * pxPerMM);
+            const sliderW = Math.max(70 * scaleFactor, (divSpanMM + 4) * pxPerMM);
 
-            ctx.fillStyle = 'rgba(241, 245, 249, 0.9)';
-            ctx.strokeStyle = '#1e293b';
+            const sliderGrad = ctx.createLinearGradient(0, beamY - 10, 0, beamY + beamH + 30);
+            sliderGrad.addColorStop(0, '#e2e8f0');
+            sliderGrad.addColorStop(0.5, '#ffffff');
+            sliderGrad.addColorStop(1, '#cbd5e1');
+
+            ctx.fillStyle = sliderGrad;
+            ctx.strokeStyle = '#334155';
             ctx.lineWidth = 1.5;
 
             ctx.beginPath();
-            ctx.roundRect(sliderX - 2, beamY - 5, sliderW, beamH + 25, 4);
+            ctx.moveTo(sliderX, beamY + beamH);
+            ctx.lineTo(sliderX, beamY + beamH + 45 * scaleFactor);
+            ctx.lineTo(sliderX + 25 * scaleFactor, beamY + beamH + 45 * scaleFactor);
+            ctx.lineTo(sliderX + sliderW, beamY + beamH + 20 * scaleFactor);
+            ctx.lineTo(sliderX + sliderW, beamY + beamH);
+            ctx.closePath();
             ctx.fill();
             ctx.stroke();
 
-            ctx.clearRect(sliderX + 4, beamY + 4, sliderW - 10, beamH - 18);
-            ctx.strokeRect(sliderX + 4, beamY + 4, sliderW - 10, beamH - 18);
+            ctx.fillStyle = sliderGrad;
+            ctx.beginPath();
+            ctx.roundRect(sliderX - 5, beamY - 8, sliderW + 10, beamH + 25, 5);
+            ctx.fill();
+            ctx.stroke();
 
-            const vY = beamY + beamH - 14;
+            ctx.clearRect(sliderX + 5, beamY + 5, sliderW - 15, beamH - 20);
+            ctx.strokeStyle = '#475569';
+            ctx.strokeRect(sliderX + 5, beamY + 5, sliderW - 15, beamH - 20);
+
+            const vY = beamY + beamH - 12 * scaleFactor;
             const divStepMM = divSpanMM / calc.numDivs;
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = `bold ${Math.round(9 * scaleFactor)}px JetBrains Mono`;
+            ctx.textAlign = 'center';
 
             for (let i = 0; i <= calc.numDivs; i++) {
                 const vx = sliderX + (i * divStepMM * pxPerMM);
+
+                let vTickH = 8 * scaleFactor;
+                let showLabel = false;
+                let labelText = '';
+
+                if (calc.numDivs === 10) {
+                    showLabel = true;
+                    labelText = `${i}`;
+                    if (i % 5 === 0) vTickH = 15 * scaleFactor;
+                } else if (calc.numDivs === 20) {
+                    if (i % 2 === 0) {
+                        showLabel = true;
+                        labelText = `${i/2}`;
+                        vTickH = 13 * scaleFactor;
+                    }
+                } else {
+                    if (i % 5 === 0) {
+                        showLabel = true;
+                        labelText = `${i/5}`;
+                        vTickH = 13 * scaleFactor;
+                    }
+                }
+
                 ctx.strokeStyle = '#0f172a';
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(vx, vY);
-                ctx.lineTo(vx, vY + 9);
+                ctx.lineTo(vx, vY + vTickH);
                 ctx.stroke();
+
+                if (showLabel) {
+                    ctx.fillStyle = '#0f172a';
+                    ctx.fillText(labelText, vx, vY + vTickH + 10 * scaleFactor);
+                }
             }
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = `${Math.round(9 * scaleFactor)}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.fillText('Skala Utama (atas) | Skala Nonius (bawah)', width / 2, height - 8 * scaleFactor);
         }
 
+        // ==================== RENDER KUIS ZOOM: JANGKA SORONG ====================
         function renderCaliperZoomToCanvas(cvs) {
             const { ctx, width, height } = setupDPI(cvs);
             const calc = calculateCaliper(state.quiz.targetVal, state.quiz.precision);
@@ -1916,8 +1937,8 @@
             ctx.clearRect(0, 0, width, height);
 
             const baseWidth = 500;
-            const scaleFactor = Math.min(1, Math.max(0.7, width / baseWidth));
-            const zoomPxPerMM = 18.0 * scaleFactor;
+            const scaleFactor = Math.min(1, Math.max(0.6, width / baseWidth));
+            const zoomPxPerMM = 22.0 * scaleFactor;
             const centerX = width / 2;
             const centerY = height / 2;
 
@@ -1928,62 +1949,88 @@
             ctx.fillStyle = '#0f172a';
             ctx.fillRect(0, 0, width, height);
 
-            const mainY = centerY - 8 * scaleFactor;
+            const mainY = centerY - 10 * scaleFactor;
             ctx.fillStyle = '#f8fafc';
             ctx.font = `bold ${Math.round(11 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'center';
 
-            const startMM = matchAbsPos - Math.ceil(width / zoomPxPerMM / 2) - 2;
-            const endMM = matchAbsPos + Math.ceil(width / zoomPxPerMM / 2) + 2;
+            const rangeMM = Math.ceil(width / zoomPxPerMM / 2) + 2;
+            const startMM = Math.max(0, matchAbsPos - rangeMM);
+            const endMM = matchAbsPos + rangeMM;
 
-            for (let m = Math.max(0, startMM); m <= endMM; m++) {
+            for (let m = startMM; m <= endMM; m++) {
                 const x = centerX + (m - matchAbsPos) * zoomPxPerMM;
-                if (x < -10 || x > width + 10) continue;
+                if (x < -15 || x > width + 15) continue;
+
+                const isMainMatch = (m === matchAbsPos);
 
                 let tH = 15 * scaleFactor;
-                if (m % 10 === 0) tH = 28 * scaleFactor;
-                else if (m % 5 === 0) tH = 20 * scaleFactor;
-                
-                ctx.strokeStyle = '#cbd5e1';
-                ctx.lineWidth = 1.5;
+                if (m % 10 === 0) tH = 30 * scaleFactor;
+                else if (m % 5 === 0) tH = 22 * scaleFactor;
+                if (isMainMatch) tH = Math.max(tH, 34 * scaleFactor);
+
+                ctx.lineWidth = isMainMatch ? 2.5 : 1.5;
+                ctx.strokeStyle = isMainMatch ? '#f43f5e' : '#cbd5e1';
+
                 ctx.beginPath();
                 ctx.moveTo(x, mainY);
                 ctx.lineTo(x, mainY - tH);
                 ctx.stroke();
 
-                if (m % 5 === 0) ctx.fillText(`${m}`, x, mainY - tH - 4);
+                if (m % 5 === 0 || isMainMatch) {
+                    ctx.fillStyle = isMainMatch ? '#fb7185' : '#f8fafc';
+                    ctx.fillText(`${m}`, x, mainY - tH - 5 * scaleFactor);
+                }
             }
 
             ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(0, centerY);
             ctx.lineTo(width, centerY);
             ctx.stroke();
 
-            const vernierY = centerY + 8 * scaleFactor;
+            const vernierY = centerY + 10 * scaleFactor;
+            ctx.font = `bold ${Math.round(11 * scaleFactor)}px JetBrains Mono`;
+            ctx.textAlign = 'center';
+
             for (let i = 0; i <= calc.numDivs; i++) {
                 const vAbsPos = val + (i * divStepMM);
                 const x = centerX + (vAbsPos - matchAbsPos) * zoomPxPerMM;
-                if (x < -10 || x > width + 10) continue;
+                if (x < -15 || x > width + 15) continue;
 
-                ctx.strokeStyle = '#38bdf8';
-                ctx.lineWidth = 1.5;
+                const isMatch = (i === calc.snLine);
+
+                let tH = 16 * scaleFactor;
+                if (i % 5 === 0) tH = 24 * scaleFactor;
+                if (isMatch) tH = 32 * scaleFactor;
+
+                ctx.lineWidth = isMatch ? 2.5 : 1.5;
+                ctx.strokeStyle = isMatch ? '#f43f5e' : '#38bdf8';
+
                 ctx.beginPath();
                 ctx.moveTo(x, vernierY);
-                ctx.lineTo(x, vernierY + 16 * scaleFactor);
+                ctx.lineTo(x, vernierY + tH);
                 ctx.stroke();
 
                 let lbl = `${i}`;
                 if (calc.numDivs === 20 && i % 2 === 0) lbl = `${i/2}`;
                 if (calc.numDivs === 50 && i % 5 === 0) lbl = `${i/5}`;
 
-                if (calc.numDivs === 10 || (calc.numDivs === 20 && i % 2 === 0) || (calc.numDivs === 50 && i % 5 === 0)) {
-                    ctx.fillStyle = '#7dd3fc';
-                    ctx.fillText(lbl, x, vernierY + 30 * scaleFactor);
+                if (calc.numDivs === 10 || (calc.numDivs === 20 && i % 2 === 0) || (calc.numDivs === 50 && i % 5 === 0) || isMatch) {
+                    ctx.fillStyle = isMatch ? '#fb7185' : '#7dd3fc';
+                    ctx.fillText(lbl, x, vernierY + tH + 12 * scaleFactor);
                 }
             }
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = `${Math.round(9 * scaleFactor)}px Inter`;
+            ctx.textAlign = 'left';
+            ctx.fillText('▲ Skala Utama', 6, 14);
+            ctx.fillText('▼ Skala Nonius', 6, height - 6);
         }
 
+        // ==================== RENDER KUIS: MIKROMETER ====================
         function renderMicrometerMainToCanvas(cvs) {
             const { ctx, width, height } = setupDPI(cvs);
             const calc = calculateMicrometer(state.quiz.targetVal);
@@ -1991,10 +2038,13 @@
 
             ctx.clearRect(0, 0, width, height);
 
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, width, height);
+
             const baseWidth = 700;
-            const scaleFactor = Math.min(1, width / baseWidth);
+            const scaleFactor = Math.min(1, Math.max(0.55, width / baseWidth));
             const pxPerMM = 10.0 * scaleFactor;
-            const frameCenterX = width * 0.20;
+            const frameCenterX = width * 0.18;
             const centerY = height / 2;
 
             ctx.fillStyle = '#1e293b';
@@ -2008,12 +2058,53 @@
             ctx.fill();
             ctx.stroke();
 
-            const sleeveStartX = frameCenterX + 110 * scaleFactor;
-            const sleeveW = 110 * scaleFactor;
-            const sleeveH = 36 * scaleFactor;
+            const anvilX = frameCenterX + 30 * scaleFactor;
+            const anvilW = 22 * scaleFactor;
+            const anvilH = 36 * scaleFactor;
 
             ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(anvilX, centerY - anvilH/2, anvilW, anvilH);
+            ctx.strokeStyle = '#475569';
+            ctx.strokeRect(anvilX, centerY - anvilH/2, anvilW, anvilH);
+
+            const maxGap = 25 * pxPerMM;
+            const currentGap = val * pxPerMM;
+            const sleeveStartX = anvilX + anvilW + maxGap;
+            const spindleX = sleeveStartX - currentGap;
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(spindleX, centerY - anvilH/2, sleeveStartX - spindleX + 8 * scaleFactor, anvilH);
+            ctx.strokeRect(spindleX, centerY - anvilH/2, sleeveStartX - spindleX + 8 * scaleFactor, anvilH);
+
+            if (val > 0.02) {
+                const objW = currentGap;
+                const objX = anvilX + anvilW;
+
+                const objGrad = ctx.createLinearGradient(objX, 0, objX + objW, 0);
+                objGrad.addColorStop(0, '#06b6d4');
+                objGrad.addColorStop(0.5, '#a5f3fc');
+                objGrad.addColorStop(1, '#0891b2');
+                ctx.fillStyle = objGrad;
+                ctx.strokeStyle = '#0e7490';
+                ctx.lineWidth = 1.5;
+
+                ctx.beginPath();
+                ctx.roundRect(objX, centerY - 28 * scaleFactor, objW, 56 * scaleFactor, 4);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            const sleeveW = 130 * scaleFactor;
+            const sleeveH = 42 * scaleFactor;
+
+            const sleeveGrad = ctx.createLinearGradient(0, centerY - sleeveH/2, 0, centerY + sleeveH/2);
+            sleeveGrad.addColorStop(0, '#94a3b8');
+            sleeveGrad.addColorStop(0.5, '#f8fafc');
+            sleeveGrad.addColorStop(1, '#64748b');
+
+            ctx.fillStyle = sleeveGrad;
             ctx.fillRect(sleeveStartX, centerY - sleeveH/2, sleeveW, sleeveH);
+            ctx.strokeStyle = '#334155';
             ctx.strokeRect(sleeveStartX, centerY - sleeveH/2, sleeveW, sleeveH);
 
             ctx.strokeStyle = '#0f172a';
@@ -2023,11 +2114,44 @@
             ctx.lineTo(sleeveStartX + sleeveW, centerY);
             ctx.stroke();
 
-            const thimbleX = sleeveStartX + 10 * scaleFactor + (val * pxPerMM);
-            const thimbleW = 90 * scaleFactor;
-            const thimbleH = 46 * scaleFactor;
+            ctx.font = `bold ${Math.round(9 * scaleFactor)}px JetBrains Mono`;
+            ctx.fillStyle = '#0f172a';
+            ctx.textAlign = 'center';
 
-            ctx.fillStyle = '#e2e8f0';
+            for (let m = 0; m <= 25; m++) {
+                const x = sleeveStartX + 8 * scaleFactor + (m * pxPerMM);
+                if (x <= sleeveStartX + sleeveW - 5) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, centerY);
+                    ctx.lineTo(x, centerY - 12 * scaleFactor);
+                    ctx.stroke();
+
+                    if (m % 5 === 0) {
+                        ctx.fillText(`${m}`, x, centerY - 15 * scaleFactor);
+                    }
+                }
+
+                if (m < 25) {
+                    const xHalf = x + (0.5 * pxPerMM);
+                    if (xHalf <= sleeveStartX + sleeveW - 5) {
+                        ctx.beginPath();
+                        ctx.moveTo(xHalf, centerY);
+                        ctx.lineTo(xHalf, centerY + 10 * scaleFactor);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            const thimbleX = sleeveStartX + 8 * scaleFactor + (val * pxPerMM);
+            const thimbleW = 110 * scaleFactor;
+            const thimbleH = 54 * scaleFactor;
+
+            const thimGrad = ctx.createLinearGradient(0, centerY - thimbleH/2, 0, centerY + thimbleH/2);
+            thimGrad.addColorStop(0, '#475569');
+            thimGrad.addColorStop(0.5, '#f8fafc');
+            thimGrad.addColorStop(1, '#334155');
+
+            ctx.fillStyle = thimGrad;
             ctx.beginPath();
             ctx.moveTo(thimbleX, centerY - sleeveH/2);
             ctx.lineTo(thimbleX + 15 * scaleFactor, centerY - thimbleH/2);
@@ -2037,9 +2161,16 @@
             ctx.lineTo(thimbleX, centerY + sleeveH/2);
             ctx.closePath();
             ctx.fill();
+            ctx.strokeStyle = '#1e293b';
             ctx.stroke();
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = `${Math.round(9 * scaleFactor)}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.fillText('Sleeve (kiri) | Thimble (kanan)', width / 2, height - 8 * scaleFactor);
         }
 
+        // ==================== RENDER KUIS ZOOM: MIKROMETER ====================
         function renderMicrometerZoomToCanvas(cvs) {
             const { ctx, width, height } = setupDPI(cvs);
             const calc = calculateMicrometer(state.quiz.targetVal);
@@ -2047,9 +2178,9 @@
             ctx.clearRect(0, 0, width, height);
 
             const baseWidth = 500;
-            const scaleFactor = Math.min(1, Math.max(0.7, width / baseWidth));
-            const zoomPxPerMM = 28.0 * scaleFactor;
-            const centerX = width * 0.45;
+            const scaleFactor = Math.min(1, Math.max(0.6, width / baseWidth));
+            const zoomPxPerMM = 30.0 * scaleFactor;
+            const centerX = width * 0.5;
             const centerY = height / 2;
 
             ctx.fillStyle = '#0f172a';
@@ -2062,34 +2193,91 @@
             ctx.lineTo(centerX, centerY);
             ctx.stroke();
 
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = `bold ${Math.round(11 * scaleFactor)}px JetBrains Mono`;
+            ctx.textAlign = 'center';
+
+            const startMM = Math.floor(calc.su) - 2;
+            const endMM = Math.ceil(calc.su) + 3;
+
+            for (let m = Math.max(0, startMM); m <= Math.min(25, endMM); m++) {
+                const x = centerX - (calc.total - m) * zoomPxPerMM;
+                if (x < 5 || x > centerX + 5) continue;
+
+                ctx.strokeStyle = (m === Math.floor(calc.su)) ? '#38bdf8' : '#94a3b8';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, centerY);
+                ctx.lineTo(x, centerY - 26 * scaleFactor);
+                ctx.stroke();
+
+                if (m % 5 === 0 || m === Math.floor(calc.su)) {
+                    ctx.fillStyle = (m === Math.floor(calc.su)) ? '#38bdf8' : '#f8fafc';
+                    ctx.fillText(`${m}`, x, centerY - 32 * scaleFactor);
+                }
+
+                const xHalf = x + 0.5 * zoomPxPerMM;
+                if (xHalf <= centerX) {
+                    ctx.strokeStyle = (calc.su % 1 !== 0 && m === Math.floor(calc.su)) ? '#38bdf8' : '#64748b';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(xHalf, centerY);
+                    ctx.lineTo(xHalf, centerY + 20 * scaleFactor);
+                    ctx.stroke();
+                }
+            }
+
             ctx.strokeStyle = '#cbd5e1';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.moveTo(centerX, 5);
-            ctx.lineTo(centerX, height - 5);
+            ctx.moveTo(centerX, 10);
+            ctx.lineTo(centerX, height - 10);
             ctx.stroke();
 
             ctx.font = `bold ${Math.round(11 * scaleFactor)}px JetBrains Mono`;
             ctx.textAlign = 'left';
+
+            const thimblePxPerDiv = 12.0 * scaleFactor;
 
             for (let i = 0; i < 50; i++) {
                 let diff = i - calc.snLine;
                 if (diff > 25) diff -= 50;
                 if (diff < -25) diff += 50;
 
-                const y = centerY - (diff * 11.0 * scaleFactor);
-                if (y >= 10 && y <= height - 10) {
-                    ctx.strokeStyle = '#38bdf8';
-                    ctx.lineWidth = 1.5;
+                const y = centerY - (diff * thimblePxPerDiv);
+
+                if (y >= 12 && y <= height - 12) {
+                    const isMatch = (i === calc.snLine);
+
+                    ctx.strokeStyle = isMatch ? '#f43f5e' : '#38bdf8';
+                    ctx.lineWidth = isMatch ? 3.5 : 1.5;
+
+                    let tLen = (i % 5 === 0) ? 35 * scaleFactor : 22 * scaleFactor;
+                    if (isMatch) tLen = 40 * scaleFactor;
                     ctx.beginPath();
                     ctx.moveTo(centerX, y);
-                    ctx.lineTo(centerX + 25 * scaleFactor, y);
+                    ctx.lineTo(centerX + tLen, y);
                     ctx.stroke();
 
-                    ctx.fillStyle = '#7dd3fc';
-                    ctx.fillText(`${i}`, centerX + 30 * scaleFactor, y + 4);
+                    ctx.fillStyle = isMatch ? '#fb7185' : '#7dd3fc';
+                    if (i % 5 === 0 || isMatch) {
+                        ctx.fillText(`${i}`, centerX + tLen + 8 * scaleFactor, y + 4);
+                    }
                 }
             }
+
+            ctx.strokeStyle = 'rgba(244, 63, 94, 0.35)';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 40, centerY);
+            ctx.lineTo(centerX + 50, centerY);
+            ctx.stroke();
+
+            ctx.fillStyle = '#64748b';
+            ctx.font = `${Math.round(9 * scaleFactor)}px Inter`;
+            ctx.textAlign = 'left';
+            ctx.fillText('→ Datum Sleeve', 6, 14);
+            ctx.fillText('↓ Thimble', 6, height - 6);
         }
 
         function submitQuizAnswer(e) {
@@ -2260,7 +2448,6 @@
                 else if (state.activeTab === 'quiz') renderQuizAll();
             });
 
-            // Redraw on orientation change for mobile
             window.addEventListener('orientationchange', () => {
                 setTimeout(() => {
                     if (state.activeTab === 'caliper') renderCaliperAll();
