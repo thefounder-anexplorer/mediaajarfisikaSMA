@@ -299,7 +299,7 @@
                                     <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">${q.context}</p>
 
                                     <div class="canvas-wrapper">
-                                        <canvas id="canvas-q-${q.id}" class="w-full block" style="height: 240px;"></canvas>
+                                        <canvas id="canvas-q-${q.id}" class="w-full block" style="height: 220px;"></canvas>
                                     </div>
 
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 no-print">
@@ -356,7 +356,7 @@
                                         </div>
                                         <div class="grid grid-cols-1 gap-1.5 text-[10px] sm:text-[11px]">
                                             <div class="bg-white/80 p-2 rounded-lg border border-blue-200">
-                                                <strong class="text-blue-600">Skala Utama:</strong> ${q.su.toFixed(2)} mm ${q.type === 'micrometer' ? (q.su === Math.floor(q.targetValue) + 0.5 ? '<span class="text-amber-600 font-bold">(garis 0,5 mm TERBACA)</span>' : '<span class="text-slate-500">(garis 0,5 mm belum terbaca)</span>') : ''}
+                                                <strong class="text-blue-600">Skala Utama:</strong> ${q.su.toFixed(2)} mm
                                             </div>
                                             <div class="bg-white/80 p-2 rounded-lg border border-indigo-200">
                                                 <strong class="text-indigo-600">Skala Nonius:</strong> ${q.snIndex} × ${q.precision} = ${q.snValue.toFixed(2)} mm
@@ -562,13 +562,14 @@
         }
 
         /* ============================================================
-           MIKROMETER RENDERER
-           Menampilkan semua garis skala utama (termasuk 0,5 mm),
-           membedakan mana yang TERBACA (di sebelah kiri thimble)
-           dan mana yang BELUM TERBACA (di sebelah kanan thimble).
+           MIKROMETER RENDERER — versi natural tanpa keterangan
+           - Semua tick skala utama digambar
+           - Tick di KIRI thimble (terlewati) → warna gelap tegas
+           - Tick di KANAN thimble (belum terlewati) → warna pudar
+           - Tanpa legenda, tanpa ✓/✗, tanpa garis putus-putus
            ============================================================ */
         function renderMicrometerDiagram(ctx, w, h, val, qid) {
-            const centerY = h * 0.54;
+            const centerY = h * 0.52;
 
             const sleeveH   = Math.max(42, Math.min(56, h * 0.30));
             const thimbleH  = sleeveH * 1.4;
@@ -591,8 +592,7 @@
             const sleeveW = sleevePadLeft + mmSpan * pxPerMM + sleevePadRight;
             const sleeveX = frameW + gapW + 4;
 
-            // Posisi thimble sesuai val: titik nol thimble (di kiri) = posisi val
-            // Kita geser sedikit ke kanan agar tidak menutupi tick val itu sendiri
+            // Posisi thimble = tepat di posisi nilai val (titik nol thimble)
             const thimbleLeftX = sleeveX + sleevePadLeft + val * pxPerMM;
             const thimbleX = thimbleLeftX;
 
@@ -640,17 +640,16 @@
             ctx.lineWidth = 1.5;
             ctx.strokeRect(sleeveX, centerY - sleeveH / 2, sleeveW, sleeveH);
 
-            // ---------- GARIS DATUM ----------
+            // ---------- GARIS DATUM (netral, tanpa label) ----------
             ctx.beginPath();
             ctx.moveTo(sleeveX, centerY);
             ctx.lineTo(thimbleLeftX, centerY);
-            ctx.strokeStyle = '#dc2626';
-            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 2;
             ctx.stroke();
 
-            // ---------- TICK SKALA UTAMA (SEMUA DIGAMBAR) ----------
-            // Aturan: tick di x < thimbleLeftX → TERBACA (gelap)
-            //         tick di x >= thimbleLeftX → BELUM TERBACA (pudar)
+            // ---------- TICK SKALA UTAMA ----------
+            // Natural: gelap jika di kiri thimble (terlewati), pudar jika di kanan
             ctx.font = `bold ${Math.max(8, Math.min(11, pxPerMM * 0.9))}px JetBrains Mono, monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'alphabetic';
@@ -686,38 +685,6 @@
                     ctx.lineWidth = isHalfRead ? 1.8 : 1.2;
                     ctx.stroke();
                 }
-            }
-
-            // Highlight lingkaran di sekitar garis 0,5 yang jadi penentu
-            // (garis 0,5 tepat setelah angka mm terakhir yang terbaca)
-            const lastIntMM = Math.floor(val);
-            const halfMarkerX = sleeveX + sleevePadLeft + (lastIntMM + 0.5) * pxPerMM;
-            if (halfMarkerX < thimbleLeftX - 1 && halfMarkerX < sleeveX + sleeveW - 3) {
-                // Sudah terbaca → lingkaran hijau
-                ctx.beginPath();
-                ctx.arc(halfMarkerX, centerY + sleeveH * 0.28 + 12, 10, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
-                ctx.fill();
-                ctx.strokeStyle = '#10b981';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-                ctx.fillStyle = '#059669';
-                ctx.font = 'bold 9px Inter, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('✓ 0,5', halfMarkerX, centerY + sleeveH * 0.28 + 15);
-            } else if (halfMarkerX < sleeveX + sleeveW - 3) {
-                // Belum terbaca → lingkaran merah
-                ctx.beginPath();
-                ctx.arc(halfMarkerX, centerY + sleeveH * 0.28 + 12, 10, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
-                ctx.fill();
-                ctx.strokeStyle = '#ef4444';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-                ctx.fillStyle = '#dc2626';
-                ctx.font = 'bold 9px Inter, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('✗ 0,5', halfMarkerX, centerY + sleeveH * 0.28 + 15);
             }
 
             // ---------- THIMBLE ----------
@@ -766,66 +733,23 @@
 
                 const isCoinciding = (tickIdx === targetSN);
 
+                // Tick thimble: hitam normal, hijau hanya untuk yang berhimpit
                 ctx.beginPath();
                 ctx.moveTo(thimbleX + 2, py);
                 ctx.lineTo(thimbleX + 20, py);
                 ctx.strokeStyle = isCoinciding ? '#10b981' : '#1e293b';
-                ctx.lineWidth = isCoinciding ? 3.5 : 1.2;
+                ctx.lineWidth = isCoinciding ? 3 : 1.2;
                 ctx.stroke();
 
+                // Angka kelipatan 5
                 if (tickIdx % 5 === 0) {
                     ctx.fillStyle = isCoinciding ? '#059669' : '#1e293b';
                     ctx.fillText(tickIdx.toString().padStart(2, '0'), thimbleX + 24, py);
-                }
-
-                if (isCoinciding) {
-                    const label = tickIdx.toString().padStart(2, '0');
-                    ctx.font = 'bold 11px JetBrains Mono, monospace';
-                    const tw = ctx.measureText(label).width;
-                    const boxPadX = 5, boxH = 18;
-                    const bx = thimbleX + 22;
-                    const by = py - boxH / 2;
-
-                    ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
-                    ctx.strokeStyle = '#10b981';
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    const br = 4;
-                    ctx.moveTo(bx + br, by);
-                    ctx.lineTo(bx + tw + boxPadX * 2 - br, by);
-                    ctx.quadraticCurveTo(bx + tw + boxPadX * 2, by, bx + tw + boxPadX * 2, by + br);
-                    ctx.lineTo(bx + tw + boxPadX * 2, by + boxH - br);
-                    ctx.quadraticCurveTo(bx + tw + boxPadX * 2, by + boxH, bx + tw + boxPadX * 2 - br, by + boxH);
-                    ctx.lineTo(bx + br, by + boxH);
-                    ctx.quadraticCurveTo(bx, by + boxH, bx, by + boxH - br);
-                    ctx.lineTo(bx, by + br);
-                    ctx.quadraticCurveTo(bx, by, bx + br, by);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
-
+                } else if (isCoinciding) {
+                    // Jika tick berhimpit bukan kelipatan 5, tetap tampilkan angkanya
                     ctx.fillStyle = '#059669';
-                    ctx.fillText(label, bx + boxPadX, py);
-                    ctx.font = `bold ${Math.max(7, Math.min(10, pxPerMM * 0.85))}px JetBrains Mono, monospace`;
+                    ctx.fillText(tickIdx.toString().padStart(2, '0'), thimbleX + 24, py);
                 }
-            }
-
-            // ---------- Garis bantu horizontal dari datum ke tick berhimpit ----------
-            const coincIdx = targetSN;
-            const coincDiff = coincIdx - centerIdx;
-            const coincAngle = (coincDiff / 50) * (Math.PI * 1.4);
-            const coincPy = centerY - Math.sin(coincAngle) * (thimbleH / 2 - 6);
-
-            if (coincPy >= thimbleTopY && coincPy <= thimbleBotY) {
-                ctx.save();
-                ctx.setLineDash([4, 3]);
-                ctx.beginPath();
-                ctx.moveTo(thimbleX, centerY);
-                ctx.lineTo(thimbleX + 22, coincPy);
-                ctx.strokeStyle = 'rgba(16, 185, 129, 0.7)';
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-                ctx.restore();
             }
 
             // ---------- LABEL BAGIAN ----------
@@ -835,45 +759,6 @@
             ctx.textBaseline = 'alphabetic';
             ctx.fillText('Sleeve (Skala Utama)', sleeveX + sleeveW / 2, centerY - sleeveH / 2 - 8);
             ctx.fillText('Thimble (Skala Putar)', thimbleX + thimbleW / 2, centerY - thimbleH / 2 - 6);
-
-            // ---------- LEGENDA STATUS 0,5 mm ----------
-            // Tampilkan penjelasan status garis 0,5 mm terakhir
-            const lastIntMM2 = Math.floor(val);
-            const halfRead = (val - lastIntMM2) >= 0.5;
-
-            const legendText = halfRead
-                ? `Garis 0,5 mm setelah angka ${lastIntMM2} → SUDAH TERBACA (SU = ${lastIntMM2},50 mm)`
-                : `Garis 0,5 mm setelah angka ${lastIntMM2} → BELUM TERBACA (SU = ${lastIntMM2},00 mm)`;
-
-            ctx.font = 'bold 10px Inter, sans-serif';
-            const legendW = ctx.measureText(legendText).width + 24;
-            const legendH = 24;
-            const legendX = (w - legendW) / 2;
-            const legendY = h - legendH - 6;
-
-            // Background
-            ctx.beginPath();
-            const lr = 6;
-            ctx.moveTo(legendX + lr, legendY);
-            ctx.lineTo(legendX + legendW - lr, legendY);
-            ctx.quadraticCurveTo(legendX + legendW, legendY, legendX + legendW, legendY + lr);
-            ctx.lineTo(legendX + legendW, legendY + legendH - lr);
-            ctx.quadraticCurveTo(legendX + legendW, legendY + legendH, legendX + legendW - lr, legendY + legendH);
-            ctx.lineTo(legendX + lr, legendY + legendH);
-            ctx.quadraticCurveTo(legendX, legendY + legendH, legendX, legendY + legendH - lr);
-            ctx.lineTo(legendX, legendY + lr);
-            ctx.quadraticCurveTo(legendX, legendY, legendX + lr, legendY);
-            ctx.closePath();
-            ctx.fillStyle = halfRead ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.10)';
-            ctx.fill();
-            ctx.strokeStyle = halfRead ? '#10b981' : '#ef4444';
-            ctx.lineWidth = 1.2;
-            ctx.stroke();
-
-            ctx.fillStyle = halfRead ? '#059669' : '#dc2626';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(legendText, w / 2, legendY + legendH / 2 + 0.5);
 
             // ---------- LABEL NOMOR SOAL ----------
             drawQuestionLabel(ctx, qid, `Mikrometer Sekrup 0.01 mm`);
