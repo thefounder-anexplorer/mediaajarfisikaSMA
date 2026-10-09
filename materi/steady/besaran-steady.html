@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pendahuluan Fisika - Besaran & Pengukuran</title>
+    <title>Pendahuluan Fisika - Besaran & Pengukuran | Level Steady</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         /* ===== RESET & ROOT ===== */
@@ -95,6 +95,19 @@
             opacity: 0.95;
             max-width: 700px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .level-badge-header {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-top: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             position: relative;
             z-index: 1;
         }
@@ -472,9 +485,12 @@
     <div class="container">
         <!-- ===== HEADER ===== -->
         <header>
-            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Portal</a>
+            <a href="../../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke Portal</a>
             <h1><i class="fas fa-ruler-combined"></i> Pendahuluan Fisika</h1>
             <p class="subtitle">Besaran, Satuan, dan Pengukuran — Fondasi dasar dalam mempelajari fisika</p>
+            <div class="level-badge-header">
+                <i class="fas fa-walking"></i> Level Steady — Bertahap &amp; Detail
+            </div>
         </header>
 
         <!-- ===== INTRO ===== -->
@@ -495,9 +511,9 @@
         <div class="level-nav">
             <a href="besaran-steady.html" class="steady">
                 <i class="fas fa-walking"></i> Level Steady
-                <span style="font-weight:normal;font-size:0.8rem;opacity:0.85;">(Bertahap &amp; Detail)</span>
+                <span style="font-weight:normal;font-size:0.8rem;opacity:0.85;">(Aktif)</span>
             </a>
-            <a href="besaran-fast.html" class="fast">
+            <a href="../fast/besaran-fast.html" class="fast">
                 <i class="fas fa-running"></i> Level Fast
                 <span style="font-weight:normal;font-size:0.8rem;opacity:0.85;">(Cepat &amp; Intensif)</span>
             </a>
@@ -576,7 +592,7 @@
                     <span>Pembulatan</span>
                     <span>Notasi Ilmiah</span>
                 </div>
-                <a href="materi/steady/besaran/aturan-angka-penting.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+                <a href="besaran/aturan-angka-penting.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
             </div>
 
             <!-- Pengukuran -->
@@ -593,10 +609,10 @@
                     <span>Kesalahan Mutlak</span>
                     <span>Kesalahan Relatif</span>
                 </div>
-                <a href="materi/steady/besaran/pengukurandanketidakpastian.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+                <a href="besaran/pengukurandanketidakpastian.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
             </div>
 
-            <!-- ===== ALAT UKUR (MENU BARU) ===== -->
+            <!-- Alat Ukur -->
             <div class="materi-card">
                 <div class="card-icon"><i class="fas fa-tools"></i></div>
                 <h3>Alat Ukur</h3>
@@ -612,7 +628,7 @@
                     <span>Termometer</span>
                     <span>Amperemeter</span>
                 </div>
-                <a href="materi/steady/besaran/simulasi_laboratorium_virtual_alat_ukur.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
+                <a href="besaran/simulasi_laboratorium_virtual_alat_ukur.html" class="btn-materi"><i class="fas fa-arrow-right"></i> Pelajari</a>
             </div>
         </div>
 
