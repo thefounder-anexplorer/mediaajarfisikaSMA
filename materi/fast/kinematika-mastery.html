@@ -1,1501 +1,1690 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="id" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hubungan Antar Roda — Fisika SMA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
-  <style>
-    :root {
-      --ink: #16251f;
-      --cream: #f7f1e4;
-      --paper: #fffdf7;
-      --orange: #e86d32;
-      --teal: #116466;
-      --yellow: #f6be3b;
-      --line: #d9d0bd;
-      --muted: #526258;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mastery Kinematika Gerak: Pemula hingga Level Olimpiade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7',
+                            600: '#0369a1', 700: '#075985', 900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false});"></script>
 
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 4px; }
+        .katex-display { margin: 0.4em 0 !important; overflow-x: auto; overflow-y: hidden; padding: 4px 2px; font-size: 0.95em; }
+        .katex { font-size: 0.95em; }
+        @media (max-width: 640px) {
+            .katex-display { font-size: 0.85em; }
+            .katex { font-size: 0.9em; }
+        }
+        input[type="range"] { font-size: 16px; }
+        button { touch-action: manipulation; }
+        canvas { max-width: 100%; }
+        body { padding-bottom: env(safe-area-inset-bottom); }
 
-    body {
-      margin: 0;
-      font-family: "Work Sans", sans-serif;
-      color: var(--ink);
-      background: var(--cream);
-      overflow-x: hidden;
-    }
-
-    .physics-app {
-      width: 100%;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      background:
-        linear-gradient(90deg, rgba(22, 37, 31, 0.035) 1px, transparent 1px),
-        linear-gradient(rgba(22, 37, 31, 0.035) 1px, transparent 1px),
-        var(--cream);
-      background-size: 28px 28px;
-    }
-
-    .display-font { font-family: "Fraunces", serif; }
-
-    .app-page { display: none; animation: pageIn 0.45s ease both; }
-    .app-page.is-active { display: block; }
-
-    @keyframes pageIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .topbar {
-      background: rgba(255, 253, 247, 0.94);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .nav-link {
-      border-bottom: 3px solid transparent;
-      color: var(--muted);
-      transition: color .2s ease, border-color .2s ease;
-    }
-    .nav-link:hover,
-    .nav-link.is-active {
-      color: var(--teal);
-      border-bottom-color: var(--orange);
-    }
-
-    .hero-frame {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      background: var(--ink);
-    }
-    .hero-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(15,30,25,.96) 0%, rgba(15,30,25,.80) 48%, rgba(15,30,25,.28) 100%);
-      z-index: -1;
-    }
-    .hero-photo {
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: .72;
-      filter: grayscale(100%) contrast(1.15);
-    }
-
-    .tiny-rule {
-      width: 74px;
-      height: 5px;
-      border-radius: 999px;
-      background: var(--yellow);
-    }
-
-    .concept-card {
-      border: 1px solid var(--line);
-      box-shadow: 7px 7px 0 rgba(22,37,31,.09);
-    }
-
-    .formula {
-      font-family: "Fraunces", serif;
-      letter-spacing: -.03em;
-    }
-
-    input[type="range"] { accent-color: var(--yellow); cursor: pointer; }
-
-    .icon-box {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      flex: 0 0 auto;
-    }
-
-    .quiz-card { border: 1px solid var(--line); box-shadow: 8px 8px 0 rgba(22,37,31,.09); }
-
-    .option-button {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      border: 1px solid var(--line);
-      background: var(--paper);
-      color: var(--ink);
-      border-radius: .8rem;
-      padding: .9rem 1rem;
-      text-align: left;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-    .option-button:hover:not(:disabled) { transform: translateX(4px); border-color: var(--teal); }
-    .option-button:disabled { cursor: default; }
-    .option-button.is-correct { border-color: #277b57; background: #ddf4e7; color: #165238; }
-    .option-button.is-wrong { border-color: #cb6243; background: #fde7df; color: #8e351d; }
-    .option-letter {
-      display: grid;
-      width: 28px;
-      height: 28px;
-      flex: 0 0 auto;
-      place-items: center;
-      border-radius: 50%;
-      background: #e8e0cf;
-      font-size: .78rem;
-      font-weight: 700;
-    }
-
-    .feedback {
-      display: none;
-      margin-top: 1rem;
-      border-radius: .65rem;
-      padding: .8rem 1rem;
-      font-size: .9rem;
-      line-height: 1.45;
-    }
-    .feedback.is-visible { display: block; }
-    .feedback.correct { background: #ddf4e7; color: #165238; }
-    .feedback.wrong { background: #fde7df; color: #8e351d; }
-
-    button:focus-visible, input:focus-visible {
-      outline: 3px solid var(--yellow);
-      outline-offset: 3px;
-    }
-
-    /* ===== SIMULATION ===== */
-    .sim-svg {
-      width: 100%;
-      height: auto;
-      max-height: 340px;
-      display: block;
-    }
-    .sim-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 260px;
-      padding: 12px;
-    }
-
-    .wheel-sim { will-change: transform; }
-
-    .sim-tab { white-space: nowrap; flex: 0 0 auto; }
-    .sim-tabs-wrapper {
-      display: flex;
-      gap: .5rem;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      border-bottom: 1px solid var(--line);
-    }
-    .sim-tabs-wrapper::-webkit-scrollbar { display: none; }
-
-    /* Panel data */
-    .data-panel {
-      border: 1px solid var(--line);
-      background: var(--paper);
-      border-radius: 1rem;
-      padding: 1rem;
-    }
-    .data-panel h4 {
-      font-family: "Fraunces", serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin: 0 0 0.6rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .data-panel .data-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-    .data-panel .data-block {
-      border: 1px solid var(--line);
-      border-radius: 0.6rem;
-      padding: 0.6rem 0.7rem;
-      background: #fbf8f0;
-    }
-    .data-panel .data-block .block-title {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-    }
-    .data-panel .data-block .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 0.72rem;
-      padding: 0.12rem 0;
-    }
-    .data-panel .data-block .row .lbl { color: var(--muted); }
-    .data-panel .data-block .row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; }
-    .data-panel .data-block .row .val.highlight { color: var(--orange); }
-
-    /* Panel ringkasan hasil simulasi */
-    .summary-panel {
-      border: 2px solid var(--teal);
-      background: linear-gradient(135deg, #f0faf9 0%, #fffdf7 100%);
-      border-radius: 1rem;
-      padding: 1rem;
-      display: none;
-      animation: summaryIn 0.4s ease both;
-    }
-    .summary-panel.is-visible { display: block; }
-    @keyframes summaryIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .summary-panel .summary-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px dashed var(--teal);
-    }
-    .summary-panel .summary-header h4 {
-      font-family: "Fraunces", serif;
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0;
-      color: var(--teal);
-    }
-    .summary-panel .summary-header .duration-badge {
-      margin-left: auto;
-      background: var(--teal);
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      font-family: ui-monospace, monospace;
-    }
-    .summary-panel .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-    .summary-panel .summary-block {
-      border: 1px solid var(--line);
-      border-radius: 0.6rem;
-      padding: 0.7rem 0.8rem;
-      background: white;
-    }
-    .summary-panel .summary-block .block-title {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .summary-panel .summary-block .big-value {
-      font-family: "Fraunces", serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 0.15rem;
-    }
-    .summary-panel .summary-block .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 0.72rem;
-      padding: 0.14rem 0;
-      border-top: 1px dashed rgba(217, 208, 189, 0.7);
-    }
-    .summary-panel .summary-block .row:first-of-type { border-top: 0; }
-    .summary-panel .summary-block .row .lbl { color: var(--muted); }
-    .summary-panel .summary-block .row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; }
-    .summary-panel .summary-note {
-      margin-top: 0.75rem;
-      padding: 0.5rem 0.7rem;
-      background: #fff8e1;
-      border-left: 3px solid var(--yellow);
-      border-radius: 0.4rem;
-      font-size: 0.72rem;
-      color: #7a5a00;
-      line-height: 1.5;
-    }
-
-    /* Tampilan input manual ω */
-    .omega-input-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .omega-input-group input[type="number"] {
-      width: 70px;
-      border: 1px solid var(--line);
-      border-radius: 0.5rem;
-      padding: 0.35rem 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--ink);
-      background: white;
-      text-align: center;
-    }
-
-    /* Info box ω₂ otomatis */
-    .auto-info {
-      margin-top: 0.4rem;
-      padding: 0.5rem 0.7rem;
-      background: #eef6f5;
-      border-left: 3px solid var(--teal);
-      border-radius: 0.4rem;
-      font-size: 0.75rem;
-      color: var(--teal);
-      font-weight: 600;
-    }
-
-    @media (max-width: 640px) {
-      .nav-label { display: none; }
-      .sim-svg { max-height: 240px; }
-      .sim-container { min-height: 220px; padding: 8px; }
-      .hero-frame .max-w-6xl { padding-top: 3rem !important; padding-bottom: 3rem !important; }
-      .data-panel .data-grid { grid-template-columns: 1fr; }
-      .summary-panel .summary-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 400px) {
-      .sim-svg { max-height: 200px; }
-    }
-
-    @media (hover: none) {
-      .option-button { padding: 1rem; }
-      button { min-height: 44px; }
-    }
-  </style>
+        /* Narasi styling */
+        .narasi-box {
+            background: linear-gradient(135deg, rgba(2,132,199,0.08), rgba(2,132,199,0.02));
+            border-left: 3px solid #0284c7;
+        }
+        .analogi-box {
+            background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
+            border-left: 3px solid #f59e0b;
+        }
+        .miskonsepsi-box {
+            background: linear-gradient(135deg, rgba(244,63,94,0.08), rgba(244,63,94,0.02));
+            border-left: 3px solid #f43f5e;
+        }
+        .insight-box {
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02));
+            border-left: 3px solid #10b981;
+        }
+        .narasi-text p { margin-bottom: 0.6rem; }
+        .narasi-text p:last-child { margin-bottom: 0; }
+        .narasi-text em { color: #7dd3fc; font-style: normal; font-weight: 500; }
+        .narasi-text strong { color: #f1f5f9; }
+    </style>
 </head>
-<body>
-  <div class="physics-app">
-    <!-- Header -->
-    <header class="topbar sticky top-0 z-30 w-full">
-      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 sm:px-8 lg:px-10" aria-label="Navigasi pembelajaran">
-        <button id="brand-button" type="button" class="flex items-center gap-2 py-3 sm:py-4 text-left" aria-label="Kembali ke halaman muka">
-          <span class="grid h-9 w-9 place-items-center rounded-full bg-[#116466] text-white">
-            <i data-lucide="orbit" width="18" height="18"></i>
-          </span>
-          <span id="brand-text" class="canva-text display-font font-bold text-sm sm:text-base">Hubungan Antar Roda</span>
-        </button>
-        <div class="flex h-full items-center gap-0 sm:gap-5">
-          <button id="nav-home" type="button" class="nav-link is-active inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
-            <i data-lucide="house" width="16" height="16"></i>
-            <span class="nav-label">Materi</span>
-          </button>
-          <button id="nav-simulation" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
-            <i data-lucide="settings-2" width="16" height="16"></i>
-            <span class="nav-label">Simulasi</span>
-          </button>
-          <button id="nav-quiz" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
-            <i data-lucide="circle-help" width="16" height="16"></i>
-            <span class="nav-label">Kuis</span>
-          </button>
-          <button id="nav-results" type="button" class="nav-link inline-flex items-center gap-1.5 px-2 py-3 sm:py-5 text-xs sm:text-sm font-bold">
-            <i data-lucide="bar-chart-3" width="16" height="16"></i>
-            <span class="nav-label">Hasil</span>
-          </button>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <header class="bg-slate-800/95 backdrop-blur border-b border-slate-700 sticky top-0 z-40 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            <button id="toggle-sidebar" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg hover:bg-slate-700 active:bg-slate-600">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+            <div class="flex items-center space-x-2 min-w-0">
+                <div class="bg-brand-500 text-white p-2 rounded-lg flex-shrink-0">
+                    <i class="fa-solid fa-atom text-lg sm:text-xl"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="font-bold text-slate-100 text-sm sm:text-base md:text-lg leading-tight truncate">Kinematika Mastery</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 truncate">Pemula $\rightarrow$ Level Olimpiade & PTN</p>
+                </div>
+            </div>
         </div>
-      </nav>
+
+        <div class="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
+            <div class="hidden sm:flex items-center space-x-2 bg-slate-700/50 px-2.5 py-1.5 rounded-full border border-slate-600">
+                <i class="fa-solid fa-fire text-amber-500 text-xs"></i>
+                <span class="text-[11px] font-medium text-slate-300 whitespace-nowrap" id="progress-summary">Hari 1 / 12</span>
+                <div class="w-14 bg-slate-600 h-1.5 rounded-full overflow-hidden">
+                    <div id="top-progress-bar" class="bg-brand-500 h-full w-[8%] transition-all duration-300"></div>
+                </div>
+            </div>
+            <div class="sm:hidden flex items-center gap-1 bg-slate-700/50 px-2 py-1 rounded-full border border-slate-600">
+                <i class="fa-solid fa-fire text-amber-500 text-[10px]"></i>
+                <span class="text-[10px] font-medium text-slate-300" id="progress-summary-mobile">1/12</span>
+            </div>
+
+            <button id="toggle-theme" class="p-2 text-slate-300 hover:text-white rounded-lg hover:bg-slate-700 active:bg-slate-600 transition" title="Ganti Mode">
+                <i class="fa-solid fa-moon text-base sm:text-lg" id="theme-icon"></i>
+            </button>
+        </div>
     </header>
 
-    <main>
-      <!-- Home / Materi Page -->
-      <section id="home-page" class="app-page is-active" aria-labelledby="hero-title">
-        <div class="hero-frame w-full">
-          <div class="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8 sm:py-24 lg:px-10">
-            <div class="max-w-2xl">
-              <div class="tiny-rule mb-4 sm:mb-5"></div>
-              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-[#f6be3b]">Fisika SMA — Gerak Rotasi</p>
-              <h1 id="hero-title" class="display-font mt-3 text-3xl font-bold leading-[1.1] text-white sm:text-5xl">
-                Hubungan Antar Roda
-              </h1>
-              <p class="mt-4 sm:mt-5 max-w-xl text-sm sm:text-base leading-7 text-white/80">
-                Pelajari bagaimana roda-roda yang terhubung bergerak bersama—seporos, bersinggungan, dan dihubungkan sabuk—melalui materi, simulasi interaktif, dan kuis.
-              </p>
-              <button id="start-learning-button" class="mt-7 sm:mt-8 inline-flex items-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 text-sm sm:text-base font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" type="button">
-                Mulai Belajar
-                <i data-lucide="arrow-right" width="18" height="18"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+    <div class="flex-1 flex overflow-hidden relative">
+        <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-20 md:hidden"></div>
 
-        <div class="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-12 lg:px-10">
-          <section aria-labelledby="concept-title">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Konsep Dasar</p>
-                <h2 id="concept-title" class="display-font mt-2 text-xl sm:text-2xl font-bold text-[#16251f]">Tiga Besaran Penting</h2>
-              </div>
-              <p class="max-w-md text-sm leading-6 text-[#526258]">
-                Pahami hubungan antara jari-jari, kecepatan sudut, dan kecepatan linear pada sistem roda.
-              </p>
-            </div>
-            <div class="mt-6 sm:mt-7 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-              <article class="concept-card rounded-2xl bg-white p-5">
-                <div class="icon-box mb-4 bg-[#f6be3b] text-[#16251f]"><i data-lucide="ruler"></i></div>
-                <h3 class="font-bold text-[#16251f]">Jari-jari (R)</h3>
-                <p class="mt-2 text-sm leading-6 text-[#526258]">Jarak dari pusat roda ke tepi. Menentukan kecepatan linear jika kecepatan sudut diketahui.</p>
-              </article>
-              <article class="concept-card rounded-2xl bg-white p-5">
-                <div class="icon-box mb-4 bg-[#116466] text-white"><i data-lucide="rotate-cw"></i></div>
-                <h3 class="font-bold text-[#16251f]">Kecepatan Sudut (ω)</h3>
-                <p class="mt-2 text-sm leading-6 text-[#526258]">Seberapa cepat roda berputar. Pada roda seporos, ω₁ = ω₂. Pada roda bersinggungan/sabuk, ω₁R₁ = ω₂R₂.</p>
-              </article>
-              <article class="concept-card rounded-2xl bg-white p-5 sm:col-span-2 md:col-span-1">
-                <div class="icon-box mb-4 bg-[#e86d32] text-white"><i data-lucide="gauge"></i></div>
-                <h3 class="font-bold text-[#16251f]">Kecepatan Linear (v)</h3>
-                <p class="mt-2 text-sm leading-6 text-[#526258]">v = ω × R. Pada roda bersinggungan atau bersabuk, kecepatan linear di titik kontak/sabuk sama.</p>
-              </article>
-            </div>
-          </section>
-
-          <section class="mt-10 sm:mt-12 rounded-2xl bg-[#116466] p-6 text-white sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
-            <div>
-              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#f6be3b]">Uji Pemahaman</p>
-              <h2 class="display-font mt-2 text-xl sm:text-2xl font-bold">Sudah siap menguji pemahaman?</h2>
-              <p class="mt-2 max-w-2xl text-sm sm:text-base leading-6 text-white/80">Kerjakan kuis singkat untuk mengukur seberapa jauh kamu memahami hubungan antar roda.</p>
-            </div>
-            <button id="home-to-quiz-button" class="mt-5 inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-[#f6be3b] px-5 py-3 font-bold text-[#16251f] sm:mt-0 sm:w-auto" type="button">
-              Mulai Kuis <i data-lucide="arrow-right" width="18" height="18"></i>
-            </button>
-          </section>
-        </div>
-      </section>
-
-      <!-- Simulation Page -->
-      <section id="simulation-page" class="app-page" aria-labelledby="simulation-page-title">
-        <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
-          <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Laboratorium Virtual</p>
-          <h1 id="simulation-page-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Simulasi Interaktif</h1>
-          <p class="mt-3 max-w-3xl text-sm sm:text-base leading-7 text-[#526258]">Atur jari-jari dan kecepatan sudut roda 1. Kecepatan sudut roda 2 dihitung otomatis sesuai jenis hubungan, sehingga roda tidak akan slip.</p>
-
-          <div class="sim-tabs-wrapper mt-6 sm:mt-8">
-            <button onclick="showSimulationType('seporos')" id="tab-seporos" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#116466] border-b-2 border-[#e86d32] bg-white/50">🔗 Seporos</button>
-            <button onclick="showSimulationType('bersinggungan')" id="tab-bersinggungan" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#526258] border-b-2 border-transparent hover:text-[#116466]">⚪ Bersinggungan</button>
-            <button onclick="showSimulationType('sabuk')" id="tab-sabuk" class="sim-tab rounded-t-lg px-3 sm:px-4 py-3 text-xs sm:text-sm font-bold text-[#526258] border-b-2 border-transparent hover:text-[#116466]">🔗 Bersabuk</button>
-          </div>
-
-          <div class="mt-6 sm:mt-8 grid gap-6 lg:grid-cols-2">
-            <div class="space-y-6">
-              <!-- Pengaturan Roda -->
-              <div class="rounded-2xl border border-[#d9d0bd] bg-white p-5 sm:p-6">
-                <h3 class="display-font text-base sm:text-lg font-bold text-[#16251f]">Pengaturan Roda</h3>
-                <div class="mt-5 space-y-5">
-                  <div>
-                    <label class="mb-2 block text-sm font-medium text-[#526258]">Jari-jari Roda 1 — R₁ (cm)</label>
-                    <input type="range" id="radius1" min="20" max="80" value="40" class="w-full">
-                    <span id="radius1-value" class="text-sm text-[#526258]">40 cm</span>
-                  </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-medium text-[#526258]">Jari-jari Roda 2 — R₂ (cm)</label>
-                    <input type="range" id="radius2" min="20" max="80" value="60" class="w-full">
-                    <span id="radius2-value" class="text-sm text-[#526258]">60 cm</span>
-                  </div>
-                  <div>
-                    <label class="mb-2 block text-sm font-medium text-[#526258]">Kecepatan Sudut Roda 1 — ω₁ (rad/s)</label>
-                    <div class="omega-input-group">
-                      <input type="range" id="omega1" min="0.5" max="10" step="0.5" value="5" class="flex-1">
-                      <input type="number" id="omega1-number" min="0.5" max="10" step="0.5" value="5">
-                    </div>
-                  </div>
-                  <div class="auto-info">
-                    <span id="omega2-auto-info">ω₂ otomatis = ω₁ = 5.00 rad/s</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Hasil Perhitungan -->
-              <div class="rounded-2xl border border-[#d9d0bd] bg-[#fffdf7] p-5 sm:p-6">
-                <h3 class="display-font text-base sm:text-lg font-bold text-[#16251f]">Hasil Perhitungan</h3>
-                <div class="mt-4 space-y-3 text-xs sm:text-sm">
-                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Sudut Roda 1 (ω₁):</span><span id="omega1-display" class="font-mono font-bold text-[#16251f] whitespace-nowrap">5.00 rad/s</span></div>
-                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Sudut Roda 2 (ω₂):</span><span id="omega2-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">5.00 rad/s</span></div>
-                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Linear Roda 1 (v₁):</span><span id="v1-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">2.00 m/s</span></div>
-                  <div class="flex justify-between gap-2"><span class="text-[#526258]">Kecepatan Linear Roda 2 (v₂):</span><span id="v2-result" class="font-mono font-bold text-[#16251f] whitespace-nowrap">2.00 m/s</span></div>
-                  <p id="velocity-status" class="text-xs font-semibold text-green-600">✓ Kecepatan Linear Sama (v₁ = v₂)</p>
-                </div>
-                <div class="mt-4 rounded-lg border-l-4 border-[#116466] bg-white p-3">
-                  <p class="text-xs text-[#526258]">Rumus yang berlaku:</p>
-                  <p id="formula-display" class="formula text-sm font-bold text-[#16251f]">ω₁ = ω₂</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <!-- Area simulasi -->
-              <div class="sim-container rounded-2xl border border-[#d9d0bd] bg-[#f9f4e9]">
-                <!-- Simulasi Seporos -->
-                <svg id="simulation-seporos" class="simulation-svg sim-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                  <g id="wheel2-seporos" class="wheel-sim">
-                    <circle cx="200" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" fill-opacity="0.6" />
-                    <circle cx="200" cy="150" r="8" fill="#DC2626" />
-                    <line id="marker2-seporos" x1="200" y1="150" x2="200" y2="90" stroke="#DC2626" stroke-width="4" stroke-linecap="round" />
-                    <circle id="particle2-seporos" cx="200" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                  <g id="wheel1-seporos" class="wheel-sim">
-                    <circle cx="200" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" fill-opacity="0.9" />
-                    <circle cx="200" cy="150" r="6" fill="#1E40AF" />
-                    <line id="marker1-seporos" x1="200" y1="150" x2="200" y2="110" stroke="#1E40AF" stroke-width="4" stroke-linecap="round" />
-                    <circle id="particle1-seporos" cx="200" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                  <circle cx="200" cy="150" r="10" fill="#374151" stroke="#1F2937" stroke-width="2" />
-                </svg>
-
-                <!-- Simulasi Bersinggungan -->
-                <svg id="simulation-bersinggungan" class="simulation-svg sim-svg hidden" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
-                  <g id="wheel1-bersinggungan" class="wheel-sim">
-                    <circle cx="120" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" />
-                    <circle cx="120" cy="150" r="5" fill="#1E40AF" />
-                    <line x1="120" y1="110" x2="120" y2="190" stroke="#1E40AF" stroke-width="2.5" />
-                    <line x1="80" y1="150" x2="160" y2="150" stroke="#1E40AF" stroke-width="2.5" />
-                    <line x1="91.7" y1="121.7" x2="148.3" y2="178.3" stroke="#1E40AF" stroke-width="2" opacity="0.7" />
-                    <line x1="148.3" y1="121.7" x2="91.7" y2="178.3" stroke="#1E40AF" stroke-width="2" opacity="0.7" />
-                    <circle id="particle1-bersinggungan" cx="120" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                  <g id="wheel2-bersinggungan" class="wheel-sim">
-                    <circle cx="280" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" />
-                    <line x1="280" y1="90" x2="280" y2="210" stroke="#DC2626" stroke-width="2.5" />
-                    <line x1="220" y1="150" x2="340" y2="150" stroke="#DC2626" stroke-width="2.5" />
-                    <line x1="237.6" y1="107.6" x2="322.4" y2="192.4" stroke="#DC2626" stroke-width="2" opacity="0.7" />
-                    <line x1="322.4" y1="107.6" x2="237.6" y2="192.4" stroke="#DC2626" stroke-width="2" opacity="0.7" />
-                    <circle id="particle2-bersinggungan" cx="280" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                </svg>
-
-                <!-- Simulasi Sabuk -->
-                <svg id="simulation-sabuk" class="simulation-svg sim-svg hidden" viewBox="0 0 420 320" preserveAspectRatio="xMidYMid meet">
-                  <g id="belt-system">
-                    <line id="belt-top" x1="120" y1="110" x2="320" y2="90" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" />
-                    <line id="belt-bottom" x1="120" y1="190" x2="320" y2="210" stroke="#8B5CF6" stroke-width="6" stroke-linecap="round" />
-                    <g id="belt-motion-dots">
-                      <circle id="dot1" r="3" fill="#A855F7" cx="120" cy="110" />
-                      <circle id="dot2" r="3" fill="#A855F7" cx="170" cy="105" />
-                      <circle id="dot3" r="3" fill="#A855F7" cx="220" cy="100" />
-                      <circle id="dot4" r="3" fill="#A855F7" cx="270" cy="95" />
-                      <circle id="dot5" r="3" fill="#A855F7" cx="320" cy="90" />
-                      <circle id="dot6" r="3" fill="#A855F7" cx="320" cy="210" />
-                      <circle id="dot7" r="3" fill="#A855F7" cx="270" cy="205" />
-                      <circle id="dot8" r="3" fill="#A855F7" cx="220" cy="200" />
-                      <circle id="dot9" r="3" fill="#A855F7" cx="170" cy="195" />
-                      <circle id="dot10" r="3" fill="#A855F7" cx="120" cy="190" />
-                    </g>
-                  </g>
-                  <g id="wheel1-sabuk" class="wheel-sim">
-                    <circle cx="120" cy="150" r="40" fill="#3B82F6" stroke="#1E40AF" stroke-width="3" fill-opacity="0.9" />
-                    <circle cx="120" cy="150" r="5" fill="#1E40AF" />
-                    <line x1="120" y1="110" x2="120" y2="190" stroke="#1E40AF" stroke-width="2" />
-                    <line x1="80" y1="150" x2="160" y2="150" stroke="#1E40AF" stroke-width="2" />
-                    <circle id="particle1-sabuk" cx="120" cy="110" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                  <g id="wheel2-sabuk" class="wheel-sim">
-                    <circle cx="320" cy="150" r="60" fill="#EF4444" stroke="#DC2626" stroke-width="3" fill-opacity="0.9" />
-                    <circle cx="320" cy="150" r="5" fill="#DC2626" />
-                    <line x1="320" y1="90" x2="320" y2="210" stroke="#DC2626" stroke-width="2" />
-                    <line x1="260" y1="150" x2="380" y2="150" stroke="#DC2626" stroke-width="2" />
-                    <circle id="particle2-sabuk" cx="320" cy="90" r="6" fill="#FBBF24" stroke="#92400E" stroke-width="2" />
-                  </g>
-                </svg>
-              </div>
-
-              <!-- Tombol Play/Stop/Reset simulasi -->
-              <div class="flex flex-wrap gap-3">
-                <button id="play-simulation-button" onclick="startSimulation()" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#116466] px-5 py-3 font-bold text-white transition hover:brightness-110">
-                  <i data-lucide="play" width="18" height="18"></i>
-                  <span>Mulai / Lanjut</span>
+        <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 w-[85vw] max-w-sm md:w-80 bg-slate-800 border-r border-slate-700 flex flex-col z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-3 sm:p-4 border-b border-slate-700 flex justify-between items-center">
+                <h2 class="font-semibold text-slate-200 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-brand-500"></i> Kurikulum Harian
+                </h2>
+                <button id="close-sidebar" class="md:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-700">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
-                <button id="stop-simulation-button" onclick="stopSimulation()" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110">
-                  <i data-lucide="square" width="18" height="18"></i>
-                  <span>Stop</span>
-                </button>
-                <button id="reset-simulation-button" onclick="resetSimulation(true)" class="flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-[#16251f] px-5 py-3 font-bold text-white transition hover:brightness-110">
-                  <i data-lucide="rotate-ccw" width="18" height="18"></i>
-                  <span>Reset</span>
-                </button>
-              </div>
+            </div>
 
-              <!-- Panel ringkasan hasil (muncul setelah Stop) -->
-              <div id="summary-panel" class="summary-panel">
-                <div class="summary-header">
-                  <i data-lucide="flag" width="18" height="18" class="text-[#116466]"></i>
-                  <h4>Ringkasan Hasil Simulasi</h4>
-                  <span class="duration-badge">t = <span id="summary-time">0.0 s</span></span>
-                </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-2 sm:p-3 space-y-1" id="curriculum-list">
+            </div>
 
-                <div class="summary-grid">
-                  <div class="summary-block" style="border-left: 4px solid #1E40AF;">
-                    <div class="block-title" style="color:#1E40AF;">🔵 Roda 1</div>
-                    <div class="big-value" style="color:#1E40AF;">
-                      <span id="summary-theta1-rot">0.00</span> putaran
+            <div class="p-3 border-t border-slate-700 bg-slate-800/50 text-xs text-slate-400">
+                <p class="font-semibold text-slate-300 mb-1 text-[11px]"><i class="fa-solid fa-graduation-cap text-brand-500 mr-1"></i>Referensi:</p>
+                <ul class="list-disc list-inside space-y-0.5 text-[10px] text-slate-400 leading-relaxed">
+                    <li>Halliday, Resnick, Walker</li>
+                    <li>Sears & Zemansky</li>
+                    <li>I.E. Irodov</li>
+                    <li>David Morin</li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto custom-scrollbar bg-slate-900 p-2.5 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+            
+            <div id="slide-container" class="max-w-5xl mx-auto w-full space-y-4 sm:space-y-6">
+                <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-xl relative overflow-hidden">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2 sm:mb-3">
+                        <span id="slide-module-badge" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-brand-500/20 text-brand-500 border border-brand-500/30">
+                            Modul 1 • Pemula
+                        </span>
+                        <div class="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-slate-400">
+                            <span><i class="fa-regular fa-clock mr-1"></i>~5 Menit</span>
+                            <span><i class="fa-regular fa-calendar-check mr-1"></i><span id="slide-day-label">Hari ke-1</span></span>
+                        </div>
                     </div>
-                    <div class="row"><span class="lbl">Sudut total (θ₁)</span><span id="summary-theta1-rad" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut total (°)</span><span id="summary-theta1-deg" class="val">0°</span></div>
-                    <div class="row"><span class="lbl">Jarak busur (s₁)</span><span id="summary-s1" class="val">0.00 m</span></div>
-                    <div class="row"><span class="lbl">Jari-jari (R₁)</span><span id="summary-r1" class="val">0.40 m</span></div>
-                    <div class="row"><span class="lbl">ω₁</span><span id="summary-omega1" class="val">5.00 rad/s</span></div>
-                    <div class="row"><span class="lbl">v₁</span><span id="summary-v1" class="val">2.00 m/s</span></div>
-                  </div>
 
-                  <div class="summary-block" style="border-left: 4px solid #DC2626;">
-                    <div class="block-title" style="color:#DC2626;">🔴 Roda 2</div>
-                    <div class="big-value" style="color:#DC2626;">
-                      <span id="summary-theta2-rot">0.00</span> putaran
+                    <h2 id="slide-title" class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1.5 sm:mb-2 leading-tight"></h2>
+                    <p id="slide-subtitle" class="text-slate-400 text-xs sm:text-sm md:text-base"></p>
+                </div>
+
+                <!-- NARASI KONSEP (Baru) -->
+                <div id="slide-narrative" class="bg-slate-800/50 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-lg space-y-3 sm:space-y-4">
+                </div>
+
+                <!-- Theory Content -->
+                <div class="bg-slate-800/50 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-lg leading-relaxed text-slate-300 text-xs sm:text-sm md:text-base space-y-3 sm:space-y-4" id="slide-theory">
+                </div>
+
+                <div id="slide-interactive-container" class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
+                    <div class="bg-slate-700/50 px-3 sm:px-5 py-2.5 sm:py-3 border-b border-slate-700 flex items-center justify-between">
+                        <h3 class="font-semibold text-slate-200 text-xs sm:text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-flask text-amber-400"></i>
+                            <span id="tool-title" class="truncate">Simulasi & Visualisasi</span>
+                        </h3>
+                        <span class="text-[10px] sm:text-xs bg-slate-600/60 px-2 py-0.5 sm:py-1 rounded text-slate-300 flex-shrink-0">Live</span>
                     </div>
-                    <div class="row"><span class="lbl">Sudut total (θ₂)</span><span id="summary-theta2-rad" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Sudut total (°)</span><span id="summary-theta2-deg" class="val">0°</span></div>
-                    <div class="row"><span class="lbl">Jarak busur (s₂)</span><span id="summary-s2" class="val">0.00 m</span></div>
-                    <div class="row"><span class="lbl">Jari-jari (R₂)</span><span id="summary-r2" class="val">0.60 m</span></div>
-                    <div class="row"><span class="lbl">ω₂</span><span id="summary-omega2" class="val">5.00 rad/s</span></div>
-                    <div class="row"><span class="lbl">v₂</span><span id="summary-v2" class="val">2.00 m/s</span></div>
-                  </div>
+                    <div class="p-3 sm:p-4 md:p-6" id="tool-content">
+                    </div>
                 </div>
 
-                <div id="summary-note" class="summary-note">
-                  <strong>💡 Bandingkan:</strong> Perhatikan bagaimana sudut tempuh dan jarak busur kedua roda berbeda (atau sama) tergantung pada hubungan antar roda.
+                <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700 shadow-xl space-y-3 sm:space-y-4">
+                    <div class="flex items-center space-x-2 sm:space-x-3 text-brand-500 border-b border-slate-700/60 pb-2 sm:pb-3">
+                        <i class="fa-solid fa-circle-question text-lg sm:text-xl"></i>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-100">Evaluasi & Refleksi Harian</h3>
+                    </div>
+
+                    <p class="text-slate-300 font-medium text-xs sm:text-sm md:text-base" id="quiz-question"></p>
+
+                    <div class="grid grid-cols-1 gap-2 sm:gap-3" id="quiz-options"></div>
+
+                    <div id="quiz-feedback" class="hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm leading-relaxed border transition-all duration-300"></div>
+
+                    <div class="pt-3 sm:pt-4 border-t border-slate-700/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-4">
+                        <span class="text-[10px] sm:text-xs text-slate-400 text-center sm:text-left">Sudah paham materi hari ini?</span>
+                        <div class="flex items-center space-x-2">
+                            <button id="btn-not-understood" class="flex-1 sm:flex-initial px-3 py-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 active:bg-rose-500/30 text-xs font-semibold transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Belum
+                            </button>
+                            <button id="btn-understood" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-xs font-semibold transition shadow-lg shadow-emerald-900/30">
+                                <i class="fa-solid fa-circle-check mr-1"></i> Paham & Lanjut
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
 
-              <!-- Panel data partikel real-time -->
-              <div class="data-panel">
-                <h4>
-                  <i data-lucide="activity" width="16" height="16" class="text-[#e86d32]"></i>
-                  Data Partikel (real-time)
-                  <span class="ml-auto text-xs font-normal text-[#526258]">t = <span id="time-display" class="font-mono font-bold">0.0 s</span></span>
-                </h4>
-
-                <div class="data-grid">
-                  <div class="data-block" style="border-left: 4px solid #1E40AF;">
-                    <div class="block-title" style="color:#1E40AF;">🔵 Roda 1</div>
-                    <div class="row"><span class="lbl">Putaran total</span><span id="theta1-rot-display" class="val highlight">0.00 put</span></div>
-                    <div class="row"><span class="lbl">Sudut total (θ₁)</span><span id="theta1-display" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Posisi sudut (0–360°)</span><span id="theta1-deg-display" class="val">0°</span></div>
-                    <div class="row"><span class="lbl">Jarak (s₁)</span><span id="s1-display" class="val">0.00 m</span></div>
-                    <div class="row"><span class="lbl">ω₁</span><span id="omega1-data-display" class="val">5.00 rad/s</span></div>
-                    <div class="row"><span class="lbl">v₁</span><span id="v1-data-display" class="val">2.00 m/s</span></div>
-                    <div class="row"><span class="lbl">T₁</span><span id="T1-display" class="val">1.26 s</span></div>
-                    <div class="row"><span class="lbl">f₁</span><span id="f1-display" class="val">0.80 Hz</span></div>
-                  </div>
-
-                  <div class="data-block" style="border-left: 4px solid #DC2626;">
-                    <div class="block-title" style="color:#DC2626;">🔴 Roda 2</div>
-                    <div class="row"><span class="lbl">Putaran total</span><span id="theta2-rot-display" class="val highlight">0.00 put</span></div>
-                    <div class="row"><span class="lbl">Sudut total (θ₂)</span><span id="theta2-display" class="val">0.00 rad</span></div>
-                    <div class="row"><span class="lbl">Posisi sudut (0–360°)</span><span id="theta2-deg-display" class="val">0°</span></div>
-                    <div class="row"><span class="lbl">Jarak (s₂)</span><span id="s2-display" class="val">0.00 m</span></div>
-                    <div class="row"><span class="lbl">ω₂</span><span id="omega2-data-display" class="val">5.00 rad/s</span></div>
-                    <div class="row"><span class="lbl">v₂</span><span id="v2-data-display" class="val">2.00 m/s</span></div>
-                    <div class="row"><span class="lbl">T₂</span><span id="T2-display" class="val">1.26 s</span></div>
-                    <div class="row"><span class="lbl">f₂</span><span id="f2-display" class="val">0.80 Hz</span></div>
-                  </div>
+                <div class="flex items-center justify-between gap-2 pt-2 pb-6">
+                    <button id="btn-prev-slide" class="px-3 sm:px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-300 border border-slate-700 text-xs sm:text-sm font-medium transition flex items-center space-x-1.5 sm:space-x-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span class="hidden sm:inline">Hari</span> Sebelumnya
+                    </button>
+                    
+                    <button id="btn-next-slide" class="px-3 sm:px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white text-xs sm:text-sm font-semibold transition flex items-center space-x-1.5 sm:space-x-2 shadow-lg shadow-brand-900/40">
+                        <span class="hidden sm:inline">Hari</span> Berikutnya
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Quiz Page -->
-      <section id="quiz-page" class="app-page" aria-labelledby="quiz-title">
-        <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
-          <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Evaluasi</p>
-              <h1 id="quiz-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Kuis Pemahaman</h1>
-              <p class="mt-3 max-w-2xl text-sm sm:text-base leading-7 text-[#526258]">Jawab pertanyaan berikut untuk mengukur pemahamanmu. Setiap jawaban benar bernilai 2 poin.</p>
-            </div>
-            <div class="rounded-xl border border-[#d9d0bd] bg-[#fffdf7] px-5 py-4 text-center self-start sm:self-auto">
-              <p class="text-xs font-bold uppercase tracking-[0.14em] text-[#526258]">Skor</p>
-              <p id="score-value" class="display-font mt-1 text-2xl font-bold text-[#116466]" aria-live="polite">0 / 10</p>
-            </div>
-          </div>
-
-          <form id="quiz-form" class="mt-6 sm:mt-8 space-y-5 sm:space-y-6">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-[#526258]">Nama Siswa</label>
-              <input type="text" id="student-name" required class="w-full rounded-lg border border-[#d9d0bd] bg-white p-3 text-[#16251f] focus:border-[#116466] focus:ring-2 focus:ring-[#116466]/30" placeholder="Masukkan nama Anda">
-            </div>
-
-            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
-              <p class="text-sm font-bold text-[#e86d32]">Soal 1</p>
-              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Dua roda bersinggungan dengan jari-jari 20 cm dan 30 cm. Jika roda pertama berputar dengan kecepatan sudut 6 rad/s, berapakah kecepatan sudut roda kedua?</h2>
-              <div class="mt-4 sm:mt-5 grid gap-3">
-                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="a" class="mr-2"><span class="option-letter">A</span> 4 rad/s</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="b" class="mr-2"><span class="option-letter">B</span> 6 rad/s</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="c" class="mr-2"><span class="option-letter">C</span> 9 rad/s</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="d" class="mr-2"><span class="option-letter">D</span> 12 rad/s</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q1" value="e" class="mr-2"><span class="option-letter">E</span> 3 rad/s</label>
-              </div>
-            </article>
-
-            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
-              <p class="text-sm font-bold text-[#e86d32]">Soal 2</p>
-              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Pada sistem roda seporos, jika roda A memiliki jari-jari 15 cm dan roda B memiliki jari-jari 25 cm, maka perbandingan kecepatan linear roda A dan B adalah...</h2>
-              <div class="mt-4 sm:mt-5 grid gap-3">
-                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="a" class="mr-2"><span class="option-letter">A</span> 3 : 5</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="b" class="mr-2"><span class="option-letter">B</span> 5 : 3</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="c" class="mr-2"><span class="option-letter">C</span> 1 : 1</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="d" class="mr-2"><span class="option-letter">D</span> 25 : 15</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q2" value="e" class="mr-2"><span class="option-letter">E</span> 15 : 25</label>
-              </div>
-            </article>
-
-            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
-              <p class="text-sm font-bold text-[#e86d32]">Soal 3</p>
-              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Rumus yang tepat untuk hubungan roda bersinggungan adalah...</h2>
-              <div class="mt-4 sm:mt-5 grid gap-3">
-                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="a" class="mr-2"><span class="option-letter">A</span> ω₁ = ω₂</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="b" class="mr-2"><span class="option-letter">B</span> ω₁ × R₁ = ω₂ × R₂</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="c" class="mr-2"><span class="option-letter">C</span> R₁ = R₂</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="d" class="mr-2"><span class="option-letter">D</span> v₁ × v₂ = konstan</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q3" value="e" class="mr-2"><span class="option-letter">E</span> ω₁ + ω₂ = konstan</label>
-              </div>
-            </article>
-
-            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
-              <p class="text-sm font-bold text-[#e86d32]">Soal 4</p>
-              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Contoh penerapan hubungan antar roda dalam kehidupan sehari-hari adalah...</h2>
-              <div class="mt-4 sm:mt-5 grid gap-3">
-                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="a" class="mr-2"><span class="option-letter">A</span> Sistem rem mobil</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="b" class="mr-2"><span class="option-letter">B</span> Roda gigi sepeda</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="c" class="mr-2"><span class="option-letter">C</span> Lampu mobil</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="d" class="mr-2"><span class="option-letter">D</span> Klakson motor</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q4" value="e" class="mr-2"><span class="option-letter">E</span> Sistem transmisi mobil</label>
-              </div>
-            </article>
-
-            <article class="quiz-card rounded-2xl bg-white p-5 sm:p-6">
-              <p class="text-sm font-bold text-[#e86d32]">Soal 5</p>
-              <h2 class="display-font mt-2 text-base sm:text-lg font-bold text-[#16251f]">Jika dua roda seporos memiliki kecepatan sudut yang sama, maka roda dengan jari-jari lebih besar akan memiliki...</h2>
-              <div class="mt-4 sm:mt-5 grid gap-3">
-                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="a" class="mr-2"><span class="option-letter">A</span> Kecepatan linear lebih kecil</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="b" class="mr-2"><span class="option-letter">B</span> Kecepatan linear lebih besar</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="c" class="mr-2"><span class="option-letter">C</span> Kecepatan linear sama</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="d" class="mr-2"><span class="option-letter">D</span> Tidak ada hubungan</label>
-                <label class="option-button cursor-pointer"><input type="radio" name="q5" value="e" class="mr-2"><span class="option-letter">E</span> Kecepatan sudut lebih kecil</label>
-              </div>
-            </article>
-
-            <button type="submit" class="w-full rounded-lg bg-[#116466] px-6 py-3 font-bold text-white transition hover:brightness-110">📝 Kirim Jawaban</button>
-          </form>
-
-          <div id="quiz-result" class="mt-6 hidden rounded-2xl p-5 sm:p-6"></div>
-
-          <div class="mt-6 sm:mt-8 flex flex-col items-stretch sm:items-center justify-between gap-4 rounded-2xl border border-[#d9d0bd] bg-[#fffdf7] p-5 sm:p-6 sm:flex-row">
-            <p class="text-sm text-[#526258] text-center sm:text-left">Ingin mencoba lagi? Klik tombol di samping.</p>
-            <button id="retry-quiz-button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#e86d32] px-5 py-3 font-bold text-white transition hover:brightness-110" type="button">
-              <i data-lucide="rotate-ccw" width="18" height="18"></i> Ulangi Kuis
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Hasil Page -->
-      <section id="hasil-page" class="app-page" aria-labelledby="hasil-title">
-        <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-8 sm:py-10 lg:px-10">
-          <p class="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#e86d32]">Rekap Nilai</p>
-          <h1 id="hasil-title" class="display-font mt-2 text-2xl sm:text-3xl font-bold text-[#16251f]">Hasil Kuis Siswa</h1>
-          <div id="results-container" class="mt-6 sm:mt-8 space-y-4">
-            <p class="py-8 text-center text-[#526258]">Belum ada hasil kuis yang tersimpan.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="w-full border-t border-[#d9d0bd] bg-[#fffdf7]">
-      <div class="mx-auto w-full max-w-6xl px-5 py-6 text-center sm:px-8 lg:px-10">
-        <p class="text-xs sm:text-sm text-[#526258]">© 2025 — Fisika SMA | Hubungan Antar Roda</p>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    // ==================== CONFIG ====================
-    const defaultConfig = {
-      lesson_title: "Hubungan Antar Roda",
-      teacher_name: "Guru: Uswatun H",
-      school_name: "SMAN Dlasta",
-      primary_color: "#116466",
-      secondary_color: "#e86d32",
-      background_color: "#f7f1e4",
-      text_color: "#16251f",
-      accent_color: "#f6be3b"
-    };
-
-    let currentData = [];
-    let simulationInterval = null;
-    let currentSimulationType = 'seporos';
-
-    // Nilai akumulasi sudut (TIDAK di-reset saat Play, hanya saat Reset)
-    let theta1 = 0;
-    let theta2 = 0;
-    let elapsedTime = 0;
-    let hasRunSimulation = false;
-
-    // ==================== DATA SDK ====================
-    const dataHandler = {
-      onDataChanged(data) {
-        currentData = data;
-        updateResultsDisplay();
-      }
-    };
-
-    async function onConfigChange(config) {
-      document.getElementById('brand-text').textContent = config.lesson_title || defaultConfig.lesson_title;
-    }
-
-    function mapToCapabilities(config) {
-      return { recolorables: [], borderables: [], fontEditable: undefined, fontSizeable: undefined };
-    }
-
-    function mapToEditPanelValues(config) {
-      return new Map([
-        ["lesson_title", config.lesson_title || defaultConfig.lesson_title],
-        ["teacher_name", config.teacher_name || defaultConfig.teacher_name],
-        ["school_name", config.school_name || defaultConfig.school_name]
-      ]);
-    }
-
-    async function initializeApp() {
-      try {
-        if (window.dataSdk) {
-          const initResult = await window.dataSdk.init(dataHandler);
-          if (!initResult.isOk) console.error("Failed to initialize data SDK");
-        }
-        if (window.elementSdk) {
-          await window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
-        }
-      } catch (error) {
-        console.error("Initialization error:", error);
-      }
-    }
-
-    // ==================== NAVIGATION ====================
-    function showPage(pageName) {
-      document.querySelectorAll('.app-page').forEach(p => p.classList.remove('is-active'));
-      document.getElementById(pageName + '-page').classList.add('is-active');
-      document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('is-active'));
-      const navBtn = document.getElementById('nav-' + (pageName === 'hasil' ? 'results' : pageName));
-      if (navBtn) navBtn.classList.add('is-active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    document.getElementById('nav-home').addEventListener('click', () => showPage('home'));
-    document.getElementById('nav-simulation').addEventListener('click', () => showPage('simulation'));
-    document.getElementById('nav-quiz').addEventListener('click', () => showPage('quiz'));
-    document.getElementById('nav-results').addEventListener('click', () => showPage('hasil'));
-    document.getElementById('brand-button').addEventListener('click', () => showPage('home'));
-    document.getElementById('start-learning-button').addEventListener('click', () => showPage('simulation'));
-    document.getElementById('home-to-quiz-button').addEventListener('click', () => showPage('quiz'));
-
-    // ==================== SIMULATION ====================
-    function showSimulationType(type) {
-      currentSimulationType = type;
-      resetSimulation(false);   // reset visual tanpa hapus theta? → kita reset penuh di sini karena ganti tipe
-
-      document.querySelectorAll('.simulation-svg').forEach(svg => svg.classList.add('hidden'));
-      document.getElementById('simulation-' + type).classList.remove('hidden');
-
-      document.querySelectorAll('.sim-tab').forEach(tab => {
-        tab.classList.remove('border-[#e86d32]', 'text-[#116466]', 'bg-white/50');
-        tab.classList.add('border-transparent', 'text-[#526258]');
-      });
-      const activeTab = document.getElementById('tab-' + type);
-      activeTab.classList.remove('border-transparent', 'text-[#526258]');
-      activeTab.classList.add('border-[#e86d32]', 'text-[#116466]', 'bg-white/50');
-
-      updateSimulationValues();
-    }
-
-    // Hitung omega2 berdasarkan tipe hubungan agar tidak slip
-    function calcOmega2(omega1, r1, r2) {
-      if (currentSimulationType === 'seporos') return omega1;
-      return (omega1 * r1) / r2;
-    }
-
-    function updateSimulationValues() {
-      const r1 = parseFloat(document.getElementById('radius1').value);
-      const r2 = parseFloat(document.getElementById('radius2').value);
-      const omega1 = parseFloat(document.getElementById('omega1').value);
-      const omega2 = calcOmega2(omega1, r1, r2);
-
-      document.getElementById('radius1-value').textContent = r1 + ' cm';
-      document.getElementById('radius2-value').textContent = r2 + ' cm';
-
-      let autoInfoText;
-      if (currentSimulationType === 'seporos') {
-        autoInfoText = `ω₂ otomatis = ω₁ = ${omega2.toFixed(2)} rad/s (roda seporos)`;
-      } else {
-        autoInfoText = `ω₂ otomatis = ω₁ × R₁ / R₂ = ${omega1.toFixed(2)} × ${r1} / ${r2} = ${omega2.toFixed(2)} rad/s`;
-      }
-      document.getElementById('omega2-auto-info').textContent = autoInfoText;
-
-      const v1 = omega1 * (r1 / 100);
-      const v2 = omega2 * (r2 / 100);
-
-      let formula, statusText, statusClass;
-      if (currentSimulationType === 'seporos') {
-        formula = 'ω₁ = ω₂';
-        statusText = '✓ Kecepatan Sudut Sama (ω₁ = ω₂)';
-        statusClass = 'text-xs font-semibold text-green-600';
-      } else if (currentSimulationType === 'bersinggungan') {
-        formula = 'ω₁ × R₁ = ω₂ × R₂';
-        statusText = '✓ Kecepatan Linear Sama (v₁ = v₂) — tidak slip';
-        statusClass = 'text-xs font-semibold text-green-600';
-      } else {
-        formula = 'ω₁ × R₁ = ω₂ × R₂';
-        statusText = '✓ Kecepatan Linear Sabuk Sama (v₁ = v₂) — tidak slip';
-        statusClass = 'text-xs font-semibold text-green-600';
-      }
-
-      document.getElementById('omega1-display').textContent = omega1.toFixed(2) + ' rad/s';
-      document.getElementById('omega2-result').textContent = omega2.toFixed(2) + ' rad/s';
-      document.getElementById('v1-result').textContent = v1.toFixed(2) + ' m/s';
-      document.getElementById('v2-result').textContent = v2.toFixed(2) + ' m/s';
-      document.getElementById('formula-display').textContent = formula;
-
-      const velocityStatus = document.getElementById('velocity-status');
-      velocityStatus.textContent = statusText;
-      velocityStatus.className = statusClass;
-
-      switch(currentSimulationType) {
-        case 'seporos': updateSeporosWheels(r1, r2); break;
-        case 'bersinggungan': updateBersinggunganWheels(r1, r2); break;
-        case 'sabuk': updateSabukWheels(r1, r2); break;
-      }
-
-      updateDataPanel();
-      updateParticlesPosition();
-    }
-
-    function updateSeporosWheels(r1, r2) {
-      document.querySelector('#wheel1-seporos circle:first-child').setAttribute('r', r1);
-      document.querySelector('#wheel2-seporos circle:first-child').setAttribute('r', r2);
-      document.getElementById('marker1-seporos').setAttribute('y2', 150 - r1);
-      document.getElementById('marker2-seporos').setAttribute('y2', 150 - r2);
-      document.getElementById('particle1-seporos').setAttribute('cy', 150 - r1);
-      document.getElementById('particle2-seporos').setAttribute('cy', 150 - r2);
-    }
-
-    function updateBersinggunganWheels(r1, r2) {
-      const wheel1X = 120, wheel1Y = 150;
-      const wheel2X = wheel1X + r1 + r2, wheel2Y = 150;
-
-      const wheel1Group = document.querySelector('#wheel1-bersinggungan');
-      wheel1Group.querySelector('circle:first-child').setAttribute('r', r1);
-      const lines1 = wheel1Group.querySelectorAll('line');
-      lines1[0].setAttribute('x1', wheel1X); lines1[0].setAttribute('x2', wheel1X);
-      lines1[0].setAttribute('y1', wheel1Y - r1); lines1[0].setAttribute('y2', wheel1Y + r1);
-      lines1[1].setAttribute('x1', wheel1X - r1); lines1[1].setAttribute('x2', wheel1X + r1);
-      lines1[1].setAttribute('y1', wheel1Y); lines1[1].setAttribute('y2', wheel1Y);
-      const o1 = r1 * 0.707;
-      lines1[2].setAttribute('x1', wheel1X - o1); lines1[2].setAttribute('y1', wheel1Y - o1);
-      lines1[2].setAttribute('x2', wheel1X + o1); lines1[2].setAttribute('y2', wheel1Y + o1);
-      lines1[3].setAttribute('x1', wheel1X + o1); lines1[3].setAttribute('y1', wheel1Y - o1);
-      lines1[3].setAttribute('x2', wheel1X - o1); lines1[3].setAttribute('y2', wheel1Y + o1);
-      document.getElementById('particle1-bersinggungan').setAttribute('cx', wheel1X);
-      document.getElementById('particle1-bersinggungan').setAttribute('cy', wheel1Y - r1);
-
-      const wheel2Group = document.querySelector('#wheel2-bersinggungan');
-      wheel2Group.querySelector('circle:first-child').setAttribute('cx', wheel2X);
-      wheel2Group.querySelector('circle:first-child').setAttribute('r', r2);
-
-      const lines2 = wheel2Group.querySelectorAll('line');
-      lines2[0].setAttribute('x1', wheel2X); lines2[0].setAttribute('x2', wheel2X);
-      lines2[0].setAttribute('y1', wheel2Y - r2); lines2[0].setAttribute('y2', wheel2Y + r2);
-      lines2[1].setAttribute('x1', wheel2X - r2); lines2[1].setAttribute('x2', wheel2X + r2);
-      lines2[1].setAttribute('y1', wheel2Y); lines2[1].setAttribute('y2', wheel2Y);
-      const o2 = r2 * 0.707;
-      lines2[2].setAttribute('x1', wheel2X - o2); lines2[2].setAttribute('y1', wheel2Y - o2);
-      lines2[2].setAttribute('x2', wheel2X + o2); lines2[2].setAttribute('y2', wheel2Y + o2);
-      lines2[3].setAttribute('x1', wheel2X + o2); lines2[3].setAttribute('y1', wheel2Y - o2);
-      lines2[3].setAttribute('x2', wheel2X - o2); lines2[3].setAttribute('y2', wheel2Y + o2);
-      document.getElementById('particle2-bersinggungan').setAttribute('cx', wheel2X);
-      document.getElementById('particle2-bersinggungan').setAttribute('cy', wheel2Y - r2);
-    }
-
-    function updateSabukWheels(r1, r2) {
-      document.querySelector('#wheel1-sabuk circle:first-child').setAttribute('r', r1);
-      document.querySelector('#wheel2-sabuk circle:first-child').setAttribute('r', r2);
-
-      const spokes1 = document.querySelectorAll('#wheel1-sabuk line');
-      spokes1[0].setAttribute('y1', 150 - r1); spokes1[0].setAttribute('y2', 150 + r1);
-      spokes1[1].setAttribute('x1', 120 - r1); spokes1[1].setAttribute('x2', 120 + r1);
-
-      const spokes2 = document.querySelectorAll('#wheel2-sabuk line');
-      spokes2[0].setAttribute('y1', 150 - r2); spokes2[0].setAttribute('y2', 150 + r2);
-      spokes2[1].setAttribute('x1', 320 - r2); spokes2[1].setAttribute('x2', 320 + r2);
-
-      document.getElementById('belt-top').setAttribute('y1', 150 - r1);
-      document.getElementById('belt-top').setAttribute('y2', 150 - r2);
-      document.getElementById('belt-bottom').setAttribute('y1', 150 + r1);
-      document.getElementById('belt-bottom').setAttribute('y2', 150 + r2);
-
-      document.getElementById('particle1-sabuk').setAttribute('cx', 120);
-      document.getElementById('particle1-sabuk').setAttribute('cy', 150 - r1);
-      document.getElementById('particle2-sabuk').setAttribute('cx', 320);
-      document.getElementById('particle2-sabuk').setAttribute('cy', 150 - r2);
-
-      const dots = document.querySelectorAll('#belt-motion-dots circle');
-      for (let i = 0; i < 5; i++) {
-        const progress = i / 4;
-        const x = 120 + progress * (320 - 120);
-        const y = (150 - r1) + progress * ((150 - r2) - (150 - r1));
-        dots[i].setAttribute('cx', x); dots[i].setAttribute('cy', y);
-      }
-      for (let i = 5; i < 10; i++) {
-        const progress = (i - 5) / 4;
-        const x = 320 - progress * (320 - 120);
-        const y = (150 + r2) - progress * ((150 + r2) - (150 + r1));
-        dots[i].setAttribute('cx', x); dots[i].setAttribute('cy', y);
-      }
-    }
-
-    function updateParticlesPosition() {
-      const r1 = parseFloat(document.getElementById('radius1').value);
-      const r2 = parseFloat(document.getElementById('radius2').value);
-
-      const p1 = document.getElementById(`particle1-${currentSimulationType}`);
-      if (p1) {
-        let cx1, cy1;
-        if (currentSimulationType === 'seporos') { cx1 = 200; cy1 = 150; }
-        else { cx1 = 120; cy1 = 150; }
-        p1.setAttribute('cx', cx1 + r1 * Math.sin(theta1));
-        p1.setAttribute('cy', cy1 - r1 * Math.cos(theta1));
-      }
-
-      const p2 = document.getElementById(`particle2-${currentSimulationType}`);
-      if (p2) {
-        let cx2, cy2;
-        if (currentSimulationType === 'seporos') { cx2 = 200; cy2 = 150; }
-        else if (currentSimulationType === 'bersinggungan') { cx2 = 120 + r1 + r2; cy2 = 150; }
-        else { cx2 = 320; cy2 = 150; }
-        p2.setAttribute('cx', cx2 + r2 * Math.sin(theta2));
-        p2.setAttribute('cy', cy2 - r2 * Math.cos(theta2));
-      }
-    }
-
-    function updateDataPanel() {
-      const r1m = parseFloat(document.getElementById('radius1').value) / 100;
-      const r2m = parseFloat(document.getElementById('radius2').value) / 100;
-      const omega1 = parseFloat(document.getElementById('omega1').value);
-      const omega2 = calcOmega2(omega1, r1m * 100, r2m * 100);
-      const v1 = omega1 * r1m;
-      const v2 = omega2 * r2m;
-
-      document.getElementById('time-display').textContent = elapsedTime.toFixed(1) + ' s';
-
-      // ===== Roda 1 =====
-      const rot1 = Math.abs(theta1) / (2 * Math.PI);
-      document.getElementById('theta1-rot-display').textContent = rot1.toFixed(2) + ' put';
-      document.getElementById('theta1-display').textContent = theta1.toFixed(2) + ' rad';
-      // Posisi sudut 0-360° (untuk visualisasi saja)
-      const deg1 = ((theta1 * 180 / Math.PI) % 360 + 360) % 360;
-      document.getElementById('theta1-deg-display').textContent = deg1.toFixed(0) + '°';
-      document.getElementById('s1-display').textContent = (Math.abs(theta1) * r1m).toFixed(2) + ' m';
-      document.getElementById('omega1-data-display').textContent = omega1.toFixed(2) + ' rad/s';
-      document.getElementById('v1-data-display').textContent = v1.toFixed(2) + ' m/s';
-      document.getElementById('T1-display').textContent = (2 * Math.PI / omega1).toFixed(2) + ' s';
-      document.getElementById('f1-display').textContent = (omega1 / (2 * Math.PI)).toFixed(2) + ' Hz';
-
-      // ===== Roda 2 =====
-      const rot2 = Math.abs(theta2) / (2 * Math.PI);
-      document.getElementById('theta2-rot-display').textContent = rot2.toFixed(2) + ' put';
-      document.getElementById('theta2-display').textContent = theta2.toFixed(2) + ' rad';
-      const deg2 = ((theta2 * 180 / Math.PI) % 360 + 360) % 360;
-      document.getElementById('theta2-deg-display').textContent = deg2.toFixed(0) + '°';
-      document.getElementById('s2-display').textContent = (Math.abs(theta2) * r2m).toFixed(2) + ' m';
-      document.getElementById('omega2-data-display').textContent = omega2.toFixed(2) + ' rad/s';
-      document.getElementById('v2-data-display').textContent = v2.toFixed(2) + ' m/s';
-      document.getElementById('T2-display').textContent = (2 * Math.PI / omega2).toFixed(2) + ' s';
-      document.getElementById('f2-display').textContent = (omega2 / (2 * Math.PI)).toFixed(2) + ' Hz';
-    }
-
-    // ==================== RINGKASAN HASIL ====================
-    function showSummary() {
-      const r1m = parseFloat(document.getElementById('radius1').value) / 100;
-      const r2m = parseFloat(document.getElementById('radius2').value) / 100;
-      const omega1 = parseFloat(document.getElementById('omega1').value);
-      const omega2 = calcOmega2(omega1, r1m * 100, r2m * 100);
-      const v1 = omega1 * r1m;
-      const v2 = omega2 * r2m;
-
-      document.getElementById('summary-time').textContent = elapsedTime.toFixed(1) + ' s';
-
-      const theta1Abs = Math.abs(theta1);
-      const rot1 = theta1Abs / (2 * Math.PI);
-      document.getElementById('summary-theta1-rot').textContent = rot1.toFixed(2);
-      document.getElementById('summary-theta1-rad').textContent = theta1.toFixed(2) + ' rad';
-      document.getElementById('summary-theta1-deg').textContent = (theta1 * 180 / Math.PI).toFixed(1) + '°';
-      document.getElementById('summary-s1').textContent = (theta1Abs * r1m).toFixed(2) + ' m';
-      document.getElementById('summary-r1').textContent = r1m.toFixed(2) + ' m';
-      document.getElementById('summary-omega1').textContent = omega1.toFixed(2) + ' rad/s';
-      document.getElementById('summary-v1').textContent = v1.toFixed(2) + ' m/s';
-
-      const theta2Abs = Math.abs(theta2);
-      const rot2 = theta2Abs / (2 * Math.PI);
-      document.getElementById('summary-theta2-rot').textContent = rot2.toFixed(2);
-      document.getElementById('summary-theta2-rad').textContent = theta2.toFixed(2) + ' rad';
-      document.getElementById('summary-theta2-deg').textContent = (theta2 * 180 / Math.PI).toFixed(1) + '°';
-      document.getElementById('summary-s2').textContent = (theta2Abs * r2m).toFixed(2) + ' m';
-      document.getElementById('summary-r2').textContent = r2m.toFixed(2) + ' m';
-      document.getElementById('summary-omega2').textContent = omega2.toFixed(2) + ' rad/s';
-      document.getElementById('summary-v2').textContent = v2.toFixed(2) + ' m/s';
-
-      const s1 = theta1Abs * r1m;
-      const s2 = theta2Abs * r2m;
-      let note = '';
-      if (currentSimulationType === 'seporos') {
-        note = '<strong>💡 Pada roda seporos:</strong> θ₁ = θ₂ (sudut tempuh sama), tetapi jarak busur s₁ ≠ s₂ karena jari-jari berbeda. Bandingkan: s₁ = ' + s1.toFixed(2) + ' m dan s₂ = ' + s2.toFixed(2) + ' m.';
-      } else {
-        const diff = Math.abs(s1 - s2);
-        if (diff < 0.01) {
-          note = '<strong>✓ Pada hubungan ini:</strong> jarak busur partikel kedua roda sama (s₁ = s₂ = ' + s1.toFixed(2) + ' m), membuktikan kecepatan linear sama (v₁ = v₂). Namun sudut tempuhnya berbeda (θ₁ ≠ θ₂).';
-        } else {
-          note = '<strong>Ringkasan:</strong> s₁ = ' + s1.toFixed(2) + ' m, s₂ = ' + s2.toFixed(2) + ' m, θ₁ = ' + theta1.toFixed(2) + ' rad, θ₂ = ' + theta2.toFixed(2) + ' rad.';
-        }
-      }
-      document.getElementById('summary-note').innerHTML = note;
-
-      document.getElementById('summary-panel').classList.add('is-visible');
-    }
-
-    function hideSummary() {
-      document.getElementById('summary-panel').classList.remove('is-visible');
-    }
-
-    // ==================== PLAY / STOP / RESET ====================
-    function startSimulation() {
-      if (simulationInterval) clearInterval(simulationInterval);
-
-      hideSummary();
-
-      // ⚠️ PENTING: theta1, theta2, elapsedTime TIDAK di-reset di sini.
-      // Nilai akan melanjutkan dari putaran sebelumnya.
-      // Untuk memulai dari 0, gunakan tombol Reset.
-
-      // Pastikan transform roda tetap pada posisi terakhir
-      const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
-      const wheel2 = document.querySelector(`#wheel2-${currentSimulationType}`);
-      if (wheel1) {
-        wheel1.style.transformOrigin = currentSimulationType === 'seporos' ? '200px 150px' : '120px 150px';
-        wheel1.style.transform = `rotate(${theta1}rad)`;
-      }
-      if (wheel2) {
-        if (currentSimulationType === 'seporos') wheel2.style.transformOrigin = '200px 150px';
-        else if (currentSimulationType === 'bersinggungan') {
-          const r1c = parseFloat(document.getElementById('radius1').value);
-          const r2c = parseFloat(document.getElementById('radius2').value);
-          wheel2.style.transformOrigin = `${120 + r1c + r2c}px 150px`;
-        } else wheel2.style.transformOrigin = '320px 150px';
-        wheel2.style.transform = `rotate(${theta2}rad)`;
-      }
-
-      const r1 = parseFloat(document.getElementById('radius1').value);
-      const r2 = parseFloat(document.getElementById('radius2').value);
-      const omega1 = parseFloat(document.getElementById('omega1').value);
-      const omega2 = calcOmega2(omega1, r1, r2);
-
-      hasRunSimulation = true;
-
-      simulationInterval = setInterval(() => {
-        const dt = 0.1;
-        elapsedTime += dt;
-        theta1 += omega1 * dt;
-
-        if (currentSimulationType === 'seporos') {
-          theta2 += omega2 * dt;
-        } else if (currentSimulationType === 'bersinggungan') {
-          theta2 -= omega2 * dt;   // berlawanan arah
-        } else {
-          theta2 += omega2 * dt;
-        }
-
-        if (wheel1) wheel1.style.transform = `rotate(${theta1}rad)`;
-        if (wheel2) wheel2.style.transform = `rotate(${theta2}rad)`;
-
-        updateParticlesPosition();
-        updateDataPanel();
-
-        if (currentSimulationType === 'sabuk') {
-          const dots = document.querySelectorAll('#belt-motion-dots circle');
-          const r1c = parseFloat(document.getElementById('radius1').value);
-          const r2c = parseFloat(document.getElementById('radius2').value);
-          const speed = omega1 * 1.5;
-          dots.forEach((dot, index) => {
-            if (index < 5) {
-              let newX = parseFloat(dot.getAttribute('cx')) + speed;
-              if (newX > 320) newX = 120;
-              const progress = (newX - 120) / (320 - 120);
-              const newY = (150 - r1c) + progress * ((150 - r2c) - (150 - r1c));
-              dot.setAttribute('cx', newX); dot.setAttribute('cy', newY);
-            } else {
-              let newX = parseFloat(dot.getAttribute('cx')) - speed;
-              if (newX < 120) newX = 320;
-              const progress = (320 - newX) / (320 - 120);
-              const newY = (150 + r2c) - progress * ((150 + r2c) - (150 + r1c));
-              dot.setAttribute('cx', newX); dot.setAttribute('cy', newY);
+        </main>
+    </div>
+
+    <script>
+        // ============================================================
+        // KURIKULUM UTAMA (12 Hari) — TANPA DIFERENSIAL / INTEGRAL
+        // Setiap hari dilengkapi: narasi, analogi, miskonsepsi, insight
+        // ============================================================
+        const curriculumData = [
+            {
+                day: 1,
+                module: "Modul 1 • Pemula",
+                title: "Besaran Gerak: Posisi, Perpindahan, & Jarak",
+                subtitle: "Memahami perbedaan fundamental skalar vs vektor dalam deskripsi ruang gerak.",
+                narrative: {
+                    opening: "Bayangkan kamu sedang bermain petak umpet di halaman sekolah. Kamu lari ke sana ke mari, berbelok, balik lagi — total lintasan yang kamu tempuh mungkin 50 meter. Tapi kalau gurumu bertanya <em>'sekarang kamu ada di mana dibandingkan tempat awal?'</em>, jawabannya bukan 50 meter. Itulah inti dari pelajaran hari ini: <strong>jarak</strong> menceritakan seberapa jauh kamu berkeliling, sedangkan <strong>perpindahan</strong> menceritakan seberapa jauh kamu bergeser dari titik awal.",
+                    body: "Dalam fisika, semua gerak dimulai dari pertanyaan paling dasar: <em>di mana benda berada?</em> Untuk menjawabnya, kita perlu sistem koordinat — semacam patokan. Misal kita letakkan titik nol di ujung meja, sumbu $x$ positif ke kanan. Sekarang setiap posisi bisa kita nyatakan dengan angka, misalnya $x = +3$ meter artinya 3 meter di kanan titik nol.",
+                    closing: "Jadi saat kamu mendengar kata 'perpindahan', langsung bayangkan garis lurus dari titik awal ke titik akhir. Saat mendengar 'jarak', bayangkan odometer mobil yang terus bertambah berapa pun arah geraknya.",
+                    analogi: {
+                        title: "Analogi: Perjalanan ke Minimarket",
+                        text: "Kamu berangkat dari rumah, jalan 300 m ke minimarket, lalu balik lagi ke rumah. <strong>Jarak</strong> yang kamu tempuh = 600 m (total langkah kaki). Tapi <strong>perpindahan</strong> kamu = 0 m, karena kamu kembali ke titik awal! Itulah kenapa perpindahan bisa nol meski kamu sudah jalan jauh."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak siswa mengira 'perpindahan selalu sama dengan jarak'. Padahal <strong>perpindahan ≤ jarak</strong>, dan tanda sama dengan hanya berlaku jika benda bergerak lurus satu arah tanpa berbalik."
+                    },
+                    insight: "Ingat rumus emas: $\\Delta x = x_{\\text{akhir}} - x_{\\text{awal}}$. Tanda negatif pada perpindahan berarti arah gerak ke kiri/bawah — bukan berarti 'kurang'."
+                },
+                theory: `
+                    <p>Dalam fisika, deskripsi awal tentang gerak benda dimulai dari menentukan koordinat acuannya. Ada dua besaran utama yang membedakan panjang lintasan yang ditempuh:</p>
+                    <ul class="list-disc list-inside space-y-2 my-2 text-slate-300">
+                        <li><strong>Jarak ($s$):</strong> Total panjang seluruh lintasan yang ditempuh benda. Merupakan besaran <em>skalar</em> (selalu bernilai positif $\\ge 0$).</li>
+                        <li><strong>Perpindahan ($\\Delta x$ atau $\\vec{r}$):</strong> Perubahan posisi benda dari titik awal ke titik akhir. Merupakan besaran <em>vektor</em> yang memiliki nilai dan arah.</li>
+                    </ul>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 font-mono text-center my-3 overflow-x-auto">
+                        $$\\Delta x = x_{\\text{akhir}} - x_{\\text{awal}}$$
+                    </div>
+                    <p>Contoh: Jika Anda berjalan 4 meter ke timur lalu 3 meter ke utara, total jarak tempuh adalah $4 + 3 = 7\\text{ m}$. Namun perpindahan Anda adalah besar vektor lintasan lurus $\\sqrt{4^2 + 3^2} = 5\\text{ m}$.</p>
+                `,
+                toolType: 'vector-1d',
+                quiz: {
+                    question: "Sebuah benda bergerak dari $x = +2\\text{ m}$ ke $x = +8\\text{ m}$, lalu balik arah menuju $x = +3\\text{ m}$. Tentukan jarak total ($s$) dan perpindahan ($\\Delta x$) benda tersebut!",
+                    options: [
+                        { text: "Jarak = 11 m, Perpindahan = +1 m", correct: true },
+                        { text: "Jarak = 5 m, Perpindahan = +3 m", correct: false },
+                        { text: "Jarak = 11 m, Perpindahan = +11 m", correct: false },
+                        { text: "Jarak = 6 m, Perpindahan = -5 m", correct: false }
+                    ],
+                    explanation: "Jarak $s = |8 - 2| + |3 - 8| = 6 + 5 = 11\\text{ m}$. Perpindahan $\\Delta x = x_{\\text{akhir}} - x_{\\text{awal}} = 3 - 2 = +1\\text{ m}$."
+                }
+            },
+            {
+                day: 2,
+                module: "Modul 1 • Pemula",
+                title: "Kelajuan & Kecepatan: Rata-Rata vs Seketika",
+                subtitle: "Membedakan kelajuan (skalar) dan kecepatan (vektor) serta konsep rata-rata.",
+                narrative: {
+                    opening: "Pernahkah kamu lihat speedometer motor? Angka yang berubah-ubah itu menunjukkan <em>kelajuan</em> saat itu juga. Tapi kalau ibumu bertanya 'berapa lama perjalanan dari rumah ke sekolah?', kamu akan menjawab berdasarkan <em>kecepatan rata-rata</em>. Nah, hari ini kita bedah dua konsep yang sering tertukar ini.",
+                    body: "Kunci membedakan keduanya: <strong>kecepatan</strong> memperhitungkan arah (karena perpindahan itu vektor), sedangkan <strong>kelajuan</strong> tidak peduli arah. Kalau kamu balik ke titik awal, kecepatan rata-ratamu nol — tapi kelajuan rata-ratamu tetap positif karena kamu sudah menempuh jarak.",
+                    closing: "Kecepatan seketika (instan) adalah kecepatan pada satu detik tertentu. Bayangkan seperti foto: kamu 'membekukan' waktu dan membaca kecepatan pada momen itu. Sedangkan kecepatan rata-rata seperti video: kamu lihat keseluruhan perjalanan lalu hitung rata-ratanya.",
+                    analogi: {
+                        title: "Analogi: Perjalanan dengan Mobil",
+                        text: "Kamu berkendara 120 km dalam 2 jam, tapi sempat berhenti 30 menit di rest area. Kecepatan rata-ratamu = 120/2 = 60 km/jam. Tapi saat di jalan tol, speedometer bisa menunjukkan 100 km/jam (kecepatan sesaat). Dua angka ini beda karena rata-rata 'ditarik' oleh waktu berhenti."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak yang mengira 'kecepatan rata-rata = rata-rata kecepatan'. Padahal beda! Misal kamu jalan 40 km/jam selama 1 jam, lalu 80 km/jam selama 1 jam. Rata-rata kecepatan = (40+80)/2 = 60 km/jam. Kecepatan rata-rata = total jarak / total waktu = (40+80)/(1+1) = 60 km/jam. <em>Kebetulan sama</em> karena waktunya sama. Kalau waktunya beda, hasilnya akan beda!"
+                    },
+                    insight: "Untuk kecepatan seketika tanpa kalkulus: ambil selang waktu $\\Delta t$ yang sangat kecil (misal 0,001 detik), hitung $\\Delta x / \\Delta t$. Semakin kecil $\\Delta t$, semakin akurat nilainya."
+                },
+                theory: `
+                    <p>Perubahan posisi terhadap waktu diukur melalui dua istilah utama:</p>
+                    <ol class="list-decimal list-inside space-y-2 my-2 text-slate-300">
+                        <li><strong>Kecepatan Rata-rata ($v_{\\text{avg}}$):</strong> Perbandingan perpindahan total dengan selang waktu total.
+                            $$\\bar{v} = \\frac{\\Delta x}{\\Delta t} = \\frac{x_2 - x_1}{t_2 - t_1}$$
+                        </li>
+                        <li><strong>Kelajuan Rata-rata:</strong> Perbandingan <em>jarak total</em> dengan selang waktu total. Selalu bernilai positif.
+                            $$\\bar{v}_{\\text{skalar}} = \\frac{\\text{Jarak total}}{\\Delta t}$$
+                        </li>
+                    </ol>
+                    <p><strong>Kecepatan Seketika (instan):</strong> Kecepatan pada suatu momen tertentu. Nilainya dapat didekati dengan mengambil selang waktu $\\Delta t$ yang sangat kecil.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$v_{\\text{instan}} \\approx \\frac{\\Delta x}{\\Delta t} \\quad \\text{untuk } \\Delta t \\text{ sangat kecil}$$
+                    </div>
+                `,
+                toolType: 'graph-interactive',
+                quiz: {
+                    question: "Sebuah mobil menempuh jarak 100 m ke timur dalam 5 detik, lalu 40 m ke barat dalam 2 detik. Berapakah kelajuan rata-rata dan kecepatan rata-rata mobil?",
+                    options: [
+                        { text: "Kelajuan = 20 m/s, Kecepatan = 8,57 m/s ke timur", correct: true },
+                        { text: "Kelajuan = 20 m/s, Kecepatan = 20 m/s ke timur", correct: false },
+                        { text: "Kelajuan = 8,57 m/s, Kecepatan = 20 m/s", correct: false },
+                        { text: "Kelajuan = 28 m/s, Kecepatan = 12 m/s", correct: false }
+                    ],
+                    explanation: "Jarak total $= 100 + 40 = 140\\text{ m}$, waktu total $= 7\\text{ s}$, kelajuan $= 140/7 = 20\\text{ m/s}$. Perpindahan $= 100 - 40 = 60\\text{ m}$ ke timur, kecepatan $= 60/7 \\approx 8{,}57\\text{ m/s}$ ke timur."
+                }
+            },
+            {
+                day: 3,
+                module: "Modul 2 • Menengah",
+                title: "Gerak Lurus Beraturan (GLB)",
+                subtitle: "Karakteristik gerak dengan kecepatan konstan tanpa percepatan.",
+                narrative: {
+                    opening: "GLB itu singkatan dari Gerak Lurus Beraturan. Kata 'beraturan' di sini artinya teratur — kecepatannya tetap, tidak berubah. Ini adalah gerak paling sederhana yang bisa dibayangkan: benda bergerak lurus dengan kecepatan konstan, seperti kereta api ekspres di jalur lurus tanpa berhenti.",
+                    body: "Kalau kamu melihat mobil melaju di jalan tol dengan jarum speedometer yang <em>tidak bergerak sama sekali</em> — tetap di angka 80 km/jam — itulah GLB. Setiap detik, mobil menempuh jarak yang sama. Pada detik ke-1 menempuh 80 km, detik ke-2 tambah 80 km lagi (total 160 km), dan seterusnya.",
+                    closing: "Karena kecepatannya tetap, hubungan antara posisi dan waktu bersifat linear — grafiknya berupa garis lurus miring. Semakin curam kemiringannya, semakin cepat benda bergerak.",
+                    analogi: {
+                        title: "Analogi: Lift di Gedung Bertingkat",
+                        text: "Bayangkan lift yang bergerak naik dengan kecepatan konstan 2 m/detik tanpa berhenti. Setelah 1 detik, ketinggiannya 2 m. Setelah 5 detik, 10 m. Setelah 10 detik, 20 m. Itulah GLB — posisinya bertambah secara teratur setiap detiknya."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering ada yang bilang 'GLB berarti bendanya diam'. <strong>Salah besar!</strong> GLB artinya bergerak lurus dengan kecepatan tetap. Diam itu kasus khusus GLB dengan $v = 0$, tapi bukan berarti semua GLB adalah diam."
+                    },
+                    insight: "Rumus GLB hanya satu: $x = x_0 + v \\cdot t$. Kalau ketemu soal yang menyebut 'kecepatan konstan' atau 'tidak ada percepatan', langsung gunakan rumus ini."
+                },
+                theory: `
+                    <p>Pada <strong>Gerak Lurus Beraturan (GLB)</strong>, benda bergerak pada lintasan lurus dengan kecepatan yang konstan baik besar maupun arahnya. Ini berarti percepatan benda bernilai nol ($a = 0$).</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$x(t) = x_0 + v \\cdot t$$
+                    </div>
+                    <ul class="list-disc list-inside space-y-1 text-slate-300">
+                        <li>Grafik $x(t)$ berupa garis lurus miring; semakin curam, semakin besar kecepatannya.</li>
+                        <li>Grafik $v(t)$ berupa garis horizontal datar ($v = \\text{konstan}$).</li>
+                        <li>Luas daerah di bawah grafik $v(t)$ merepresentasikan jarak/perpindahan total.</li>
+                    </ul>
+                `,
+                toolType: 'graph-interactive',
+                quiz: {
+                    question: "Mobil A bergerak GLB dari $x_0 = 10\\text{ m}$ dengan kecepatan $15\\text{ m/s}$. Di mana posisi mobil A setelah berjalan selama $4\\text{ detik}$?",
+                    options: [
+                        { text: "70 m", correct: true },
+                        { text: "60 m", correct: false },
+                        { text: "50 m", correct: false },
+                        { text: "80 m", correct: false }
+                    ],
+                    explanation: "Gunakan formula GLB: $x(t) = x_0 + v \\cdot t \\implies x(4) = 10 + (15 \\times 4) = 10 + 60 = 70\\text{ m}$."
+                }
+            },
+            {
+                day: 4,
+                module: "Modul 2 • Menengah",
+                title: "Gerak Lurus Berubah Beraturan (GLBB)",
+                subtitle: "Analisis gerak dengan percepatan konstan dan 3 persamaan emas Kinematika.",
+                narrative: {
+                    opening: "Kalau GLB kecepatannya tetap, maka GLBB kecepatannya <em>berubah secara teratur</em>. Contoh paling nyata: mobil yang diinjak gasnya dari keadaan diam, atau motor yang direm mendadak. Kecepatannya berubah, tapi perubahannya teratur — setiap detik bertambah (atau berkurang) dengan jumlah yang sama.",
+                    body: "Perubahan kecepatan yang teratur ini disebut <strong>percepatan konstan</strong>. Kalau percepatan $a = 2$ m/s², artinya setiap detik kecepatan bertambah 2 m/s. Detik 0: 0 m/s, detik 1: 2 m/s, detik 2: 4 m/s, detik 3: 6 m/s, dan seterusnya.",
+                    closing: "Karena kecepatan berubah secara teratur, posisi benda berubah secara kuadratik — grafiknya berupa parabola. Inilah kenapa ada tiga rumus sekaligus: satu untuk kecepatan, satu untuk posisi, dan satu yang menghubungkan kecepatan dengan posisi tanpa waktu.",
+                    analogi: {
+                        title: "Analogi: Menabung dengan Bunga Tetap",
+                        text: "Bayangkan kamu menabung Rp100.000 dengan bunga Rp5.000 setiap bulan. Bulan ke-1: 105.000. Bulan ke-2: 110.000. Bulan ke-3: 115.000. Itu mirip GLB — pertambahan konstan. Tapi kalau bunganya dari saldo (bunga berbunga), pertambahannya makin besar — itu mirip percepatan yang tidak konstan."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering tertukar antara 'percepatan negatif' dengan 'melambat'. Percepatan negatif artinya arah percepatan berlawanan dengan arah positif koordinat — belum tentu melambat! Kalau benda bergerak ke kiri (arah negatif) dan dipercepat ke kiri, maka $a$ negatif tapi bendanya makin cepat. <em>Perlambatan</em> terjadi bila $a$ berlawanan dengan $v$."
+                    },
+                    insight: "Hafalkan 3 rumus emas GLBB: (1) $v = v_0 + at$, (2) $x = x_0 + v_0 t + \\frac{1}{2}at^2$, (3) $v^2 = v_0^2 + 2a\\Delta x$. Pilih yang paling sesuai dengan besaran yang diketahui soal."
+                },
+                theory: `
+                    <p>Pada <strong>GLBB</strong>, kecepatan benda berubah secara teratur karena adanya <strong>percepatan ($a$) yang konstan</strong>.</p>
+                    <p class="font-semibold text-brand-400 mt-2">3 Persamaan Utama Kinematika GLBB:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 space-y-2 text-center my-3 overflow-x-auto">
+                        $$v(t) = v_0 + a t$$
+                        $$x(t) = x_0 + v_0 t + \\frac{1}{2} a t^2$$
+                        $$v^2 = v_0^2 + 2 a (x - x_0)$$
+                    </div>
+                    <p>Jika percepatan positif ($a > 0$), gerak dipercepat. Jika percepatan negatif ($a < 0$), gerak diperlambat hingga benda dapat berhenti ($v = 0$).</p>
+                `,
+                toolType: 'graph-interactive',
+                quiz: {
+                    question: "Sebuah mobil mengerem dari kecepatan awal $20\\text{ m/s}$ hingga berhenti penuh dalam jarak $40\\text{ m}$. Berapakah percepatan perlambatan mobil tersebut?",
+                    options: [
+                        { text: "-5 m/s²", correct: true },
+                        { text: "-2.5 m/s²", correct: false },
+                        { text: "-10 m/s²", correct: false },
+                        { text: "-4 m/s²", correct: false }
+                    ],
+                    explanation: "Gunakan formula $v^2 = v_0^2 + 2a\\Delta x \\implies 0^2 = 20^2 + 2(a)(40) \\implies 0 = 400 + 80a \\implies a = -400/80 = -5\\text{ m/s}^2$."
+                }
+            },
+            {
+                day: 5,
+                module: "Modul 3 • Menengah",
+                title: "Membaca Grafik Kinematika $x(t)$, $v(t)$, $a(t)$",
+                subtitle: "Memahami makna kemiringan garis dan luas daerah di bawah kurva secara intuitif.",
+                narrative: {
+                    opening: "Kalau kamu bisa membaca grafik, kamu bisa 'melihat' gerak tanpa harus menghitung rumus panjang. Grafik kinematika itu seperti bahasa visual fisika — sekali paham, kamu bisa langsung tahu apa yang terjadi hanya dengan melihat bentuk kurvanya.",
+                    body: "Ada dua keterampilan utama membaca grafik: <strong>(1) melihat kemiringan</strong> — semakin curam, semakin besar perubahan yang terjadi; dan <strong>(2) melihat luas daerah di bawah kurva</strong> — ini merepresentasikan akumulasi. Kemiringan grafik $x(t)$ memberi kita kecepatan $v$. Kemiringan grafik $v(t)$ memberi kita percepatan $a$. Luas di bawah grafik $v(t)$ memberi kita perpindahan.",
+                    closing: "Jadi grafik bukan cuma gambar — ia menyimpan informasi lengkap tentang gerak benda. Tiga grafik ($x$, $v$, $a$) sebenarnya adalah tiga cara bercerita tentang gerak yang sama.",
+                    analogi: {
+                        title: "Analogi: Rekaman CCTV Kecepatan Berbeda",
+                        text: "Grafik $x(t)$ seperti merekam posisi mobil setiap detik — terlihat mobil makin cepat kalau grafiknya makin curam. Grafik $v(t)$ seperti membaca speedometer terus-menerus — terlihat apakah kecepatannya naik-turun atau tetap. Grafik $a(t)$ seperti merekam seberapa keras pedal gas ditekan — terlihat apakah percepatannya konstan atau berubah."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak yang mengira 'garis lurus di grafik $v(t)$ pasti GLB'. Padahal garis lurus miring di $v(t)$ menunjukkan percepatan konstan (GLBB). GLB ditunjukkan oleh garis <em>horizontal</em> di grafik $v(t)$, karena kecepatannya tidak berubah."
+                    },
+                    insight: "Trik: kalau soal menampilkan grafik $v(t)$ berupa segitiga, luas segitiga = perpindahan. Kalau grafiknya trapesium, luas trapesium = perpindahan. Tidak perlu hafal rumus gerak — cukup geometri dasar!"
+                },
+                theory: `
+                    <p>Hubungan antara grafik kinematika dapat dipahami secara visual tanpa kalkulus:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                            <h4 class="font-bold text-amber-400 text-xs uppercase mb-1">Kemiringan Garis (Slope):</h4>
+                            <p class="text-xs">
+                                • Kemiringan $x(t) \\rightarrow$ besar kecepatan $v$<br>
+                                • Kemiringan $v(t) \\rightarrow$ besar percepatan $a$
+                            </p>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                            <h4 class="font-bold text-emerald-400 text-xs uppercase mb-1">Luas Daerah di Bawah Kurva:</h4>
+                            <p class="text-xs">
+                                • Luas $v(t) \\rightarrow$ perpindahan $\\Delta x$<br>
+                                • Luas $a(t) \\rightarrow$ perubahan kecepatan $\\Delta v$
+                            </p>
+                        </div>
+                    </div>
+                    <p>Uji skenario simulasi di bawah untuk menggeser nilai percepatan $a$ dan melihat perubahan kurva parabola $x(t)$ serta linear $v(t)$ secara langsung!</p>
+                `,
+                toolType: 'graph-interactive',
+                quiz: {
+                    question: "Jika grafik $v(t)$ membentuk segitiga dengan alas $t = 0$ hingga $t = 6\\text{ detik}$ dan tinggi puncak $v = 10\\text{ m/s}$, berapa perpindahan total benda?",
+                    options: [
+                        { text: "60 m", correct: false },
+                        { text: "30 m", correct: true },
+                        { text: "15 m", correct: false },
+                        { text: "20 m", correct: false }
+                    ],
+                    explanation: "Perpindahan = Luas daerah di bawah kurva $v(t)$ segitiga $= \\frac{1}{2} \\times \\text{alas} \\times \\text{tinggi} = \\frac{1}{2} \\times 6 \\times 10 = 30\\text{ m}$."
+                }
+            },
+            {
+                day: 6,
+                module: "Modul 4 • Mahir",
+                title: "Gerak Melingkar Beraturan (GMB) & Percepatan Sentripetal",
+                subtitle: "Analisis lintasan melingkar dengan kelajuan linear konstan.",
+                narrative: {
+                    opening: "Pernahkah kamu menaiki bianglala atau komedi putar? Meski kelajuannya konstan, kamu tetap merasa 'ditarik' ke luar. Perasaan itu muncul karena ada percepatan yang selalu mengarah ke pusat lingkaran — namanya <strong>percepatan sentripetal</strong>.",
+                    body: "Pada GMB, kecepatan linear $v$ (besar) tetap, tapi arahnya terus berubah. Karena percepatan adalah perubahan kecepatan, dan kecepatan berubah arah, maka ada percepatan. Arah percepatan ini selalu menuju pusat lingkaran, tegak lurus terhadap arah kecepatan.",
+                    closing: "Besar percepatan sentripetal bergantung pada kuadrat kecepatan dibagi jari-jari: $a_c = v^2/R$. Artinya, makin cepat berputar atau makin kecil lingkarannya, makin besar percepatan yang dibutuhkan.",
+                    analogi: {
+                        title: "Analogi: Memutar Bola dengan Tali",
+                        text: "Kalau kamu memutar bola yang diikat tali, talinya terasa makin tegang saat kamu putar makin cepat. Ketegangan tali itu adalah gaya yang menyediakan percepatan sentripetal. Kalau talinya putus, bola akan terbang lurus ke arah tangensial — bukan ke luar radial! Ini bukti bahwa kecepatan selalu tangensial."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak yang mengira 'kalau benda berputar, pasti ada gaya sentrifugal yang mendorong keluar'. Sebenarnya gaya sentrifugal itu <em>pseudoforce</em> — hanya terasa jika kamu berada di dalam kerangka acuan yang berputar. Dari kerangka diam (luar), yang ada hanyalah gaya sentripetal yang menarik ke dalam."
+                    },
+                    insight: "Untuk GMB, ingat hubungan $v = \\omega R$ dan $a_c = \\omega^2 R = v^2/R$. Dua bentuk terakhir sering dipakai bergantung besaran mana yang diketahui."
+                },
+                theory: `
+                    <p>Pada <strong>Gerak Melingkar Beraturan (GMB)</strong>, sebuah benda bergerak mengelilingi lintasan lingkaran dengan kelajuan ($v$) konstan. Meskipun kecepatannya konstan dalam hal nilai, <strong>arah kecepatannya terus berubah setiap saat</strong>.</p>
+                    <p class="mt-2">Perubahan arah kecepatan ini menimbulkan <strong>Percepatan Sentripetal ($a_c$)</strong> yang selalu mengarah ke pusat lingkaran:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$a_c = \\frac{v^2}{R} = \\omega^2 R$$
+                    </div>
+                    <p>Hubungan besaran sudut & linear: $\\theta = \\omega t$, dengan $v = \\omega R$. Di mana $\\omega$ adalah kecepatan sudut ($\\text{rad/s}$).</p>
+                `,
+                toolType: 'gmb-simulation',
+                quiz: {
+                    question: "Sebuah partikel berputar pada lintasan lingkaran berjari-jari $R = 2\\text{ m}$ dengan kecepatan sudut konstan $\\omega = 4\\text{ rad/s}$. Berapakah percepatan sentripetal partikel?",
+                    options: [
+                        { text: "32 m/s²", correct: true },
+                        { text: "16 m/s²", correct: false },
+                        { text: "8 m/s²", correct: false },
+                        { text: "64 m/s²", correct: false }
+                    ],
+                    explanation: "$a_c = \\omega^2 R = (4)^2 \\times 2 = 16 \\times 2 = 32\\text{ m/s}^2$."
+                }
+            },
+            {
+                day: 7,
+                module: "Modul 4 • Mahir",
+                title: "Gerak Melingkar Berubah Beraturan (GMBB)",
+                subtitle: "Komponen Percepatan Tangensial ($a_t$) vs Percepatan Sentripetal ($a_c$).",
+                narrative: {
+                    opening: "Kalau GMB kecepatan putarnya konstan, maka GMBB kecepatan putarnya berubah secara teratur. Contohnya: kipas angin yang baru dinyalakan (makin cepat), atau kipas yang dimatikan (makin lambat). Ada dua percepatan yang bekerja bersamaan: satu mengubah arah ($a_c$), satu mengubah besar ($a_t$).",
+                    body: "Percepatan tangensial $a_t$ sejajar dengan arah gerak — inilah yang membuat benda makin cepat atau makin lambat. Percepatan sentripetal $a_c$ tegak lurus arah gerak — inilah yang membelokkan lintasan menjadi lingkaran. Keduanya digabung secara vektor menjadi percepatan total $a_{\\text{total}} = \\sqrt{a_c^2 + a_t^2}$.",
+                    closing: "Jadi GMBB itu 'dua gerakan sekaligus': gerak lurus dipercepat (oleh $a_t$) dan gerak melingkar (oleh $a_c$). Kalau $a_t = 0$, kembali ke GMB. Kalau $a_t$ konstan, kita punya GMBB yang teratur.",
+                    analogi: {
+                        title: "Analogi: Motor di Tikungan",
+                        text: "Saat motor menikung sambil dipercepat, ada dua hal terjadi: ban 'membelokkan' arah (itu $a_c$) dan gas 'menambah' kecepatan (itu $a_t$). Pengendara yang berpengalaman tahu harus mengatur keduanya agar tidak selip. Kalau $a_t$ terlalu besar sementara $a_c$ juga besar, motor bisa kehilangan traksi."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering dianggap 'kalau ada $a_t$, berarti tidak ada $a_c$'. Padahal keduanya bisa ada bersamaan. Bahkan pada GMBB, keduanya <em>harus</em> ada — $a_c$ untuk menjaga lintasan tetap melingkar, $a_t$ untuk mengubah kelajuan."
+                    },
+                    insight: "Rumus GMBB mirip GLBB, tinggal ganti besaran linear dengan sudut: $\\omega = \\omega_0 + \\alpha t$, $\\theta = \\omega_0 t + \\frac{1}{2}\\alpha t^2$, $\\omega^2 = \\omega_0^2 + 2\\alpha\\theta$."
+                },
+                theory: `
+                    <p>Jika kecepatan putar benda bertambah atau berkurang, maka terdapat <strong>Percepatan Sudut ($\\alpha$)</strong> yang menghasilkan <strong>Percepatan Tangensial ($a_t$)</strong> sejajar dengan arah garis singgung lintasan.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 space-y-1 text-center my-3 overflow-x-auto">
+                        $$\\omega(t) = \\omega_0 + \\alpha t$$
+                        $$a_t = \\alpha R$$
+                        $$a_{\\text{total}} = \\sqrt{a_c^2 + a_t^2}$$
+                    </div>
+                    <p>Vektor $a_c$ (tegak lurus lintasan) bertugas mengubah <em>arah</em> kecepatan, sedangkan $a_t$ (sejajar lintasan) bertugas mengubah <em>besar/nilai</em> kecepatan.</p>
+                `,
+                toolType: 'gmb-simulation',
+                quiz: {
+                    question: "Pada suatu momen, partikel memiliki $a_c = 4\\text{ m/s}^2$ dan $a_t = 3\\text{ m/s}^2$. Berapakah besar percepatan total partikel?",
+                    options: [
+                        { text: "7 m/s²", correct: false },
+                        { text: "5 m/s²", correct: true },
+                        { text: "1 m/s²", correct: false },
+                        { text: "25 m/s²", correct: false }
+                    ],
+                    explanation: "Karena $\\vec{a}_c \\perp \\vec{a}_t$, maka $a_{\\text{total}} = \\sqrt{a_c^2 + a_t^2} = \\sqrt{4^2 + 3^2} = \\sqrt{25} = 5\\text{ m/s}^2$."
+                }
+            },
+            {
+                day: 8,
+                module: "Modul 5 • Mahir",
+                title: "Hubungan Roda-Roda: Seporos (Sesumbu)",
+                subtitle: "Transmisi gerak rotasi pada sumbu poros yang sama.",
+                narrative: {
+                    opening: "Pernahkah kamu memperhatikan roda sepeda? Ada roda gigi di pedal dan roda gigi di belakang. Keduanya terhubung, tapi bisa berputar dengan kecepatan berbeda. Nah, hari ini kita bedah tiga jenis hubungan roda: seporos, bersabuk, dan bersinggungan.",
+                    body: "Untuk roda yang <strong>seporos</strong> (terpasang pada satu sumbu), keduanya 'terpaksa' berputar bersama. Kalau roda besar berputar satu putaran penuh, roda kecil yang seporos juga berputar satu putaran penuh. Jadi kecepatan sudutnya sama ($\\omega_1 = \\omega_2$), tapi kecepatan linear di tepinya berbeda karena jari-jarinya berbeda.",
+                    closing: "Bayangkan komidi putar dengan dua kursi di radius berbeda. Keduanya menyelesaikan satu putaran dalam waktu yang sama, tapi kursi di tepi luar menempuh jarak lebih jauh — artinya kecepatan linearnya lebih besar.",
+                    analogi: {
+                        title: "Analogi: Jarum Jam",
+                        text: "Jarum panjang dan jarum pendek pada jam dinding saling terhubung di satu titik (seporos). Meski kecepatan sudutnya berbeda (jarum detik lebih cepat), prinsipnya sama: mereka berbagi sumbu yang sama. Kalau kecepatan sudutnya sama (seperti jarum jam dan menit yang dihubungkan), maka ujung jarum yang lebih panjang bergerak lebih cepat."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering dianggap 'roda yang lebih besar pasti berputar lebih lambat'. Untuk roda <em>seporos</em>, justru kecepatan sudutnya sama. Yang berbeda adalah kecepatan linear tepinya — roda besar punya $v$ lebih besar karena $v = \\omega R$."
+                    },
+                    insight: "Untuk roda seporos: $\\omega$ sama, $v \\propto R$. Untuk roda bersabuk/bersinggungan: $v$ sama, $\\omega \\propto 1/R$."
+                },
+                theory: `
+                    <p>Ketika dua roda disusun <strong>Seporos / Sesumbu</strong> (terikat pada as rotasi yang sama), kedua roda akan berputar dengan sudut dan periode yang identik secara konstan.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$\\omega_1 = \\omega_2 \\quad \\implies \\quad \\frac{v_1}{R_1} = \\frac{v_2}{R_2}$$
+                    </div>
+                    <p>Akibatnya, roda yang berjari-jari lebih besar ($R$) akan memiliki kecepatan linear tepi ($v$) yang lebih cepat berbanding lurus ($v \\propto R$).</p>
+                `,
+                toolType: 'gears-simulation',
+                quiz: {
+                    question: "Dua roda A ($R_A = 10\\text{ cm}$) dan B ($R_B = 30\\text{ cm}$) terpasang seporos. Jika kecepatan sudut roda A adalah $10\\text{ rad/s}$, berapakah kecepatan linear keliling roda B?",
+                    options: [
+                        { text: "3 m/s", correct: true },
+                        { text: "1 m/s", correct: false },
+                        { text: "30 m/s", correct: false },
+                        { text: "0.3 m/s", correct: false }
+                    ],
+                    explanation: "Seporos $\\implies \\omega_B = \\omega_A = 10\\text{ rad/s}$. Kecepatan linear $v_B = \\omega_B \\cdot R_B = 10 \\times 0.3\\text{ m} = 3\\text{ m/s}$."
+                }
+            },
+            {
+                day: 9,
+                module: "Modul 5 • Mahir",
+                title: "Hubungan Roda-Roda: Sabuk & Bersinggungan",
+                subtitle: "Pengalihan kelajuan linier pada rantai sepeda dan roda gigi direct contact.",
+                narrative: {
+                    opening: "Kalau seporos membuat $\\omega$ sama, dua jenis hubungan lainnya justru membuat $v$ sama. Ini seperti rantai sepeda: gigi depan dan gigi belakang punya ukuran berbeda, tapi rantai yang menghubungkan keduanya bergerak dengan kecepatan yang sama di semua titik.",
+                    body: "Ada dua variasi: <strong>dihubungkan sabuk/rantai</strong> (arah putaran searah) dan <strong>bersinggungan langsung</strong> (arah putaran berlawanan). Keduanya punya kesamaan: $v_1 = v_2$. Yang membedakan hanya arah putarannya.",
+                    closing: "Prinsipnya sederhana: di titik kontak (baik lewat rantai atau langsung), kecepatan linear harus sama — kalau tidak, akan terjadi slip. Dari kesamaan $v$ ini, kita bisa turunkan hubungan $\\omega_1 R_1 = \\omega_2 R_2$.",
+                    analogi: {
+                        title: "Analogi: Rantai Sepeda",
+                        text: "Saat kamu mengayuh sepeda, gigi depan (besar) berputar pelan tapi menghasilkan kecepatan rantai yang tinggi. Rantai ini memutar gigi belakang (kecil) dengan kecepatan sudut yang lebih tinggi. Itulah kenapa sepeda gunung dengan gigi belakang kecil bisa melaju kencang — pengaruh perbandingan $R_1/R_2$."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak yang mengira 'arah putaran roda yang dihubungkan sabuk selalu sama'. Faktanya, sabuk <em>terbuka</em> (tidak menyilang) membuat arah searah; sabuk <em>menyilang</em> (angka 8) membuat arah berlawanan. Sedangkan bersinggungan langsung <em>selalu</em> berlawanan arah."
+                    },
+                    insight: "Selalu mulai dari $v_1 = v_2$ untuk roda bersabuk/bersinggungan. Baru kemudian tentukan arah putaran berdasarkan jenis hubungannya."
+                },
+                theory: `
+                    <p>Dua jenis hubungan roda berikutnya memiliki kesamaan hukum fisika: <strong>Kecepatan keliling linier di tepi roda adalah sama</strong> ($v_1 = v_2$).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-3">
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                            <h4 class="font-bold text-sky-400 text-xs">1. Dihubungkan Sabuk / Rantai</h4>
+                            <p class="text-xs mt-1">$v_1 = v_2 \\implies \\omega_1 R_1 = \\omega_2 R_2$<br>Arah putaran kedua roda <strong>SEARAH</strong>.</p>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                            <h4 class="font-bold text-amber-400 text-xs">2. Bersinggungan Langsung</h4>
+                            <p class="text-xs mt-1">$v_1 = v_2 \\implies \\omega_1 R_1 = \\omega_2 R_2$<br>Arah putaran kedua roda <strong>BERLAWANAN ARAH</strong>.</p>
+                        </div>
+                    </div>
+                `,
+                toolType: 'gears-simulation',
+                quiz: {
+                    question: "Roda 1 ($R_1 = 20\\text{ cm}$) bersinggungan langsung dengan Roda 2 ($R_2 = 5\\text{ cm}$). Jika Roda 1 berputar 100 rpm searah jarum jam, maka Roda 2 berputar sebesar...",
+                    options: [
+                        { text: "400 rpm berlawanan jarum jam", correct: true },
+                        { text: "400 rpm searah jarum jam", correct: false },
+                        { text: "25 rpm berlawanan jarum jam", correct: false },
+                        { text: "100 rpm berlawanan jarum jam", correct: false }
+                    ],
+                    explanation: "Bersinggungan $\\implies v_1 = v_2 \\implies \\omega_1 R_1 = \\omega_2 R_2 \\implies 100 \\times 20 = \\omega_2 \\times 5 \\implies \\omega_2 = 400\\text{ rpm}$. Arahnya berlawanan jarum jam."
+                }
+            },
+            {
+                day: 10,
+                module: "Modul 6 • Level Lanjut",
+                title: "Gerak Parabola & Bidang Miring",
+                subtitle: "Dekomposisi vektor pada sumbu ortogonal dan analisis bidang miring.",
+                narrative: {
+                    opening: "Bayangkan kamu menendang bola dengan sudut tertentu. Bola melengkung naik lalu turun — itulah gerak parabola. Meski terlihat rumit, sebenarnya ini cuma dua gerak sederhana yang 'ditumpuk': GLB di arah horizontal dan GLBB di arah vertikal.",
+                    body: "Kuncinya adalah <strong>dekomposisi vektor</strong>: pecah kecepatan awal $v_0$ menjadi komponen horizontal $v_{0x} = v_0\\cos\\theta$ dan vertikal $v_{0y} = v_0\\sin\\theta$. Setelah itu, selesaikan masing-masing arah secara terpisah — tidak ada percepatan di arah horizontal, dan ada percepatan gravitasi $-g$ di arah vertikal.",
+                    closing: "Untuk bidang miring, triknya adalah memutar sumbu koordinat agar sejajar dan tegak lurus bidang. Dengan begitu, percepatan gravitasi juga dipecah menjadi $g\\sin\\alpha$ (sejajar bidang) dan $g\\cos\\alpha$ (tegak lurus bidang).",
+                    analogi: {
+                        title: "Analogi: Air Mancur",
+                        text: "Air mancur menembakkan air ke atas dengan sudut tertentu. Air membentuk lintasan parabola yang indah. Kalau kamu perhatikan, air yang keluar lebih cepat akan mencapai jarak horizontal lebih jauh — sesuai rumus $x_{\\text{maks}} = v_0^2 \\sin(2\\theta)/g$. Sudut optimal untuk jarak terjauh adalah $45°$."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering dianggap 'di titik tertinggi, kecepatan benda nol'. Padahal yang nol hanya komponen vertikalnya ($v_y = 0$). Komponen horizontalnya tetap $v_x = v_0\\cos\\theta$ — dan itulah yang membuat bola terus bergerak maju."
+                    },
+                    insight: "Gerak parabola adalah gabungan independen: horizontal (GLB) dan vertikal (GLBB). Waktu yang dibutuhkan sama untuk kedua arah, jadi bisa dijadikan 'jembatan' antar persamaan."
+                },
+                theory: `
+                    <p>Gerak parabola adalah gabungan GLB pada arah horizontal dan GLBB pada arah vertikal. Pada <strong>bidang miring dengan sudut $\\alpha$</strong>, analisis menjadi lebih mudah jika kita memutar sumbu koordinat $(x', y')$ sejajar dan tegak lurus bidang miring:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$a_{x'} = -g \\sin\\alpha, \\quad a_{y'} = -g \\cos\\alpha$$
+                    </div>
+                    <p>Dengan dekomposisi ini, waktu layang total hingga menyentuh bidang miring dapat dihitung dari persamaan GLBB pada sumbu $y'$:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$y'(t) = v_{0y'} t + \\frac{1}{2} a_{y'} t^2 = 0$$
+                        $$t_{\\text{layang}} = \\frac{2 v_0 \\sin(\\theta - \\alpha)}{g \\cos\\alpha}$$
+                    </div>
+                `,
+                toolType: 'graph-interactive',
+                quiz: {
+                    question: "Jika bidang miring memiliki sudut $\\alpha = 30^\\circ$, berapakah komponen percepatan gravitasi yang bekerja tegak lurus menekan bidang miring ($a_y$)?",
+                    options: [
+                        { text: "g cos(30°) = (√3 / 2) g", correct: true },
+                        { text: "g sin(30°) = 0.5 g", correct: false },
+                        { text: "g tan(30°)", correct: false },
+                        { text: "g", correct: false }
+                    ],
+                    explanation: "Komponen gravitasi tegak lurus bidang miring adalah $a_\\perp = g \\cos\\alpha = g \\cos 30^\\circ = \\frac{\\sqrt{3}}{2} g$."
+                }
+            },
+            {
+                day: 11,
+                module: "Modul 6 • Level Lanjut",
+                title: "Kinematika Relatif 2D & Jarak Terdekat",
+                subtitle: "Analisis gerak dua benda pada kerangka acuan relatif tanpa kalkulus.",
+                narrative: {
+                    opening: "Bayangkan kamu duduk di dalam kereta yang melaju 80 km/jam. Kereta lain di sebelahmu melaju 80 km/jam juga. Kalau kamu lihat keluar jendela, kereta sebelah terlihat <em>diam</em> — padahal keduanya bergerak. Inilah esensi dari <strong>kecepatan relatif</strong>.",
+                    body: "Konsepnya sederhana: kecepatan selalu diukur terhadap suatu acuan. Kalau acuannya adalah B, maka kecepatan A terhadap B adalah $\\vec{v}_{A/B} = \\vec{v}_A - \\vec{v}_B$. Dengan memandang B diam, kita bisa menganalisis gerak A dengan lebih mudah.",
+                    closing: "Untuk mencari jarak terdekat antara dua benda yang bergerak, gunakan vektor kecepatan relatif: jarak terdekat adalah panjang proyeksi tegak lurus dari posisi relatif awal terhadap arah $\\vec{v}_{A/B}$. Ini trik penting untuk soal olimpiade dan PTN.",
+                    analogi: {
+                        title: "Analogi: Dua Kapal di Laut",
+                        text: "Kapal A berlayar ke timur, kapal B ke utara. Kapten kapal A ingin tahu apakah akan bertabrakan dengan B. Ia bisa menganggap kapal B diam dan menghitung kecepatan relatif A terhadap B. Kalau arah relatifnya menuju B, akan bertabrakan. Kalau tidak, mereka akan lewat dengan jarak aman."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Sering dianggap 'kecepatan relatif selalu lebih kecil dari kecepatan asli'. Padahal bisa lebih besar! Kalau dua benda bergerak berlawanan arah dengan kecepatan 60 km/jam, kecepatan relatifnya 120 km/jam. Yang penting adalah penjumlahan vektornya, bukan pengurangan besarnya."
+                    },
+                    insight: "Selalu gunakan notasi vektor: $\\vec{v}_{A/B} = \\vec{v}_A - \\vec{v}_B$. Jangan kurangi besarnya langsung — vektor punya arah!"
+                },
+                theory: `
+                    <p>Dalam persoalan dua benda bergerak, kerap kali lebih mudah menggunakan <strong>Kerangka Acuan Relatif</strong>:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$\\vec{v}_{A/B} = \\vec{v}_A - \\vec{v}_B$$
+                    </div>
+                    <p>Dengan memandang benda B seolah-olah 'diam', benda A bergerak dengan vektor kecepatan relatif $\\vec{v}_{A/B}$. Jarak terpendek antara kedua benda dapat dicari dengan memproyeksikan garis lurus tegak lurus vektor kecepatan relatif tersebut.</p>
+                `,
+                toolType: 'vector-1d',
+                quiz: {
+                    question: "Mobil A bergerak ke timur dengan kecepatan $80\\text{ km/jam}$ dan Mobil B bergerak ke utara dengan kecepatan $60\\text{ km/jam}$. Berapakah besar kecepatan relatif Mobil A terhadap Mobil B?",
+                    options: [
+                        { text: "100 km/jam", correct: true },
+                        { text: "140 km/jam", correct: false },
+                        { text: "20 km/jam", correct: false },
+                        { text: "70 km/jam", correct: false }
+                    ],
+                    explanation: "Vektor $\\vec{v}_{A/B} = \\vec{v}_A - \\vec{v}_B$. Karena timur ($\\hat{i}$) dan utara ($\\hat{j}$) saling tegak lurus, maka $|\\vec{v}_{A/B}| = \\sqrt{80^2 + (-60)^2} = \\sqrt{6400 + 3600} = 100\\text{ km/jam}$."
+                }
+            },
+            {
+                day: 12,
+                module: "Modul 6 • Level Lanjut",
+                title: "Strategi Soal Kinematika & Persiapan PTN",
+                subtitle: "Kumpulan pola soal UN/SNBT/UTBK dan cara cepat menyelesaikannya.",
+                narrative: {
+                    opening: "Selamat! Kamu sudah sampai di hari terakhir kurikulum utama. Sekarang saatnya 'menyolder' semua konsep yang sudah dipelajari menjadi strategi praktis untuk menghadapi soal ujian PTN.",
+                    body: "Soal kinematika di UTBK/SNBT punya pola yang berulang: (1) membaca grafik, (2) gerak dua benda, (3) gerak parabola, (4) hubungan roda. Kalau kamu sudah paham empat pola ini, sebagian besar soal bisa diselesaikan dengan cepat. Kuncinya bukan menghafal rumus, tapi <em>mengenali pola</em> — begitu lihat soal, langsung tahu rumus mana yang dipakai.",
+                    closing: "Tips terakhir: latih soal dari tahun-tahun sebelumnya. Semakin sering, semakin cepat otak mengenali pola. Fisika bukan tentang bakat — tapi tentang jam terbang.",
+                    analogi: {
+                        title: "Analogi: Bermain Catur",
+                        text: "Grandmaster catur tidak menghitung setiap langkah dari nol — mereka mengenali pola yang sudah pernah dilihat ribuan kali. Begitu pula dengan soal kinematika: kalau kamu sudah melihat 100 soal, kamu akan langsung tahu langkah penyelesaiannya tanpa berpikir panjang."
+                    },
+                    miskonsepsi: {
+                        title: "Miskonsepsi Umum",
+                        text: "Banyak yang mengira 'fisika itu harus dihafal rumusnya'. Padahal yang perlu dihafal hanya sedikit rumus dasar (3 rumus GLBB, hubungan roda, dekomposisi vektor). Sisanya adalah <em>logika</em> dan <em>pengalaman</em> menyelesaikan soal."
+                    },
+                    insight: "Sebelum ujian, baca ulang 4 pola soal utama dan latihan 5 soal tiap pola. Fokus pada pemahaman konsep, bukan hafalan. Bila ada keraguan, kembali ke definisi dasar."
+                },
+                theory: `
+                    <p>Pada level PTN (UTBK/SNBT), soal kinematika sering dikemas dalam bentuk:</p>
+                    <ul class="list-disc list-inside space-y-2 my-2 text-slate-300">
+                        <li>Membaca grafik $v-t$ atau $x-t$ untuk menentukan besaran turunan (perpindahan, percepatan).</li>
+                        <li>Gerak dua benda saling mendekat / menyusul (relatif).</li>
+                        <li>Gerak parabola dengan sudut elevasi dan bidang miring.</li>
+                        <li>Hubungan roda-roda dalam sistem transmisi.</li>
+                    </ul>
+                    <p class="font-semibold text-brand-400 mt-3">Tips Cepat:</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-300 text-xs sm:text-sm">
+                        <li>Hafalkan 3 persamaan GLBB dan gunakan sesuai besaran yang diketahui.</li>
+                        <li>Gunakan konsep luas & kemiringan grafik untuk soal yang menampilkan kurva.</li>
+                        <li>Untuk gerak relatif, gambar vektor dan gunakan Pythagoras.</li>
+                        <li>Untuk roda, ingat: seporos $\\omega$ sama; sabuk/bersinggungan $v$ sama.</li>
+                    </ul>
+                `,
+                toolType: 'none',
+                quiz: {
+                    question: "Sebuah bola dilempar vertikal ke atas dengan kecepatan awal $20\\text{ m/s}$. Berapa ketinggian maksimum yang dicapai bola? ($g = 10\\text{ m/s}^2$)",
+                    options: [
+                        { text: "20 m", correct: true },
+                        { text: "10 m", correct: false },
+                        { text: "40 m", correct: false },
+                        { text: "5 m", correct: false }
+                    ],
+                    explanation: "Di titik tertinggi $v = 0$. Gunakan $v^2 = v_0^2 - 2gh \\implies 0 = 20^2 - 2(10)h \\implies 400 = 20h \\implies h = 20\\text{ m}$."
+                }
             }
-          });
-        }
-      }, 100);
-    }
+        ];
 
-    function stopSimulation() {
-      if (simulationInterval) {
-        clearInterval(simulationInterval);
-        simulationInterval = null;
-      }
-      // ✅ Refresh nilai final setelah stop
-      updateDataPanel();
-      updateParticlesPosition();
-      if (hasRunSimulation && elapsedTime > 0) {
-        showSummary();
-      }
-    }
+        // ============================================================
+        // MATERI LANJUTAN (KALKULUS) — DIPISAHKAN
+        // ============================================================
+        const advancedModules = [
+            {
+                id: 'adv-1',
+                title: "Turunan (Diferensial) dalam Kinematika",
+                subtitle: "Kecepatan & percepatan sebagai turunan posisi terhadap waktu.",
+                theory: `
+                    <p>Di level universitas/olimpiade, kecepatan seketika didefinisikan sebagai turunan posisi terhadap waktu, dan percepatan sebagai turunan kecepatan:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$v(t) = \\frac{dx}{dt}, \\quad a(t) = \\frac{dv}{dt} = \\frac{d^2x}{dt^2}$$
+                    </div>
+                    <p>Contoh: jika $x(t) = 2t^2 + 3t$, maka $v(t) = 4t + 3$ dan $a = 4$.</p>
+                `
+            },
+            {
+                id: 'adv-2',
+                title: "Integrasi dalam Kinematika",
+                subtitle: "Menentukan posisi & kecepatan dari fungsi percepatan.",
+                theory: `
+                    <p>Jika percepatan diketahui sebagai fungsi waktu, kecepatan dan posisi diperoleh melalui integrasi:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$v(t) = v_0 + \\int_0^t a(t')\\,dt', \\quad x(t) = x_0 + \\int_0^t v(t')\\,dt'$$
+                    </div>
+                `
+            },
+            {
+                id: 'adv-3',
+                title: "Persamaan Diferensial Gerak $a(x)$ dan $a(v)$",
+                subtitle: "Aturan rantai dan pemisahan variabel untuk percepatan tidak konstan.",
+                theory: `
+                    <p>Bila $a$ bergantung pada $x$ atau $v$, gunakan aturan rantai:</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$a = v\\frac{dv}{dx} \\implies \\int a(x)\\,dx = \\int v\\,dv = \\frac{1}{2}v^2 - \\frac{1}{2}v_0^2$$
+                    </div>
+                `
+            }
+        ];
 
-    function resetSimulation(fromButton) {
-      if (simulationInterval) { clearInterval(simulationInterval); simulationInterval = null; }
+        let currentDay = 1;
+        let chartInstance = null;
+        let animationFrameId = null;
 
-      // Hanya reset nilai sudut & waktu jika diminta (tombol Reset atau ganti tipe)
-      if (fromButton === true || fromButton === undefined) {
-        theta1 = 0;
-        theta2 = 0;
-        elapsedTime = 0;
-        hasRunSimulation = false;
-      }
-
-      hideSummary();
-
-      const wheel1 = document.querySelector(`#wheel1-${currentSimulationType}`);
-      const wheel2 = document.querySelector(`#wheel2-${currentSimulationType}`);
-      if (wheel1) wheel1.style.transform = 'rotate(0rad)';
-      if (wheel2) wheel2.style.transform = 'rotate(0rad)';
-
-      updateParticlesPosition();
-      updateDataPanel();
-    }
-
-    // ==================== QUIZ ====================
-    let score = 0;
-    const answeredQuestions = new Set();
-    const scoreValue = document.getElementById('score-value');
-
-    function updateScore() {
-      scoreValue.textContent = score + ' / 10';
-    }
-
-    async function handleQuizSubmit(event) {
-      event.preventDefault();
-      const studentName = document.getElementById('student-name').value;
-      if (!studentName.trim()) { showMessage('Mohon masukkan nama siswa!', 'error'); return; }
-
-      const answers = {
-        q1: document.querySelector('input[name="q1"]:checked')?.value,
-        q2: document.querySelector('input[name="q2"]:checked')?.value,
-        q3: document.querySelector('input[name="q3"]:checked')?.value,
-        q4: document.querySelector('input[name="q4"]:checked')?.value,
-        q5: document.querySelector('input[name="q5"]:checked')?.value
-      };
-      if (Object.values(answers).some(a => !a)) { showMessage('Mohon jawab semua pertanyaan!', 'error'); return; }
-
-      const correctAnswers = { q1: 'a', q2: 'a', q3: 'b', q4: 'b', q5: 'b' };
-      const explanations = {
-        q1: { correct: 'a) 4 rad/s', explanation: 'ω₂ = (ω₁ × R₁) / R₂ = (6 × 20) / 30 = 4 rad/s.' },
-        q2: { correct: 'a) 3 : 5', explanation: 'v = ω × R, maka v₁ : v₂ = R₁ : R₂ = 15 : 25 = 3 : 5.' },
-        q3: { correct: 'b) ω₁ × R₁ = ω₂ × R₂', explanation: 'Kecepatan linear di titik kontak harus sama, sehingga ω₁ × R₁ = ω₂ × R₂.' },
-        q4: { correct: 'b) Roda gigi sepeda', explanation: 'Roda gigi sepeda menggunakan rantai sebagai penghubung, mirip sistem roda bersabuk.' },
-        q5: { correct: 'b) Kecepatan linear lebih besar', explanation: 'v = ω × R, dengan ω sama, R lebih besar menghasilkan v lebih besar.' }
-      };
-
-      let newScore = 0;
-      Object.keys(answers).forEach(key => {
-        if (answers[key] === correctAnswers[key]) newScore += 2;
-      });
-
-      const submitBtn = event.target.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = '⏳ Menyimpan...';
-      submitBtn.disabled = true;
-
-      try {
-        if (window.dataSdk && currentData.length < 999) {
-          const result = await window.dataSdk.create({
-            student_name: studentName,
-            quiz_score: newScore,
-            answers: JSON.stringify(answers),
-            completed_at: new Date().toISOString()
-          });
-          if (result.isOk) {
-            showQuizResult(newScore, answers, correctAnswers, explanations);
-            document.getElementById('quiz-form').reset();
-            showMessage('Hasil kuis berhasil disimpan!', 'success');
-          } else {
-            showMessage('Gagal menyimpan hasil kuis.', 'error');
-          }
-        } else {
-          showQuizResult(newScore, answers, correctAnswers, explanations);
-          showMessage('Kuis selesai! (Data tidak tersimpan)', 'info');
-        }
-      } catch (error) {
-        showMessage('Terjadi kesalahan.', 'error');
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    }
-
-    function showQuizResult(score, answers, correctAnswers, explanations) {
-      const resultDiv = document.getElementById('quiz-result');
-      let grade = score >= 8 ? 'Sangat Baik' : score >= 6 ? 'Baik' : score >= 4 ? 'Cukup' : 'Perlu Belajar Lagi';
-      let colorClass = score >= 8 ? 'bg-green-100 border-green-500 text-green-800' :
-                       score >= 6 ? 'bg-blue-100 border-blue-500 text-blue-800' :
-                       score >= 4 ? 'bg-yellow-100 border-yellow-500 text-yellow-800' : 'bg-red-100 border-red-500 text-red-800';
-
-      let detailHtml = '';
-      Object.keys(answers).forEach((key, index) => {
-        const isCorrect = answers[key] === correctAnswers[key];
-        const icon = isCorrect ? '✅' : '❌';
-        const statusColor = isCorrect ? 'text-green-700' : 'text-red-700';
-        const bgColor = isCorrect ? 'bg-green-50' : 'bg-red-50';
-        const borderColor = isCorrect ? 'border-green-200' : 'border-red-200';
-
-        const answerOptions = {
-          q1: { a: '4 rad/s', b: '6 rad/s', c: '9 rad/s', d: '12 rad/s', e: '3 rad/s' },
-          q2: { a: '3 : 5', b: '5 : 3', c: '1 : 1', d: '25 : 15', e: '15 : 25' },
-          q3: { a: 'ω₁ = ω₂', b: 'ω₁ × R₁ = ω₂ × R₂', c: 'R₁ = R₂', d: 'v₁ × v₂ = konstan', e: 'ω₁ + ω₂ = konstan' },
-          q4: { a: 'Sistem rem mobil', b: 'Roda gigi sepeda', c: 'Lampu mobil', d: 'Klakson motor', e: 'Sistem transmisi mobil' },
-          q5: { a: 'Kecepatan linear lebih kecil', b: 'Kecepatan linear lebih besar', c: 'Kecepatan linear sama', d: 'Tidak ada hubungan', e: 'Kecepatan sudut lebih kecil' }
+        let simState = {
+            x0: 0,
+            v0: 5,
+            a: 2,
+            gearMode: 'seporos'
         };
 
-        detailHtml += `
-          <div class="mb-4 rounded-lg border p-3 sm:p-4 ${borderColor} ${bgColor}">
-            <div class="flex items-start mb-2">
-              <span class="mr-2 text-lg">${icon}</span>
-              <div class="flex-1">
-                <p class="font-semibold ${statusColor} text-sm sm:text-base">Soal ${index + 1}: ${isCorrect ? 'Benar' : 'Salah'}</p>
-                <p class="mt-1 text-xs sm:text-sm text-gray-700"><strong>Jawaban Anda:</strong> ${answers[key].toUpperCase()}) ${answerOptions[key][answers[key]]}</p>
-                ${!isCorrect ? `<p class="mt-1 text-xs sm:text-sm text-gray-700"><strong>Jawaban Benar:</strong> ${explanations[key].correct}</p>` : ''}
-              </div>
-            </div>
-            <div class="mt-3 rounded border-l-4 border-blue-400 bg-blue-50 p-3">
-              <p class="text-xs sm:text-sm text-blue-800"><strong>💡 Penjelasan:</strong> ${explanations[key].explanation}</p>
-            </div>
-          </div>`;
-      });
+        const curriculumList = document.getElementById('curriculum-list');
+        const slideTitle = document.getElementById('slide-title');
+        const slideSubtitle = document.getElementById('slide-subtitle');
+        const slideTheory = document.getElementById('slide-theory');
+        const slideNarrative = document.getElementById('slide-narrative');
+        const slideModuleBadge = document.getElementById('slide-module-badge');
+        const slideDayLabel = document.getElementById('slide-day-label');
+        const toolContent = document.getElementById('tool-content');
+        const quizQuestion = document.getElementById('quiz-question');
+        const quizOptions = document.getElementById('quiz-options');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const topProgressBar = document.getElementById('top-progress-bar');
+        const progressSummary = document.getElementById('progress-summary');
+        const progressSummaryMobile = document.getElementById('progress-summary-mobile');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-      resultDiv.innerHTML = `
-        <div class="rounded-lg border-l-4 p-5 sm:p-6 ${colorClass}">
-          <h3 class="mb-3 text-lg sm:text-xl font-bold">📊 Hasil Kuis</h3>
-          <p class="mb-4 text-xl sm:text-2xl font-bold">Skor: ${score}/10 (${grade})</p>
-          <div class="mt-6">
-            <h4 class="mb-4 text-base sm:text-lg font-semibold text-gray-800">📝 Pembahasan Soal:</h4>
-            ${detailHtml}
-          </div>
-          <div class="mt-6 rounded-lg bg-gray-50 p-4">
-            <p class="text-xs sm:text-sm text-gray-600"><strong>💡 Tips:</strong> Pelajari kembali materi yang masih salah dan coba simulasi interaktif untuk memahami konsep lebih baik!</p>
-          </div>
-        </div>`;
-      resultDiv.classList.remove('hidden');
-      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        function initApp() {
+            renderCurriculumSidebar();
+            loadSlide(currentDay);
+            setupEventListeners();
+        }
 
-    function updateResultsDisplay() {
-      const container = document.getElementById('results-container');
-      if (currentData.length === 0) {
-        container.innerHTML = '<p class="py-8 text-center text-[#526258]">Belum ada hasil kuis yang tersimpan.</p>';
-        return;
-      }
-      const sortedData = [...currentData].sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at));
-      container.innerHTML = sortedData.map(result => {
-        const date = new Date(result.completed_at).toLocaleString('id-ID');
-        const grade = result.quiz_score >= 8 ? 'Sangat Baik' : result.quiz_score >= 6 ? 'Baik' : result.quiz_score >= 4 ? 'Cukup' : 'Perlu Belajar Lagi';
-        const colorClass = result.quiz_score >= 8 ? 'text-green-600' : result.quiz_score >= 6 ? 'text-blue-600' : result.quiz_score >= 4 ? 'text-yellow-600' : 'text-red-600';
-        return `
-          <div class="rounded-lg border bg-gray-50 p-4">
-            <div class="flex items-start justify-between gap-3">
-              <div class="min-w-0">
-                <h3 class="text-base sm:text-lg font-semibold truncate">${result.student_name}</h3>
-                <p class="text-xs sm:text-sm text-gray-600">${date}</p>
-              </div>
-              <div class="text-right flex-shrink-0">
-                <p class="text-lg sm:text-xl font-bold ${colorClass}">${result.quiz_score}/10</p>
-                <p class="text-xs sm:text-sm ${colorClass}">${grade}</p>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-    }
+        function renderCurriculumSidebar() {
+            curriculumList.innerHTML = '';
 
-    function showMessage(message, type) {
-      const toast = document.createElement('div');
-      const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-      toast.className = `fixed right-4 top-4 z-50 max-w-[calc(100vw-2rem)] rounded-lg ${bgColor} px-4 sm:px-6 py-3 text-sm text-white shadow-lg transition-all duration-300`;
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(100%)';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
+            const mainHeader = document.createElement('div');
+            mainHeader.className = 'px-2 py-1.5 text-[10px] uppercase tracking-wider text-slate-500 font-bold';
+            mainHeader.textContent = 'Kurikulum Utama (Aljabar)';
+            curriculumList.appendChild(mainHeader);
 
-    // ==================== EVENT LISTENERS ====================
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeApp();
+            curriculumData.forEach((item) => {
+                const isActive = item.day === currentDay;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-2.5 rounded-xl transition flex items-center justify-between text-xs font-medium ${
+                    isActive 
+                        ? 'bg-brand-600/30 text-brand-300 border border-brand-500/40' 
+                        : 'text-slate-400 hover:bg-slate-700/50 active:bg-slate-700 hover:text-slate-200'
+                }`;
+                btn.onclick = () => {
+                    currentDay = item.day;
+                    loadSlide(currentDay);
+                    closeSidebarOnMobile();
+                };
 
-      document.getElementById('radius1').addEventListener('input', () => {
-        updateSimulationValues();
-        updateParticlesPosition();
-      });
-      document.getElementById('radius2').addEventListener('input', () => {
-        updateSimulationValues();
-        updateParticlesPosition();
-      });
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-2.5 truncate">
+                        <span class="w-6 h-6 rounded-lg ${isActive ? 'bg-brand-500 text-white' : 'bg-slate-700 text-slate-400'} text-[11px] font-bold flex items-center justify-center flex-shrink-0">
+                            ${item.day}
+                        </span>
+                        <span class="truncate">${item.title}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] opacity-40 flex-shrink-0"></i>
+                `;
+                curriculumList.appendChild(btn);
+            });
 
-      document.getElementById('omega1').addEventListener('input', (e) => {
-        document.getElementById('omega1-number').value = e.target.value;
-        updateSimulationValues();
-      });
-      document.getElementById('omega1-number').addEventListener('input', (e) => {
-        let v = parseFloat(e.target.value);
-        if (isNaN(v)) v = 0.5;
-        v = Math.max(0.5, Math.min(10, v));
-        document.getElementById('omega1').value = v;
-        updateSimulationValues();
-      });
+            const advHeader = document.createElement('div');
+            advHeader.className = 'px-2 py-1.5 mt-3 text-[10px] uppercase tracking-wider text-amber-500 font-bold flex items-center gap-1.5';
+            advHeader.innerHTML = '<i class="fa-solid fa-flask"></i> Universitas & Olimpiade (Kalkulus)';
+            curriculumList.appendChild(advHeader);
 
-      document.getElementById('quiz-form').addEventListener('submit', handleQuizSubmit);
-      document.getElementById('retry-quiz-button').addEventListener('click', function() {
-        score = 0;
-        answeredQuestions.clear();
-        updateScore();
-        document.querySelectorAll('.option-button').forEach(btn => {
-          btn.disabled = false;
-          btn.classList.remove('is-correct', 'is-wrong');
-        });
-        document.querySelectorAll('.feedback').forEach(f => f.classList.remove('is-visible'));
-        document.getElementById('quiz-result').classList.add('hidden');
-      });
+            const advNote = document.createElement('div');
+            advNote.className = 'px-2 py-1 text-[10px] text-slate-500 italic mb-1';
+            advNote.textContent = 'Materi bonus — tidak termasuk progres harian.';
+            curriculumList.appendChild(advNote);
 
-      updateSimulationValues();
-      updateScore();
-      updateDataPanel();
-    });
-  </script>
+            advancedModules.forEach((mod) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-2.5 rounded-xl transition flex items-center justify-between text-xs font-medium text-amber-300/70 hover:bg-amber-500/10 active:bg-amber-500/20 hover:text-amber-200 border border-transparent hover:border-amber-500/20';
+                btn.onclick = () => {
+                    showAdvancedModule(mod.id);
+                    closeSidebarOnMobile();
+                };
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-2.5 truncate">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-square-root-variable text-[10px]"></i>
+                        </span>
+                        <span class="truncate">${mod.title}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] opacity-40 flex-shrink-0"></i>
+                `;
+                curriculumList.appendChild(btn);
+            });
+        }
+
+        function showAdvancedModule(id) {
+            const mod = advancedModules.find(m => m.id === id);
+            if (!mod) return;
+
+            // Sembunyikan narasi untuk modul kalkulus
+            slideNarrative.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                        <i class="fa-solid fa-square-root-variable text-amber-400 text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Catatan Materi Lanjutan</h4>
+                        <p class="text-xs sm:text-sm text-slate-400">Modul ini menggunakan kalkulus. Pelajari setelah menguasai kurikulum utama (12 hari) agar pemahaman lebih kokoh.</p>
+                    </div>
+                </div>
+            `;
+
+            slideDayLabel.textContent = 'Materi Lanjutan';
+            slideModuleBadge.textContent = 'Universitas / Olimpiade';
+            slideModuleBadge.className = 'px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+            slideTitle.textContent = mod.title;
+            slideSubtitle.textContent = mod.subtitle;
+            slideTheory.innerHTML = mod.theory;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(slideTheory, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+
+            toolContent.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-8 text-center space-y-3">
+                    <div class="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+                        <i class="fa-solid fa-square-root-variable text-amber-400 text-xl"></i>
+                    </div>
+                    <p class="text-sm text-slate-400 max-w-md">Materi ini menggunakan kalkulus (diferensial & integral). Pelajari setelah menguasai kurikulum utama.</p>
+                    <span class="text-[10px] bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/20">Level Universitas / Olimpiade</span>
+                </div>
+            `;
+
+            quizQuestion.innerHTML = '<span class="text-slate-400">Evaluasi tidak tersedia untuk materi lanjutan.</span>';
+            quizOptions.innerHTML = '';
+            quizFeedback.className = 'hidden';
+
+            document.getElementById('btn-prev-slide').disabled = true;
+            document.getElementById('btn-next-slide').disabled = true;
+
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // RENDER NARASI KONSEP (Baru)
+        // ============================================================
+        function renderNarrative(narrative) {
+            if (!narrative) {
+                slideNarrative.innerHTML = '';
+                return;
+            }
+
+            const { opening, body, closing, analogi, miskonsepsi, insight } = narrative;
+
+            let html = `
+                <!-- Narasi Pembuka -->
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-brand-500/20 border border-brand-500/30 flex items-center justify-center">
+                            <i class="fa-solid fa-book-open text-brand-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[10px] font-bold text-brand-400 uppercase tracking-wider mb-2">Narasi Konsep</h4>
+                            <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                                <p>${opening}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Narasi Inti -->
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>${body}</p>
+                    </div>
+                </div>
+
+                <!-- Narasi Penutup -->
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>${closing}</p>
+                    </div>
+                </div>
+            `;
+
+            // Grid untuk analogi, miskonsepsi, insight
+            html += `<div class="grid grid-cols-1 gap-3 sm:gap-4">`;
+
+            if (analogi) {
+                html += `
+                    <div class="analogi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">${analogi.title}</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${analogi.text}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (miskonsepsi) {
+                html += `
+                    <div class="miskonsepsi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1.5">${miskonsepsi.title}</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${miskonsepsi.text}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (insight) {
+                html += `
+                    <div class="insight-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-key text-emerald-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5">Insight Kunci</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${insight}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            slideNarrative.innerHTML = html;
+
+            // Render KaTeX di narasi
+            if (window.renderMathInElement) {
+                renderMathInElement(slideNarrative, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function loadSlide(dayNum) {
+            const data = curriculumData.find(d => d.day === dayNum);
+            if (!data) return;
+
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            simState.gearMode = 'seporos';
+
+            slideModuleBadge.className = 'px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-brand-500/20 text-brand-500 border border-brand-500/30';
+
+            const percentage = Math.round((dayNum / curriculumData.length) * 100);
+            topProgressBar.style.width = `${percentage}%`;
+            progressSummary.textContent = `Hari ${dayNum} / ${curriculumData.length}`;
+            progressSummaryMobile.textContent = `${dayNum}/${curriculumData.length}`;
+
+            slideDayLabel.textContent = `Hari ke-${data.day}`;
+            slideModuleBadge.textContent = data.module;
+            slideTitle.textContent = data.title;
+            slideSubtitle.textContent = data.subtitle;
+
+            // Render narasi & teori
+            renderNarrative(data.narrative);
+            slideTheory.innerHTML = data.theory;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(slideTheory, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+
+            renderInteractiveTool(data.toolType);
+            renderQuiz(data.quiz);
+
+            document.getElementById('btn-prev-slide').disabled = (dayNum === 1);
+            document.getElementById('btn-next-slide').disabled = (dayNum === curriculumData.length);
+
+            renderCurriculumSidebar();
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderInteractiveTool(type) {
+            toolContent.innerHTML = '';
+
+            if (type === 'none') {
+                toolContent.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-8 text-center space-y-2">
+                        <i class="fa-solid fa-trophy text-amber-400 text-3xl"></i>
+                        <p class="text-sm text-slate-400">Tidak ada simulasi untuk modul ini. Fokus pada latihan soal!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (type === 'graph-interactive' || type === 'vector-1d') {
+                toolContent.innerHTML = `
+                    <div class="space-y-3 sm:space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 bg-slate-900/60 p-2.5 sm:p-3 rounded-xl border border-slate-700 text-xs">
+                            <div>
+                                <label class="text-slate-400 block mb-1 text-[11px]">Posisi Awal $x_0$: <span id="val-x0" class="text-brand-400 font-bold">0</span> m</label>
+                                <input type="range" id="input-x0" min="-10" max="10" value="0" class="w-full accent-brand-500 h-2">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1 text-[11px]">Kecepatan Awal $v_0$: <span id="val-v0" class="text-amber-400 font-bold">5</span> m/s</label>
+                                <input type="range" id="input-v0" min="-10" max="15" value="5" class="w-full accent-amber-500 h-2">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1 text-[11px]">Percepatan $a$: <span id="val-a" class="text-emerald-400 font-bold">2</span> m/s²</label>
+                                <input type="range" id="input-a" min="-5" max="5" value="2" step="0.5" class="w-full accent-emerald-500 h-2">
+                            </div>
+                        </div>
+
+                        <div class="relative bg-slate-950 rounded-xl overflow-hidden border border-slate-800 h-24 sm:h-28 flex flex-col justify-center px-3 sm:px-4">
+                            <canvas id="motion-canvas" class="w-full h-full"></canvas>
+                        </div>
+
+                        <div class="bg-slate-950 p-2 sm:p-3 rounded-xl border border-slate-800 h-48 sm:h-56">
+                            <canvas id="kinematic-chart"></canvas>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-2">
+                            <button id="btn-run-sim" class="px-3 sm:px-4 py-2 bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2">
+                                <i class="fa-solid fa-play"></i> Jalankan
+                            </button>
+                            <span class="text-[10px] sm:text-xs text-slate-400 font-mono">t = <span id="sim-time" class="text-white font-bold">0.0</span>s</span>
+                        </div>
+                    </div>
+                `;
+                initKinematicChartAndSim();
+            } else if (type === 'gmb-simulation') {
+                toolContent.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                        <div class="md:col-span-2 bg-slate-950 rounded-xl border border-slate-800 p-2 flex items-center justify-center relative min-h-[220px] sm:min-h-[260px]">
+                            <canvas id="gmb-canvas" width="320" height="260" class="max-w-full"></canvas>
+                            <div class="absolute top-2 left-2 text-[9px] sm:text-[10px] space-y-1 bg-slate-900/80 p-1.5 sm:p-2 rounded border border-slate-700">
+                                <p class="text-rose-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block"></span> $a_c$ (sentripetal)</p>
+                                <p class="text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> $a_t$ (tangensial)</p>
+                                <p class="text-sky-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 inline-block"></span> $v$ (kecepatan)</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 bg-slate-900/60 p-3 rounded-xl border border-slate-700 text-xs">
+                            <h4 class="font-bold text-slate-200 border-b border-slate-700 pb-1">Kontrol Rotasi</h4>
+                            <div>
+                                <label class="text-slate-400 block mb-1 text-[11px]">Kecepatan Sudut $\\omega_0$: <span id="val-omega" class="text-sky-400 font-bold">2.0</span></label>
+                                <input type="range" id="input-omega" min="0" max="6" value="2" step="0.2" class="w-full accent-sky-500 h-2">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1 text-[11px]">Percepatan Sudut $\\alpha$: <span id="val-alpha" class="text-emerald-400 font-bold">0.5</span></label>
+                                <input type="range" id="input-alpha" min="0" max="3" value="0.5" step="0.1" class="w-full accent-emerald-500 h-2">
+                            </div>
+                            <div class="pt-2 border-t border-slate-700/60 space-y-1 font-mono text-[10px] sm:text-[11px]">
+                                <p class="text-slate-300">$\\theta$: <span id="calc-theta" class="text-amber-400">0.00</span> rad</p>
+                                <p class="text-slate-300">$a_c$: <span id="calc-ac" class="text-rose-400">0.00</span> m/s²</p>
+                                <p class="text-slate-300">$a_t$: <span id="calc-at" class="text-emerald-400">0.00</span> m/s²</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                initGMBSimulation();
+            } else if (type === 'gears-simulation') {
+                toolContent.innerHTML = `
+                    <div class="space-y-3 sm:space-y-4">
+                        <div class="flex flex-wrap gap-1.5 sm:gap-2 justify-center bg-slate-900 p-1.5 rounded-xl border border-slate-700 text-[11px] sm:text-xs">
+                            <button id="btn-mode-seporos" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition ${simState.gearMode === 'seporos' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-slate-200'}">
+                                <i class="fa-solid fa-dharmachakra mr-1"></i>Seporos
+                            </button>
+                            <button id="btn-mode-sabuk" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition ${simState.gearMode === 'sabuk' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-slate-200'}">
+                                <i class="fa-solid fa-link mr-1"></i>Sabuk
+                            </button>
+                            <button id="btn-mode-bersinggungan" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition ${simState.gearMode === 'bersinggungan' ? 'bg-brand-600 text-white' : 'text-slate-400 hover:text-slate-200'}">
+                                <i class="fa-solid fa-gear mr-1"></i>Bersinggungan
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-950 rounded-xl border border-slate-800 p-2 flex items-center justify-center min-h-[200px] sm:min-h-[240px] overflow-hidden">
+                            <canvas id="gears-canvas" width="450" height="220" class="max-w-full"></canvas>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-2.5 sm:p-3 rounded-xl border border-slate-700 text-[10px] sm:text-xs font-mono flex justify-around text-center">
+                            <div>
+                                <span class="text-slate-400 block text-[9px] sm:text-[10px]">Roda 1 ($R_1 = 60$px)</span>
+                                <span id="gear1-info" class="text-sky-400 font-bold">$\\omega_1 = 2.0$ rad/s</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block text-[9px] sm:text-[10px]">Roda 2 ($R_2 = 30$px)</span>
+                                <span id="gear2-info" class="text-amber-400 font-bold">$\\omega_2 = 4.0$ rad/s</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                initGearsSimulation();
+            }
+        }
+
+        function initKinematicChartAndSim() {
+            const canvasEl = document.getElementById('kinematic-chart');
+            const motionCanvas = document.getElementById('motion-canvas');
+            if (!canvasEl || !motionCanvas) return;
+
+            const ctxChart = canvasEl.getContext('2d');
+            const mCtx = motionCanvas.getContext('2d');
+
+            motionCanvas.width = motionCanvas.parentElement.clientWidth;
+            motionCanvas.height = motionCanvas.parentElement.clientHeight;
+
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctxChart, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'x(t) [m]',
+                            borderColor: '#0284c7',
+                            backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                            data: [],
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'v(t) [m/s]',
+                            borderColor: '#f59e0b',
+                            borderDash: [4, 4],
+                            data: [],
+                            tension: 0.1,
+                            borderWidth: 2,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 't (s)', color: '#94a3b8', font: { size: 10 } },
+                            ticks: { color: '#64748b', font: { size: 9 }, maxTicksLimit: 8 },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Nilai', color: '#94a3b8', font: { size: 10 } },
+                            ticks: { color: '#64748b', font: { size: 9 }, maxTicksLimit: 6 },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#cbd5e1', font: { size: 10 }, boxWidth: 12 } }
+                    }
+                }
+            });
+
+            const inX0 = document.getElementById('input-x0');
+            const inV0 = document.getElementById('input-v0');
+            const inA = document.getElementById('input-a');
+
+            function updateInputs() {
+                simState.x0 = parseFloat(inX0.value);
+                simState.v0 = parseFloat(inV0.value);
+                simState.a = parseFloat(inA.value);
+
+                document.getElementById('val-x0').textContent = simState.x0;
+                document.getElementById('val-v0').textContent = simState.v0;
+                document.getElementById('val-a').textContent = simState.a;
+
+                recalculateChartData();
+                drawCar(simState.x0);
+            }
+
+            [inX0, inV0, inA].forEach(input => input.addEventListener('input', updateInputs));
+
+            function recalculateChartData() {
+                const labels = [];
+                const xData = [];
+                const vData = [];
+
+                for (let t = 0; t <= 5; t += 0.25) {
+                    labels.push(t.toFixed(1));
+                    const x = simState.x0 + simState.v0 * t + 0.5 * simState.a * t * t;
+                    const v = simState.v0 + simState.a * t;
+                    xData.push(x.toFixed(2));
+                    vData.push(v.toFixed(2));
+                }
+
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = xData;
+                chartInstance.data.datasets[1].data = vData;
+                chartInstance.update('none');
+            }
+
+            function drawCar(xPos) {
+                if (!motionCanvas.width) {
+                    motionCanvas.width = motionCanvas.parentElement.clientWidth;
+                    motionCanvas.height = motionCanvas.parentElement.clientHeight;
+                }
+                mCtx.clearRect(0, 0, motionCanvas.width, motionCanvas.height);
+                const w = motionCanvas.width;
+                const h = motionCanvas.height;
+
+                mCtx.strokeStyle = '#475569';
+                mCtx.lineWidth = 2;
+                mCtx.beginPath();
+                mCtx.moveTo(15, h - 25);
+                mCtx.lineTo(w - 15, h - 25);
+                mCtx.stroke();
+
+                const minX = -10, maxX = 50;
+                const pxPerUnit = (w - 50) / (maxX - minX);
+                let carPx = 25 + (xPos - minX) * pxPerUnit;
+                carPx = Math.max(20, Math.min(w - 20, carPx));
+
+                mCtx.fillStyle = '#0284c7';
+                mCtx.beginPath();
+                if (mCtx.roundRect) {
+                    mCtx.roundRect(carPx - 14, h - 42, 28, 15, 4);
+                } else {
+                    mCtx.rect(carPx - 14, h - 42, 28, 15);
+                }
+                mCtx.fill();
+
+                mCtx.fillStyle = '#334155';
+                mCtx.beginPath();
+                mCtx.arc(carPx - 7, h - 25, 3.5, 0, Math.PI * 2);
+                mCtx.arc(carPx + 7, h - 25, 3.5, 0, Math.PI * 2);
+                mCtx.fill();
+
+                mCtx.fillStyle = '#f8fafc';
+                mCtx.font = '9px Inter';
+                mCtx.textAlign = 'center';
+                mCtx.fillText(`x = ${xPos.toFixed(1)}m`, carPx, h - 48);
+            }
+
+            updateInputs();
+
+            const btnRun = document.getElementById('btn-run-sim');
+            btnRun.onclick = () => {
+                let startTime = null;
+
+                function animateStep(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = (timestamp - startTime) / 1000;
+
+                    if (elapsed <= 5) {
+                        const currentX = simState.x0 + simState.v0 * elapsed + 0.5 * simState.a * elapsed * elapsed;
+                        document.getElementById('sim-time').textContent = elapsed.toFixed(1);
+                        drawCar(currentX);
+                        requestAnimationFrame(animateStep);
+                    } else {
+                        document.getElementById('sim-time').textContent = "5.0";
+                    }
+                }
+                requestAnimationFrame(animateStep);
+            };
+
+            window.addEventListener('resize', () => {
+                if (motionCanvas.parentElement) {
+                    motionCanvas.width = motionCanvas.parentElement.clientWidth;
+                    motionCanvas.height = motionCanvas.parentElement.clientHeight;
+                    drawCar(simState.x0);
+                }
+            });
+        }
+
+        function initGMBSimulation() {
+            const canvas = document.getElementById('gmb-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const inOmega = document.getElementById('input-omega');
+            const inAlpha = document.getElementById('input-alpha');
+
+            let omega = parseFloat(inOmega.value);
+            let alpha = parseFloat(inAlpha.value);
+            let theta = 0;
+            let lastTime = performance.now();
+
+            function loop(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                omega += alpha * dt;
+                theta += omega * dt;
+
+                const R = 75;
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, R, 0, Math.PI * 2);
+                ctx.stroke();
+
+                const px = cx + R * Math.cos(theta);
+                const py = cy + R * Math.sin(theta);
+
+                ctx.strokeStyle = '#475569';
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                const vLen = Math.min(omega * 12, 45);
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(px - Math.sin(theta) * vLen, py + Math.cos(theta) * vLen);
+                ctx.stroke();
+
+                const acVal = omega * omega * (R / 100);
+                const acLen = Math.min(acVal * 5, 40);
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(px - Math.cos(theta) * acLen, py - Math.sin(theta) * acLen);
+                ctx.stroke();
+
+                const atVal = alpha * (R / 100);
+                const atLen = Math.min(atVal * 15, 35);
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(px - Math.sin(theta) * atLen, py + Math.cos(theta) * atLen);
+                ctx.stroke();
+
+                ctx.fillStyle = '#f59e0b';
+                ctx.beginPath();
+                ctx.arc(px, py, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                document.getElementById('calc-theta').textContent = (theta % (2 * Math.PI)).toFixed(2);
+                document.getElementById('calc-ac').textContent = acVal.toFixed(2);
+                document.getElementById('calc-at').textContent = atVal.toFixed(2);
+
+                animationFrameId = requestAnimationFrame(loop);
+            }
+
+            inOmega.addEventListener('input', (e) => {
+                omega = parseFloat(e.target.value);
+                document.getElementById('val-omega').textContent = omega.toFixed(1);
+            });
+
+            inAlpha.addEventListener('input', (e) => {
+                alpha = parseFloat(e.target.value);
+                document.getElementById('val-alpha').textContent = alpha.toFixed(1);
+            });
+
+            animationFrameId = requestAnimationFrame(loop);
+        }
+
+        function initGearsSimulation() {
+            const canvas = document.getElementById('gears-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const btnSeporos = document.getElementById('btn-mode-seporos');
+            const btnSabuk = document.getElementById('btn-mode-sabuk');
+            const btnBersinggungan = document.getElementById('btn-mode-bersinggungan');
+
+            const R1 = 55;
+            const R2 = 30;
+            let w1 = 2.0;
+            let theta1 = 0;
+            let theta2 = 0;
+            let lastTime = performance.now();
+
+            btnSeporos.onclick = () => { simState.gearMode = 'seporos'; updateButtons(); };
+            btnSabuk.onclick = () => { simState.gearMode = 'sabuk'; updateButtons(); };
+            btnBersinggungan.onclick = () => { simState.gearMode = 'bersinggungan'; updateButtons(); };
+
+            function updateButtons() {
+                [btnSeporos, btnSabuk, btnBersinggungan].forEach(b => {
+                    b.classList.remove('bg-brand-600', 'text-white');
+                    b.classList.add('text-slate-400');
+                });
+                if (simState.gearMode === 'seporos') btnSeporos.classList.add('bg-brand-600', 'text-white');
+                if (simState.gearMode === 'sabuk') btnSabuk.classList.add('bg-brand-600', 'text-white');
+                if (simState.gearMode === 'bersinggungan') btnBersinggungan.classList.add('bg-brand-600', 'text-white');
+            }
+
+            function loopGears(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                let w2 = 0;
+                if (simState.gearMode === 'seporos') {
+                    w2 = w1;
+                    theta1 += w1 * dt;
+                    theta2 += w2 * dt;
+                } else if (simState.gearMode === 'sabuk') {
+                    w2 = w1 * (R1 / R2);
+                    theta1 += w1 * dt;
+                    theta2 += w2 * dt;
+                } else if (simState.gearMode === 'bersinggungan') {
+                    w2 = w1 * (R1 / R2);
+                    theta1 += w1 * dt;
+                    theta2 -= w2 * dt;
+                }
+
+                document.getElementById('gear1-info').innerHTML = `&omega;<sub>1</sub> = ${w1.toFixed(1)} rad/s`;
+                document.getElementById('gear2-info').innerHTML = `&omega;<sub>2</sub> = ${w2.toFixed(1)} rad/s`;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                let c1x = 130, c1y = 110;
+                let c2x = 270, c2y = 110;
+
+                if (simState.gearMode === 'seporos') {
+                    c2x = c1x;
+                } else if (simState.gearMode === 'bersinggungan') {
+                    c2x = c1x + R1 + R2;
+                } else {
+                    c2x = 310;
+                }
+
+                if (simState.gearMode === 'sabuk') {
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(c1x, c1y - R1);
+                    ctx.lineTo(c2x, c2y - R2);
+                    ctx.moveTo(c1x, c1y + R1);
+                    ctx.lineTo(c2x, c2y + R2);
+                    ctx.stroke();
+                }
+
+                function drawGear(cx, cy, r, angle, color) {
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                    ctx.stroke();
+
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                drawGear(c1x, c1y, R1, theta1, '#38bdf8');
+                drawGear(c2x, c2y, R2, theta2, '#f59e0b');
+
+                animationFrameId = requestAnimationFrame(loopGears);
+            }
+
+            animationFrameId = requestAnimationFrame(loopGears);
+        }
+
+        function renderQuiz(quiz) {
+            quizQuestion.innerHTML = quiz.question;
+            quizOptions.innerHTML = '';
+            quizFeedback.className = 'hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm leading-relaxed border transition-all duration-300';
+
+            quiz.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-800/60 hover:bg-slate-700/80 active:bg-slate-700 text-xs md:text-sm text-slate-200 transition flex items-center justify-between group gap-2';
+                btn.innerHTML = `
+                    <span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span>
+                    <i class="fa-regular fa-circle text-slate-500 group-hover:text-brand-400 flex-shrink-0"></i>
+                `;
+
+                btn.onclick = () => {
+                    Array.from(quizOptions.children).forEach(child => child.classList.add('pointer-events-none', 'opacity-60'));
+
+                    if (opt.correct) {
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-emerald-500/80 bg-emerald-500/20 text-emerald-200 text-xs md:text-sm font-semibold flex items-center justify-between gap-2 pointer-events-none';
+                        btn.innerHTML = `<span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span> <i class="fa-solid fa-circle-check text-emerald-400 text-base flex-shrink-0"></i>`;
+                        
+                        quizFeedback.className = 'p-3 sm:p-4 rounded-xl text-xs md:text-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 block';
+                        quizFeedback.innerHTML = `<strong><i class="fa-solid fa-check mr-1"></i> Benar!</strong> ${quiz.explanation}`;
+                    } else {
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-rose-500/80 bg-rose-500/20 text-rose-200 text-xs md:text-sm font-semibold flex items-center justify-between gap-2 pointer-events-none';
+                        btn.innerHTML = `<span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span> <i class="fa-solid fa-circle-xmark text-rose-400 text-base flex-shrink-0"></i>`;
+
+                        quizFeedback.className = 'p-3 sm:p-4 rounded-xl text-xs md:text-sm bg-rose-950/60 border border-rose-500/40 text-rose-200 block';
+                        quizFeedback.innerHTML = `<strong><i class="fa-solid fa-xmark mr-1"></i> Kurang Tepat.</strong> ${quiz.explanation}`;
+                    }
+
+                    if (window.renderMathInElement) {
+                        renderMathInElement(quizFeedback, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ],
+                            throwOnError: false
+                        });
+                    }
+                };
+
+                quizOptions.appendChild(btn);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(quizQuestion, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function closeSidebarOnMobile() {
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('toggle-sidebar').onclick = () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebarOverlay.classList.toggle('hidden');
+            };
+            document.getElementById('close-sidebar').onclick = () => {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            };
+            sidebarOverlay.onclick = () => {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            };
+
+            document.getElementById('btn-prev-slide').onclick = () => {
+                if (currentDay > 1) {
+                    currentDay--;
+                    loadSlide(currentDay);
+                }
+            };
+
+            document.getElementById('btn-next-slide').onclick = () => {
+                if (currentDay < curriculumData.length) {
+                    currentDay++;
+                    loadSlide(currentDay);
+                }
+            };
+
+            document.getElementById('btn-understood').onclick = () => {
+                if (currentDay < curriculumData.length) {
+                    currentDay++;
+                    loadSlide(currentDay);
+                } else {
+                    alert("Selamat! Anda telah menyelesaikan seluruh kurikulum utama Kinematika!");
+                }
+            };
+
+            document.getElementById('btn-not-understood').onclick = () => {
+                document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const toggleThemeBtn = document.getElementById('toggle-theme');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            toggleThemeBtn.onclick = () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    themeIcon.className = 'fa-solid fa-moon text-base sm:text-lg';
+                } else {
+                    themeIcon.className = 'fa-solid fa-sun text-base sm:text-lg text-amber-400';
+                }
+            };
+
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    const mc = document.getElementById('motion-canvas');
+                    if (mc && mc.parentElement) {
+                        mc.width = mc.parentElement.clientWidth;
+                        mc.height = mc.parentElement.clientHeight;
+                    }
+                }, 300);
+            });
+        }
+
+        window.onload = () => {
+            initApp();
+        };
+    </script>
 </body>
 </html>
