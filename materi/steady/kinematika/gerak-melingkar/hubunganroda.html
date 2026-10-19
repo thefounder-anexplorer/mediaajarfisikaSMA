@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hubungan Roda-Roda: Mastery Kinematika Rotasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7',
+                            600: '#0369a1', 700: '#075985', 900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false});"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 4px; }
+        .katex-display { margin: 0.4em 0 !important; overflow-x: auto; overflow-y: hidden; padding: 4px 2px; font-size: 0.95em; }
+        .katex { font-size: 0.95em; }
+        @media (max-width: 640px) {
+            .katex-display { font-size: 0.85em; }
+            .katex { font-size: 0.9em; }
+        }
+        input[type="range"] { font-size: 16px; }
+        button { touch-action: manipulation; }
+        canvas { max-width: 100%; }
+        body { padding-bottom: env(safe-area-inset-bottom); }
+
+        .narasi-box {
+            background: linear-gradient(135deg, rgba(2,132,199,0.08), rgba(2,132,199,0.02));
+            border-left: 3px solid #0284c7;
+        }
+        .analogi-box {
+            background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
+            border-left: 3px solid #f59e0b;
+        }
+        .miskonsepsi-box {
+            background: linear-gradient(135deg, rgba(244,63,94,0.08), rgba(244,63,94,0.02));
+            border-left: 3px solid #f43f5e;
+        }
+        .insight-box {
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02));
+            border-left: 3px solid #10b981;
+        }
+        .narasi-text p { margin-bottom: 0.6rem; }
+        .narasi-text p:last-child { margin-bottom: 0; }
+        .narasi-text em { color: #7dd3fc; font-style: normal; font-weight: 500; }
+        .narasi-text strong { color: #f1f5f9; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header -->
+    <header class="bg-slate-800/95 backdrop-blur border-b border-slate-700 sticky top-0 z-40 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            <div class="flex items-center space-x-2 min-w-0">
+                <div class="bg-brand-500 text-white p-2 rounded-lg flex-shrink-0">
+                    <i class="fa-solid fa-gears text-lg sm:text-xl"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="font-bold text-slate-100 text-sm sm:text-base md:text-lg leading-tight truncate">Hubungan Roda-Roda</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400 truncate">Seporos • Sabuk • Bersinggungan</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
+            <span class="text-[10px] sm:text-xs bg-brand-500/20 text-brand-400 px-2.5 py-1 rounded-full border border-brand-500/30 font-semibold">
+                <i class="fa-solid fa-flask mr-1"></i> Live Sim
+            </span>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar bg-slate-900 p-2.5 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+        <div class="max-w-5xl mx-auto w-full space-y-4 sm:space-y-6">
+
+            <!-- Title Card -->
+            <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2 sm:mb-3">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-brand-500/20 text-brand-400 border border-brand-500/30">
+                        Modul • Mahir
+                    </span>
+                    <div class="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-slate-400">
+                        <span><i class="fa-regular fa-clock mr-1"></i>~10 Menit</span>
+                    </div>
+                </div>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1.5 sm:mb-2 leading-tight">Hubungan Roda-Roda: Seporos, Sabuk, & Bersinggungan</h2>
+                <p class="text-slate-400 text-xs sm:text-sm md:text-base">Analisis transmisi gerak rotasi pada sistem roda yang terhubung.</p>
+            </div>
+
+            <!-- Narasi Konsep (Seporos) -->
+            <div class="bg-slate-800/50 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-lg space-y-3 sm:space-y-4">
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-brand-500/20 border border-brand-500/30 flex items-center justify-center">
+                            <i class="fa-solid fa-book-open text-brand-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[10px] font-bold text-brand-400 uppercase tracking-wider mb-2">Narasi Konsep — Seporos</h4>
+                            <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                                <p>Pernahkah kamu memperhatikan roda sepeda? Ada roda gigi di pedal dan roda gigi di belakang. Keduanya terhubung, tapi bisa berputar dengan kecepatan berbeda. Nah, hari ini kita bedah tiga jenis hubungan roda: seporos, bersabuk, dan bersinggungan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>Untuk roda yang <strong>seporos</strong> (terpasang pada satu sumbu), keduanya 'terpaksa' berputar bersama. Kalau roda besar berputar satu putaran penuh, roda kecil yang seporos juga berputar satu putaran penuh. Jadi kecepatan sudutnya sama ($\\omega_1 = \\omega_2$), tapi kecepatan linear di tepinya berbeda karena jari-jarinya berbeda.</p>
+                    </div>
+                </div>
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>Bayangkan komidi putar dengan dua kursi di radius berbeda. Keduanya menyelesaikan satu putaran dalam waktu yang sama, tapi kursi di tepi luar menempuh jarak lebih jauh — artinya kecepatan linearnya lebih besar.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3 sm:gap-4">
+                    <div class="analogi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">Analogi: Jarum Jam</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Jarum panjang dan jarum pendek pada jam dinding saling terhubung di satu titik (seporos). Meski kecepatan sudutnya berbeda (jarum detik lebih cepat), prinsipnya sama: mereka berbagi sumbu yang sama. Kalau kecepatan sudutnya sama (seperti jarum jam dan menit yang dihubungkan), maka ujung jarum yang lebih panjang bergerak lebih cepat.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="miskonsepsi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1.5">Miskonsepsi Umum</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Sering dianggap 'roda yang lebih besar pasti berputar lebih lambat'. Untuk roda <em>seporos</em>, justru kecepatan sudutnya sama. Yang berbeda adalah kecepatan linear tepinya — roda besar punya $v$ lebih besar karena $v = \\omega R$.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-key text-emerald-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5">Insight Kunci</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Untuk roda seporos: $\\omega$ sama, $v \\propto R$. Untuk roda bersabuk/bersinggungan: $v$ sama, $\\omega \\propto 1/R$.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Narasi Konsep (Sabuk & Bersinggungan) -->
+            <div class="bg-slate-800/50 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-lg space-y-3 sm:space-y-4">
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-brand-500/20 border border-brand-500/30 flex items-center justify-center">
+                            <i class="fa-solid fa-book-open text-brand-400 text-sm"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-[10px] font-bold text-brand-400 uppercase tracking-wider mb-2">Narasi Konsep — Sabuk & Bersinggungan</h4>
+                            <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                                <p>Kalau seporos membuat $\\omega$ sama, dua jenis hubungan lainnya justru membuat $v$ sama. Ini seperti rantai sepeda: gigi depan dan gigi belakang punya ukuran berbeda, tapi rantai yang menghubungkan keduanya bergerak dengan kecepatan yang sama di semua titik.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>Ada dua variasi: <strong>dihubungkan sabuk/rantai</strong> (arah putaran searah) dan <strong>bersinggungan langsung</strong> (arah putaran berlawanan). Keduanya punya kesamaan: $v_1 = v_2$. Yang membedakan hanya arah putarannya.</p>
+                    </div>
+                </div>
+                <div class="narasi-box rounded-xl p-3.5 sm:p-4 md:p-5">
+                    <div class="narasi-text text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed">
+                        <p>Prinsipnya sederhana: di titik kontak (baik lewat rantai atau langsung), kecepatan linear harus sama — kalau tidak, akan terjadi slip. Dari kesamaan $v$ ini, kita bisa turunkan hubungan $\\omega_1 R_1 = \\omega_2 R_2$.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-3 sm:gap-4">
+                    <div class="analogi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1.5">Analogi: Rantai Sepeda</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Saat kamu mengayuh sepeda, gigi depan (besar) berputar pelan tapi menghasilkan kecepatan rantai yang tinggi. Rantai ini memutar gigi belakang (kecil) dengan kecepatan sudut yang lebih tinggi. Itulah kenapa sepeda gunung dengan gigi belakang kecil bisa melaju kencang — pengaruh perbandingan $R_1/R_2$.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="miskonsepsi-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1.5">Miskonsepsi Umum</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Banyak yang mengira 'arah putaran roda yang dihubungkan sabuk selalu sama'. Faktanya, sabuk <em>terbuka</em> (tidak menyilang) membuat arah searah; sabuk <em>menyilang</em> (angka 8) membuat arah berlawanan. Sedangkan bersinggungan langsung <em>selalu</em> berlawanan arah.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box rounded-xl p-3.5 sm:p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                                <i class="fa-solid fa-key text-emerald-400 text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5">Insight Kunci</h4>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Selalu mulai dari $v_1 = v_2$ untuk roda bersabuk/bersinggungan. Baru kemudian tentukan arah putaran berdasarkan jenis hubungannya.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory Content -->
+            <div class="bg-slate-800/50 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700/80 shadow-lg leading-relaxed text-slate-300 text-xs sm:text-sm md:text-base space-y-3 sm:space-y-4">
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2">Teori Inti: Tiga Jenis Hubungan Roda</h3>
+
+                <div>
+                    <h4 class="font-semibold text-sky-400 mb-1">1. Seporos / Sesumbu</h4>
+                    <p>Ketika dua roda disusun <strong>Seporos / Sesumbu</strong> (terikat pada as rotasi yang sama), kedua roda akan berputar dengan sudut dan periode yang identik secara konstan.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$\omega_1 = \omega_2 \quad \implies \quad \frac{v_1}{R_1} = \frac{v_2}{R_2}$$
+                    </div>
+                    <p>Akibatnya, roda yang berjari-jari lebih besar ($R$) akan memiliki kecepatan linear tepi ($v$) yang lebih cepat berbanding lurus ($v \propto R$).</p>
+                </div>
+
+                <hr class="border-slate-700/60 my-2">
+
+                <div>
+                    <h4 class="font-semibold text-sky-400 mb-1">2. Dihubungkan Sabuk / Rantai</h4>
+                    <p>Dua roda dihubungkan dengan sabuk/rantai. Kecepatan linear di tepi kedua roda harus sama agar tidak terjadi slip.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$v_1 = v_2 \quad \implies \quad \omega_1 R_1 = \omega_2 R_2$$
+                    </div>
+                    <p>Arah putaran kedua roda <strong>SEARAH</strong> (sabuk terbuka tidak menyilang).</p>
+                </div>
+
+                <hr class="border-slate-700/60 my-2">
+
+                <div>
+                    <h4 class="font-semibold text-sky-400 mb-1">3. Bersinggungan Langsung</h4>
+                    <p>Dua roda bersentuhan langsung di tepinya. Sama seperti sabuk, kecepatan linear di titik kontak harus sama.</p>
+                    <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700 text-center my-3 overflow-x-auto">
+                        $$v_1 = v_2 \quad \implies \quad \omega_1 R_1 = \omega_2 R_2$$
+                    </div>
+                    <p>Arah putaran kedua roda <strong>BERLAWANAN ARAH</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Simulation -->
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl">
+                <div class="bg-slate-700/50 px-3 sm:px-5 py-2.5 sm:py-3 border-b border-slate-700 flex items-center justify-between">
+                    <h3 class="font-semibold text-slate-200 text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-flask text-amber-400"></i>
+                        <span>Simulasi Hubungan Roda</span>
+                    </h3>
+                    <span class="text-[10px] sm:text-xs bg-slate-600/60 px-2 py-0.5 sm:py-1 rounded text-slate-300 flex-shrink-0">Live</span>
+                </div>
+                <div class="p-3 sm:p-4 md:p-6" id="tool-content">
+                    <div class="space-y-3 sm:space-y-4">
+                        <!-- Mode Buttons -->
+                        <div class="flex flex-wrap gap-1.5 sm:gap-2 justify-center bg-slate-900 p-1.5 rounded-xl border border-slate-700 text-[11px] sm:text-xs">
+                            <button id="btn-mode-seporos" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition bg-brand-600 text-white">
+                                <i class="fa-solid fa-dharmachakra mr-1"></i>Seporos
+                            </button>
+                            <button id="btn-mode-sabuk" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-slate-200">
+                                <i class="fa-solid fa-link mr-1"></i>Sabuk
+                            </button>
+                            <button id="btn-mode-bersinggungan" class="px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-slate-200">
+                                <i class="fa-solid fa-gear mr-1"></i>Bersinggungan
+                            </button>
+                        </div>
+
+                        <!-- Canvas -->
+                        <div class="bg-slate-950 rounded-xl border border-slate-800 p-2 flex items-center justify-center min-h-[200px] sm:min-h-[240px] overflow-hidden">
+                            <canvas id="gears-canvas" width="450" height="220" class="max-w-full"></canvas>
+                        </div>
+
+                        <!-- Info -->
+                        <div class="bg-slate-900/80 p-2.5 sm:p-3 rounded-xl border border-slate-700 text-[10px] sm:text-xs font-mono flex justify-around text-center">
+                            <div>
+                                <span class="text-slate-400 block text-[9px] sm:text-[10px]">Roda 1 ($R_1 = 55$px)</span>
+                                <span id="gear1-info" class="text-sky-400 font-bold">ω₁ = 2.0 rad/s</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block text-[9px] sm:text-[10px]">Roda 2 ($R_2 = 30$px)</span>
+                                <span id="gear2-info" class="text-amber-400 font-bold">ω₂ = 2.0 rad/s</span>
+                            </div>
+                        </div>
+
+                        <!-- Slider Kontrol ω1 -->
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 text-xs">
+                            <label class="text-slate-400 block mb-1 text-[11px]">Kecepatan Sudut Roda 1 ($\\omega_1$): <span id="val-w1" class="text-sky-400 font-bold">2.0</span> rad/s</label>
+                            <input type="range" id="input-w1" min="0.5" max="6" value="2" step="0.1" class="w-full accent-sky-500 h-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz / Evaluasi Seporos -->
+            <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700 shadow-xl space-y-3 sm:space-y-4">
+                <div class="flex items-center space-x-2 sm:space-x-3 text-brand-500 border-b border-slate-700/60 pb-2 sm:pb-3">
+                    <i class="fa-solid fa-circle-question text-lg sm:text-xl"></i>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-100">Evaluasi — Seporos</h3>
+                </div>
+                <p class="text-slate-300 font-medium text-xs sm:text-sm md:text-base" id="quiz1-question"></p>
+                <div class="grid grid-cols-1 gap-2 sm:gap-3" id="quiz1-options"></div>
+                <div id="quiz1-feedback" class="hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm leading-relaxed border transition-all duration-300"></div>
+            </div>
+
+            <!-- Quiz / Evaluasi Sabuk & Bersinggungan -->
+            <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-5 md:p-8 border border-slate-700 shadow-xl space-y-3 sm:space-y-4">
+                <div class="flex items-center space-x-2 sm:space-x-3 text-brand-500 border-b border-slate-700/60 pb-2 sm:pb-3">
+                    <i class="fa-solid fa-circle-question text-lg sm:text-xl"></i>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-100">Evaluasi — Sabuk & Bersinggungan</h3>
+                </div>
+                <p class="text-slate-300 font-medium text-xs sm:text-sm md:text-base" id="quiz2-question"></p>
+                <div class="grid grid-cols-1 gap-2 sm:gap-3" id="quiz2-options"></div>
+                <div id="quiz2-feedback" class="hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm leading-relaxed border transition-all duration-300"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // ============================================================
+        // DATA QUIZ
+        // ============================================================
+        const quiz1Data = {
+            question: "Dua roda A ($R_A = 10\\text{ cm}$) dan B ($R_B = 30\\text{ cm}$) terpasang seporos. Jika kecepatan sudut roda A adalah $10\\text{ rad/s}$, berapakah kecepatan linear keliling roda B?",
+            options: [
+                { text: "3 m/s", correct: true },
+                { text: "1 m/s", correct: false },
+                { text: "30 m/s", correct: false },
+                { text: "0.3 m/s", correct: false }
+            ],
+            explanation: "Seporos $\\implies \\omega_B = \\omega_A = 10\\text{ rad/s}$. Kecepatan linear $v_B = \\omega_B \\cdot R_B = 10 \\times 0.3\\text{ m} = 3\\text{ m/s}$."
+        };
+
+        const quiz2Data = {
+            question: "Roda 1 ($R_1 = 20\\text{ cm}$) bersinggungan langsung dengan Roda 2 ($R_2 = 5\\text{ cm}$). Jika Roda 1 berputar 100 rpm searah jarum jam, maka Roda 2 berputar sebesar...",
+            options: [
+                { text: "400 rpm berlawanan jarum jam", correct: true },
+                { text: "400 rpm searah jarum jam", correct: false },
+                { text: "25 rpm berlawanan jarum jam", correct: false },
+                { text: "100 rpm berlawanan jarum jam", correct: false }
+            ],
+            explanation: "Bersinggungan $\\implies v_1 = v_2 \\implies \\omega_1 R_1 = \\omega_2 R_2 \\implies 100 \\times 20 = \\omega_2 \\times 5 \\implies \\omega_2 = 400\\text{ rpm}$. Arahnya berlawanan jarum jam."
+        };
+
+        // ============================================================
+        // RENDER QUIZ GENERIC
+        // ============================================================
+        function renderQuiz(quizData, questionElId, optionsElId, feedbackElId) {
+            const quizQuestion = document.getElementById(questionElId);
+            const quizOptions = document.getElementById(optionsElId);
+            const quizFeedback = document.getElementById(feedbackElId);
+
+            quizQuestion.innerHTML = quizData.question;
+            quizOptions.innerHTML = '';
+            quizFeedback.className = 'hidden p-3 sm:p-4 rounded-xl text-xs sm:text-sm leading-relaxed border transition-all duration-300';
+
+            quizData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-3 rounded-xl border border-slate-700 bg-slate-800/60 hover:bg-slate-700/80 active:bg-slate-700 text-xs md:text-sm text-slate-200 transition flex items-center justify-between group gap-2';
+                btn.innerHTML = `
+                    <span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span>
+                    <i class="fa-regular fa-circle text-slate-500 group-hover:text-brand-400 flex-shrink-0"></i>
+                `;
+
+                btn.onclick = () => {
+                    Array.from(quizOptions.children).forEach(child => child.classList.add('pointer-events-none', 'opacity-60'));
+
+                    if (opt.correct) {
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-emerald-500/80 bg-emerald-500/20 text-emerald-200 text-xs md:text-sm font-semibold flex items-center justify-between gap-2 pointer-events-none';
+                        btn.innerHTML = `<span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span> <i class="fa-solid fa-circle-check text-emerald-400 text-base flex-shrink-0"></i>`;
+                        
+                        quizFeedback.className = 'p-3 sm:p-4 rounded-xl text-xs md:text-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-200 block';
+                        quizFeedback.innerHTML = `<strong><i class="fa-solid fa-check mr-1"></i> Benar!</strong> ${quizData.explanation}`;
+                    } else {
+                        btn.className = 'w-full text-left p-3 rounded-xl border border-rose-500/80 bg-rose-500/20 text-rose-200 text-xs md:text-sm font-semibold flex items-center justify-between gap-2 pointer-events-none';
+                        btn.innerHTML = `<span class="flex-1">${String.fromCharCode(65 + idx)}. ${opt.text}</span> <i class="fa-solid fa-circle-xmark text-rose-400 text-base flex-shrink-0"></i>`;
+
+                        quizFeedback.className = 'p-3 sm:p-4 rounded-xl text-xs md:text-sm bg-rose-950/60 border border-rose-500/40 text-rose-200 block';
+                        quizFeedback.innerHTML = `<strong><i class="fa-solid fa-xmark mr-1"></i> Kurang Tepat.</strong> ${quizData.explanation}`;
+                    }
+
+                    if (window.renderMathInElement) {
+                        renderMathInElement(quizFeedback, {
+                            delimiters: [
+                                {left: '$$', right: '$$', display: true},
+                                {left: '$', right: '$', display: false}
+                            ],
+                            throwOnError: false
+                        });
+                    }
+                };
+
+                quizOptions.appendChild(btn);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(quizQuestion, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // ============================================================
+        // GEARS SIMULATION
+        // ============================================================
+        let animationFrameId = null;
+        let gearMode = 'seporos';
+        let w1 = 2.0;
+        let theta1 = 0;
+        let theta2 = 0;
+        let lastTime = performance.now();
+
+        const R1 = 55;
+        const R2 = 30;
+
+        function initGearsSimulation() {
+            const canvas = document.getElementById('gears-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const btnSeporos = document.getElementById('btn-mode-seporos');
+            const btnSabuk = document.getElementById('btn-mode-sabuk');
+            const btnBersinggungan = document.getElementById('btn-mode-bersinggungan');
+            const inputW1 = document.getElementById('input-w1');
+
+            function updateButtons() {
+                [btnSeporos, btnSabuk, btnBersinggungan].forEach(b => {
+                    b.classList.remove('bg-brand-600', 'text-white');
+                    b.classList.add('text-slate-400');
+                });
+                if (gearMode === 'seporos') btnSeporos.classList.add('bg-brand-600', 'text-white');
+                if (gearMode === 'sabuk') btnSabuk.classList.add('bg-brand-600', 'text-white');
+                if (gearMode === 'bersinggungan') btnBersinggungan.classList.add('bg-brand-600', 'text-white');
+            }
+
+            btnSeporos.onclick = () => { gearMode = 'seporos'; updateButtons(); };
+            btnSabuk.onclick = () => { gearMode = 'sabuk'; updateButtons(); };
+            btnBersinggungan.onclick = () => { gearMode = 'bersinggungan'; updateButtons(); };
+
+            inputW1.addEventListener('input', (e) => {
+                w1 = parseFloat(e.target.value);
+                document.getElementById('val-w1').textContent = w1.toFixed(1);
+            });
+
+            function loopGears(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                let w2 = 0;
+                if (gearMode === 'seporos') {
+                    w2 = w1;
+                    theta1 += w1 * dt;
+                    theta2 += w2 * dt;
+                } else if (gearMode === 'sabuk') {
+                    w2 = w1 * (R1 / R2);
+                    theta1 += w1 * dt;
+                    theta2 += w2 * dt;
+                } else if (gearMode === 'bersinggungan') {
+                    w2 = w1 * (R1 / R2);
+                    theta1 += w1 * dt;
+                    theta2 -= w2 * dt;
+                }
+
+                document.getElementById('gear1-info').innerHTML = `&omega;<sub>1</sub> = ${w1.toFixed(1)} rad/s`;
+                document.getElementById('gear2-info').innerHTML = `&omega;<sub>2</sub> = ${w2.toFixed(1)} rad/s`;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                let c1x = 130, c1y = 110;
+                let c2x = 270, c2y = 110;
+
+                if (gearMode === 'seporos') {
+                    c2x = c1x;
+                } else if (gearMode === 'bersinggungan') {
+                    c2x = c1x + R1 + R2;
+                } else {
+                    c2x = 310;
+                }
+
+                // Sabuk / belt
+                if (gearMode === 'sabuk') {
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(c1x, c1y - R1);
+                    ctx.lineTo(c2x, c2y - R2);
+                    ctx.moveTo(c1x, c1y + R1);
+                    ctx.lineTo(c2x, c2y + R2);
+                    ctx.stroke();
+                }
+
+                function drawGear(cx, cy, r, angle, color) {
+                    // Outer circle
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                    ctx.stroke();
+
+                    // Spoke (untuk melihat rotasi)
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+                    ctx.stroke();
+
+                    // Center dot
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                drawGear(c1x, c1y, R1, theta1, '#38bdf8');
+                drawGear(c2x, c2y, R2, theta2, '#f59e0b');
+
+                animationFrameId = requestAnimationFrame(loopGears);
+            }
+
+            lastTime = performance.now();
+            animationFrameId = requestAnimationFrame(loopGears);
+        }
+
+        // ============================================================
+        // INIT ON LOAD
+        // ============================================================
+        window.onload = () => {
+            renderQuiz(quiz1Data, 'quiz1-question', 'quiz1-options', 'quiz1-feedback');
+            renderQuiz(quiz2Data, 'quiz2-question', 'quiz2-options', 'quiz2-feedback');
+            initGearsSimulation();
+        };
+
+        window.addEventListener('beforeunload', () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        });
+    </script>
+</body>
+  </html>
